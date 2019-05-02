@@ -28,18 +28,6 @@ class User extends Authenticatable
         'password', 'remember_token',
     ];
 
-    public function NguoiNapT(){
-      return $this->hasMany('App\naptien','id_user','id');
-    }
-    
-    public function NguoiChuyenT(){
-      return $this->hasMany('App\chuyentien','id_ng_chuyen','id')
-    }
-
-    public function NguoiNhanT(){
-      return $this->hasMany('App\chuyentien','id_ng_nhan','id');
-    }
-
     public function TaiKhoan(){
       return $this->hasMany('App\taikhoan','id_user','id');
     }
