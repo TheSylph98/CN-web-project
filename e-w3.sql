@@ -1,5 +1,5 @@
 -- Created by Vertabelo (http://vertabelo.com)
--- Last modification date: 2019-05-01 20:51:27.268
+-- Last modification date: 2019-05-02 07:38:42.238
 
 -- tables
 -- Table: chuyentien
@@ -33,13 +33,31 @@ CREATE TABLE naptien (
     CONSTRAINT naptien_pk PRIMARY KEY (id)
 );
 
+-- Table: nganhang
+CREATE TABLE nganhang (
+    id int NOT NULL AUTO_INCREMENT,
+    ten_nganhang varchar(255) NOT NULL,
+    sodienthoai int NULL,
+    diachi varchar(255) NULL,
+    CONSTRAINT nganhang_pk PRIMARY KEY (id)
+);
+
+-- Table: taikhoan
+CREATE TABLE taikhoan (
+    id int NOT NULL,
+    sotaikhoan char(20) NOT NULL,
+    tongsotien int NOT NULL,
+    nganhang_id int NOT NULL,
+    id_user int NOT NULL,
+    CONSTRAINT taikhoan_pk PRIMARY KEY (id)
+);
+
 -- Table: users
 CREATE TABLE users (
     id int NOT NULL AUTO_INCREMENT,
     ten varchar(255) NOT NULL,
-    email varchar(255) NOT NULL ,
+    email varchar(255) NOT NULL,
     password varchar(255) NOT NULL,
-    sotaikhoan char(20) NOT NULL,
     diachi varchar(255) NULL,
     sodienthoai int NULL,
     remember_token varchar(100) NULL,
@@ -59,6 +77,14 @@ ALTER TABLE chuyentien ADD CONSTRAINT chuyentien_users_2 FOREIGN KEY chuyentien_
 
 -- Reference: naptien_users (table: naptien)
 ALTER TABLE naptien ADD CONSTRAINT naptien_users FOREIGN KEY naptien_users (id_user)
+    REFERENCES users (id);
+
+-- Reference: taikhoan_nganhang (table: taikhoan)
+ALTER TABLE taikhoan ADD CONSTRAINT taikhoan_nganhang FOREIGN KEY taikhoan_nganhang (nganhang_id)
+    REFERENCES nganhang (id);
+
+-- Reference: taikhoan_users (table: taikhoan)
+ALTER TABLE taikhoan ADD CONSTRAINT taikhoan_users FOREIGN KEY taikhoan_users (id_user)
     REFERENCES users (id);
 
 -- End of file.
