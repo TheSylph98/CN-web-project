@@ -18,10 +18,21 @@
     <div class="panel panel-default">
     <div class="panel-heading"><h4>Đăng ký tài khoản</h4></div>
       <div class="panel-body">
-          <div class="alert alert-success">
-            <strong></strong>
-          </div>
-        <form method="" action="">
+        @if(count($errors) > 0)
+            @foreach($errors->all() as $err)
+                <div class="alert alert-danger">
+                    <strong>{{ $err }}</strong><br/>
+                </div>
+            @endforeach
+        @endif
+
+
+        @if(session('message'))
+					<div class="alert alert-success">
+						<strong>{{ session('message') }}</strong>
+					</div>
+				@endif
+        <form method="POST" action="dang-ki">
           {{ csrf_field() }}
           <div>
             <label>Tên Người Dùng</label>
@@ -41,7 +52,7 @@
           <br>
           <div>
             <label>Số Điện Thoại</label>
-            <input type="text" class="form-control" name="sodienthoai" aria-describedby="basic-addon1">
+            <input type="text" class="form-control" name="sodt" aria-describedby="basic-addon1">
           </div>
           <br>
           <div>

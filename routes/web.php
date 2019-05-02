@@ -18,3 +18,4 @@ Route::get('/home','HomeController@index');
 Route::get('dang-nhap','HomeController@Login');
 Route::post('dang-nhap','HomeController@LoginAuth');
 Route::get('dang-ki','HomeController@Register');
+Route::post('dang-ki','HomeController@DoRegister');
