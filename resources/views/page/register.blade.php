@@ -33,10 +33,6 @@
             <input type="email" class="form-control" placeholder="Nhập Địa Chỉ Email" name="email" aria-describedby="basic-addon1">
           </div>
           <br>
-          <div>
-            <label>Số tài khoản</label>
-            <input type="text" class="form-control" name="sotaikhoan" aria-describedby="basic-addon1">
-          </div>
           <br>
           <div>
             <label>Địa chỉ</label>

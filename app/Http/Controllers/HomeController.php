@@ -8,7 +8,8 @@ use Validator;
 use App\naptien;
 use App\chuyentien;
 use App\User;
-
+use App\nganhang;
+use App\taikhoan;
 
 class HomeController extends Controller
 {
