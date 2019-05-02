@@ -28,12 +28,13 @@ class User extends Authenticatable
         'password', 'remember_token',
     ];
 
-    /**
-     * The attributes that should be cast to native types.
-     *
-     * @var array
-     */
-    protected $casts = [
-        'email_verified_at' => 'datetime',
-    ];
+    public function NguoiNapT(){
+      return $this->hasMany('App\naptien','id_user','id');
+    }
+    public function NguoiChuyenT(){
+      return $this->hasMany('App\chuyentien','id_ng_chuyen','id')
+    }
+    public function NguoiNhanT(){
+      return $this->hasMany('App\chuyentien','id_ng_nhan','id');
+    }
 }
