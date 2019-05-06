@@ -17,7 +17,7 @@ class taikhoan extends Model
     }
 
     public function NguoiChuyenT(){
-      return $this->hasMany('App\chuyentien','tk_ng_chuyen','sotaikhoan')
+      return $this->hasMany('App\chuyentien','tk_ng_chuyen','sotaikhoan');
     }
 
     public function NguoiNhanT(){
