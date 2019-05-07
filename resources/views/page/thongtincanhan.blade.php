@@ -58,10 +58,14 @@
             <div>
 							<label>Tai khoan</label>
               @foreach($tk as $taikhoan)
-              <br>
-							<input type="text" class="form-control" name="nganhang"  value="{{ $taikhoan->NganHang->ten_nganhang }}">
-              <br>
-              <input type="text" class="form-control" name="taikhoan"  value="{{ $taikhoan->sotaikhoan }}">
+                <br>
+  							<input type="text" class="form-control" name="nganhang"  value="{{ $taikhoan->NganHang->ten_nganhang }}">
+                <br>
+                @if($taikhoan->sotaikhoan != 0)
+                <input type="text" class="form-control" name="taikhoan"  value="{{ $taikhoan->sotaikhoan }}">
+                @else
+                <input type="text" class="form-control" name="taikhoan"><strong>Chua cap nhat</strong>
+                @endif
               @endforeach
 						</div>
 						<br>
@@ -84,7 +88,7 @@
 							<p><label>Xác nhận Mật khẩu</label></p>
 							<input class="form-control input-width disabled-field" type="password" name="password_again" placeholder="Nhập lại mật khẩu" disabled="" />
 						</div>
-						<br>        
+						<br>
 						<button type="submit" class="btn btn-primary">Save
 						</button>
 					</form>

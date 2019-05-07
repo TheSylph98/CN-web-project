@@ -28,3 +28,6 @@ Route::post('lien-he','HomeController@GuiLienHe');
 
 Route::get('quan-li-thong-tin','HomeController@ThongTinCaNhan');
 Route::post('quan-li-thong-tin','HomeController@ChinhSuaThongTin');
+
+Route::get('them-tai-khoan','HomeController@gThemTaiKhoan');
+Route::post('them-tai-khoan','HomeController@pThemtaikhoan');
