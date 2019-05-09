@@ -6,8 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class taikhoan extends Model
 {
-    protected $table = "taikhoan";
-
+    protected $table = "taiKhoan";
+//
     public function User(){
       return $this->belongsTo('App\User','id_user','id');
     }
@@ -17,7 +17,7 @@ class taikhoan extends Model
     }
 
     public function NguoiChuyenT(){
-      return $this->hasMany('App\chuyentien','tk_ng_chuyen','sotaikhoan');
+        return $this->hasMany('App\chuyentien', 'tk_ng_chuyen', 'sotaikhoan');
     }
 
     public function NguoiNhanT(){

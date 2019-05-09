@@ -16,4 +16,7 @@ class chuyentien extends Model
     public function NguoiNhan(){
       return $this->belongsTo('App\taikhoan','tk_ng_nhan','sotaikhoan');
     }
+
+
+    protected $fillable = ['id', 'sotien', 'noidung', 'created_at', 'updated_at', 'tk_ng_nhan', 'tk_ng_chuyen'];
 }

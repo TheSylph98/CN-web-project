@@ -28,3 +28,9 @@ Route::post('lien-he','HomeController@GuiLienHe');
 
 Route::get('quan-li-thong-tin','HomeController@ThongTinCaNhan');
 Route::post('quan-li-thong-tin','HomeController@ChinhSuaThongTin');
+
+
+//chuyen tien
+
+Route::get("transfer", "TransferController@getViewTransfer");
+Route::post("post-transfer", "TransferController@postTransfer")->name("post-transfer");

@@ -42,7 +42,7 @@ CREATE TABLE nganhang (
     CONSTRAINT nganhang_pk PRIMARY KEY (id)
 );
 
--- Table: taikhoan
+-- Table: taiKhoan
 CREATE TABLE taikhoan (
     sotaikhoan char(20) NOT NULL,
     id_user int NOT NULL,
@@ -75,7 +75,7 @@ ALTER TABLE naptien ADD CONSTRAINT naptien_taikhoan FOREIGN KEY naptien_taikhoan
 ALTER TABLE chuyentien ADD CONSTRAINT taikhoan_chuyen FOREIGN KEY taikhoan_chuyen (tk_ng_chuyen)
     REFERENCES taikhoan (sotaikhoan);
 
--- Reference: taikhoan_nganhang (table: taikhoan)
+-- Reference: taikhoan_nganhang (table: taiKhoan)
 ALTER TABLE taikhoan ADD CONSTRAINT taikhoan_nganhang FOREIGN KEY taikhoan_nganhang (nganhang_id)
     REFERENCES nganhang (id);
 
@@ -83,7 +83,7 @@ ALTER TABLE taikhoan ADD CONSTRAINT taikhoan_nganhang FOREIGN KEY taikhoan_nganh
 ALTER TABLE chuyentien ADD CONSTRAINT taikhoan_nhan FOREIGN KEY taikhoan_nhan (tk_ng_nhan)
     REFERENCES taikhoan (sotaikhoan);
 
--- Reference: taikhoan_users (table: taikhoan)
+-- Reference: taikhoan_users (table: taiKhoan)
 ALTER TABLE taikhoan ADD CONSTRAINT taikhoan_users FOREIGN KEY taikhoan_users (id_user)
     REFERENCES users (id);
 
