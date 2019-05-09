@@ -10,6 +10,7 @@ use App\chuyentien;
 use App\User;
 use App\nganhang;
 use App\taikhoan;
+use App\lienhe;
 
 class HomeController extends Controller
 {
@@ -101,6 +102,11 @@ class HomeController extends Controller
         'email.unique' => 'Địa chỉ Email đã tồn tại!'
       ]);
 
+      $lienhe = new lienhe;
+      $lienhe->email = $request->email;
+      $lienhe->noidung = $request->noidung;
+      $lienhe->save();
+      return redirect('lien-he')->with('message','Đăng ký tài khoản thành công!');
     }
 
     public function ThongTinCaNhan(){
@@ -151,4 +157,32 @@ class HomeController extends Controller
     return redirect('quan-ly-thong-tin')->with('message','Thay Đổi thông tin Người Dùng thành công!');
   }
 
+  public function gThemTaiKhoan(){
+    if(Auth::check()){
+      $user = Auth::user();
+      $nganhang = nganhang::all();
+      return view('page.themtaikhoan',['user_info' => Auth::user(),'nganhang'=>$nganhang]);
+    }
+    else
+      return redirect('dang-nhap')->with('message','Bạn chưa Đăng Nhập!');
+  }
+
+   public function pThemtaikhoan($request){
+     $this->validate($request,
+     [
+       'taikhoan' => 'required',
+     ],
+     [
+       'taikhoan.required' => 'Bạn chưa nhập Tên tài khoản!',
+     ]);
+     $user = Auth::user();
+     //$taikhoan = taikhoan::where('id_user',$user->id)->get();
+     $tk = new taikhoan;
+     $tk->id_user = $user->id;
+     $tk->sotaikhoan = $request->sotaikhoan;
+     $tk->nganhang_id = $request->nganhang;
+     $tk->tongsotien = 0;
+     $tk->save();
+    return  redirect('them-tai-khoan')->with('message','Thay Đổi thông tin Người Dùng thành công!');
+   }
 }
