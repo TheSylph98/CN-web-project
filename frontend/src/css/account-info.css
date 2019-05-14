@@ -1,0 +1,123 @@
+.customer-content {
+	background: #111;
+	padding-left: 40px;
+	display: flex;
+	flex-direction: row;
+}
+
+.content-right {
+    width: 975px;
+    margin-left: 5px;
+    position: relative;
+    display: inline-block;
+}
+
+.content-right h1.title {
+    margin-bottom: 15px;
+    font-family: Roboto;
+    font-size: 19px;
+    font-weight: 300;
+    font-style: normal;
+    font-stretch: normal;
+    color: #fff;
+}
+
+.account-profile {
+    display: block;
+    margin-bottom: 20px;
+    width: 100%!important;
+    padding: 30px 20px 20px!important;
+    background: #1d1d1d;
+    border-radius: 4px;
+}
+
+.account-profile form {
+    width: 60%;
+}
+
+.account-profile .form-group {
+    margin-bottom: 15px;
+    position: relative;
+}
+
+.account-profile .form-group .form-control[disabled] {
+    background: #3d3d3d;
+    color: #aaa;
+}
+
+.account-profile .form-group .control-label {
+    width: 20%;
+    font-size: 14px;
+    margin-bottom: 0;
+    font-weight: 400;
+    color: #fff;
+}
+
+.account-profile .form-group .input-wrap {
+    display: inline-block;
+    width: 405px;
+}
+
+.account-profile .form-group .input-wrap input[type=radio]+span{
+    padding-left: 20px;
+    color: #fff;
+}
+
+.account-profile .form-group .input-wrap .row {
+    padding: 7px 0;
+    height: 46px;
+    display: flex;
+    align-items: center;
+}
+
+.register-form .content .birthday-picker .form-control {
+    width: 30%!important;
+    margin-right: 10px;
+    display: inline-block;
+}
+
+.account-profile .form-group .control-label span {
+    display: block;
+    margin-top: 5px;
+    color: #eee;
+    font-size: 10px;
+    position: absolute;
+}
+
+.account-profile .form-group .input-wrap.margin {
+    margin-left: 20%;
+}
+
+.account-profile .form-group .input-wrap .checkbox {
+    display: inline-block;
+    cursor: pointer;
+    font-size: 13px;
+}
+
+.account-profile .form-group .input-wrap .checkbox span{
+	color: #fff;
+	margin-left: 20px;
+}
+
+.account-profile .form-group .btn-update {
+    border: none;
+    width: 176px;
+    height: 40px;
+    border-radius: 4px;
+    color: #fff;
+    font-size: 14px;
+    background-color: #fd961a;
+}
+
+.account-profile .form-group .btn-update:hover {
+    background: rgba(253, 150, 26,.9) !important;
+    outline: none !important;
+}
+
+.account-profile .password-group {
+    transition: 0.1s;
+}
+
+
+
+

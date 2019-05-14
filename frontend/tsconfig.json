@@ -1,0 +1,25 @@
+{
+  "compilerOptions": {
+    "outDir": "dist/src",
+    "target": "es6",
+    "module": "commonjs",
+    "sourceMap": true,
+    "jsx": "react",
+    "experimentalDecorators": true,
+    "skipLibCheck": true,
+    "strictNullChecks": false,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true
+  },
+  "include": [
+    "src/ts/**/*.tsx",
+    "src/ts/**/*.ts"
+  ],
+  "exclude": [
+    "node_modules",
+    ".npm"
+  ],
+  "files": [
+      "typings/index.d.ts"
+  ]
+}
