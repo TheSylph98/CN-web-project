@@ -41,7 +41,7 @@ class HomeController extends Controller
     //echo $err;
     if($validator->fails()){
       return response()->json([
-        'dangnhap' => 'error',
+        'login' => 'error',
         'errors' => $err
       ]);
     }
@@ -50,7 +50,7 @@ class HomeController extends Controller
       if(Auth::attempt(['email' => $request->email, 'password' => $request->password])){
           $user = Auth::user();
           return response()->json([
-            'dangnhap' => 'thanhcong',
+            'login' => 'success',
             'ten' => $user->ten,
             'email' => $user->email,
             'password' => $user->password,
@@ -59,7 +59,7 @@ class HomeController extends Controller
           ]);
         } else {
             return response()->json([
-              'dangnhap' => 'error',
+              'login' => 'error',
               'errors' => 'Incorrect password or Email account does not exist yet'
             ]);
     }
