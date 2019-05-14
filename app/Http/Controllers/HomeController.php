@@ -76,43 +76,50 @@ class HomeController extends Controller
   }
 
   public function DoRegister(Request $request){
-    	$this->validate($request,
-    		[
-    			'username' => 'required|min:3|max:50',
-    			'email' => 'required|email|unique:users,email',
-    			'password' => 'required|min:6|max:32',
-    			'password_again' => 'required|same:password'
-    		],
-    		[
-    			'username.required' => 'Bạn chưa nhập Tên tài khoản!',
-    			'username.min' => 'Tên tài khoản gồm tối thiểu 3 ký tự!',
-    			'username.max' => 'Tên tài khoản không được vượt quá 50 ký tự!',
-    			'email.required' => 'Bạn chưa nhập địa chỉ Email!',
-    			'email.email' => 'Bạn chưa nhập đúng định dạng Email!',
-    			'email.unique' => 'Địa chỉ Email đã tồn tại!',
-    			'password.required' => 'Bạn chưa nhập mật khẩu!',
-    			'password.min' => 'Mật khẩu gồm tối thiểu 6 ký tự!',
-    			'password.max' => 'Mật khẩu không được vượt quá 32 ký tự!',
-    			'password_again.required' => 'Bạn chưa xác nhận mật khẩu!',
-    			'password_again.same' => 'Mật khẩu xác nhận chưa khớp với mật khẩu đã nhập!'
-    		]);
+    	  $validator = Validator::make($request->all(),
+      		[
+      			'username' => 'required|min:3|max:50',
+      			'email' => 'required|email|unique:users,email',
+      			'password' => 'required|min:6|max:32',
+      			'password_again' => 'required|same:password'
+      		],
+      		[
+      			'username.required' => 'You have not entered your account name!',
+      			'username.min' => 'The account name is at least 3 characters long!',
+      			'username.max' => 'Account name cannot exceed 50 characters!',
+      			'email.required' => 'You did not enter E-mail address!',
+      			'email.email' => 'You have not entered the correct Email format!',
+      			'email.unique' => 'Email address already exists!',
+      			'password.required' => 'You have not entered a password!',
+      			'password.min' => 'Password includes at least 6 characters !',
+      			'password.max' => 'Password cannot exceed 32 characters!',
+      			'password_again.required' => 'You have not confirmed your password!',
+      			'password_again.same' => 'Password verification does not match the entered password!'
+      		]);
 
-        $user = new User;
-      	$user->ten = $request->username;
-      	$user->email = $request->email;
-      	$user->password = bcrypt($request->password_again);
-  			$user->diachi = $request->diachi;
-  			$user->sodienthoai = $request->sodt;
-      	$user->save();
-    	//return redirect('dang-ki')->with('message','Đăng ký tài khoản thành công!');
-      return response()->json([
-        'dangki'=>'thanhcong',
-        'ten' => $user->ten,
-        'email' => $user->email,
-        'password' => $user->password,
-        'diachi'=> $user->diachi,
-        'sodienthoai'=> $user->sodienthoai
-      ]);
+        $errs = $validator->errors();
+        $err = $errs->all();
+        if($validator->fails()){
+          return response()->json([
+            'register' => 'error',
+            'errors' => $err
+          ]); }
+        else {
+          $user = new User;
+        	$user->ten = $request->username;
+        	$user->email = $request->email;
+        	$user->password = bcrypt($request->password_again);
+    			$user->diachi = $request->diachi;
+    			$user->sodienthoai = $request->sodt;
+        	$user->save();
+          return response()->json([
+            'register'=>'success',
+            'ten' => $user->ten,
+            'email' => $user->email,
+            'password' => $user->password,
+            'diachi'=> $user->diachi,
+            'sodienthoai'=> $user->sodienthoai
+          ]);}
     }
 
     public function LienHe(){
