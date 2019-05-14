@@ -36,14 +36,34 @@ class HomeController extends Controller
         'password.min' => 'Mật khẩu gồm tối thiểu 6 ký tự!',
       ]);
 
-    if($validator->fails())
-      return redirect('dang-nhap')->withErrors($validator)->withInput();
+    if($validator->fails()){
+      $err = $validator->errors();
+      return response()->json([
+        'dangnhap' => 'kothanhcong',
+        'error' => $err
+      ]);
+    }
+      //return redirect('dang-nhap')->withErrors($validator)->withInput();
     else
     {
-      if(Auth::attempt(['email' => $request->email, 'password' => $request->password]))
-        return redirect('home');
-      else
-        return redirect('dang-nhap')->with('message','Đăng nhập không thành công!');
+      if(Auth::attempt(['email' => $request->email, 'password' => $request->password])){
+          $user = Auth::user();
+          return response()->json([
+            'dangnhap' => 'thanhcong',
+            'ten' => $user->ten,
+            'email' => $user->email,
+            'password' => $user->password,
+            'diachi'=> $user->diachi,
+            'sodienthoai'=> $user->sodienthoai
+          ]);
+      }
+      //  return redirect('home');
+      else {
+      $err = $validator->errors();
+      return response()->json([
+        'dangnhap' => 'error',
+        'error' => $err
+      ]);}
     }
   }
 
@@ -85,7 +105,15 @@ class HomeController extends Controller
   			$user->diachi = $request->diachi;
   			$user->sodienthoai = $request->sodt;
       	$user->save();
-    	return redirect('dang-ki')->with('message','Đăng ký tài khoản thành công!');
+    	//return redirect('dang-ki')->with('message','Đăng ký tài khoản thành công!');
+      return response()->json([
+        'dangki'=>'thanhcong',
+        'ten' => $user->ten,
+        'email' => $user->email,
+        'password' => $user->password,
+        'diachi'=> $user->diachi,
+        'sodienthoai'=> $user->sodienthoai
+      ]);
     }
 
     public function LienHe(){
