@@ -1,0 +1,145 @@
+.site-navigation, .site-navigation.fixed ul.navbar-nav {
+    border-bottom: 1px solid #222;
+}
+
+.site-navigation.fixed {
+    z-index: 111111;
+}
+
+.site-navigation {
+    position: relative;
+    padding-bottom: 48px;
+}
+
+.site-nav-inner {
+    position: absolute;
+    z-index: 100;
+    background: #111;
+    text-align: center;
+    width: 100%;
+    left: 0;
+    bottom: 0;
+}
+
+.site-navigation.fixed ul.navbar-nav {
+    position: fixed;
+    top: 0;
+    background: #111;
+    width: 100%;
+    left: 0;
+}
+
+navigation.fixed ul.navbar-nav {
+    border-bottom: 1px solid #222;
+}
+
+a:link, a:hover, a:visited {
+    text-decoration: none;
+}
+
+.logo-mobile {
+    display: none;
+}
+
+ul.navbar-nav {
+    float: none;
+    display: block;
+}
+
+ul.navbar-nav > li {
+    padding: 0;
+    position: relative;
+}
+
+ul.navbar-nav > li {
+    float: none;
+    display: inline-block;
+}
+
+ul.navbar-nav > li {
+    float: none;
+    display: inline-block;
+}
+
+ul.navbar-nav > li:not(.search):hover, ul.navbar-nav > li.active {
+    color: #fff;
+    position: relative;
+}
+
+ul.navbar-nav > li:hover > a {
+	color: #fd961a;
+}
+
+ul.navbar-nav > li > a {
+    color: #fff;
+    font-weight: 600;
+    font-size: 14px;
+    text-transform: uppercase;
+    margin: 0;
+    padding: 17px 16px;
+    line-height: 14px;
+    position: relative;
+    font-family: 'Open Sans', sans-serif;
+    transition: .1s;
+}
+
+.nav > li > a:hover {
+	background: #111;
+}
+
+.site-search {
+    text-align: center;
+    background: rgba(0,0,0,.7);
+    position: absolute;
+    top: 49px;
+    z-index: 100;
+    width: 100%;
+}
+
+.site-search .container {
+    height: 0;
+    overflow: hidden;
+    position: relative;
+    -webkit-transition: height 0.3s;
+    transition: height 0.3s;
+}
+
+.site-search input[type="text"] {
+    background: none;
+    border: none;
+    color: #fff;
+    font-size: 16px;
+    margin: 22px 0 25px;
+    padding-right: 20px;
+    width: 100%;
+    outline: 0;
+    text-align: center;
+}
+
+.site-search .close {
+    color: rgba(255, 255, 255, 0.25);
+    cursor: pointer;
+    font-size: 32px;
+    margin-top: -20px;
+    position: absolute;
+    top: 50%;
+    right: 15px;
+}
+
+.navbar-nav .fa-search {
+    background: none;
+    border: none;
+    color: #fff;
+    font-size: 14px;
+    outline: none;
+    padding: 17px;
+}
+
+.site-search .container.open {
+    height: 80px;
+}
+
+.nav>li>a:focus, .nav>li>a:hover {
+    text-decoration: none;
+    background-color: transparent;
+}

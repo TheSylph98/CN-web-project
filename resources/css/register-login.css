@@ -1,0 +1,105 @@
+.register {
+    height: 100vh;
+    background: #111;
+    overflow: hidden;
+    position: relative;
+}
+
+.form-container {
+    display: table;
+    position: absolute;
+    height: 100vh;
+    width: 100%;
+    left: 0;
+}
+
+.form-container > div {
+    display: table-cell;
+    vertical-align: middle;
+}
+
+.form-container .title {
+	flex-direction: column;
+}
+
+.title-head {
+    margin: 0;
+    font-weight: 800;
+    font-size: 45px;
+    line-height: 45px;
+    margin-top: 0;
+    color: #fff;
+    padding: 10px 0 20px;
+    position: relative;
+    text-transform: uppercase;
+    margin: 0 15px;
+}
+
+.form-container p {
+    text-transform: uppercase;
+    color: #999;
+}
+
+.form-container p.info-form {
+    margin-bottom: 30px;
+    font-size: 14px;
+}
+
+.form-container form .form-group {
+    margin: 0 auto;
+    margin-bottom: 30px;
+}
+
+.form-container form {
+    max-width: 450px;
+    margin: 0 auto;
+}
+
+.form-control {
+    box-shadow: none;
+    border: 1px solid #333;
+    padding: 0px 0px 4px 20px;
+    height: 46px;
+    color: #fff;
+    background: #222;
+    font-size: 14px;
+    border-radius: 0;
+    outline: 0;
+    transition: .1s;
+}
+
+.form-container button {
+    width: 100%;
+    margin-bottom: 7px;
+}
+
+.title-head span {
+	color: #fd961a;
+}
+
+.btn-primary {
+    border: 0;
+    border-radius: 0;
+    padding: 12px 30px;
+    font-size: 14px;
+    font-weight: 600;
+    text-transform: uppercase;
+    transition: .1s;
+    outline: 0;
+    box-shadow: none;
+    font-family: 'Open Sans', sans-serif;
+}
+
+.form-control:focus {
+    box-shadow: none;
+    outline: none;
+    border: 1px solid #555;
+}
+
+.form-message {
+    min-height: 20px;
+    margin-top: -15px;
+    margin-bottom: 10px;
+    color: red;
+    text-transform: uppercase;
+}

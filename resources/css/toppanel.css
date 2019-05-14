@@ -1,0 +1,109 @@
+.header {
+	background: #1d1d1d;
+}
+
+.top-panel {
+	font-family: 'Open Sans', sans-serif;
+	font-size: 13px;
+	-webkit-font-smoothing: antialiased !important;
+    color: #999;
+    line-height: 28px;
+    font-weight: 400;
+    font-size: 16px;
+}
+
+.main-logo {
+	padding-top: 25px;
+	padding-bottom: 25px;
+}
+
+.top-panel .container {
+	padding-right: 15px;
+    padding-left: 15px;
+    margin-right: auto;
+    margin-left: 100px;
+}
+
+div.user {
+    text-align: right;
+    padding-top: 26px;
+}
+
+.unstyled {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+div.user div.sign-in {
+    padding-right: 17px;
+    margin-right: 0;
+    display: inline-block; 
+}
+
+div.user div.sign-up {
+    margin-right: 0;
+    display: inline-block; 
+}
+
+div.user div.sign-in a.btn {
+	border: 1px solid #fd961a;
+    background: transparent;
+    padding: 11px 17px;
+    transition: .1s;
+    color: #fd961a;
+    border-radius: 0;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+div.user div.sign-in a.btn:hover {
+	background: #fd961a;
+    color: white;
+}
+
+div.user div.sign-up a.btn {
+	border: 1px solid #fd961a;
+    background: #fd961a;
+    padding: 12px 30px;
+    transition: .1s;
+    color: white;
+    border-radius: 0;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.btn-primary:hover {
+	background: rgba(253, 150, 26,.9) !important;
+    outline: none !important;
+}
+
+ul.unstyled {
+	padding-top: 28px;
+	display: inline-block;
+}
+
+ul.unstyled li {
+	display: inline-block;
+}
+
+ul.bitcoin-stats li {
+    display: inline-block;
+    padding-right: 25px;
+}
+
+ul.bitcoin-stats h6 {
+    font-weight: 800;
+    color: #eee;
+    margin: 0;
+    font-size: 13px;
+    text-align: left;
+    margin-bottom: -2px;
+    line-height: 13px;
+}
+
+ul.bitcoin-stats span {
+    font-size: 12px;
+    text-align: left;
+    color: #aaa;
+}

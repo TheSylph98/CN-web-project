@@ -1,0 +1,53 @@
+.directory {
+    background: #1d1d1d;
+    height: 41px;
+    border: none;
+    padding: 0 40px;
+}
+
+.directory .container {
+	line-height: 100%;
+}
+
+.directory .title {
+    background-color: transparent;
+    padding: 13px 6px;
+    margin: 0;
+}
+
+.directory ol {
+	list-style: none;
+}
+
+.directory li {
+	font-size: 13px;
+	font-weight: 600;
+	font-family: "Open Sans", sans-serif;
+	display: inline-block;
+    position: relative;
+}
+
+.directory li a {
+	color: #fff;
+}
+
+.directory li:last-child a {
+	color: #fd961a;
+}
+
+.directory .title>li+li:before {
+    background: url(../images/arrow.svg);
+    width: 20px;
+    height: 41px;
+    content: '';
+    display: inline-block;
+    position: absolute;
+    left: 45px;
+    top: -14px;
+    color: #fd961a;
+    padding: 0px 5px;
+}
+
+.directory li+li {
+	padding-left: 90px;
+}

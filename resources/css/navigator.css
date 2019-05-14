@@ -1,0 +1,119 @@
+.navigator {
+    width: 250px;
+    padding-right: 0;
+    padding-left: 0;
+    margin-right: 10px;
+    padding-bottom: 20px;
+    background: #111;
+    display: inline-block;
+}
+
+.navigator .profiles {
+    background: 0 0;
+    color: #fff;
+    padding: 10px 5px 5px;
+}
+
+.navigator .profiles:after, .navigator .profiles:before {
+    display: table;
+    content: "";
+    clear: both;
+}
+
+.navigator .profiles .image {
+    width: 45px;
+    height: 45px;
+    overflow: hidden;
+    float: left;
+    margin-right: 10px;
+    margin-bottom: 0;
+}
+
+.navigator .profiles .image img {
+    border-radius: 50%;
+}
+
+.navigator .profiles .name {
+    font-size: 13px;
+    margin-bottom: 5px;
+    color: #fff;
+    margin-top: 5px;
+    font-family: Roboto;
+    font-weight: 300;
+}
+
+.navigator .profiles h6 {
+    margin: 0;
+    font-family: Roboto;
+    font-size: 16px;
+    font-weight: 400;
+    font-style: normal;
+    font-stretch: normal;
+    color: #fff;
+}
+
+.navigator .menu {
+    margin-top: 0;
+}
+
+.navigator .menu ul {
+    list-style: none;
+    display: block;
+    background: 0 0;
+    border: none;
+    width: 100%;
+    position: relative;
+    margin: 0;
+    z-index: 1;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+    padding: 10px 0;
+}
+
+.navigator .menu ul li.active a, .navigator .menu ul li:hover a {
+    text-decoration: none;
+    color: #fd961a;
+}
+
+.navigator .menu ul li a {
+    white-space: nowrap;
+    font-family: sans-serif;
+    font-size: 13px;
+    font-weight: 400;
+    font-style: normal;
+    font-stretch: normal;
+    text-align: left;
+    color: #fff;
+    padding: 10px 20px 10px 60px;
+    position: relative;
+    clear: both;
+    display: block;
+    line-height: 1.5;
+}
+
+.navigator .menu ul li a i {
+    font-size: 18px;
+    height: 30px;
+    text-align: center;
+    width: 40px;
+    position: absolute;
+    top: 0;
+    left: 7px;
+    bottom: 0;
+    margin: auto;
+    line-height: 30px;
+    color: #fff;
+}
+
+.navigator .menu ul li a .noti-nav, .navigator .menu ul li a .num-noti-nav {
+    border-radius: 10px;
+    background-color: #fd961a;
+    display: inline-block;
+    padding: 0 6px;
+    font-size: 11px;
+    color: #fff;
+    margin-left: 5px;
+}
+
+
+
