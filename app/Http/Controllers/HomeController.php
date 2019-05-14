@@ -24,48 +24,47 @@ class HomeController extends Controller
     }
 
     public function LoginAuth(Request $request){
-    // Cách sử dụng validator nếu muốn dùng if để kiểm tra lỗi dữ liệu đầu vào trước khi kiểm tra đăng nhập (Tham khảo mục #Manually Creating Validators tại trang chủ Laravel)
+    // Cách sử dụng validator nếu muốn dùng if để kiểm tra lỗi dữ liệu đầu vào trước khi kiểm tra đăng nhập
+    //(Tham khảo mục #Manually Creating Validators tại trang chủ Laravel)
     $validator = Validator::make($request->all(),
       [
         'email' => 'required',
         'password' => 'required|min:6',
       ],
       [
-        'email.required' => 'Bạn chưa nhập địa chỉ Email!',
-        'password.required' => 'Bạn chưa nhập mật khẩu!',
-        'password.min' => 'Mật khẩu gồm tối thiểu 6 ký tự!',
+        'email.required' => 'You did not enter E-mail address!',
+        'password.required' => 'You have not entered a password!',
+        'password.min' => 'Password includes at least 6 characters!',
       ]);
-
+    $errs = $validator->errors();
+    $err = $errs->all();
+    //echo $err;
     if($validator->fails()){
-      $err = $validator->errors();
       return response()->json([
-        'dangnhap' => 'kothanhcong',
-        'error' => $err
+        'login' => 'error',
+        'errors' => $err
       ]);
     }
-      //return redirect('dang-nhap')->withErrors($validator)->withInput();
     else
     {
       if(Auth::attempt(['email' => $request->email, 'password' => $request->password])){
           $user = Auth::user();
           return response()->json([
-            'dangnhap' => 'thanhcong',
+            'login' => 'success',
             'ten' => $user->ten,
             'email' => $user->email,
             'password' => $user->password,
             'diachi'=> $user->diachi,
             'sodienthoai'=> $user->sodienthoai
           ]);
-      }
-      //  return redirect('home');
-      else {
-      $err = $validator->errors();
-      return response()->json([
-        'dangnhap' => 'error',
-        'error' => $err
-      ]);}
+        } else {
+            return response()->json([
+              'login' => 'error',
+              'errors' => 'Incorrect password or Email account does not exist yet'
+            ]);
     }
   }
+}
 
   public function Logout(){
     	Auth::logout();
