@@ -147,62 +147,82 @@ class HomeController extends Controller
       if(Auth::check()){
         $user = Auth::user();
         $tk = taikhoan::where('id_user',$user->id)->get();
-    		return view('page.thongtincanhan',['user_info' => Auth::user(), 'tk' => $tk]);
+    		//return view('page.thongtincanhan',['user_info' => Auth::user(), 'tk' => $tk]);
+        return response()->json([
+          'check'=>'true',
+          'user_info'=> $user,
+          'account'=> $tk
+        ]);
       }
     	else
-    		return redirect('dang-nhap')->with('message','Bạn chưa Đăng Nhập!');
+    	//	return redirect('dang-nhap')->with('message','Bạn chưa Đăng Nhập!');
+      return response()->json([
+        'check'=>'false',
+        'message'=>'Bạn chưa Đăng Nhập!'
+      ]);
     }
 
     public function ChinhSuaThongTin(Request $request){
-    $this->validate($request,
+    $validator = Validator::make($request->all(),
       [
         'username' => 'required|min:3|max:50',
+        //'password' => 'required|min:6|max:32',
+        //'password_again' => 'required|same:password'
       ],
       [
         'username.required' => 'Bạn chưa nhập Tên tài khoản!',
         'username.min' => 'Tên tài khoản gồm tối thiểu 3 ký tự!',
         'username.max' => 'Tên tài khoản không được vượt quá 50 ký tự!',
+        //password.required' => 'Bạn chưa nhập mật khẩu!',
+        //'password.min' => 'Mật khẩu gồm tối thiểu 6 ký tự!',
+        //'password.max' => 'Mật khẩu không được vượt quá 32 ký tự!',
+        //'password_again.required' => 'Bạn chưa xác nhận mật khẩu!',
+        //'password_again.same' => 'Mật khẩu xác nhận chưa khớp với mật khẩu đã nhập!'
       ]);
-
-    $user = Auth::user();
-    $user->ten = $request->username;
-    $user->email = $request->email;
-    $user->diachi = $request->diachi;
-    $user->sodienthoai = $request->sodt;
-
-    if($request->has('password'))
-    {
-      $this->validate($request,
-      [
-        'password' => 'required|min:6|max:32',
-        'password_again' => 'required|same:password'
-      ],
-      [
-        'password.required' => 'Bạn chưa nhập mật khẩu!',
-        'password.min' => 'Mật khẩu gồm tối thiểu 6 ký tự!',
-        'password.max' => 'Mật khẩu không được vượt quá 32 ký tự!',
-        'password_again.required' => 'Bạn chưa xác nhận mật khẩu!',
-        'password_again.same' => 'Mật khẩu xác nhận chưa khớp với mật khẩu đã nhập!'
-      ]);
-      $user->password = bcrypt($request->password_again);
-    }
-
-    $user->save();
-    return redirect('quan-ly-thong-tin')->with('message','Thay Đổi thông tin Người Dùng thành công!');
+      $errs = $validator->errors();
+      $err = $errs->all();
+      if($validator->fails()){
+        return response()->json([
+          'update_info' => 'error',
+          'errors' => $err
+        ]); }
+      else {
+        $user = Auth::user();
+        $user->ten = $request->username;
+        //$user->email = $request->email;
+        $user->diachi = $request->diachi;
+        $user->sodienthoai = $request->sodt;
+        //$user->password = bcrypt($request->password_again);
+        $user->save();
+        return response()->json([
+          'update_info'=> 'true',
+          'user_info' => $user,
+          'message' =>'Chinh sua thanh cong'
+        ]);
+    //return redirect('quan-ly-thong-tin')->with('message','Thay Đổi thông tin Người Dùng thành công!');
   }
-
+}
   public function gThemTaiKhoan(){
     if(Auth::check()){
       $user = Auth::user();
       $nganhang = nganhang::all();
-      return view('page.themtaikhoan',['user_info' => Auth::user(),'nganhang'=>$nganhang]);
+      //return view('page.themtaikhoan',['user_info' => Auth::user(),'nganhang'=>$nganhang]);
+      retun response()->json([
+        'check'=>'true',
+        'user_info'=> $user,
+        'bank'=> $nganhang
+      ]);
     }
     else
-      return redirect('dang-nhap')->with('message','Bạn chưa Đăng Nhập!');
+      //return redirect('dang-nhap')->with('message','Bạn chưa Đăng Nhập!');
+      return response()->json([
+        'check'=>'false',
+        'message'=>'Ban chua dang nhap'
+      ]);
   }
 
    public function pThemtaikhoan($request){
-     $this->validate($request,
+     $validator = Validator::make($request->all(),
      [
        'taikhoan' => 'required',
      ],
@@ -210,13 +230,25 @@ class HomeController extends Controller
        'taikhoan.required' => 'Bạn chưa nhập Tên tài khoản!',
      ]);
      $user = Auth::user();
-     //$taikhoan = taikhoan::where('id_user',$user->id)->get();
-     $tk = new taikhoan;
-     $tk->id_user = $user->id;
-     $tk->sotaikhoan = $request->sotaikhoan;
-     $tk->nganhang_id = $request->nganhang;
-     $tk->tongsotien = 0;
-     $tk->save();
-    return  redirect('them-tai-khoan')->with('message','Thay Đổi thông tin Người Dùng thành công!');
+     $errs = $validator->errors();
+     $err = $errs->all();
+     if($validator->fails()){
+       return response()->json([
+         'add_account' => 'error',
+         'errors' => $err
+       ]); }
+     else {
+       //$taikhoan = taikhoan::where('id_user',$user->id)->get();
+       $tk = new taikhoan;
+       $tk->id_user = $user->id;
+       $tk->sotaikhoan = $request->sotaikhoan;
+       $tk->nganhang_id = $request->nganhang;
+       $tk->tongsotien = 5000000;
+       $tk->save();
+       return response()->json([
+         'add_account'=>'true',
+         'account' => $tk,
+         'message'=>'Ban da them thanh cong'
+       ]);
    }
 }
