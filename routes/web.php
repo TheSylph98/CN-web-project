@@ -20,7 +20,7 @@ Route::any('/', function () {
 Route::get('dang-nhap','HomeController@Login');
 Route::post('dang-nhap','HomeController@LoginAuth');
 
-// Route::get('dang-ki','HomeController@Register');
+Route::get('dang-ki','HomeController@Register');
 Route::post('dang-ki','HomeController@DoRegister');
 
 // Route::get('lien-he','HomeController@LienHe');

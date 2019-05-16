@@ -7,8 +7,11 @@ const RegisterPage_1 = require("../page/login/RegisterPage");
 const LoginPage_1 = require("../page/login/LoginPage");
 const CustomerPage_1 = require("../page/customer/CustomerPage");
 const react_router_dom_1 = require("react-router-dom");
-ReactDOM.render(React.createElement(react_router_dom_1.HashRouter, null,
-    React.createElement(react_router_dom_1.Route, { path: "/", exact: true, component: homepage_1.default }),
-    React.createElement(react_router_dom_1.Route, { path: "/register/", component: RegisterPage_1.default }),
-    React.createElement(react_router_dom_1.Route, { path: "/login/", component: LoginPage_1.default }),
-    React.createElement(react_router_dom_1.Route, { path: "/customer", component: CustomerPage_1.default })), document.getElementById("app"));
+const react_redux_1 = require("react-redux");
+const helper_1 = require("../store/helper");
+ReactDOM.render(React.createElement(react_redux_1.Provider, { store: helper_1.store },
+    React.createElement(react_router_dom_1.HashRouter, null,
+        React.createElement(react_router_dom_1.Route, { path: "/", exact: true, component: homepage_1.default }),
+        React.createElement(react_router_dom_1.Route, { path: "/register/", component: RegisterPage_1.default }),
+        React.createElement(react_router_dom_1.Route, { path: "/login/", component: LoginPage_1.default }),
+        React.createElement(react_router_dom_1.Route, { path: "/customer", component: CustomerPage_1.default }))), document.getElementById("app"));

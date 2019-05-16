@@ -1,8 +1,15 @@
 import React = require("react");
 import Menu from "./Menu";
 import {Link} from "react-router-dom";
+import { connect } from "react-redux";
+import { userActions } from "../../store/action";
 
-export default class TopPanel extends React.Component<{},{}> {
+class TopPanel extends React.Component<{login, dispatch},{}> {
+
+    onSignOut() {
+        this.props.dispatch(userActions.logout());
+    }
+
 	render() {
 		return <header class="header top-panel">
 			<div class="container">
@@ -13,7 +20,7 @@ export default class TopPanel extends React.Component<{},{}> {
                     </Link>
                 </div>
                 <div class="col-md-6 col-lg-6">
-                    <ul class="unstyled bitcoin-stats text-center">
+                    <ul class="guess bitcoin-stats text-center">
                         <li>
                             <h6>9,450 USD</h6><span>Last trade price</span></li>
                         <li>
@@ -26,23 +33,50 @@ export default class TopPanel extends React.Component<{},{}> {
                             <h6>2,231,775</h6><span>active traders</span></li>
                     </ul>
                 </div>
-                <div class="col-md-4 col-lg-4">
-                    <div class="unstyled user">
-                        <div class="sign-in">
-                            <Link to="/login" className="btn btn-primary">
-                            	<i class="fa fa-user"></i> SIGN IN
-                            </Link>
+                { !this.props.login.loggedIn ? 
+                    <div class="col-md-4 col-lg-4">
+                        <div class="guess user">
+                            <div class="sign-in">
+                                <Link to="/login" className="btn btn-primary">
+                                	<i class="fa fa-user"></i> SIGN IN
+                                </Link>
+                            </div>
+                            <div class="sign-up">
+                                <Link to="/register" class="btn btn-primary">
+                            	   <i class="fa fa-user-plus"/> REGISTER 
+                                </Link>
+                            </div>
                         </div>
-                        <div class="sign-up">
-                            <Link to="/register" class="btn btn-primary">
-                        	   <i class="fa fa-user-plus"/> REGISTER 
-                            </Link>
+                    </div> :
+                    <div class="col-md-4 col-lg-4"> 
+                        <div class="logged-in user">
+                            <div class="account">
+                                <Link to="/customer">
+                                    <i class="fa fa-user"></i>
+                                    <span>{this.props.login.user.username}</span>
+                                </Link>
+                            </div>
+                            <div class="sign-out">
+                                <Link to="/" class="btn btn-primary" onClick={this.onSignOut.bind(this)}>
+                                    <i class="fa fa-sign-out-alt"></i>
+                                    SIGN OUT
+                                </Link>
+                            </div>
                         </div>
                     </div>
-                </div>
+                }
 			</div>
 			<Menu/>
 		</header>
 
 	}
 }
+
+function mapStateToProps(state) {
+    const { login } = state;
+    return {
+        login
+    }
+}
+
+export default connect(mapStateToProps)(TopPanel);

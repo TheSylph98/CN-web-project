@@ -32,7 +32,7 @@ class HomeController extends Controller
         'password' => 'required|min:6',
       ],
       [
-        'email.required' => 'You did not enter E-mail address!',
+        'email.required' => 'You have not entered e-mail address!',
         'password.required' => 'You have not entered a password!',
         'password.min' => 'Password includes at least 6 characters!',
       ]);
@@ -41,8 +41,8 @@ class HomeController extends Controller
     //echo $err;
     if($validator->fails()){
       return response()->json([
-        'login' => 'error',
-        'errors' => $err
+        'login' => 'failed',
+        'errors' => $err[0]
       ]);
     }
     else
@@ -51,16 +51,18 @@ class HomeController extends Controller
           $user = Auth::user();
           return response()->json([
             'login' => 'success',
-            'ten' => $user->ten,
-            'email' => $user->email,
-            'password' => $user->password,
-            'diachi'=> $user->diachi,
-            'sodienthoai'=> $user->sodienthoai
+            'user' => [
+              'username' => $user->ten,
+              'email' => $user->email,
+              'password' => $user->password,
+              'address'=> $user->diachi,
+              'phone'=> $user->sodienthoai
+            ]
           ]);
         } else {
             return response()->json([
-              'login' => 'error',
-              'errors' => 'Incorrect password or Email account does not exist yet'
+              'login' => 'failed',
+              'errors' => 'Incorrect password or email does not exist'
             ]);
     }
   }
@@ -76,7 +78,7 @@ class HomeController extends Controller
   }
 
   public function DoRegister(Request $request){
-    	$this->validate($request,
+    	$validator = Validator::make($request->all(),
     		[
     			'username' => 'required|min:3|max:50',
     			'email' => 'required|email|unique:users,email',
@@ -84,18 +86,26 @@ class HomeController extends Controller
     			'password_again' => 'required|same:password'
     		],
     		[
-    			'username.required' => 'Bạn chưa nhập Tên tài khoản!',
-    			'username.min' => 'Tên tài khoản gồm tối thiểu 3 ký tự!',
-    			'username.max' => 'Tên tài khoản không được vượt quá 50 ký tự!',
-    			'email.required' => 'Bạn chưa nhập địa chỉ Email!',
-    			'email.email' => 'Bạn chưa nhập đúng định dạng Email!',
-    			'email.unique' => 'Địa chỉ Email đã tồn tại!',
-    			'password.required' => 'Bạn chưa nhập mật khẩu!',
-    			'password.min' => 'Mật khẩu gồm tối thiểu 6 ký tự!',
-    			'password.max' => 'Mật khẩu không được vượt quá 32 ký tự!',
-    			'password_again.required' => 'Bạn chưa xác nhận mật khẩu!',
-    			'password_again.same' => 'Mật khẩu xác nhận chưa khớp với mật khẩu đã nhập!'
+    			'username.required' => 'You have not entered username!',
+    			'username.min' => 'Username must includes at least 3 characters!',
+    			'username.max' => 'Username\'s length cannot exceed 32 characters!',
+    			'email.required' => 'You have not entered email address!',
+    			'email.email' => 'Invalid email format!',
+    			'email.unique' => 'Email address has already been registered!',
+    			'password.required' => 'You have not entered password!',
+    			'password.min' => 'Password must includes at least 3 characters!',
+    			'password.max' => 'Password\'s length cannot exceed 32 characters!',
+    			'password_again.required' => 'Password has not been verified!',
+    			'password_again.same' => 'Password and confirmation password do not match!'
     		]);
+      $errs = $validator->errors();
+      $err = $errs->all();
+      if($validator->fails()){
+        return response()->json([
+          'register' => 'error',
+          'errors' => $err[0]
+        ]);
+      }
 
         $user = new User;
       	$user->ten = $request->username;
@@ -105,13 +115,16 @@ class HomeController extends Controller
   			$user->sodienthoai = $request->sodt;
       	$user->save();
     	//return redirect('dang-ki')->with('message','Đăng ký tài khoản thành công!');
+      
       return response()->json([
-        'dangki'=>'thanhcong',
-        'ten' => $user->ten,
-        'email' => $user->email,
-        'password' => $user->password,
-        'diachi'=> $user->diachi,
-        'sodienthoai'=> $user->sodienthoai
+        'register'=>'success',
+        'user' => [
+          'username' => $user->ten,
+          'email' => $user->email,
+          'password' => $user->password,
+          'address'=> $user->diachi,
+          'phone'=> $user->sodienthoai
+        ]
       ]);
     }
 

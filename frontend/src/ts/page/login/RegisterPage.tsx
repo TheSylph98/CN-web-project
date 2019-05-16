@@ -1,7 +1,27 @@
 import React = require("react");
+import { connect } from "react-redux";
 import { Link } from "react-router-dom";
+import { userActions } from "../../store/action";
 
-export default class RegisterPage extends React.Component<{},{}> {
+class RegisterPage extends React.Component<{dispatch, error},{}> {
+
+	email;
+	password;
+	username;
+	verifyPassword;
+
+	onSubmit(e) {
+		e.preventDefault();
+		let token = document.getElementById("csrf-token").getAttribute("content");
+		this.props.dispatch(userActions.register({
+			email: this.email.value,
+			password: this.password.value,
+			username: this.username.value,
+			verifyPassword: this.verifyPassword.value,
+			phone: ""
+		}, token));
+	}
+
 	render() {
 		return <div class="register col-xs-12">
 			<div class="form-container">
@@ -12,16 +32,22 @@ export default class RegisterPage extends React.Component<{},{}> {
 					</div>
 					<form>
 						<div class="form-group">
-							<input class="form-control" name="name" id="name" placeholder="NAME" type="text" />
+							<input ref={input => this.username = input} class="form-control" name="name" id="name" placeholder="NAME" type="text" />
 						</div>
 						<div class="form-group">
-							<input class="form-control" name="email" id="email" placeholder="EMAIL" type="email" />
+							<input ref={input => this.email = input} class="form-control" name="email" id="email" placeholder="EMAIL" type="email" />
 						</div>
 						<div class="form-group">
-							<input class="form-control" name="password" id="password" placeholder="PASSWORD" type="password" aria-autocomplete="list"/>
+							<input ref={input => this.password = input} class="form-control" name="password" id="password" placeholder="PASSWORD" type="password" aria-autocomplete="list"/>
 						</div>
 						<div class="form-group">
-							<Link to="/"><button class="btn btn-primary">create account</button></Link>
+							<input ref={input => this.verifyPassword = input} class="form-control" name="verify-password" id="verify-password" placeholder="VERIFY PASSWORD" type="password" aria-autocomplete="list"/>
+						</div>
+						<div class="form-message">
+							{this.props.error && this.props.error}
+						</div>
+						<div class="form-group">
+							<button onClick={this.onSubmit.bind(this)} class="btn btn-primary">create account</button>
 							<p class="text-center">already have an account ? <Link to="/login">Login</Link>
 						</p></div>
 					</form>
@@ -30,3 +56,13 @@ export default class RegisterPage extends React.Component<{},{}> {
 		</div>
 	}
 }
+
+function mapStateToProps(state) {
+	const { registering, error } = state.register;
+	return {
+		registering,
+		error,
+	}
+}
+
+export default connect(mapStateToProps)(RegisterPage);

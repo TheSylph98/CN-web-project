@@ -17,7 +17,7 @@ class Slider extends React.Component {
                                     " and ",
                                     React.createElement("span", null, "Easy Way"),
                                     React.createElement("br", null),
-                                    " To Bitcoin"),
+                                    " To Trading Online"),
                                 React.createElement("p", null,
                                     React.createElement("a", { href: "about.html", class: "slider btn btn-primary" }, "LEARN MORE"))))))),
             React.createElement("div", { class: "background item-2" },

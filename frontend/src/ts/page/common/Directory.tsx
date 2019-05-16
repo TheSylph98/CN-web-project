@@ -14,7 +14,8 @@ export default class Directory extends React.Component<{location: string}, {}> {
             "account": "Account Info",
             "notification": "Notification",
             "history": "Traction History",
-            "services": "Services"
+            "services": "Services",
+            "bank": "Bank Account"
         };
 
         return <div class="directory">

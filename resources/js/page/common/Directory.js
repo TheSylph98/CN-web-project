@@ -13,7 +13,8 @@ class Directory extends React.Component {
             "account": "Account Info",
             "notification": "Notification",
             "history": "Traction History",
-            "services": "Services"
+            "services": "Services",
+            "bank": "Bank Account"
         };
         return React.createElement("div", { class: "directory" },
             React.createElement("div", { class: "container" },

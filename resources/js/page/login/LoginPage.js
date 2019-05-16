@@ -2,7 +2,9 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const React = require("react");
 const react_router_dom_1 = require("react-router-dom");
-const api_1 = require("../../backend-api/api");
+const react_redux_1 = require("react-redux");
+const action_1 = require("../../store/action");
+const react_router_dom_2 = require("react-router-dom");
 class LoginPage extends React.Component {
     constructor(props) {
         super(props);
@@ -18,12 +20,8 @@ class LoginPage extends React.Component {
     onSubmit(e) {
         e.preventDefault();
         let token = document.getElementById("csrf-token").getAttribute("content");
-        api_1.loginAuth(this.name.value, this.password.value, token)
-            .then(data => {
-            if (data.dangnhap == "kothanhcong") {
-                this.showMessage(data.error.password);
-            }
-        });
+        this.props.dispatch(action_1.userActions.login(this.name.value, this.password.value, token));
+        this.props.history.push("/");
     }
     render() {
         return React.createElement("div", { class: "register col-xs-12" },
@@ -39,7 +37,7 @@ class LoginPage extends React.Component {
                             React.createElement("input", { class: "form-control", ref: input => this.name = input, name: "email", id: "email", placeholder: "EMAIL", type: "email" })),
                         React.createElement("div", { class: "form-group" },
                             React.createElement("input", { class: "form-control", ref: input => this.password = input, name: "password", id: "password", placeholder: "PASSWORD", type: "password", "aria-autocomplete": "list" })),
-                        React.createElement("div", { class: "form-message" }, this.state.message),
+                        React.createElement("div", { class: "form-message" }, this.props.error && this.props.error),
                         React.createElement("div", { class: "form-group" },
                             React.createElement(react_router_dom_1.Link, { to: "/" },
                                 React.createElement("button", { class: "btn btn-primary", onClick: this.onSubmit.bind(this) }, "login")),
@@ -48,4 +46,11 @@ class LoginPage extends React.Component {
                                 React.createElement(react_router_dom_1.Link, { to: "/register" }, "register now")))))));
     }
 }
-exports.default = LoginPage;
+exports.LoginPage = LoginPage;
+function mapStateToProps(state) {
+    const { error } = state.login;
+    return {
+        error
+    };
+}
+exports.default = react_redux_1.connect(mapStateToProps)(react_router_dom_2.withRouter(LoginPage));

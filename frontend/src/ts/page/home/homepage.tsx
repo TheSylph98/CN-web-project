@@ -2,8 +2,9 @@ import React = require("react");
 import TopPanel from "../common/TopPanel";
 import Slider from "./Slider";
 import Feature from "./Feature";
+import { connect } from "react-redux";
 
-export default class HomePage extends React.Component<{}, {}> {
+class HomePage extends React.Component<{}, {}> {
 	render() {
 		return <div>
 			<TopPanel/>
@@ -12,3 +13,12 @@ export default class HomePage extends React.Component<{}, {}> {
 		</div>
 	}
 }
+
+function mapStateToProps(state) {
+	const {user } = state;
+	return {
+		user
+	};
+}
+
+export default connect(mapStateToProps)(HomePage);

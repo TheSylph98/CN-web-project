@@ -1,8 +1,10 @@
 import React = require("react");
 import {Link} from "react-router-dom";
-import {loginAuth} from "../../backend-api/api";
+import { connect } from "react-redux";
+import { userActions } from "../../store/action";
+import { withRouter } from 'react-router-dom'
 
-export default class LoginPage extends React.Component<{},{message: string}> {
+export class LoginPage extends React.Component<{dispatch, error: string, history },{message: string}> {
 
 	name;
 	password;
@@ -23,12 +25,8 @@ export default class LoginPage extends React.Component<{},{message: string}> {
 	onSubmit(e) {
 		e.preventDefault();
 		let token = document.getElementById("csrf-token").getAttribute("content");
-		loginAuth(this.name.value, this.password.value, token)
-			.then(data => {
-				if (data.dangnhap == "kothanhcong") {
-					this.showMessage(data.error.password);
-				}
-			});
+		this.props.dispatch(userActions.login(this.name.value, this.password.value, token));
+		this.props.history.push("/");
 	}
 
 	render() {
@@ -47,7 +45,7 @@ export default class LoginPage extends React.Component<{},{message: string}> {
 							<input class="form-control" ref={input => this.password = input} name="password" id="password" placeholder="PASSWORD" type="password" aria-autocomplete="list"/>
 						</div>
 						<div class="form-message">
-							{this.state.message}
+							{this.props.error && this.props.error}
 						</div>
 						<div class="form-group">
 							<Link to="/"><button class="btn btn-primary" onClick={this.onSubmit.bind(this)}>login</button></Link>
@@ -59,3 +57,12 @@ export default class LoginPage extends React.Component<{},{message: string}> {
 		</div>
 	}
 }
+
+function mapStateToProps(state) {
+	const { error} = state.login;
+	return {
+		error
+	}
+}
+
+export default connect(mapStateToProps)(withRouter(LoginPage));

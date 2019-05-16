@@ -15,6 +15,9 @@ export default class Navigator extends React.Component<{location: string}, {}> {
 			        <li class={(location.endsWith("account") || location.endsWith("customer")) ? "active" : ""}>
 			            <Link to="/customer/account"><i class="fa fa-user"></i> <span>Account Info</span></Link>
 			        </li>
+			        <li class={location.endsWith("bank") ? "active" : ""}>
+			            <Link to="/customer/bank"> <i class="fa fa-bank"></i> <span>Bank Acount</span> </Link>
+			        </li>
 			        <li class={location.endsWith("services") ? "active" : ""}>
 			            <Link to="/customer/services"> <i class="fa fa-tools"></i> <span>Services</span> </Link>
 			        </li>

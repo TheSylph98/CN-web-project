@@ -18,7 +18,7 @@ export default class Slider extends React.Component<{}, {}> {
                   <div class="slider-content">
                       <div class="container">
                           <div class="slider-text text-center">
-                              <h3 class="slide-title"><span>Secure</span> and <span>Easy Way</span><br/> To Bitcoin</h3>
+                              <h3 class="slide-title"><span>Secure</span> and <span>Easy Way</span><br/> To Trading Online</h3>
                               <p>
                                   <a href="about.html" class="slider btn btn-primary">LEARN MORE</a>
                               </p>
