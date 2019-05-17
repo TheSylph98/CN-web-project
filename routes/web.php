@@ -32,3 +32,8 @@ Route::get("transfer", "TransferController@getViewTransfer");
 Route::post("post-transfer", "TransferController@postTransfer")->name("post-transfer");
 Route::get('them-tai-khoan','HomeController@gThemTaiKhoan');
 Route::post('them-tai-khoan','HomeController@pThemtaikhoan');
+
+//Get bank
+Route::get("bank","HomeController@GetBank");
+//Get Phone Book
+Route::get("danh-ba","HomeController@GetPhoneBook");
