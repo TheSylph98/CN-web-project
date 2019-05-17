@@ -287,6 +287,7 @@ class HomeController extends Controller
       $notification = new thongbao;
       $notification->tieude = $request->title;
       $notification->noidung = $request->content;
+      //$notification->
       $notification->save();
       return response()->json([
         'nofi' => 'success',
@@ -322,9 +323,28 @@ class HomeController extends Controller
     array_push($list,"thanhtoan");
     $thanhtoan = thanhtoan::where('users_id',$id)->get();
     array_push($list,$thanhtoan);
-    
+
     $lsgd = json_encode($list);
     return response()->json($lsgd);
   }
 
+  public function NapThe(Request $request){
+    $validator = Validator::make($request->all(),
+      [
+        'sotien' => 'required'
+      ],
+      [
+        'sotien.required' => 'You have not sotien!'
+      ]);
+    $user = Auth::user();
+    $napthe = new napthe;
+    $napthe->sotien = $request->sotien;
+    $nathe->users_id = $user->id;
+    $napthe->nhamang_id = $request->nhamang;
+    //$naptien->time = CURRENT_TIMESTAMP;
+    $napthe->save();
+    return response()->json($napthe);
+  }
+
+  
 }
