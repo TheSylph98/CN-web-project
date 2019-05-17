@@ -113,6 +113,7 @@ class HomeController extends Controller
       	$user->password = bcrypt($request->password_again);
   			$user->diachi = $request->diachi;
   			$user->sodienthoai = $request->sodt;
+        $user->sotien =0;
       	$user->save();
     	//return redirect('dang-ki')->with('message','Đăng ký tài khoản thành công!');
 
@@ -123,7 +124,8 @@ class HomeController extends Controller
           'email' => $user->email,
           'password' => $user->password,
           'address'=> $user->diachi,
-          'phone'=> $user->sodienthoai
+          'phone'=> $user->sodienthoai,
+          'sotien'=> $user->sotien
         ]
       ]);
     }

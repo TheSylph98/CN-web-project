@@ -8,5 +8,5 @@ class thongbao extends Model
 {
     //
     protected $table = "thongbao";
-    
+  
 }
