@@ -25,6 +25,7 @@ Route::post('dang-ki','HomeController@DoRegister');
 
 // Route::get('quan-li-thong-tin','HomeController@ThongTinCaNhan');
 Route::post('quan-li-thong-tin','HomeController@ChinhSuaThongTin');
+Route::post('dang-xuat', 'HomeController@Logout');
 
 //chuyen tien
 

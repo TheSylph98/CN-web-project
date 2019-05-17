@@ -1,6 +1,8 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const React = require("react");
+const react_redux_1 = require("react-redux");
+const action_1 = require("../../store/action");
 class AccountInfo extends React.Component {
     constructor(props) {
         super(props);
@@ -13,7 +15,16 @@ class AccountInfo extends React.Component {
             openChangePassword: !this.state.openChangePassword,
         });
     }
+    onModify(e) {
+        e.preventDefault();
+        this.props.dispatch(action_1.userActions.modify({
+            username: this.username.value,
+            address: this.address.value,
+            phone: this.phone.value,
+        }));
+    }
     render() {
+        let user = this.props.login.user;
         return React.createElement("div", { class: "content-right" },
             React.createElement("h1", { class: "title" }, "Account Info"),
             React.createElement("div", { class: "account-profile register-form" },
@@ -21,15 +32,19 @@ class AccountInfo extends React.Component {
                     React.createElement("div", { class: "form-group" },
                         React.createElement("label", { class: "control-label", htmlFor: "full_name" }, "Full name "),
                         React.createElement("div", { class: "input-wrap" },
-                            React.createElement("input", { type: "text", name: "full_name", class: "form-control", id: "full_name", defaultValue: "T\u00F9ng Thanh", placeholder: "Full name" }))),
+                            React.createElement("input", { ref: input => this.username = input, type: "text", name: "full_name", class: "form-control", id: "full_name", defaultValue: user.username, placeholder: "Full name" }))),
                     React.createElement("div", { class: "form-group " },
                         React.createElement("label", { class: "control-label", htmlFor: "phone_number" }, "Phone number"),
                         React.createElement("div", { class: "input-wrap update-phone" },
-                            React.createElement("input", { type: "text", placeholder: "Enter your phone number for better experience", defaultValue: "", class: "form-control", name: "phone_number", id: "phone_number" }))),
+                            React.createElement("input", { ref: input => this.phone = input, type: "text", placeholder: "Enter your phone number for better experience", defaultValue: user.phone, class: "form-control", name: "phone_number", id: "phone_number" }))),
+                    React.createElement("div", { class: "form-group " },
+                        React.createElement("label", { class: "control-label", htmlFor: "address" }, "Address"),
+                        React.createElement("div", { class: "input-wrap" },
+                            React.createElement("input", { ref: input => this.address = input, type: "text", placeholder: "Address", defaultValue: user.address, class: "form-control", name: "address", id: "address" }))),
                     React.createElement("div", { class: "form-group" },
                         React.createElement("label", { class: "control-label", htmlFor: "email" }, "Email"),
                         React.createElement("div", { class: "input-wrap" },
-                            React.createElement("input", { type: "email", disabled: true, defaultValue: "thanhtung29497@gmail.com", class: "form-control", name: "email", id: "form_email", placeholder: "Email" }))),
+                            React.createElement("input", { type: "email", disabled: true, defaultValue: user.email, class: "form-control", name: "email", id: "form_email", placeholder: "Email" }))),
                     React.createElement("div", { class: "form-group gender-select-wrap", id: "register_name" },
                         React.createElement("label", { class: "control-label", htmlFor: "pasword" }, "Gender"),
                         React.createElement("div", { class: "input-wrap" },
@@ -80,9 +95,20 @@ class AccountInfo extends React.Component {
                                 React.createElement("input", { type: "password", name: "re_new_password", class: "form-control", id: "re_new_password", value: "", autoComplete: "off", placeholder: "Enter new password again" }),
                                 React.createElement("span", { class: "help-block" })))),
                     React.createElement("div", { class: "form-group" },
+                        React.createElement("div", { class: "form-message" }, this.props.modify.modified ?
+                            "All changes have been updated!" :
+                            this.props.modify.error ?
+                                this.props.modify.error : ""),
                         React.createElement("div", { class: "input-wrap margin" },
                             React.createElement("input", { type: "hidden", name: "customer_birthdate", value: "" }),
-                            React.createElement("button", { type: "submit", class: "btn btn-info btn-block btn-update" }, "Update"))))));
+                            React.createElement("button", { onClick: this.onModify.bind(this), type: "submit", class: "btn btn-info btn-block btn-update" }, "Update"))))));
     }
 }
-exports.default = AccountInfo;
+function mapStateToProps(state) {
+    const { login, modify } = state;
+    return {
+        login,
+        modify,
+    };
+}
+exports.default = react_redux_1.connect(mapStateToProps)(AccountInfo);

@@ -60,3 +60,40 @@ export function register(input: {email, password, username, phone, verifyPasswor
             })
     })
 }
+
+export function logout() {
+
+    let token = document.getElementById("csrf-token").getAttribute("content");
+
+    return new Promise((resolve, reject) => {
+        getData("dang-xuat", {}, token)
+            .then(message => {
+                if (message["logout"] == 'success') {
+                    resolve();
+                } else {
+                    reject(message['errors']);
+                }
+            })
+    })
+}
+
+export function modify(input: {address, username, phone}) {
+    let data = {
+        username: input.username,
+        diachi: input.address,
+        sodt: input.phone,
+    }
+
+    let token = document.getElementById("csrf-token").getAttribute("content");
+
+    return new Promise((resolve, reject) => {
+        getData("quan-li-thong-tin", data, token)
+            .then(data => {
+                if (data['update_info'] == 'true') {
+                    resolve(data['user_info']);
+                } else {
+                    reject(data['errors']);
+                }
+            })
+    })
+}

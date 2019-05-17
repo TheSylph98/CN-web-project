@@ -20,8 +20,20 @@ function login(state = initialState, action) {
                 loggedIn: false,
                 error: action.error,
             };
-        case constants_1.userConstants.LOGOUT:
+        case constants_1.userConstants.LOGOUT_SUCCESS:
             return {};
+        case constants_1.userConstants.LOGOUT_FAILURE:
+            return Object.assign({}, state, { error: action.error });
+        case constants_1.userConstants.MODIFY_REQUEST:
+            return {
+                user: state.user,
+                modifying: true,
+            };
+        case constants_1.userConstants.MODIFY_SUCCESS:
+            return {
+                loggedIn: true,
+                user: action.user
+            };
         default:
             return state;
     }

@@ -20,8 +20,23 @@ export function login(state = initialState, action) {
         loggedIn: false,
         error: action.error,
       };
-    case userConstants.LOGOUT:
+    case userConstants.LOGOUT_SUCCESS:
       return {};
+    case userConstants.LOGOUT_FAILURE:
+      return {
+        ...state,
+        error: action.error,
+      }
+    case userConstants.MODIFY_REQUEST:
+      return {
+        user: state.user,
+        modifying: true,
+      };
+    case userConstants.MODIFY_SUCCESS:
+      return {
+        loggedIn: true,
+        user: action.user
+      };
     default:
       return state
   }

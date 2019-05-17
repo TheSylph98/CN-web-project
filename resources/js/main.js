@@ -25352,7 +25352,7 @@
 	const react_router_dom_1 = __webpack_require__(21);
 	class HomePage extends React.Component {
 	    componentWillMount() {
-	        localStorage["history"] = this.props.history;
+	        window["routerHistory"] = this.props.history;
 	    }
 	    render() {
 	        return React.createElement("div", null,
@@ -31954,7 +31954,11 @@
 	    LOGIN_REQUEST: 'USERS_LOGIN_REQUEST',
 	    LOGIN_SUCCESS: 'USERS_LOGIN_SUCCESS',
 	    LOGIN_FAILURE: 'USERS_LOGIN_FAILURE',
-	    LOGOUT: 'USERS_LOGOUT',
+	    MODIFY_REQUEST: 'USERS_MODIFY_REQUEST',
+	    MODIFY_SUCCESS: 'USERS_MODIFY_SUCCESS',
+	    MODIFY_FAILURE: 'USERS_MODIFY_FAILURE',
+	    LOGOUT_SUCCESS: 'USERS_LOGOUT_SUCCESS',
+	    LOGOUT_FAILURE: 'USERS_LOGOUT_FAILURE',
 	};
 
 
@@ -31983,6 +31987,7 @@
 	    login,
 	    logout,
 	    register,
+	    modify,
 	};
 	function login(username, password, token) {
 	    return dispatch => {
@@ -31991,7 +31996,8 @@
 	            .then(user => {
 	            dispatch(success(user));
 	            localStorage.setItem("user", JSON.stringify(user));
-	            localStorage["history"].push("/");
+	            alert("Login successfully!");
+	            window["routerHistory"].push("/");
 	        }, error => {
 	            dispatch(failure(error.toString()));
 	            dispatch(_1.alertActions.error(error.toString()));
@@ -32002,8 +32008,17 @@
 	    function failure(error) { return { type: constants_1.userConstants.LOGIN_FAILURE, error }; }
 	}
 	function logout() {
-	    localStorage.removeItem("user");
-	    return { type: constants_1.userConstants.LOGOUT };
+	    return dispatch => {
+	        backend.logout()
+	            .then(() => {
+	            dispatch(success());
+	            localStorage.removeItem("user");
+	        }, error => {
+	            dispatch(failure(error.toString()));
+	        });
+	    };
+	    function success() { return { type: constants_1.userConstants.LOGOUT_SUCCESS }; }
+	    function failure(error) { return { type: constants_1.userConstants.LOGOUT_FAILURE, error }; }
 	}
 	function register(data, token) {
 	    return dispatch => {
@@ -32012,6 +32027,8 @@
 	            .then(user => {
 	            dispatch(success(user));
 	            localStorage.setItem("user", JSON.stringify(user));
+	            alert("Registration successfully!");
+	            window["routerHistory"].push("/");
 	            dispatch(_1.alertActions.success('Registration successful'));
 	        }, error => {
 	            dispatch(failure(error.toString()));
@@ -32021,6 +32038,21 @@
 	    function request(user) { return { type: constants_1.userConstants.REGISTER_REQUEST, user }; }
 	    function success(user) { return { type: constants_1.userConstants.REGISTER_SUCCESS, user }; }
 	    function failure(error) { return { type: constants_1.userConstants.REGISTER_FAILURE, error }; }
+	}
+	function modify(data) {
+	    return dispatch => {
+	        dispatch(request());
+	        backend.modify(data)
+	            .then(user => {
+	            dispatch(success(user));
+	            localStorage.setItem("user", JSON.stringify(user));
+	        }, error => {
+	            dispatch(failure(error.toString()));
+	        });
+	    };
+	    function request() { return { type: constants_1.userConstants.MODIFY_REQUEST }; }
+	    function success(user) { return { type: constants_1.userConstants.MODIFY_SUCCESS, user }; }
+	    function failure(error) { return { type: constants_1.userConstants.MODIFY_FAILURE, error }; }
 	}
 
 
@@ -32106,6 +32138,41 @@
 	    });
 	}
 	exports.register = register;
+	function logout() {
+	    let token = document.getElementById("csrf-token").getAttribute("content");
+	    return new Promise((resolve, reject) => {
+	        getData("dang-xuat", {}, token)
+	            .then(message => {
+	            if (message["logout"] == 'success') {
+	                resolve();
+	            }
+	            else {
+	                reject(message['errors']);
+	            }
+	        });
+	    });
+	}
+	exports.logout = logout;
+	function modify(input) {
+	    let data = {
+	        username: input.username,
+	        diachi: input.address,
+	        sodt: input.phone,
+	    };
+	    let token = document.getElementById("csrf-token").getAttribute("content");
+	    return new Promise((resolve, reject) => {
+	        getData("quan-li-thong-tin", data, token)
+	            .then(data => {
+	            if (data['update_info'] == 'true') {
+	                resolve(data['user_info']);
+	            }
+	            else {
+	                reject(data['errors']);
+	            }
+	        });
+	    });
+	}
+	exports.modify = modify;
 
 
 /***/ }),
@@ -32361,8 +32428,14 @@
 	const Navigator_1 = __webpack_require__(95);
 	const AccountInfo_1 = __webpack_require__(96);
 	const react_router_dom_1 = __webpack_require__(21);
+	const react_redux_1 = __webpack_require__(49);
 	class CustomerPage extends React.Component {
 	    render() {
+	        if (!this.props.loggedIn) {
+	            this.props.history.push("/login");
+	            alert("You have to login first!");
+	            return React.createElement("div", null);
+	        }
 	        return React.createElement("div", null,
 	            React.createElement(TopPanel_1.default, null),
 	            React.createElement(Directory_1.default, { location: this.props.location.pathname }),
@@ -32371,7 +32444,13 @@
 	                React.createElement(react_router_dom_1.Route, { path: "/(customer/account|customer)/", component: AccountInfo_1.default })));
 	    }
 	}
-	exports.default = CustomerPage;
+	function mapStateToProps(state) {
+	    const { loggedIn } = state.login;
+	    return {
+	        loggedIn
+	    };
+	}
+	exports.default = react_redux_1.connect(mapStateToProps)(react_router_dom_1.withRouter(CustomerPage));
 
 
 /***/ }),
@@ -32418,6 +32497,7 @@
 	Object.defineProperty(exports, "__esModule", { value: true });
 	const React = __webpack_require__(4);
 	const react_router_dom_1 = __webpack_require__(21);
+	const react_redux_1 = __webpack_require__(49);
 	class Navigator extends React.Component {
 	    render() {
 	        let location = this.props.location.replace(/\/$/, "");
@@ -32426,7 +32506,7 @@
 	                React.createElement("p", { class: "image" },
 	                    React.createElement("img", { src: "https://salt.tikicdn.com/desktop/img/avatar.png?v=3", height: "45", width: "45", alt: "" })),
 	                React.createElement("p", { class: "name" }, "Your account"),
-	                React.createElement("h6", null, "T\u00F9ng Thanh")),
+	                React.createElement("h6", null, this.props.login.user.username)),
 	            React.createElement("div", { class: "menu dropdown" },
 	                React.createElement("ul", { role: "menu" },
 	                    React.createElement("li", { class: (location.endsWith("account") || location.endsWith("customer")) ? "active" : "" },
@@ -32437,7 +32517,7 @@
 	                    React.createElement("li", { class: location.endsWith("bank") ? "active" : "" },
 	                        React.createElement(react_router_dom_1.Link, { to: "/customer/bank" },
 	                            " ",
-	                            React.createElement("i", { class: "fa fa-bank" }),
+	                            React.createElement("i", { class: "fa fa-university" }),
 	                            " ",
 	                            React.createElement("span", null, "Bank Acount"),
 	                            " ")),
@@ -32463,7 +32543,13 @@
 	                            React.createElement("span", null, "Transaction history"))))));
 	    }
 	}
-	exports.default = Navigator;
+	function mapStateToProps(state) {
+	    const { login } = state;
+	    return {
+	        login
+	    };
+	}
+	exports.default = react_redux_1.connect(mapStateToProps)(Navigator);
 
 
 /***/ }),
@@ -32473,6 +32559,8 @@
 	"use strict";
 	Object.defineProperty(exports, "__esModule", { value: true });
 	const React = __webpack_require__(4);
+	const react_redux_1 = __webpack_require__(49);
+	const action_1 = __webpack_require__(78);
 	class AccountInfo extends React.Component {
 	    constructor(props) {
 	        super(props);
@@ -32485,7 +32573,16 @@
 	            openChangePassword: !this.state.openChangePassword,
 	        });
 	    }
+	    onModify(e) {
+	        e.preventDefault();
+	        this.props.dispatch(action_1.userActions.modify({
+	            username: this.username.value,
+	            address: this.address.value,
+	            phone: this.phone.value,
+	        }));
+	    }
 	    render() {
+	        let user = this.props.login.user;
 	        return React.createElement("div", { class: "content-right" },
 	            React.createElement("h1", { class: "title" }, "Account Info"),
 	            React.createElement("div", { class: "account-profile register-form" },
@@ -32493,15 +32590,19 @@
 	                    React.createElement("div", { class: "form-group" },
 	                        React.createElement("label", { class: "control-label", htmlFor: "full_name" }, "Full name "),
 	                        React.createElement("div", { class: "input-wrap" },
-	                            React.createElement("input", { type: "text", name: "full_name", class: "form-control", id: "full_name", defaultValue: "T\u00F9ng Thanh", placeholder: "Full name" }))),
+	                            React.createElement("input", { ref: input => this.username = input, type: "text", name: "full_name", class: "form-control", id: "full_name", defaultValue: user.username, placeholder: "Full name" }))),
 	                    React.createElement("div", { class: "form-group " },
 	                        React.createElement("label", { class: "control-label", htmlFor: "phone_number" }, "Phone number"),
 	                        React.createElement("div", { class: "input-wrap update-phone" },
-	                            React.createElement("input", { type: "text", placeholder: "Enter your phone number for better experience", defaultValue: "", class: "form-control", name: "phone_number", id: "phone_number" }))),
+	                            React.createElement("input", { ref: input => this.phone = input, type: "text", placeholder: "Enter your phone number for better experience", defaultValue: user.phone, class: "form-control", name: "phone_number", id: "phone_number" }))),
+	                    React.createElement("div", { class: "form-group " },
+	                        React.createElement("label", { class: "control-label", htmlFor: "address" }, "Address"),
+	                        React.createElement("div", { class: "input-wrap" },
+	                            React.createElement("input", { ref: input => this.address = input, type: "text", placeholder: "Address", defaultValue: user.address, class: "form-control", name: "address", id: "address" }))),
 	                    React.createElement("div", { class: "form-group" },
 	                        React.createElement("label", { class: "control-label", htmlFor: "email" }, "Email"),
 	                        React.createElement("div", { class: "input-wrap" },
-	                            React.createElement("input", { type: "email", disabled: true, defaultValue: "thanhtung29497@gmail.com", class: "form-control", name: "email", id: "form_email", placeholder: "Email" }))),
+	                            React.createElement("input", { type: "email", disabled: true, defaultValue: user.email, class: "form-control", name: "email", id: "form_email", placeholder: "Email" }))),
 	                    React.createElement("div", { class: "form-group gender-select-wrap", id: "register_name" },
 	                        React.createElement("label", { class: "control-label", htmlFor: "pasword" }, "Gender"),
 	                        React.createElement("div", { class: "input-wrap" },
@@ -32552,12 +32653,23 @@
 	                                React.createElement("input", { type: "password", name: "re_new_password", class: "form-control", id: "re_new_password", value: "", autoComplete: "off", placeholder: "Enter new password again" }),
 	                                React.createElement("span", { class: "help-block" })))),
 	                    React.createElement("div", { class: "form-group" },
+	                        React.createElement("div", { class: "form-message" }, this.props.modify.modified ?
+	                            "All changes have been updated!" :
+	                            this.props.modify.error ?
+	                                this.props.modify.error : ""),
 	                        React.createElement("div", { class: "input-wrap margin" },
 	                            React.createElement("input", { type: "hidden", name: "customer_birthdate", value: "" }),
-	                            React.createElement("button", { type: "submit", class: "btn btn-info btn-block btn-update" }, "Update"))))));
+	                            React.createElement("button", { onClick: this.onModify.bind(this), type: "submit", class: "btn btn-info btn-block btn-update" }, "Update"))))));
 	    }
 	}
-	exports.default = AccountInfo;
+	function mapStateToProps(state) {
+	    const { login, modify } = state;
+	    return {
+	        login,
+	        modify,
+	    };
+	}
+	exports.default = react_redux_1.connect(mapStateToProps)(AccountInfo);
 
 
 /***/ }),
@@ -32634,12 +32746,14 @@
 	const login_reducer_1 = __webpack_require__(102);
 	const register_reducer_1 = __webpack_require__(103);
 	const alert_reducer_1 = __webpack_require__(104);
-	const router_reducer_1 = __webpack_require__(105);
+	const modify_reducer_1 = __webpack_require__(105);
+	const router_reducer_1 = __webpack_require__(106);
 	const rootReducer = redux_1.combineReducers({
 	    login: login_reducer_1.login,
 	    register: register_reducer_1.register,
 	    alert: alert_reducer_1.alert,
 	    router: router_reducer_1.router,
+	    modify: modify_reducer_1.modify
 	});
 	exports.default = rootReducer;
 
@@ -32670,8 +32784,20 @@
 	                loggedIn: false,
 	                error: action.error,
 	            };
-	        case constants_1.userConstants.LOGOUT:
+	        case constants_1.userConstants.LOGOUT_SUCCESS:
 	            return {};
+	        case constants_1.userConstants.LOGOUT_FAILURE:
+	            return Object.assign({}, state, { error: action.error });
+	        case constants_1.userConstants.MODIFY_REQUEST:
+	            return {
+	                user: state.user,
+	                modifying: true,
+	            };
+	        case constants_1.userConstants.MODIFY_SUCCESS:
+	            return {
+	                loggedIn: true,
+	                user: action.user
+	            };
 	        default:
 	            return state;
 	    }
@@ -32735,6 +32861,34 @@
 
 /***/ }),
 /* 105 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	"use strict";
+	Object.defineProperty(exports, "__esModule", { value: true });
+	const constants_1 = __webpack_require__(80);
+	function modify(state = {}, action) {
+	    switch (action.type) {
+	        case constants_1.userConstants.MODIFY_REQUEST:
+	            return {
+	                modifying: true,
+	            };
+	        case constants_1.userConstants.MODIFY_SUCCESS:
+	            return {
+	                modified: true,
+	            };
+	        case constants_1.userConstants.MODIFY_FAILURE:
+	            return {
+	                error: action.error,
+	            };
+	        default:
+	            return state;
+	    }
+	}
+	exports.modify = modify;
+
+
+/***/ }),
+/* 106 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";

@@ -8,7 +8,7 @@ const react_redux_1 = require("react-redux");
 const react_router_dom_1 = require("react-router-dom");
 class HomePage extends React.Component {
     componentWillMount() {
-        localStorage["history"] = this.props.history;
+        window["routerHistory"] = this.props.history;
     }
     render() {
         return React.createElement("div", null,

@@ -8,7 +8,7 @@ import { withRouter } from "react-router-dom";
 class HomePage extends React.Component<{dispatch, history }, {}> {
 
 	componentWillMount() {
-		localStorage["history"] = this.props.history;
+		window["routerHistory"] = this.props.history;
 	}
 
 	render() {
