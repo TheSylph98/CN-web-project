@@ -35,6 +35,7 @@ Route::post('them-tai-khoan','HomeController@pThemtaikhoan');
 
 //Get bank
 Route::get("bank","HomeController@GetBank");
+Route::get("bank-user","HomeController@GetBankUser");
 //Get Phone Book
 Route::get("danh-ba","HomeController@GetPhoneBook");
 
@@ -42,3 +43,7 @@ Route::get("danh-ba","HomeController@GetPhoneBook");
 Route::post("thong-bao","HomeController@PNotification");
 //get TransactionHistory
 Route::get("lich-su-giao-dich","HomeController@TransactionHistory");
+
+//Nap Thes
+Route::get('nap-the','HomeController@GNapThe');
+Route::post('nap-the','HomeController@NapThe');

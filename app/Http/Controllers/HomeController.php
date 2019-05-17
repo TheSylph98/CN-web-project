@@ -258,7 +258,7 @@ class HomeController extends Controller
      foreach ($friend_id as $id) {
         $id = $id->friend_id;
         $friend_info = User::where('id',$id)->get();
-        echo $friend_info;
+        //echo $friend_info;
         array_push($friend,$friend_info);
      }
      $fr = json_encode($friend);
@@ -328,7 +328,26 @@ class HomeController extends Controller
     return response()->json($lsgd);
   }
 
+  public function GetBankUser(){
+    if(Auth::check()){
+    $user = Auth::user();
+    $id = $user->id;
+    $tk = taikhoan::where('users_id',$id)->get('nganhang_id');
+    $list_bank = array();
+    foreach($tk as $t){
+      $ng_id = $t->nganhang_id;
+      $nganhang = nganhang::where('id',$ng_id)->get();
+      array_push($list_bank,$nganhang);
+    }
+    $bank_u = json_encode($list_bank);
+    return response()->json($bank_u);
+  }
+   else
+      return response()->json(['message'=>'ban chua dang nhap']);
+}
+
   public function NapThe(Request $request){
+    if(Auth::check()){
     $validator = Validator::make($request->all(),
       [
         'sotien' => 'required'
@@ -336,15 +355,38 @@ class HomeController extends Controller
       [
         'sotien.required' => 'You have not sotien!'
       ]);
+
     $user = Auth::user();
-    $napthe = new napthe;
-    $napthe->sotien = $request->sotien;
-    $nathe->users_id = $user->id;
-    $napthe->nhamang_id = $request->nhamang;
-    //$naptien->time = CURRENT_TIMESTAMP;
-    $napthe->save();
-    return response()->json($napthe);
+    $tien_user = $user->sotien;
+    $tiennapthe = $request->sotien;
+    echo $tien_user;
+    echo   $tiennapthe;
+    // if ($tiennapthe > $tien_user){
+    //   return response()->json([
+    //     'napthe'=>'error',
+    //     'message'=>'khong du tien nap the'
+    //   ]);
+    // }else {
+    //   $napthe = new napthe;
+    //   $napthe->sotien = intVal("$tiennapthe");
+    //   $nathe->users_id = $user->id;
+    //   $napthe->nhamang_id = $request->nhamang;
+    //   $napthe->save();
+    //
+    //   $user->sotien = $tien_user - $tiennapthe;
+    //   $user->save();
+    //   return response()->json($napthe);
+    // }
+  } else
+     return response()->json([
+      'bank'=>'error',
+      'message'=> 'ban chua dang nha '
+     ]);
   }
 
-  
+  public function GNapThe(){
+    $nhamang = nhamang::all();
+    return view('page.napthe',['nhamang' => $nhamang]);
+  }
+
 }
