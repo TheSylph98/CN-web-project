@@ -47,8 +47,8 @@ function register(data, token) {
             .then(user => {
             dispatch(success(user));
             localStorage.setItem("user", JSON.stringify(user));
-            alert("Registration successfully!");
-            window["routerHistory"].push("/");
+            alert("Registration successfully! Please login to continue");
+            window["routerHistory"].push("/login");
             dispatch(_1.alertActions.success('Registration successful'));
         }, error => {
             dispatch(failure(error.toString()));

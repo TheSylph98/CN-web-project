@@ -7,9 +7,6 @@ const Feature_1 = require("./Feature");
 const react_redux_1 = require("react-redux");
 const react_router_dom_1 = require("react-router-dom");
 class HomePage extends React.Component {
-    componentWillMount() {
-        window["routerHistory"] = this.props.history;
-    }
     render() {
         return React.createElement("div", null,
             React.createElement(TopPanel_1.default, null),

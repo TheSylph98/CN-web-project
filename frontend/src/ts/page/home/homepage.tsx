@@ -7,10 +7,6 @@ import { withRouter } from "react-router-dom";
 
 class HomePage extends React.Component<{dispatch, history }, {}> {
 
-	componentWillMount() {
-		window["routerHistory"] = this.props.history;
-	}
-
 	render() {
 		return <div>
 			<TopPanel/>

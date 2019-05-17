@@ -60,8 +60,8 @@ function register(data: {username, password, phone, email, verifyPassword}, toke
                 user => { 
                     dispatch(success(user));
                     localStorage.setItem("user", JSON.stringify(user)); 
-                    alert("Registration successfully!");
-                    window["routerHistory"].push("/");
+                    alert("Registration successfully! Please login to continue");
+                    window["routerHistory"].push("/login");
                     dispatch(alertActions.success('Registration successful'));
                 },
                 error => {
