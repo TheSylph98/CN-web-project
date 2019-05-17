@@ -5,6 +5,7 @@ const TopPanel_1 = require("../common/TopPanel");
 const Slider_1 = require("./Slider");
 const Feature_1 = require("./Feature");
 const react_redux_1 = require("react-redux");
+const react_router_dom_1 = require("react-router-dom");
 class HomePage extends React.Component {
     render() {
         return React.createElement("div", null,
@@ -19,4 +20,4 @@ function mapStateToProps(state) {
         user
     };
 }
-exports.default = react_redux_1.connect(mapStateToProps)(HomePage);
+exports.default = react_redux_1.connect(mapStateToProps)(react_router_dom_1.withRouter(HomePage));

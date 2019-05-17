@@ -1,8 +1,13 @@
 import React = require("react");
+import { connect } from "react-redux";
+import { userActions } from "../../store/action";
 
-export default class AccountInfo extends React.Component<{}, {openChangePassword: boolean}> {
-	state;
-	setState;
+class AccountInfo extends React.Component<{dispatch, login, modify}, {openChangePassword: boolean}> {
+
+    username;
+    address;
+    phone;
+
 	constructor(props) {
 		super(props);
 		this.state = {
@@ -16,28 +21,49 @@ export default class AccountInfo extends React.Component<{}, {openChangePassword
 		})
 	}
 
+    onModify(e) {
+        e.preventDefault();
+        this.props.dispatch(userActions.modify({
+            username: this.username.value,
+            address: this.address.value,
+            phone: this.phone.value,
+        }))
+
+    }
+
 	render() {
+        let user = this.props.login.user;
 		return <div class="content-right">
             <h1 class="title">Account Info</h1>
             <div class="account-profile register-form">
                 <form class="content" id="edit-account">
                     <div class="form-group">
-                    <label class="control-label" htmlFor="full_name">Full name </label>
-                    <div class="input-wrap">
-                        <input type="text" name="full_name" class="form-control" id="full_name" defaultValue="Tùng Thanh" placeholder="Full name"/>
-                    </div>
+                        <label class="control-label" htmlFor="full_name">Full name </label>
+                        <div class="input-wrap">
+                            <input ref={input => this.username = input } type="text" name="full_name" class="form-control" id="full_name" 
+                                defaultValue={user.username} placeholder="Full name"/>
+                        </div>
                     </div>
                     <div class="form-group ">
                         <label class="control-label" htmlFor="phone_number">Phone number</label>
                         <div class="input-wrap update-phone">
-                            <input type="text" placeholder="Enter your phone number for better experience" defaultValue="" class="form-control" name="phone_number" id="phone_number"/>
+                            <input ref={input => this.phone = input } type="text" placeholder="Enter your phone number for better experience" 
+                                defaultValue={user.phone} class="form-control" name="phone_number" id="phone_number"/>
+                        </div>
+                    </div>
+
+                    <div class="form-group ">
+                        <label class="control-label" htmlFor="address">Address</label>
+                        <div class="input-wrap">
+                            <input ref={input => this.address = input } type="text" placeholder="Address" 
+                                defaultValue={user.address} class="form-control" name="address" id="address"/>
                         </div>
                     </div>
                     
                     <div class="form-group">
                         <label class="control-label" htmlFor="email">Email</label>
                         <div class="input-wrap">
-                            <input type="email" disabled={true} defaultValue="thanhtung29497@gmail.com" class="form-control" name="email" id="form_email" placeholder="Email"/>
+                            <input type="email" disabled={true} defaultValue={user.email} class="form-control" name="email" id="form_email" placeholder="Email"/>
                         </div>
                     </div>
                     
@@ -123,9 +149,16 @@ export default class AccountInfo extends React.Component<{}, {openChangePassword
 
                     </div>
                     <div class="form-group">
+                        <div class="form-message">
+                            {this.props.modify.modified ? 
+                                "All changes have been updated!" :
+                                    this.props.modify.error ?
+                                        this.props.modify.error : ""
+                            }
+                        </div>
                         <div class="input-wrap margin">
                             <input type="hidden" name="customer_birthdate" value=""/>
-                            <button type="submit" class="btn btn-info btn-block btn-update">Update</button>
+                            <button onClick={this.onModify.bind(this)} type="submit" class="btn btn-info btn-block btn-update">Update</button>
                         </div>
                     </div>
                 </form>
@@ -133,3 +166,13 @@ export default class AccountInfo extends React.Component<{}, {openChangePassword
         </div>
 	}
 }
+
+function mapStateToProps(state) {
+    const { login, modify } = state;
+    return {
+        login,
+        modify,
+    }
+}
+
+export default connect(mapStateToProps)(AccountInfo);

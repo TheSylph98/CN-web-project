@@ -2,7 +2,6 @@ import React = require("react");
 import {Link} from "react-router-dom";
 import { connect } from "react-redux";
 import { userActions } from "../../store/action";
-import { withRouter } from 'react-router-dom'
 
 export class LoginPage extends React.Component<{dispatch, error: string, history },{message: string}> {
 
@@ -26,7 +25,6 @@ export class LoginPage extends React.Component<{dispatch, error: string, history
 		e.preventDefault();
 		let token = document.getElementById("csrf-token").getAttribute("content");
 		this.props.dispatch(userActions.login(this.name.value, this.password.value, token));
-		this.props.history.push("/");
 	}
 
 	render() {
@@ -65,4 +63,4 @@ function mapStateToProps(state) {
 	}
 }
 
-export default connect(mapStateToProps)(withRouter(LoginPage));
+export default connect(mapStateToProps)(LoginPage);

@@ -131,7 +131,6 @@ class HomeController extends Controller
         'user' => [
           'username' => $user->ten,
           'email' => $user->email,
-          'password' => $user->password,
           'address'=> $user->diachi,
           'phone'=> $user->sodienthoai,
           'sotien'=> $user->sotien
@@ -180,7 +179,7 @@ class HomeController extends Controller
       if($validator->fails()){
         return response()->json([
           'update_info' => 'error',
-          'errors' => $err
+          'errors' => $err[0]
         ]); }
       else {
         $user = Auth::user();
@@ -190,7 +189,13 @@ class HomeController extends Controller
         $user->save();
         return response()->json([
           'update_info'=> 'true',
-          'user_info' => $user,
+          'user_info' => [
+            'username' => $user->ten,
+            'email' => $user->email,
+            'address'=> $user->diachi,
+            'phone'=> $user->sodienthoai,
+            'sotien'=> $user->sotien
+          ],
           'message' =>'Chinh sua thanh cong'
         ]);
     //return redirect('quan-ly-thong-tin')->with('message','Thay Đổi thông tin Người Dùng thành công!');

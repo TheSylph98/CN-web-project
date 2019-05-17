@@ -3,8 +3,10 @@ import TopPanel from "../common/TopPanel";
 import Slider from "./Slider";
 import Feature from "./Feature";
 import { connect } from "react-redux";
+import { withRouter } from "react-router-dom";
 
-class HomePage extends React.Component<{}, {}> {
+class HomePage extends React.Component<{dispatch, history }, {}> {
+
 	render() {
 		return <div>
 			<TopPanel/>
@@ -21,4 +23,4 @@ function mapStateToProps(state) {
 	};
 }
 
-export default connect(mapStateToProps)(HomePage);
+export default connect(mapStateToProps)(withRouter(HomePage));

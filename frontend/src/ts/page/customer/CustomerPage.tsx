@@ -3,10 +3,17 @@ import TopPanel from "../common/TopPanel";
 import Directory from "../common/Directory";
 import Navigator from "./Navigator";
 import AccountInfo from "./AccountInfo";
-import {Route} from "react-router-dom";
+import {Route, withRouter} from "react-router-dom";
+import { connect } from "react-redux";
 
-export default class CustomerPage extends React.Component<{location: {pathname: string}},{}> {
+class CustomerPage extends React.Component<{history, loggedIn: boolean, location: {pathname: string}},{}> {
+
 	render() {
+		if (!this.props.loggedIn) {
+			this.props.history.push("/login");
+			alert("You have to login first!");
+			return <div/>
+		}	
 		return <div>
 			<TopPanel/>
 			<Directory location={this.props.location.pathname}/>
@@ -17,3 +24,12 @@ export default class CustomerPage extends React.Component<{location: {pathname: 
 		</div>
 	}
 }
+
+function mapStateToProps(state) {
+	const { loggedIn } = state.login;
+	return {
+		loggedIn
+	}
+}
+
+export default connect(mapStateToProps)(withRouter(CustomerPage));

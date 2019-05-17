@@ -6,8 +6,14 @@ const Directory_1 = require("../common/Directory");
 const Navigator_1 = require("./Navigator");
 const AccountInfo_1 = require("./AccountInfo");
 const react_router_dom_1 = require("react-router-dom");
+const react_redux_1 = require("react-redux");
 class CustomerPage extends React.Component {
     render() {
+        if (!this.props.loggedIn) {
+            this.props.history.push("/login");
+            alert("You have to login first!");
+            return React.createElement("div", null);
+        }
         return React.createElement("div", null,
             React.createElement(TopPanel_1.default, null),
             React.createElement(Directory_1.default, { location: this.props.location.pathname }),
@@ -16,4 +22,10 @@ class CustomerPage extends React.Component {
                 React.createElement(react_router_dom_1.Route, { path: "/(customer/account|customer)/", component: AccountInfo_1.default })));
     }
 }
-exports.default = CustomerPage;
+function mapStateToProps(state) {
+    const { loggedIn } = state.login;
+    return {
+        loggedIn
+    };
+}
+exports.default = react_redux_1.connect(mapStateToProps)(react_router_dom_1.withRouter(CustomerPage));

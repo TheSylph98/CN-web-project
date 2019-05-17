@@ -6,6 +6,7 @@ export const userActions = {
     login,
     logout,
     register,
+    modify,
 };
 
 function login(username, password, token) {
@@ -17,6 +18,8 @@ function login(username, password, token) {
                 user => { 
                     dispatch(success(user));
                     localStorage.setItem("user", JSON.stringify(user));
+                    alert("Login successfully!");
+                    window["routerHistory"].push("/");
                 },
                 error => {
                     dispatch(failure(error.toString()));
@@ -31,8 +34,21 @@ function login(username, password, token) {
 }
 
 function logout() {
-    localStorage.removeItem("user");
-    return { type: userConstants.LOGOUT };
+    return dispatch => {
+        backend.logout()
+            .then(
+                () => {
+                    dispatch(success());
+                    localStorage.removeItem("user");
+                },
+                error => {
+                    dispatch(failure(error.toString()));
+                }
+            );
+    }
+    
+    function success() {return { type: userConstants.LOGOUT_SUCCESS }}
+    function failure(error) { return { type: userConstants.LOGOUT_FAILURE, error}}
 }
 
 function register(data: {username, password, phone, email, verifyPassword}, token) {
@@ -44,6 +60,8 @@ function register(data: {username, password, phone, email, verifyPassword}, toke
                 user => { 
                     dispatch(success(user));
                     localStorage.setItem("user", JSON.stringify(user)); 
+                    alert("Registration successfully! Please login to continue");
+                    window["routerHistory"].push("/login");
                     dispatch(alertActions.success('Registration successful'));
                 },
                 error => {
@@ -56,4 +74,26 @@ function register(data: {username, password, phone, email, verifyPassword}, toke
     function request(user) { return { type: userConstants.REGISTER_REQUEST, user } }
     function success(user) { return { type: userConstants.REGISTER_SUCCESS, user } }
     function failure(error) { return { type: userConstants.REGISTER_FAILURE, error } }
+}
+
+
+function modify(data: {username, phone, address}) {
+    return dispatch => {
+        dispatch(request());
+        backend.modify(data)
+            .then(
+                user => {
+                    dispatch(success(user));
+                    localStorage.setItem("user", JSON.stringify(user)); 
+                },
+                error => {
+                    dispatch(failure(error.toString()));
+                }
+
+            )
+    }
+
+    function request() { return { type: userConstants.MODIFY_REQUEST } }
+    function success(user) { return { type: userConstants.MODIFY_SUCCESS, user } }
+    function failure(error) { return { type: userConstants.MODIFY_FAILURE, error } }
 }

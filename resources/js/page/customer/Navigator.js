@@ -2,6 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const React = require("react");
 const react_router_dom_1 = require("react-router-dom");
+const react_redux_1 = require("react-redux");
 class Navigator extends React.Component {
     render() {
         let location = this.props.location.replace(/\/$/, "");
@@ -10,7 +11,7 @@ class Navigator extends React.Component {
                 React.createElement("p", { class: "image" },
                     React.createElement("img", { src: "https://salt.tikicdn.com/desktop/img/avatar.png?v=3", height: "45", width: "45", alt: "" })),
                 React.createElement("p", { class: "name" }, "Your account"),
-                React.createElement("h6", null, "T\u00F9ng Thanh")),
+                React.createElement("h6", null, this.props.login.user.username)),
             React.createElement("div", { class: "menu dropdown" },
                 React.createElement("ul", { role: "menu" },
                     React.createElement("li", { class: (location.endsWith("account") || location.endsWith("customer")) ? "active" : "" },
@@ -21,7 +22,7 @@ class Navigator extends React.Component {
                     React.createElement("li", { class: location.endsWith("bank") ? "active" : "" },
                         React.createElement(react_router_dom_1.Link, { to: "/customer/bank" },
                             " ",
-                            React.createElement("i", { class: "fa fa-bank" }),
+                            React.createElement("i", { class: "fa fa-university" }),
                             " ",
                             React.createElement("span", null, "Bank Acount"),
                             " ")),
@@ -47,4 +48,10 @@ class Navigator extends React.Component {
                             React.createElement("span", null, "Transaction history"))))));
     }
 }
-exports.default = Navigator;
+function mapStateToProps(state) {
+    const { login } = state;
+    return {
+        login
+    };
+}
+exports.default = react_redux_1.connect(mapStateToProps)(Navigator);

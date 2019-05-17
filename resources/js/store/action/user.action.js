@@ -7,6 +7,7 @@ exports.userActions = {
     login,
     logout,
     register,
+    modify,
 };
 function login(username, password, token) {
     return dispatch => {
@@ -15,6 +16,8 @@ function login(username, password, token) {
             .then(user => {
             dispatch(success(user));
             localStorage.setItem("user", JSON.stringify(user));
+            alert("Login successfully!");
+            window["routerHistory"].push("/");
         }, error => {
             dispatch(failure(error.toString()));
             dispatch(_1.alertActions.error(error.toString()));
@@ -25,8 +28,17 @@ function login(username, password, token) {
     function failure(error) { return { type: constants_1.userConstants.LOGIN_FAILURE, error }; }
 }
 function logout() {
-    localStorage.removeItem("user");
-    return { type: constants_1.userConstants.LOGOUT };
+    return dispatch => {
+        backend.logout()
+            .then(() => {
+            dispatch(success());
+            localStorage.removeItem("user");
+        }, error => {
+            dispatch(failure(error.toString()));
+        });
+    };
+    function success() { return { type: constants_1.userConstants.LOGOUT_SUCCESS }; }
+    function failure(error) { return { type: constants_1.userConstants.LOGOUT_FAILURE, error }; }
 }
 function register(data, token) {
     return dispatch => {
@@ -35,6 +47,8 @@ function register(data, token) {
             .then(user => {
             dispatch(success(user));
             localStorage.setItem("user", JSON.stringify(user));
+            alert("Registration successfully! Please login to continue");
+            window["routerHistory"].push("/login");
             dispatch(_1.alertActions.success('Registration successful'));
         }, error => {
             dispatch(failure(error.toString()));
@@ -44,4 +58,19 @@ function register(data, token) {
     function request(user) { return { type: constants_1.userConstants.REGISTER_REQUEST, user }; }
     function success(user) { return { type: constants_1.userConstants.REGISTER_SUCCESS, user }; }
     function failure(error) { return { type: constants_1.userConstants.REGISTER_FAILURE, error }; }
+}
+function modify(data) {
+    return dispatch => {
+        dispatch(request());
+        backend.modify(data)
+            .then(user => {
+            dispatch(success(user));
+            localStorage.setItem("user", JSON.stringify(user));
+        }, error => {
+            dispatch(failure(error.toString()));
+        });
+    };
+    function request() { return { type: constants_1.userConstants.MODIFY_REQUEST }; }
+    function success(user) { return { type: constants_1.userConstants.MODIFY_SUCCESS, user }; }
+    function failure(error) { return { type: constants_1.userConstants.MODIFY_FAILURE, error }; }
 }

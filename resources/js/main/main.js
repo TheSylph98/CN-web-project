@@ -2,16 +2,10 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const ReactDOM = require("react-dom");
 const React = require("react");
-const homepage_1 = require("../page/home/homepage");
-const RegisterPage_1 = require("../page/login/RegisterPage");
-const LoginPage_1 = require("../page/login/LoginPage");
-const CustomerPage_1 = require("../page/customer/CustomerPage");
-const react_router_dom_1 = require("react-router-dom");
 const react_redux_1 = require("react-redux");
 const helper_1 = require("../store/helper");
+const react_router_dom_1 = require("react-router-dom");
+const app_1 = require("./app");
 ReactDOM.render(React.createElement(react_redux_1.Provider, { store: helper_1.store },
     React.createElement(react_router_dom_1.HashRouter, null,
-        React.createElement(react_router_dom_1.Route, { path: "/", exact: true, component: homepage_1.default }),
-        React.createElement(react_router_dom_1.Route, { path: "/register/", component: RegisterPage_1.default }),
-        React.createElement(react_router_dom_1.Route, { path: "/login/", component: LoginPage_1.default }),
-        React.createElement(react_router_dom_1.Route, { path: "/customer", component: CustomerPage_1.default }))), document.getElementById("app"));
+        React.createElement(react_router_dom_1.Route, { path: "/", component: app_1.default }))), document.getElementById("app"));

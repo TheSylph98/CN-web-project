@@ -64,3 +64,38 @@ function register(input, token) {
     });
 }
 exports.register = register;
+function logout() {
+    let token = document.getElementById("csrf-token").getAttribute("content");
+    return new Promise((resolve, reject) => {
+        getData("dang-xuat", {}, token)
+            .then(message => {
+            if (message["logout"] == 'success') {
+                resolve();
+            }
+            else {
+                reject(message['errors']);
+            }
+        });
+    });
+}
+exports.logout = logout;
+function modify(input) {
+    let data = {
+        username: input.username,
+        diachi: input.address,
+        sodt: input.phone,
+    };
+    let token = document.getElementById("csrf-token").getAttribute("content");
+    return new Promise((resolve, reject) => {
+        getData("quan-li-thong-tin", data, token)
+            .then(data => {
+            if (data['update_info'] == 'true') {
+                resolve(data['user_info']);
+            }
+            else {
+                reject(data['errors']);
+            }
+        });
+    });
+}
+exports.modify = modify;
