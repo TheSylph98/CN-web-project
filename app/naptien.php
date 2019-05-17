@@ -9,7 +9,7 @@ class naptien extends Model
     protected $table = "naptien";
 
     public function NguoiNap(){
-      return $this->belongsTo('App\taikhoan','tk_ng_nap','sotaikhoan');
+      return $this->belongsTo('App\taikhoan','tk_nap','sotaikhoan');
     }
 
 }
