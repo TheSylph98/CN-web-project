@@ -9,6 +9,6 @@ class ruttien extends Model
     //
     protected $table = "ruttien";
     public function TaiKhoan(){
-      return $this->belongsTo('App\taikhoan','tk_rut','sotaikhoan');
+      return $this->belongsTo('App\User','users_id','id');
     }
 }

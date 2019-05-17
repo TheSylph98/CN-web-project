@@ -25,7 +25,6 @@ Route::post('dang-ki','HomeController@DoRegister');
 
 // Route::get('quan-li-thong-tin','HomeController@ThongTinCaNhan');
 Route::post('quan-li-thong-tin','HomeController@ChinhSuaThongTin');
-Route::post('dang-xuat', 'HomeController@Logout');
 
 //chuyen tien
 
@@ -38,3 +37,8 @@ Route::post('them-tai-khoan','HomeController@pThemtaikhoan');
 Route::get("bank","HomeController@GetBank");
 //Get Phone Book
 Route::get("danh-ba","HomeController@GetPhoneBook");
+
+//Post Notification
+Route::post("thong-bao","HomeController@PNotification");
+//get TransactionHistory
+Route::get("lich-su-giao-dich","HomeController@TransactionHistory");
