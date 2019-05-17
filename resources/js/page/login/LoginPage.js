@@ -4,7 +4,6 @@ const React = require("react");
 const react_router_dom_1 = require("react-router-dom");
 const react_redux_1 = require("react-redux");
 const action_1 = require("../../store/action");
-const react_router_dom_2 = require("react-router-dom");
 class LoginPage extends React.Component {
     constructor(props) {
         super(props);
@@ -21,7 +20,6 @@ class LoginPage extends React.Component {
         e.preventDefault();
         let token = document.getElementById("csrf-token").getAttribute("content");
         this.props.dispatch(action_1.userActions.login(this.name.value, this.password.value, token));
-        this.props.history.push("/");
     }
     render() {
         return React.createElement("div", { class: "register col-xs-12" },
@@ -53,4 +51,4 @@ function mapStateToProps(state) {
         error
     };
 }
-exports.default = react_redux_1.connect(mapStateToProps)(react_router_dom_2.withRouter(LoginPage));
+exports.default = react_redux_1.connect(mapStateToProps)(LoginPage);

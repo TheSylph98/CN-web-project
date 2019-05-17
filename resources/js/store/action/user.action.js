@@ -15,6 +15,7 @@ function login(username, password, token) {
             .then(user => {
             dispatch(success(user));
             localStorage.setItem("user", JSON.stringify(user));
+            localStorage["history"].push("/");
         }, error => {
             dispatch(failure(error.toString()));
             dispatch(_1.alertActions.error(error.toString()));

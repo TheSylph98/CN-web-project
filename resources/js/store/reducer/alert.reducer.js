@@ -3,6 +3,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const constants_1 = require("../constants");
 function alert(state = {}, action) {
     switch (action.type) {
+        case constants_1.alertConstants.INIT:
+            return {
+                history: action.history
+            };
         case constants_1.alertConstants.SUCCESS:
             return {
                 type: 'alert-success',

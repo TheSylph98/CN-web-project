@@ -4,7 +4,7 @@ import HomePage from "../page/home/homepage";
 import Register from "../page/login/RegisterPage";
 import Login from "../page/login/LoginPage";
 import CustomerPage from "../page/customer/CustomerPage";
-import {HashRouter as Router, Route } from "react-router-dom";
+import { HashRouter as Router, Route } from "react-router-dom";
 import {Provider} from "react-redux";
 import { store } from '../store/helper';
 

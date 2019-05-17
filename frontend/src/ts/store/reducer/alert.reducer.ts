@@ -2,6 +2,10 @@ import { alertConstants } from '../constants';
 
 export function alert(state = {}, action) {
   switch (action.type) {
+    case alertConstants.INIT: 
+      return {
+        history: action.history
+      };
     case alertConstants.SUCCESS:
       return {
         type: 'alert-success',
