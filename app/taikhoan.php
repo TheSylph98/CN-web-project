@@ -9,23 +9,18 @@ class taikhoan extends Model
     protected $table = "taikhoan";
 
     public function User(){
-      return $this->belongsTo('App\User','id_user','id');
+      return $this->belongsTo('App\User','users_id','id');
     }
 
     public function NguoiNapT(){
-      return $this->hasMany('App\naptien','tk_ng_nap','sotaikhoan');
-    }
-
-    public function NguoiChuyenT(){
-      return $this->hasMany('App\chuyentien','tk_ng_chuyen','sotaikhoan');
-    }
-
-    public function NguoiNhanT(){
-      return $this->hasMany('App\chuyentien','tk_ng_nhan','sotaikhoan');
+      return $this->hasMany('App\naptien','tk_nap','sotaikhoan');
     }
 
     public function NganHang(){
       return $this->belongsTo('App\nganhang','nganhang_id','id');
     }
 
+    public function RutTien(){
+      return $this->hasMany('App\taikhoan','tk_rut','id');
+    }
 }

@@ -115,7 +115,7 @@ class HomeController extends Controller
   			$user->sodienthoai = $request->sodt;
       	$user->save();
     	//return redirect('dang-ki')->with('message','Đăng ký tài khoản thành công!');
-      
+
       return response()->json([
         'register'=>'success',
         'user' => [
@@ -128,26 +128,6 @@ class HomeController extends Controller
       ]);
     }
 
-    public function LienHe(){
-      return view('page.lienhe');
-    }
-    public function GuiLienHe(Request $request){
-      $this->validate($request,
-      [
-        'email' => 'required|email|unique:users,email'
-      ],
-      [
-        'email.required' => 'Bạn chưa nhập địa chỉ Email!',
-        'email.email' => 'Bạn chưa nhập đúng định dạng Email!',
-        'email.unique' => 'Địa chỉ Email đã tồn tại!'
-      ]);
-
-      $lienhe = new lienhe;
-      $lienhe->email = $request->email;
-      $lienhe->noidung = $request->noidung;
-      $lienhe->save();
-      return redirect('lien-he')->with('message','Đăng ký tài khoản thành công!');
-    }
 
     public function ThongTinCaNhan(){
       if(Auth::check()){
@@ -244,7 +224,6 @@ class HomeController extends Controller
          'errors' => $err
        ]); }
      else {
-       //$taikhoan = taikhoan::where('id_user',$user->id)->get();
        $tk = new taikhoan;
        $tk->id_user = $user->id;
        $tk->sotaikhoan = $request->sotaikhoan;
