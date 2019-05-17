@@ -220,13 +220,15 @@ class HomeController extends Controller
       ]);
   }
 
-   public function pThemtaikhoan($request){
+   public function pThemtaikhoan(Request $request){
      $validator = Validator::make($request->all(),
      [
-       'taikhoan' => 'required',
+       'sotaikhoan' => 'required',
+       'nganhang' => 'required',
      ],
      [
-       'taikhoan.required' => 'Bạn chưa nhập Tên tài khoản!',
+       'sotaikhoan.required' => 'You have not entered account number yet!',
+       'nganhang.required' => 'You have not specified bank!',
      ]);
      $user = Auth::user();
      $errs = $validator->errors();
@@ -234,14 +236,14 @@ class HomeController extends Controller
      if($validator->fails()){
        return response()->json([
          'add_account' => 'error',
-         'errors' => $err
+         'errors' => $err[0]
        ]); }
      else {
        $tk = new taikhoan;
-       $tk->id_user = $user->id;
+       $tk->users_id = $user->id;
        $tk->sotaikhoan = $request->sotaikhoan;
        $tk->nganhang_id = $request->nganhang;
-       $tk->tongsotien = 5000000;
+       $tk->sotien = 5000000;
        $tk->save();
        return response()->json([
          'add_account'=>'true',

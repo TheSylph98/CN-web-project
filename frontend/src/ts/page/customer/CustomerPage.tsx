@@ -3,6 +3,7 @@ import TopPanel from "../common/TopPanel";
 import Directory from "../common/Directory";
 import Navigator from "./Navigator";
 import AccountInfo from "./AccountInfo";
+import BankAccount from "./BankAccount";
 import {Route, withRouter} from "react-router-dom";
 import { connect } from "react-redux";
 
@@ -19,7 +20,8 @@ class CustomerPage extends React.Component<{history, loggedIn: boolean, location
 			<Directory location={this.props.location.pathname}/>
 			<div class="customer-content" style={{paddingLeft: "40px", background: "#111"}}>
 				<Navigator location={this.props.location.pathname}/>
-				<Route path="/(customer/account|customer)/" component={AccountInfo}/>
+				<Route exact path="/(customer/account|customer)/" component={AccountInfo}/>
+				<Route path="/customer/bank" component={BankAccount}/>
 			</div>
 		</div>
 	}

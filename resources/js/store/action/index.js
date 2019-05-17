@@ -5,4 +5,5 @@ function __export(m) {
 Object.defineProperty(exports, "__esModule", { value: true });
 __export(require("./alert.action"));
 __export(require("./user.action"));
-__export(require("./router.action"));
+__export(require("./bank.action"));
+__export(require("./account.action"));

@@ -27,7 +27,7 @@ class AccountInfo extends React.Component {
         let user = this.props.login.user;
         return React.createElement("div", { class: "content-right" },
             React.createElement("h1", { class: "title" }, "Account Info"),
-            React.createElement("div", { class: "account-profile register-form" },
+            React.createElement("div", { class: "wrapper" },
                 React.createElement("form", { class: "content", id: "edit-account" },
                     React.createElement("div", { class: "form-group" },
                         React.createElement("label", { class: "control-label", htmlFor: "full_name" }, "Full name "),
@@ -100,7 +100,6 @@ class AccountInfo extends React.Component {
                             this.props.modify.error ?
                                 this.props.modify.error : ""),
                         React.createElement("div", { class: "input-wrap margin" },
-                            React.createElement("input", { type: "hidden", name: "customer_birthdate", value: "" }),
                             React.createElement("button", { onClick: this.onModify.bind(this), type: "submit", class: "btn btn-info btn-block btn-update" }, "Update"))))));
     }
 }

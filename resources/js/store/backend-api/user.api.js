@@ -1,36 +1,13 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-function getData(url, body = {}, token) {
-    return new Promise((resolve, reject) => {
-        fetch(url, {
-            method: "POST",
-            mode: "cors",
-            cache: "no-cache",
-            credentials: "same-origin",
-            headers: {
-                "Content-Type": "application/json",
-                "X-CSRF-Token": token,
-            },
-            redirect: "follow",
-            referrer: "no-referrer",
-            body: JSON.stringify(body),
-        })
-            .then(response => {
-            resolve(response.json());
-        })
-            .catch(e => {
-            reject(e);
-        });
-    });
-}
-exports.getData = getData;
-function loginAuth(name, password, token) {
+const index_1 = require("./index");
+function loginAuth(name, password) {
     let data = {
         "email": name,
         "password": password,
     };
     return new Promise((resolve, reject) => {
-        getData("dang-nhap", data, token)
+        index_1.getData("dang-nhap", data)
             .then(data => {
             if (data["login"] === "success") {
                 resolve(data["user"]);
@@ -42,7 +19,7 @@ function loginAuth(name, password, token) {
     });
 }
 exports.loginAuth = loginAuth;
-function register(input, token) {
+function register(input) {
     let data = {
         "username": input.username,
         "email": input.email,
@@ -52,7 +29,7 @@ function register(input, token) {
         "password_again": input.verifyPassword
     };
     return new Promise((resolve, reject) => {
-        getData("dang-ki", data, token)
+        index_1.getData("dang-ki", data)
             .then(data => {
             if (data['register'] == 'success') {
                 resolve(data['user']);
@@ -65,9 +42,8 @@ function register(input, token) {
 }
 exports.register = register;
 function logout() {
-    let token = document.getElementById("csrf-token").getAttribute("content");
     return new Promise((resolve, reject) => {
-        getData("dang-xuat", {}, token)
+        index_1.getData("dang-xuat", {})
             .then(message => {
             if (message["logout"] == 'success') {
                 resolve();
@@ -85,9 +61,8 @@ function modify(input) {
         diachi: input.address,
         sodt: input.phone,
     };
-    let token = document.getElementById("csrf-token").getAttribute("content");
     return new Promise((resolve, reject) => {
-        getData("quan-li-thong-tin", data, token)
+        index_1.getData("quan-li-thong-tin", data)
             .then(data => {
             if (data['update_info'] == 'true') {
                 resolve(data['user_info']);

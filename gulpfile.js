@@ -31,7 +31,7 @@ gulp.task('copyHtmlAndCss', () => {
             .pipe(gulp.dest("./resources/views/page")),
         gulp.src("./frontend/src/css/*.css")
             .pipe(gulp.dest("./resources/css")),
-        gulp.src("./frontend/src/images/*")
+        gulp.src("./frontend/src/images/**/*")
             .pipe(gulp.dest("./resources/images"))
     ])
 })

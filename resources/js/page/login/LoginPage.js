@@ -18,8 +18,7 @@ class LoginPage extends React.Component {
     }
     onSubmit(e) {
         e.preventDefault();
-        let token = document.getElementById("csrf-token").getAttribute("content");
-        this.props.dispatch(action_1.userActions.login(this.name.value, this.password.value, token));
+        this.props.dispatch(action_1.userActions.login(this.name.value, this.password.value));
     }
     render() {
         return React.createElement("div", { class: "register col-xs-12" },

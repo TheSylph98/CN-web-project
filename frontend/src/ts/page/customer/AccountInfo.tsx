@@ -35,7 +35,7 @@ class AccountInfo extends React.Component<{dispatch, login, modify}, {openChange
         let user = this.props.login.user;
 		return <div class="content-right">
             <h1 class="title">Account Info</h1>
-            <div class="account-profile register-form">
+            <div class="wrapper">
                 <form class="content" id="edit-account">
                     <div class="form-group">
                         <label class="control-label" htmlFor="full_name">Full name </label>
@@ -157,7 +157,6 @@ class AccountInfo extends React.Component<{dispatch, login, modify}, {openChange
                             }
                         </div>
                         <div class="input-wrap margin">
-                            <input type="hidden" name="customer_birthdate" value=""/>
                             <button onClick={this.onModify.bind(this)} type="submit" class="btn btn-info btn-block btn-update">Update</button>
                         </div>
                     </div>
