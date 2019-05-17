@@ -24,11 +24,6 @@ function login(state = initialState, action) {
             return {};
         case constants_1.userConstants.LOGOUT_FAILURE:
             return Object.assign({}, state, { error: action.error });
-        case constants_1.userConstants.MODIFY_REQUEST:
-            return {
-                user: state.user,
-                modifying: true,
-            };
         case constants_1.userConstants.MODIFY_SUCCESS:
             return {
                 loggedIn: true,

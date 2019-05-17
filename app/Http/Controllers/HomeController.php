@@ -10,7 +10,13 @@ use App\chuyentien;
 use App\User;
 use App\nganhang;
 use App\taikhoan;
-use App\lienhe;
+use App\danhba;
+use App\loaihoadon;
+use App\napthe;
+use App\nhamang;
+use App\ruttien;
+use App\thanhtoan;
+use App\thongbao;
 
 class HomeController extends Controller
 {
@@ -70,8 +76,9 @@ class HomeController extends Controller
 
   public function Logout(){
     	Auth::logout();
-    	return response()->json([
-          'logout' => 'success',
+      return response()->json([
+        'logout'=>'success',
+        'message'=>'!'
       ]);
     }
 
@@ -144,7 +151,6 @@ class HomeController extends Controller
         ]);
       }
     	else
-    	//	return redirect('dang-nhap')->with('message','Bạn chưa Đăng Nhập!');
       return response()->json([
         'check'=>'false',
         'message'=>'Bạn chưa Đăng Nhập!'
@@ -178,10 +184,8 @@ class HomeController extends Controller
       else {
         $user = Auth::user();
         $user->ten = $request->username;
-        //$user->email = $request->email;
         $user->diachi = $request->diachi;
         $user->sodienthoai = $request->sodt;
-        //$user->password = bcrypt($request->password_again);
         $user->save();
         return response()->json([
           'update_info'=> 'true',
@@ -246,4 +250,26 @@ class HomeController extends Controller
        ]);
    }
  }
+ public function GetBank(){
+   $bank = nganhang::all();
+    return response()->json($bank);
+ }
+
+ public function GetPhoneBook(){
+   $user = Auth::user();
+   $user_id = $user->id;
+   $friend = array();
+   $friend_id = danhba::where('users_id',$user_id)->get('friend_id');
+  // $friends = json_decode($friend_id)
+   foreach ($friend_id as $id) {
+      $id = $id->friend_id;
+      $friend_info = User::where('id',$id)->get();
+      echo $friend_info;
+      array_push($friend,$friend_info);
+   }
+   $fr = json_encode($friend);
+   
+   return response()->json($fr);
+ }
+
 }

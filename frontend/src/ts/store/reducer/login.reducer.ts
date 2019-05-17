@@ -27,11 +27,6 @@ export function login(state = initialState, action) {
         ...state,
         error: action.error,
       }
-    case userConstants.MODIFY_REQUEST:
-      return {
-        user: state.user,
-        modifying: true,
-      };
     case userConstants.MODIFY_SUCCESS:
       return {
         loggedIn: true,
