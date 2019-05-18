@@ -197,12 +197,12 @@ class HomeController extends Controller
     if(Auth::check()){
       $user = Auth::user();
       $nganhang = nganhang::all();
-      //return view('page.themtaikhoan',['user_info' => Auth::user(),'nganhang'=>$nganhang]);
-      return response()->json([
-        'check'=>'true',
-        'user_info'=> $user,
-        'bank'=> $nganhang
-      ]);
+      return view('page.themtaikhoan',['user_info' => Auth::user(),'nganhang'=>$nganhang]);
+      // return response()->json([
+      //   'check'=>'true',
+      //   'user_info'=> $user,
+      //   'bank'=> $nganhang
+      // ]);
     }
     else
       //return redirect('dang-nhap')->with('message','Bạn chưa Đăng Nhập!');
@@ -212,48 +212,66 @@ class HomeController extends Controller
       ]);
   }
 
-  public function pThemtaikhoan($request){
+  public function pThemtaikhoan(Request $request){
+
      $validator = Validator::make($request->all(),
      [
-       'taikhoan' => 'required',
+       'sotaikhoan' => 'required|max:16'
      ],
      [
-       'taikhoan.required' => 'Bạn chưa nhập tài khoản!',
+       'sotaikhoan.required' => 'Bạn chưa nhập tài khoản!',
+       'sotaikhoan.max' => 'So tai khoan ko qua 16 ki tu'
      ]);
 
      $user = Auth::user();
+     $id =$user->id;
      $errs = $validator->errors();
      $err = $errs->all();
      $sotk = $request->sotaikhoan;
-     $tk = taikhoan::where('sotaikhoan',$sotk);
-
+     echo $sotk;
+     $tk = taikhoan::where('sotaikhoan',$sotk)->get();
+     // kiem tra tai khoan ton tai khong
+     if (count($tk)==0){
+      return response()->json([
+        'link'=>'error',
+        'message'=> 'tai khoan khong ton tai'
+        ]);
+      exit();
+      }
+     $id_ngh =  $tk[0]->nganhang_id;
+     // kiem tra tai khoan thuoc ngan hang
+     if($id_ngh != $request->nganhang){
+       return response()->json([
+         'link' => 'error',
+         'message' => 'tai khoan khong ton tai trong ngan hang nay'
+       ]);
+       exit();
+     }
+     //kiem tra tai khoan da link toi user nao chua
+     if(!is_null($tk[0]->users_id)){
+       return response()->json([
+         'link'=>'error',
+         'message'=>'tai khoan nay da co user sd'
+       ]);
+       exit();
+     }
+     //ktra loi nhap dau vao
      if($validator->fails()){
        return response()->json([
          'add_account' => 'error',
          'errors' => $err[0]
        ]);
      }
-      else {
-       $nganhang = nganhang::where('id',$tk->nganhang_id)->get();
-       if($nganhang->id == $request->nganhang){
-
-       }else
-          return response()->json([
-            'lktaikhoan'=> 'error',
-
-          ]);
-     }
-     {
-
-       $tk = taikhoan::where('sotaikhoan',$sotk);
-
-       $tk->save();
-       return response()->json([
-         'add_account'=>'true',
-         'account' => $tk,
-         'message'=>'Ban da them thanh cong'
-       ]);
-   }
+     //
+     $account = $tk[0];
+     echo $account;
+     $account->users_id = $id;
+     $account->save();
+     return response()->json([
+       'link' => 'success',
+       'account' => $tk[0],
+       'user' => $user
+     ]);
  }
   public function GetBank(){
      $bank = nganhang::all();
@@ -272,9 +290,9 @@ class HomeController extends Controller
         //echo $friend_info;
         array_push($friend,$friend_info);
      }
-     $fr = json_encode($friend);
+     //$fr = json_encode($friend);
 
-     return response()->json($fr);
+     return response()->json($friend);
    }
 
   public function PNotification(Request $request){
