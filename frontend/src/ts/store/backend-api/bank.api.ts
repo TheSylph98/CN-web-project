@@ -26,7 +26,7 @@ export function connectAccount(accountNumber: string, bankId: string) {
 	return new Promise((resolve, reject) => {
 		getData("them-tai-khoan", data)
 			.then(result => {
-				if (result['add_account'] == 'true') {
+				if (result['link'] == 'success') {
 					resolve();
 				} else {
 					reject(result['errors']);

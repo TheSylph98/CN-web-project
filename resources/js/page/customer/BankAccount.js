@@ -47,7 +47,7 @@ class BankAccount extends React.Component {
                     React.createElement("div", { class: "avatar" },
                         React.createElement("img", { class: "bank-avatar", src: "resources/images/banks/" + bank.name.toLowerCase() + ".png" })),
                     React.createElement("span", null, bank.name)))),
-                React.createElement("form", { class: "content", id: "edit-account" },
+                React.createElement("form", { class: "content" },
                     React.createElement("div", { class: "form-group" },
                         React.createElement("label", { class: "control-label", htmlFor: "account" }, "Account Number "),
                         React.createElement("div", { class: "input-wrap" },

@@ -2,7 +2,7 @@
 
 }
 
-.bank-account .title {
+.content-right .wrapper .title {
 	font-size: 14px;
     color: #fff;
     font-family: "Open Sans", sans-serif;
@@ -14,9 +14,10 @@
 	margin-top: 20px;
 }
 
-.bank-account .bank-list {
+.bank-list {
 	display: flex;
 	flex-wrap: wrap;
+	margin-bottom: 20px;
 }
 
 .bank-list .bank {

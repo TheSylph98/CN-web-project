@@ -24,6 +24,7 @@
     <link rel="stylesheet" type="text/css" href="resources/css/navigator.css"/>
     <link rel="stylesheet" type="text/css" href="resources/css/account-info.css"/>
     <link rel="stylesheet" type="text/css" href="resources/css/bank-account.css"/>
+    <link rel="stylesheet" type="text/css" href="resources/css/services.css"/>
 </head>
 
 <body>

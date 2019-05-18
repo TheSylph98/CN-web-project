@@ -28,7 +28,7 @@ function connectAccount(accountNumber, bankId) {
     return new Promise((resolve, reject) => {
         index_1.getData("them-tai-khoan", data)
             .then(result => {
-            if (result['add_account'] == 'true') {
+            if (result['link'] == 'success') {
                 resolve();
             }
             else {

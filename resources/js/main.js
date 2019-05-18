@@ -30124,7 +30124,7 @@
 	"use strict";
 	Object.defineProperty(exports, "__esModule", { value: true });
 	const constants_1 = __webpack_require__(68);
-	function account(state = { accounts: [] }, action) {
+	function account(state = { notLoad: true, accounts: [] }, action) {
 	    switch (action.type) {
 	        case constants_1.accountConstants.CONNECT_REQUEST:
 	            return Object.assign({}, state, { accounts: state.accounts, connecting: true });
@@ -30133,11 +30133,11 @@
 	        case constants_1.accountConstants.CONNECT_FAILURE:
 	            return Object.assign({}, state, { error: action.error, accounts: state.accounts });
 	        case constants_1.accountConstants.ACCOUNT_REQUEST:
-	            return Object.assign({}, state, { accounts: state.accounts, loading: true });
+	            return Object.assign({}, state, { notLoad: false, accounts: state.accounts, loading: true });
 	        case constants_1.accountConstants.ACCOUNT_SUCCESS:
-	            return Object.assign({}, state, { loaded: true, accounts: action.accounts });
+	            return Object.assign({}, state, { notLoad: false, loaded: true, accounts: action.accounts });
 	        case constants_1.accountConstants.ACCOUNT_FAILURE:
-	            return Object.assign({}, state, { error: action.error, accounts: state.accounts });
+	            return Object.assign({}, state, { notLoad: true, error: action.error, accounts: state.accounts });
 	        default:
 	            return state;
 	    }
@@ -32529,7 +32529,7 @@
 	    return new Promise((resolve, reject) => {
 	        index_1.getData("them-tai-khoan", data)
 	            .then(result => {
-	            if (result['add_account'] == 'true') {
+	            if (result['link'] == 'success') {
 	                resolve();
 	            }
 	            else {
@@ -32863,6 +32863,7 @@
 	const Navigator_1 = __webpack_require__(110);
 	const AccountInfo_1 = __webpack_require__(111);
 	const BankAccount_1 = __webpack_require__(114);
+	const Services_1 = __webpack_require__(115);
 	const react_router_dom_1 = __webpack_require__(78);
 	const react_redux_1 = __webpack_require__(18);
 	class CustomerPage extends React.Component {
@@ -32878,7 +32879,8 @@
 	            React.createElement("div", { class: "customer-content", style: { paddingLeft: "40px", background: "#111" } },
 	                React.createElement(Navigator_1.default, { location: this.props.location.pathname }),
 	                React.createElement(react_router_dom_1.Route, { exact: true, path: "/(customer/account|customer)/", component: AccountInfo_1.default }),
-	                React.createElement(react_router_dom_1.Route, { path: "/customer/bank", component: BankAccount_1.default })));
+	                React.createElement(react_router_dom_1.Route, { path: "/customer/bank", component: BankAccount_1.default }),
+	                React.createElement(react_router_dom_1.Route, { path: "/customer/services", component: Services_1.default })));
 	    }
 	}
 	function mapStateToProps(state) {
@@ -32910,7 +32912,11 @@
 	            "notification": "Notification",
 	            "history": "Traction History",
 	            "services": "Services",
-	            "bank": "Bank Account"
+	            "bank": "Bank Account",
+	            "transfer": "Transfer",
+	            "withdraw": "Withdraw",
+	            "transact": "Transact",
+	            "deposit": "Deposit",
 	        };
 	        return React.createElement("div", { class: "directory" },
 	            React.createElement("div", { class: "container" },
@@ -32977,7 +32983,13 @@
 	                            " ",
 	                            React.createElement("i", { class: "fa fa-credit-card" }),
 	                            " ",
-	                            React.createElement("span", null, "Transaction history"))))));
+	                            React.createElement("span", null, "Transaction history"))),
+	                    React.createElement("li", { class: location.endsWith("friends") ? "active" : "" },
+	                        React.createElement(react_router_dom_1.Link, { to: "/customer/friends" },
+	                            " ",
+	                            React.createElement("i", { class: "fa fa-address-book" }),
+	                            " ",
+	                            React.createElement("span", null, "Friend list"))))));
 	    }
 	}
 	function mapStateToProps(state) {
@@ -33197,7 +33209,7 @@
 	                    React.createElement("div", { class: "avatar" },
 	                        React.createElement("img", { class: "bank-avatar", src: "resources/images/banks/" + bank.name.toLowerCase() + ".png" })),
 	                    React.createElement("span", null, bank.name)))),
-	                React.createElement("form", { class: "content", id: "edit-account" },
+	                React.createElement("form", { class: "content" },
 	                    React.createElement("div", { class: "form-group" },
 	                        React.createElement("label", { class: "control-label", htmlFor: "account" }, "Account Number "),
 	                        React.createElement("div", { class: "input-wrap" },
@@ -33219,6 +33231,154 @@
 	    };
 	}
 	exports.default = react_redux_1.connect(mapStateToProps)(BankAccount);
+
+
+/***/ }),
+/* 115 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	"use strict";
+	Object.defineProperty(exports, "__esModule", { value: true });
+	const React = __webpack_require__(4);
+	const ServiceTab_1 = __webpack_require__(116);
+	const Transfer_1 = __webpack_require__(117);
+	const Deposit_1 = __webpack_require__(118);
+	const react_router_dom_1 = __webpack_require__(78);
+	class Services extends React.Component {
+	    render() {
+	        return React.createElement("div", { class: "content-right" },
+	            React.createElement("h1", { class: "title" }, "Services"),
+	            React.createElement(ServiceTab_1.default, { location: this.props.location.pathname }),
+	            React.createElement(react_router_dom_1.Route, { exact: true, path: "/customer/(services|services/transfer)", component: Transfer_1.default }),
+	            React.createElement(react_router_dom_1.Route, { exact: true, path: "/customer/services/deposit", component: Deposit_1.default }));
+	    }
+	}
+	exports.default = Services;
+
+
+/***/ }),
+/* 116 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	"use strict";
+	Object.defineProperty(exports, "__esModule", { value: true });
+	const React = __webpack_require__(4);
+	const react_router_dom_1 = __webpack_require__(78);
+	class ServiceTab extends React.Component {
+	    render() {
+	        let location = this.props.location.split("/").filter(path => path != "");
+	        let tab = location[location.length - 1];
+	        return React.createElement("div", { className: "wrapper service-tab" },
+	            React.createElement(react_router_dom_1.Link, { to: "/customer/services/transfer", className: "tab" + (tab == "transfer" || tab == "services" ? " active" : "") },
+	                React.createElement("i", { className: "fa fa-sign-out-alt" }),
+	                React.createElement("span", null, "Transfer")),
+	            React.createElement(react_router_dom_1.Link, { to: "/customer/services/deposit", className: "tab" + (tab == "deposit" ? " active" : "") },
+	                React.createElement("i", { className: "fa fa-sign-in-alt" }),
+	                React.createElement("span", null, "Deposit")),
+	            React.createElement(react_router_dom_1.Link, { to: "/customer/services/transact", className: "tab" + (tab == "transact" ? " active" : "") },
+	                React.createElement("i", { className: "fa fa-credit-card" }),
+	                React.createElement("span", null, "Transact")));
+	    }
+	}
+	exports.default = ServiceTab;
+
+
+/***/ }),
+/* 117 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	"use strict";
+	Object.defineProperty(exports, "__esModule", { value: true });
+	const React = __webpack_require__(4);
+	const react_redux_1 = __webpack_require__(18);
+	class Transfer extends React.Component {
+	    onSubmit(e) {
+	        e.preventDefault();
+	    }
+	    render() {
+	        return React.createElement("div", { className: "wrapper" },
+	            React.createElement("form", { class: "content", id: "edit-account" },
+	                React.createElement("div", { class: "form-group" },
+	                    React.createElement("label", { class: "control-label", htmlFor: "receiver" }, "Receiver"),
+	                    React.createElement("div", { class: "input-wrap" },
+	                        React.createElement("input", { ref: input => this.receiver = input, type: "text", name: "receiver", class: "form-control", id: "receiver", placeholder: "Enter email address of receiver" }))),
+	                React.createElement("div", { class: "form-group" },
+	                    React.createElement("label", { class: "control-label", htmlFor: "receiver" }, "Amount"),
+	                    React.createElement("div", { class: "input-wrap" },
+	                        React.createElement("input", { ref: input => this.amount = input, type: "number", name: "amount", class: "form-control", id: "amount", placeholder: "Enter amount of money" }))),
+	                React.createElement("div", { class: "form-group" },
+	                    React.createElement("label", { class: "control-label", htmlFor: "message" }, "Message"),
+	                    React.createElement("div", { class: "input-wrap" },
+	                        React.createElement("input", { ref: input => this.message = input, type: "text", name: "amount", class: "form-control", id: "message", placeholder: "Message" }))),
+	                React.createElement("div", { class: "form-group" },
+	                    React.createElement("div", { class: "form-message" }),
+	                    React.createElement("div", { class: "input-wrap margin" },
+	                        React.createElement("button", { onClick: this.onSubmit.bind(this), type: "submit", class: "btn btn-info btn-block btn-update" }, "Transfer")))));
+	    }
+	}
+	function mapStateToProps(state) {
+	    return {
+	        state
+	    };
+	}
+	exports.default = react_redux_1.connect(mapStateToProps)(Transfer);
+
+
+/***/ }),
+/* 118 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	"use strict";
+	Object.defineProperty(exports, "__esModule", { value: true });
+	const React = __webpack_require__(4);
+	const react_redux_1 = __webpack_require__(18);
+	const action_1 = __webpack_require__(95);
+	class Deposit extends React.Component {
+	    constructor(props) {
+	        super(props);
+	        this.state = {
+	            chosenBankId: null,
+	        };
+	    }
+	    onSubmit(e) {
+	        e.preventDefault();
+	    }
+	    componentWillMount() {
+	        if (this.props.account.notLoad) {
+	            this.props.dispatch(action_1.accountActions.getConnectedAccount());
+	        }
+	    }
+	    chooseAccount(id) {
+	        this.setState({
+	            chosenBankId: id
+	        });
+	    }
+	    render() {
+	        let accounts = this.props.account.accounts;
+	        return React.createElement("div", { className: "wrapper" },
+	            React.createElement("div", { className: "title" }, "Choose a bank account to deposit"),
+	            React.createElement("div", { className: "bank-list" }, accounts.map(bank => React.createElement("div", { onClick: () => this.chooseAccount(bank.id), id: bank.id, class: "bank" + (this.state.chosenBankId == bank.id ? " active" : "") },
+	                React.createElement("div", { class: "avatar" },
+	                    React.createElement("img", { class: "bank-avatar", src: "resources/images/banks/" + bank.name.toLowerCase() + ".png" })),
+	                React.createElement("span", null, bank.name)))),
+	            React.createElement("form", { class: "content" },
+	                React.createElement("div", { class: "form-group" },
+	                    React.createElement("label", { class: "control-label", htmlFor: "amount" }, "Amount"),
+	                    React.createElement("div", { class: "input-wrap" },
+	                        React.createElement("input", { ref: input => this.amount = input, type: "number", name: "amount", class: "form-control", placeholder: "Enter amount of money to deposit" }))),
+	                React.createElement("div", { class: "form-group" },
+	                    React.createElement("div", { class: "form-message" }),
+	                    React.createElement("div", { class: "input-wrap margin" },
+	                        React.createElement("button", { onClick: this.onSubmit.bind(this), type: "submit", class: "btn btn-info btn-block btn-update" }, "Deposit")))));
+	    }
+	}
+	function mapStateToProps(state) {
+	    const { account } = state;
+	    return {
+	        account
+	    };
+	}
+	exports.default = react_redux_1.connect(mapStateToProps)(Deposit);
 
 
 /***/ })
