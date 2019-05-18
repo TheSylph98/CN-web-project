@@ -59,7 +59,8 @@ class HomeController extends Controller
                 'email' => $user->email,
                 'password' => $user->password,
                 'address'=> $user->diachi,
-                'phone'=> $user->sodienthoai
+                'phone'=> $user->sodienthoai,
+                'amount' => $user->sotien,
               ]
             ]);
           } else {
@@ -216,11 +217,13 @@ class HomeController extends Controller
 
      $validator = Validator::make($request->all(),
      [
-       'sotaikhoan' => 'required|max:16'
+       'sotaikhoan' => 'required|max:16',
+       'nganhang' => 'required',
      ],
      [
        'sotaikhoan.required' => 'Bạn chưa nhập tài khoản!',
-       'sotaikhoan.max' => 'So tai khoan ko qua 16 ki tu'
+       'sotaikhoan.max' => 'So tai khoan ko qua 16 ki tu',
+       'nganhang.required' => 'You have not specified a bank',
      ]);
 
      $user = Auth::user();
@@ -228,13 +231,21 @@ class HomeController extends Controller
      $errs = $validator->errors();
      $err = $errs->all();
      $sotk = $request->sotaikhoan;
-     echo $sotk;
+
+     if($validator->fails()){
+        return response()->json([
+          'link' => 'error',
+          'errors' => $err[0],
+        ]); 
+      }
+
+     // echo $sotk;
      $tk = taikhoan::where('sotaikhoan',$sotk)->get();
      // kiem tra tai khoan ton tai khong
      if (count($tk)==0){
       return response()->json([
         'link'=>'error',
-        'message'=> 'tai khoan khong ton tai'
+        'errors'=> 'Account does not exist!'
         ]);
       exit();
       }
@@ -243,7 +254,7 @@ class HomeController extends Controller
      if($id_ngh != $request->nganhang){
        return response()->json([
          'link' => 'error',
-         'message' => 'tai khoan khong ton tai trong ngan hang nay'
+         'errors' => 'Account does not exist in this bank!'
        ]);
        exit();
      }
@@ -251,20 +262,20 @@ class HomeController extends Controller
      if(!is_null($tk[0]->users_id)){
        return response()->json([
          'link'=>'error',
-         'message'=>'tai khoan nay da co user sd'
+         'errors'=>'tai khoan nay da co user sd'
        ]);
        exit();
      }
      //ktra loi nhap dau vao
      if($validator->fails()){
        return response()->json([
-         'add_account' => 'error',
+         'link' => 'error',
          'errors' => $err[0]
        ]);
      }
      //
      $account = $tk[0];
-     echo $account;
+     // echo $account;
      $account->users_id = $id;
      $account->save();
      return response()->json([
@@ -363,10 +374,10 @@ class HomeController extends Controller
       foreach($tk as $t){
         $ng_id = $t->nganhang_id;
         $nganhang = nganhang::where('id',$ng_id)->get();
-        array_push($list_bank,$nganhang);
+        array_push($list_bank,$nganhang[0]);
       }
-      $bank_u = json_encode($list_bank);
-      return response()->json($bank_u);
+      // $bank_u = json_encode($list_bank);
+      return response()->json($list_bank);
     }
      else
         return response()->json(['message'=>'ban chua dang nhap']);
