@@ -246,11 +246,7 @@ class HomeController extends Controller
          'errors' => $err[0]
        ]); }
      else {
-       $tk = new taikhoan;
        $tk->users_id = $user->id;
-       $tk->sotaikhoan = $request->sotaikhoan;
-       $tk->nganhang_id = $request->nganhang;
-       $tk->sotien = 5000000;
        $tk->save();
        return response()->json([
          'add_account'=>'true',
