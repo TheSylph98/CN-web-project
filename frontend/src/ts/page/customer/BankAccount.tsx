@@ -75,7 +75,7 @@ class BankAccount extends React.Component<{dispatch, bank, account}, {chosenBank
 							<span>{bank.name}</span>
 						</div>)}
 				</div>
-				<form class="content" id="edit-account">
+				<form class="content">
                     <div class="form-group">
                         <label class="control-label" htmlFor="account">Account Number </label>
                         <div class="input-wrap">

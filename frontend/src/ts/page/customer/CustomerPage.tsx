@@ -4,6 +4,7 @@ import Directory from "../common/Directory";
 import Navigator from "./Navigator";
 import AccountInfo from "./AccountInfo";
 import BankAccount from "./BankAccount";
+import Services from "./Services";
 import {Route, withRouter} from "react-router-dom";
 import { connect } from "react-redux";
 
@@ -22,6 +23,7 @@ class CustomerPage extends React.Component<{history, loggedIn: boolean, location
 				<Navigator location={this.props.location.pathname}/>
 				<Route exact path="/(customer/account|customer)/" component={AccountInfo}/>
 				<Route path="/customer/bank" component={BankAccount}/>
+				<Route path="/customer/services" component={Services}/>
 			</div>
 		</div>
 	}

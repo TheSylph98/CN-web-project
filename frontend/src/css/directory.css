@@ -25,6 +25,7 @@
 	font-family: "Open Sans", sans-serif;
 	display: inline-block;
     position: relative;
+    min-height: 14px;
 }
 
 .directory li a {

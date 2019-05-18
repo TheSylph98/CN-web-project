@@ -45,7 +45,13 @@ class Navigator extends React.Component {
                             " ",
                             React.createElement("i", { class: "fa fa-credit-card" }),
                             " ",
-                            React.createElement("span", null, "Transaction history"))))));
+                            React.createElement("span", null, "Transaction history"))),
+                    React.createElement("li", { class: location.endsWith("friends") ? "active" : "" },
+                        React.createElement(react_router_dom_1.Link, { to: "/customer/friends" },
+                            " ",
+                            React.createElement("i", { class: "fa fa-address-book" }),
+                            " ",
+                            React.createElement("span", null, "Friend list"))))));
     }
 }
 function mapStateToProps(state) {

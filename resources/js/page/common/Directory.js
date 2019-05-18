@@ -14,7 +14,11 @@ class Directory extends React.Component {
             "notification": "Notification",
             "history": "Traction History",
             "services": "Services",
-            "bank": "Bank Account"
+            "bank": "Bank Account",
+            "transfer": "Transfer",
+            "withdraw": "Withdraw",
+            "transact": "Transact",
+            "deposit": "Deposit",
         };
         return React.createElement("div", { class: "directory" },
             React.createElement("div", { class: "container" },

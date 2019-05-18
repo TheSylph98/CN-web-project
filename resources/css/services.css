@@ -1,0 +1,28 @@
+.content-right .wrapper.service-tab {
+	height: 50px;
+	padding: 0px!important;
+	display: flex;
+}
+
+.service-tab .tab {
+	width: 120px;
+    display: flex;
+    align-items: center;
+    text-align: center;
+    color: #fff;
+    font-size: 14px;
+    padding: 10px;
+    margin: 0 15px;
+    font-weight: 600;
+    font-family: "Open Sans", sans-serif;
+    border-bottom: 3px solid transparent;
+}
+
+.service-tab .tab span {
+	margin-left: 10px;
+}
+
+.service-tab .tab:hover, .service-tab .tab.active {
+	color: #fd961a;
+	border-bottom: 3px solid #fd961a;
+}
