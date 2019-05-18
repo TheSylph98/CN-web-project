@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 17, 2019 at 11:54 AM
+-- Generation Time: May 18, 2019 at 10:11 AM
 -- Server version: 10.1.34-MariaDB
 -- PHP Version: 7.2.8
 
@@ -19,7 +19,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `e_wallet`
+-- Database: `e_wallet1`
 --
 
 -- --------------------------------------------------------
@@ -34,15 +34,10 @@ CREATE TABLE `chuyentien` (
   `noidung` text NOT NULL,
   `time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `id_chuyen` int(11) NOT NULL,
-  `id_nhan` int(11) NOT NULL
+  `id_nhan` int(11) NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `chuyentien`
---
-
-INSERT INTO `chuyentien` (`id`, `sotien`, `noidung`, `time`, `id_chuyen`, `id_nhan`) VALUES
-(1, 500000, 'dasdasdvasgdfgdags', '2019-05-17 09:51:12', 1, 3);
 
 -- --------------------------------------------------------
 
@@ -53,16 +48,18 @@ INSERT INTO `chuyentien` (`id`, `sotien`, `noidung`, `time`, `id_chuyen`, `id_nh
 CREATE TABLE `danhba` (
   `id` int(11) NOT NULL,
   `users_id` int(11) NOT NULL,
-  `friend_id` int(11) NOT NULL
+  `friend_id` int(11) NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `danhba`
 --
 
-INSERT INTO `danhba` (`id`, `users_id`, `friend_id`) VALUES
-(1, 1, 2),
-(2, 1, 4);
+INSERT INTO `danhba` (`id`, `users_id`, `friend_id`, `created_at`, `updated_at`) VALUES
+(1, 1, 3, '2019-05-18 08:10:38', NULL),
+(2, 1, 3, '2019-05-18 08:10:38', NULL);
 
 -- --------------------------------------------------------
 
@@ -80,11 +77,10 @@ CREATE TABLE `loaihoadon` (
 --
 
 INSERT INTO `loaihoadon` (`id`, `tenloai`) VALUES
-(1, 'Tien Nha'),
-(2, 'Tien Dien'),
-(3, 'Tien Mang'),
-(4, 'Tien K+'),
-(5, 'Khac');
+(1, 'Tien dien'),
+(2, 'Tien Nuoc'),
+(3, 'Tien Nha'),
+(4, 'Tien Mang');
 
 -- --------------------------------------------------------
 
@@ -95,17 +91,21 @@ INSERT INTO `loaihoadon` (`id`, `tenloai`) VALUES
 CREATE TABLE `napthe` (
   `id` int(11) NOT NULL,
   `sotien` int(11) NOT NULL,
-  `time` timestamp NULL DEFAULT NULL,
-  `users_id` int(11) NOT NULL,
-  `nhamang_id` int(11) NOT NULL
+  `users_id` int(11) DEFAULT NULL,
+  `nhamang_id` int(11) NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `napthe`
 --
 
-INSERT INTO `napthe` (`id`, `sotien`, `time`, `users_id`, `nhamang_id`) VALUES
-(1, 5000000, '2019-05-17 09:54:09', 1, 1);
+INSERT INTO `napthe` (`id`, `sotien`, `users_id`, `nhamang_id`, `created_at`, `updated_at`) VALUES
+(1, 5000, 1, 1, NULL, NULL),
+(2, 100000, 1, 1, '2019-05-17 07:39:44', '2019-05-17 07:39:44'),
+(3, 100000, 1, 1, '2019-05-17 07:40:05', '2019-05-17 07:40:05'),
+(4, 200000, 1, 2, '2019-05-17 07:44:45', '2019-05-17 07:44:45');
 
 -- --------------------------------------------------------
 
@@ -117,15 +117,10 @@ CREATE TABLE `naptien` (
   `id` int(11) NOT NULL,
   `sotien` int(11) NOT NULL,
   `time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  `users_id` int(11) NOT NULL
+  `users_id` int(11) NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `naptien`
---
-
-INSERT INTO `naptien` (`id`, `sotien`, `time`, `users_id`) VALUES
-(1, 5000000, '2019-05-17 09:53:17', 1);
 
 -- --------------------------------------------------------
 
@@ -143,12 +138,10 @@ CREATE TABLE `nganhang` (
 --
 
 INSERT INTO `nganhang` (`id`, `ten_nganhang`) VALUES
-(1, 'BIDV'),
-(2, 'VietTibBank'),
+(1, 'VietTinBank'),
+(2, 'BIDV'),
 (3, 'ACB'),
-(4, 'A Chau'),
-(5, 'Agribank'),
-(6, 'SacomBank');
+(4, 'DongA Bank');
 
 -- --------------------------------------------------------
 
@@ -167,10 +160,9 @@ CREATE TABLE `nhamang` (
 
 INSERT INTO `nhamang` (`id`, `tennhamang`) VALUES
 (1, 'Vietel'),
-(2, 'MobilePhone'),
-(3, 'Vina'),
-(4, 'VietNameMoblie'),
-(5, 'garena');
+(2, 'Garena'),
+(3, 'VinaPhone'),
+(4, 'MobilePhone');
 
 -- --------------------------------------------------------
 
@@ -182,7 +174,9 @@ CREATE TABLE `ruttien` (
   `id` int(11) NOT NULL,
   `sotien` int(11) NOT NULL,
   `time` timestamp NULL DEFAULT NULL,
-  `users_id` int(11) NOT NULL
+  `users_id` int(11) NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -195,8 +189,19 @@ CREATE TABLE `taikhoan` (
   `sotaikhoan` char(20) NOT NULL,
   `sotien` int(11) DEFAULT '5000000',
   `nganhang_id` int(11) NOT NULL,
-  `users_id` int(11) NOT NULL
+  `users_id` int(11) DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `taikhoan`
+--
+
+INSERT INTO `taikhoan` (`sotaikhoan`, `sotien`, `nganhang_id`, `users_id`, `created_at`, `updated_at`) VALUES
+('1900018645', 5000000, 2, 1, NULL, NULL),
+('190001864525', 5000000, 1, 3, NULL, NULL),
+('1984135535', 5000000, 1, 1, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -211,15 +216,17 @@ CREATE TABLE `thanhtoan` (
   `loaihoadon_id` int(11) NOT NULL,
   `noidung` text,
   `trangthai` tinyint(1) DEFAULT NULL,
-  `users_id` int(11) NOT NULL
+  `users_id` int(11) NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `thanhtoan`
 --
 
-INSERT INTO `thanhtoan` (`id`, `time`, `sotien`, `loaihoadon_id`, `noidung`, `trangthai`, `users_id`) VALUES
-(1, NULL, 5000, 4, 'asdsadasda', 0, 1);
+INSERT INTO `thanhtoan` (`id`, `time`, `sotien`, `loaihoadon_id`, `noidung`, `trangthai`, `users_id`, `created_at`, `updated_at`) VALUES
+(1, '2019-05-17 13:56:49', 5000, 1, '123', 0, 1, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -231,15 +238,10 @@ CREATE TABLE `thongbao` (
   `id` int(11) NOT NULL,
   `tieude` varchar(255) NOT NULL,
   `noidung` text NOT NULL,
-  `time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+  `time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `thongbao`
---
-
-INSERT INTO `thongbao` (`id`, `tieude`, `noidung`, `time`) VALUES
-(1, 'gg', 'gghomepage', '2019-05-17 09:43:38');
 
 -- --------------------------------------------------------
 
@@ -265,10 +267,9 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `ten`, `email`, `password`, `diachi`, `sodienthoai`, `remember_token`, `sotien`, `created_at`, `updated_at`) VALUES
-(1, 'sylph', '1234@gmail.com', '$2y$10$jQQ6IDPFA0TOfUVYvhlz6.zKG3L1013cfa8K4Bvwa7wVuOvr3vDYy', 'Ha Noi - Viet Nam', 19008198, NULL, 0, '2019-05-17 02:46:41', '2019-05-17 02:46:41'),
-(2, 'sylph1', '12342@gmail.com', '$2y$10$EHnYVfDUUBU1lq1VUFW4l.XWYap1hA.6JnznxlJb9pHZOMDq.4irW', 'Ha Noi - Viet Nam', 19008198, NULL, 0, '2019-05-17 02:50:04', '2019-05-17 02:50:04'),
-(3, 'sylph12', '123422@gmail.com', '$2y$10$jg2SsNX6FCiLKOERPjOFp.H0Fr17GPgEt/oBpDQD5mJGMMT6SLP2e', 'Ha Noi - Viet Nam', 19008198, NULL, 0, '2019-05-17 02:50:21', '2019-05-17 02:50:21'),
-(4, 'thanh tung', '12342dddadas2@gmail.com', '$2y$10$p1C3dJInbZtZki1kco9b6.XwmTYb3VZTdpyfTFs2fudODZzyqHPfy', 'Ha Noi - Viet Nam', 1900819801, NULL, 0, '2019-05-17 02:50:46', '2019-05-17 02:50:46');
+(1, 'sylph', '1234@gmail.com', '$2y$10$OFW1QC91LLt2//pp.uOEhubivtgFG4vfR/rRb.Htnhhyz78GOhGWu', 'Ha Noi - Viet Nam', 19008198, NULL, 4600000, '2019-05-17 06:54:17', '2019-05-17 07:44:45'),
+(2, 'sylph1', '1234d@gmail.com', '$2y$10$MqIS8YDDbb7giDcwVXpe0.eoPMSUuuXqSIxZkJyIAxaLjcTPxRgti', 'Ha Noi - Viet Nam', 19008190, NULL, 0, '2019-05-17 06:54:40', '2019-05-17 06:54:40'),
+(3, 'sylph12', '123sa4d@gmail.com', '$2y$10$UMn3AvZz9VgCimywtdDs8OqFW0pzno6fpOj/C0HAAVsnTEsuG3W5i', 'Ha Noi - Viet Nam', 19008199, NULL, 0, '2019-05-17 06:55:00', '2019-05-17 06:55:00');
 
 --
 -- Indexes for dumped tables
@@ -366,7 +367,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `chuyentien`
 --
 ALTER TABLE `chuyentien`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `danhba`
@@ -378,31 +379,31 @@ ALTER TABLE `danhba`
 -- AUTO_INCREMENT for table `loaihoadon`
 --
 ALTER TABLE `loaihoadon`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `napthe`
 --
 ALTER TABLE `napthe`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `naptien`
 --
 ALTER TABLE `naptien`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `nganhang`
 --
 ALTER TABLE `nganhang`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `nhamang`
 --
 ALTER TABLE `nhamang`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `ruttien`
@@ -420,13 +421,13 @@ ALTER TABLE `thanhtoan`
 -- AUTO_INCREMENT for table `thongbao`
 --
 ALTER TABLE `thongbao`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- Constraints for dumped tables
