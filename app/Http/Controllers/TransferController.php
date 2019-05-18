@@ -53,16 +53,15 @@ class TransferController
 
     }
 
-//    lay email nguoi
+//    lay thong tin nguoi nhan qua email
     public function getIdNhan($email)
     {
-        $user = DB::table('users')->where('email',$email)->first();
+        $user_nhan = DB::table('users')->where('email',$email)->first();
 
-        if (!$user) {
+        if (!$user_nhan) {
             return -1;
         }
-        $id = $user->id;
-        return $id;
+        return $user_nhan;
     }
 
     public function postTransfer(Request $request)
@@ -104,8 +103,8 @@ class TransferController
 
         //      check email nguoi nhan , neu ton tai lay id nguoi nhan
 
-        $id_nhan = $this->getIdNhan($request->email_nhan);
-        if ($id_nhan < 0) {
+        $user_nhan = $this->getIdNhan($request->email_nhan);
+        if (!$user_nhan ) {
                 return response()->json(
                     [
                         "title" => "error",
@@ -116,13 +115,22 @@ class TransferController
 //        tao doi tuong chuyen tien
         $chuyen_tien = new chuyentien();
         $chuyen_tien->id_chuyen = $user->id;
-        $chuyen_tien->id_nhan = $id_nhan;
+        $chuyen_tien->id_nhan = $user_nhan->id;
         $chuyen_tien->sotien = $request->sotien;
         $chuyen_tien->noidung = $request->noidung;
 
         $chuyen_tien->save();
 
+//        cập nhật lai số tiên trong wallet
 
+        $user->sotien = $user->sotien - $request->sotien;
+        $user->save();
+
+        $user_nhan = User::findOrFail($user_nhan->id);
+        $user_nhan->sotien = $user_nhan->sotien + $request->sotien;
+        $user_nhan->save();
+
+        return view("viewtest.ok");
 
 
         }
