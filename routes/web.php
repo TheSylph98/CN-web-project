@@ -26,9 +26,11 @@ Route::post('dang-ki','HomeController@DoRegister');
 Route::post('dang-xuat','HomeController@Logout');
 
 Route::post('quan-li-thong-tin','HomeController@ChinhSuaThongTin');
-
+//chuyen tien
 Route::get("transfer", "TransferController@getViewTransfer");
-Route::post("post-transfer", "TransferController@postTransfer")->name("post-transfer");
+Route::post("post-transfer", "TransferController@postTransfer");
+//
+
 Route::get('them-tai-khoan','HomeController@gThemTaiKhoan');
 Route::post('them-tai-khoan','HomeController@pThemtaikhoan');
 

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use function PHPSTORM_META\elementType;
 use Validator;
 use App\naptien;
 use App\chuyentien;
@@ -66,18 +67,7 @@ class HomeController extends Controller
               'amount' => $user->sotien,
             ]
           ]);
-        } else {
-            return response()->json([
-              'login' => 'success',
-              'user' => [
-                'username' => $user->ten,
-                'email' => $user->email,
-                'password' => $user->password,
-                'address'=> $user->diachi,
-                'phone'=> $user->sodienthoai
-              ]
-            ]);
-          } else {
+        } else{
               return response()->json([
                 'login' => 'failed',
                 'errors' => 'Incorrect password or email does not exist'
@@ -246,13 +236,14 @@ class HomeController extends Controller
          'errors' => $err[0]
        ]); }
      else {
-       $tk->users_id = $user->id;
-       $tk->save();
-       return response()->json([
-         'add_account'=>'true',
-         'account' => $tk,
-         'message'=>'Ban da them thanh cong'
-       ]);
+//         $tk
+//       $tk->users_id = $user->id;
+//       $tk->save();
+//       return response()->json([
+//         'add_account'=>'true',
+//         'account' => $tk,
+//         'message'=>'Ban da them thanh cong'
+//       ]);
    }
  }
   public function GetBank(){
@@ -297,7 +288,7 @@ class HomeController extends Controller
     else {
       $notification = new thongbao;
       $notification->tieude = $request->title;
-      $notification->noidung = $request->content;
+      $notification->noidung = $request->noidung;
       //$notification->
       $notification->save();
       return response()->json([
