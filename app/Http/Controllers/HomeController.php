@@ -21,56 +21,53 @@ use App\thongbao;
 class HomeController extends Controller
 {
     //
-    public function index(){
+  public function index(){
       return view('index');
     }
 
-    public function Login(){
+  public function Login(){
       return view('page.login');
     }
 
-    public function LoginAuth(Request $request){
-    // Cách sử dụng validator nếu muốn dùng if để kiểm tra lỗi dữ liệu đầu vào trước khi kiểm tra đăng nhập
-    //(Tham khảo mục #Manually Creating Validators tại trang chủ Laravel)
-    $validator = Validator::make($request->all(),
-      [
-        'email' => 'required',
-        'password' => 'required|min:6',
-      ],
-      [
-        'email.required' => 'You have not entered e-mail address!',
-        'password.required' => 'You have not entered a password!',
-        'password.min' => 'Password includes at least 6 characters!',
-      ]);
-    $errs = $validator->errors();
-    $err = $errs->all();
-    if($validator->fails()){
-      return response()->json([
-        'login' => 'failed',
-        'errors' => $err[0]
-      ]);
-    }
-    else
-    {
-      if(Auth::attempt(['email' => $request->email, 'password' => $request->password])){
-          $user = Auth::user();
-          return response()->json([
-            'login' => 'success',
-            'user' => [
-              'username' => $user->ten,
-              'email' => $user->email,
-              'password' => $user->password,
-              'address'=> $user->diachi,
-              'phone'=> $user->sodienthoai,
-              'amount' => $user->sotien,
-            ]
-          ]);
-        } else {
+  public function LoginAuth(Request $request){
+      $validator = Validator::make($request->all(),
+        [
+          'email' => 'required',
+          'password' => 'required|min:6',
+        ],
+        [
+          'email.required' => 'You have not entered e-mail address!',
+          'password.required' => 'You have not entered a password!',
+          'password.min' => 'Password includes at least 6 characters!',
+        ]);
+      $errs = $validator->errors();
+      $err = $errs->all();
+      if($validator->fails()){
+        return response()->json([
+          'login' => 'failed',
+          'errors' => $err[0]
+        ]);
+      }
+      else
+      {
+        if(Auth::attempt(['email' => $request->email, 'password' => $request->password])){
+            $user = Auth::user();
             return response()->json([
-              'login' => 'failed',
-              'errors' => 'Incorrect password or email does not exist'
+              'login' => 'success',
+              'user' => [
+                'username' => $user->ten,
+                'email' => $user->email,
+                'password' => $user->password,
+                'address'=> $user->diachi,
+                'phone'=> $user->sodienthoai
+              ]
             ]);
-    }
+          } else {
+              return response()->json([
+                'login' => 'failed',
+                'errors' => 'Incorrect password or email does not exist'
+              ]);
+      }
   }
 }
 
@@ -200,12 +197,12 @@ class HomeController extends Controller
     if(Auth::check()){
       $user = Auth::user();
       $nganhang = nganhang::all();
-      //return view('page.themtaikhoan',['user_info' => Auth::user(),'nganhang'=>$nganhang]);
-      return response()->json([
-        'check'=>'true',
-        'user_info'=> $user,
-        'bank'=> $nganhang
-      ]);
+      return view('page.themtaikhoan',['user_info' => Auth::user(),'nganhang'=>$nganhang]);
+      // return response()->json([
+      //   'check'=>'true',
+      //   'user_info'=> $user,
+      //   'bank'=> $nganhang
+      // ]);
     }
     else
       //return redirect('dang-nhap')->with('message','Bạn chưa Đăng Nhập!');
@@ -215,44 +212,73 @@ class HomeController extends Controller
       ]);
   }
 
-   public function pThemtaikhoan(Request $request){
+  public function pThemtaikhoan(Request $request){
+
      $validator = Validator::make($request->all(),
      [
-       'sotaikhoan' => 'required',
-       'nganhang' => 'required',
+       'sotaikhoan' => 'required|max:16'
      ],
      [
-       'sotaikhoan.required' => 'You have not entered account number yet!',
-       'nganhang.required' => 'You have not specified bank!',
+       'sotaikhoan.required' => 'Bạn chưa nhập tài khoản!',
+       'sotaikhoan.max' => 'So tai khoan ko qua 16 ki tu'
      ]);
+
      $user = Auth::user();
+     $id =$user->id;
      $errs = $validator->errors();
      $err = $errs->all();
+     $sotk = $request->sotaikhoan;
+     echo $sotk;
+     $tk = taikhoan::where('sotaikhoan',$sotk)->get();
+     // kiem tra tai khoan ton tai khong
+     if (count($tk)==0){
+      return response()->json([
+        'link'=>'error',
+        'message'=> 'tai khoan khong ton tai'
+        ]);
+      exit();
+      }
+     $id_ngh =  $tk[0]->nganhang_id;
+     // kiem tra tai khoan thuoc ngan hang
+     if($id_ngh != $request->nganhang){
+       return response()->json([
+         'link' => 'error',
+         'message' => 'tai khoan khong ton tai trong ngan hang nay'
+       ]);
+       exit();
+     }
+     //kiem tra tai khoan da link toi user nao chua
+     if(!is_null($tk[0]->users_id)){
+       return response()->json([
+         'link'=>'error',
+         'message'=>'tai khoan nay da co user sd'
+       ]);
+       exit();
+     }
+     //ktra loi nhap dau vao
      if($validator->fails()){
        return response()->json([
          'add_account' => 'error',
          'errors' => $err[0]
-       ]); }
-     else {
-       $tk = new taikhoan;
-       $tk->users_id = $user->id;
-       $tk->sotaikhoan = $request->sotaikhoan;
-       $tk->nganhang_id = $request->nganhang;
-       $tk->sotien = 5000000;
-       $tk->save();
-       return response()->json([
-         'add_account'=>'true',
-         'account' => $tk,
-         'message'=>'Ban da them thanh cong'
        ]);
-   }
+     }
+     //
+     $account = $tk[0];
+     echo $account;
+     $account->users_id = $id;
+     $account->save();
+     return response()->json([
+       'link' => 'success',
+       'account' => $tk[0],
+       'user' => $user
+     ]);
  }
-   public function GetBank(){
+  public function GetBank(){
      $bank = nganhang::all();
       return response()->json($bank);
    }
 
-   public function GetPhoneBook(){
+  public function GetPhoneBook(){
      $user = Auth::user();
      $user_id = $user->id;
      $friend = array();
@@ -264,9 +290,9 @@ class HomeController extends Controller
         //echo $friend_info;
         array_push($friend,$friend_info);
      }
-     $fr = json_encode($friend);
+     //$fr = json_encode($friend);
 
-     return response()->json($fr);
+     return response()->json($friend);
    }
 
   public function PNotification(Request $request){
@@ -288,9 +314,8 @@ class HomeController extends Controller
       ]); }
     else {
       $notification = new thongbao;
-      $notification->tieude = $request->title;
-      $notification->noidung = $request->content;
-      //$notification->
+      $notification->tieude = $request->tieude;
+      $notification->noidung = $request->noidung;
       $notification->save();
       return response()->json([
         'nofi' => 'success',
@@ -300,53 +325,51 @@ class HomeController extends Controller
   }
 
   public function TransactionHistory(){
-    $user = Auth::user();
-    $id = $user->id;
-
-    $user_account = taikhoan::where('users_id',$id)->get();
-    $list = array();
-
-    //ls nap tien
-    array_push($list,"naptien");
-    $naptien = naptien::where('users_id',$id)->get();
-    array_push($list,$naptien);
-    //ls chuyentien
-    array_push($list,"chuyentien");
-    $chuyentien = chuyentien::where('id_chuyen',$id)->get();
-    array_push($list,$chuyentien);
-    //ls  napthe
-    array_push($list,"napthe");
-    $napthe = napthe::where('Users_id',$id)->get();
-    array_push($list,$napthe);
-    //ls ruttien
-    array_push($list,"ruttien");
-    $ruttien = ruttien::where('users_id',$id)->get();
-    array_push($list,$ruttien);
-    //ls thanhtoan
-    array_push($list,"thanhtoan");
-    $thanhtoan = thanhtoan::where('users_id',$id)->get();
-    array_push($list,$thanhtoan);
-
-    $lsgd = json_encode($list);
-    return response()->json($lsgd);
+    if(Auth::check()){
+      $user = Auth::user();
+      $id = $user->id;
+      $user_account = taikhoan::where('users_id',$id)->get();
+      //ls nap tien
+      $naptien = naptien::where('users_id',$id)->get();
+      //ls chuyentien
+      $chuyentien = chuyentien::where('id_chuyen',$id)->get();
+      //ls  napthe
+      $napthe = napthe::where('Users_id',$id)->get();
+      //ls ruttien
+      $ruttien = ruttien::where('users_id',$id)->get();
+      //ls thanhtoan
+      $thanhtoan = thanhtoan::where('users_id',$id)->get();
+      return response()->json([
+        'naptien' => $naptien,
+        'chuyentien' => $chuyentien,
+        'napthe' => $napthe,
+        'ruttien' => $ruttien,
+        'thanhtoan' => $thanhtoan
+      ]);
+    } else {
+      return response()->json([
+        'trans'=>'error',
+        'message'=>'ban chua dang nhap'
+      ]);
+    }
   }
 
   public function GetBankUser(){
-    if(Auth::check()){
-    $user = Auth::user();
-    $id = $user->id;
-    $tk = taikhoan::where('users_id',$id)->get('nganhang_id');
-    $list_bank = array();
-    foreach($tk as $t){
-      $ng_id = $t->nganhang_id;
-      $nganhang = nganhang::where('id',$ng_id)->get();
-      array_push($list_bank,$nganhang[0]);
+      if(Auth::check()){
+      $user = Auth::user();
+      $id = $user->id;
+      $tk = taikhoan::where('users_id',$id)->get('nganhang_id');
+      $list_bank = array();
+      foreach($tk as $t){
+        $ng_id = $t->nganhang_id;
+        $nganhang = nganhang::where('id',$ng_id)->get();
+        array_push($list_bank,$nganhang);
+      }
+      $bank_u = json_encode($list_bank);
+      return response()->json($bank_u);
     }
-    // $bank_u = json_encode($list_bank);
-    return response()->json($list_bank);
-  }
-   else
-      return response()->json(['message'=>'ban chua dang nhap']);
+     else
+        return response()->json(['message'=>'ban chua dang nhap']);
 }
 
   public function NapThe(Request $request){
@@ -382,7 +405,7 @@ class HomeController extends Controller
         'user' => $user
       ]);
     }
-  } else
+  }else
      return response()->json([
       'bank'=>'error',
       'message'=> 'ban chua dang nhap '
@@ -395,4 +418,35 @@ class HomeController extends Controller
     return view('page.napthe',['nhamang' => $nhamang,'user'=>$user]);
   }
 
+  public function GetThanhToan(){
+    if (Auth::check()){
+      $user = Auth::user();
+      $loaihd = loaihoadon::all();
+      return response()->json([
+        'loaihoadon'=> $loaihd
+      ]);
+  }else
+      return response()->json([
+        'thanhtoan'=> 'error',
+        'message'=>'ban chua dang nhap'
+      ]);
+  }
+
+  public function PostThanhToan(Request $request){
+    if(Auth::check()){
+      $user = Auth::user();
+      $validator = Validator::make($request->all(),
+        [
+          'sotien' => 'required'
+        ],
+        [
+          'sotien.required' => 'You have not money!'
+        ]);
+
+    }else
+      return response()->json([
+        'thanhtoan'=>'error',
+        'message'=>'ban chua dang nhap'
+      ]);
+  }
 }
