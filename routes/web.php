@@ -27,18 +27,14 @@ Route::post('dang-xuat','HomeController@Logout');
 
 // Route::get('quan-li-thong-tin','HomeController@ThongTinCaNhan');
 Route::post('quan-li-thong-tin','HomeController@ChinhSuaThongTin');
-<<<<<<< HEAD
+
+
 //chuyen tien
 Route::get("transfer", "TransferController@getViewTransfer");
 Route::post("post-transfer", "TransferController@postTransfer");
-//
-=======
 
-//chuyen tien
 
-Route::get("transfer", "TransferController@getViewTransfer");
-Route::post("post-transfer", "TransferController@postTransfer")->name("post-transfer");
->>>>>>> a16820b6ea4037177bb870ef659481771038f374
+
 
 Route::get('them-tai-khoan','HomeController@gThemTaiKhoan');
 Route::post('them-tai-khoan','HomeController@pThemtaikhoan');
