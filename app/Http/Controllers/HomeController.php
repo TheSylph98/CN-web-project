@@ -360,36 +360,39 @@ class HomeController extends Controller
       ]);
 
     $user = Auth::user();
+    $id = Auth::user()->id;
     $tien_user = $user->sotien;
     $tiennapthe = $request->sotien;
-    echo $tien_user;
-    echo   $tiennapthe;
-    // if ($tiennapthe > $tien_user){
-    //   return response()->json([
-    //     'napthe'=>'error',
-    //     'message'=>'khong du tien nap the'
-    //   ]);
-    // }else {
-    //   $napthe = new napthe;
-    //   $napthe->sotien = intVal("$tiennapthe");
-    //   $nathe->users_id = $user->id;
-    //   $napthe->nhamang_id = $request->nhamang;
-    //   $napthe->save();
-    //
-    //   $user->sotien = $tien_user - $tiennapthe;
-    //   $user->save();
-    //   return response()->json($napthe);
-    // }
+    if ($tiennapthe > $tien_user){
+      return response()->json([
+        'napthe'=>'error',
+        'message'=>'khong du tien nap the'
+      ]);
+    }else {
+      $napthe = new napthe;
+      $napthe->sotien = $tiennapthe;
+      $napthe->users_id = $id;
+      $napthe->nhamang_id = $request->nhamang;
+      $napthe->save();
+
+      $user->sotien = $tien_user - $tiennapthe;
+      $user->save();
+      return response()->json([
+        'napthe'=> $napthe,
+        'user' => $user
+      ]);
+    }
   } else
      return response()->json([
       'bank'=>'error',
-      'message'=> 'ban chua dang nha '
+      'message'=> 'ban chua dang nhap '
      ]);
   }
 
   public function GNapThe(){
+    $user = Auth::user();
     $nhamang = nhamang::all();
-    return view('page.napthe',['nhamang' => $nhamang]);
+    return view('page.napthe',['nhamang' => $nhamang,'user'=>$user]);
   }
 
 }
