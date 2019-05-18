@@ -9,10 +9,10 @@ exports.userActions = {
     register,
     modify,
 };
-function login(username, password, token) {
+function login(username, password) {
     return dispatch => {
         dispatch(request({ username }));
-        backend.loginAuth(username, password, token)
+        backend.loginAuth(username, password)
             .then(user => {
             dispatch(success(user));
             localStorage.setItem("user", JSON.stringify(user));
@@ -40,10 +40,10 @@ function logout() {
     function success() { return { type: constants_1.userConstants.LOGOUT_SUCCESS }; }
     function failure(error) { return { type: constants_1.userConstants.LOGOUT_FAILURE, error }; }
 }
-function register(data, token) {
+function register(data) {
     return dispatch => {
         dispatch(request({ username: data.username }));
-        backend.register(data, token)
+        backend.register(data)
             .then(user => {
             dispatch(success(user));
             localStorage.setItem("user", JSON.stringify(user));

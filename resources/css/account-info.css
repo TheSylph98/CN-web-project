@@ -3,6 +3,7 @@
 	padding-left: 40px;
 	display: flex;
 	flex-direction: row;
+    min-height: 100vh;
 }
 
 .content-right {
@@ -22,7 +23,7 @@
     color: #fff;
 }
 
-.account-profile {
+.content-right .wrapper {
     display: block;
     margin-bottom: 20px;
     width: 100%!important;
@@ -31,21 +32,22 @@
     border-radius: 4px;
 }
 
-.account-profile form {
+.content-right .wrapper form {
     width: 60%;
+    padding-left: 10px;
 }
 
-.account-profile .form-group {
+.content-right .wrapper .form-group {
     margin-bottom: 15px;
     position: relative;
 }
 
-.account-profile .form-group .form-control[disabled] {
+.content-right .wrapper .form-group .form-control[disabled] {
     background: #3d3d3d;
     color: #aaa;
 }
 
-.account-profile .form-group .control-label {
+.content-right .wrapper .form-group .control-label {
     width: 20%;
     font-size: 14px;
     margin-bottom: 0;
@@ -53,30 +55,36 @@
     color: #fff;
 }
 
-.account-profile .form-group .input-wrap {
+.content-right .wrapper .form-group .input-wrap {
     display: inline-block;
     width: 405px;
 }
 
-.account-profile .form-group .input-wrap input[type=radio]+span{
+.content-right .wrapper .form-group .input-wrap.amount {
+    color: #fd961a;
+    font-size: 20px;
+    font-weight: 600;
+}
+
+.content-right .wrapper .form-group .input-wrap input[type=radio]+span{
     padding-left: 20px;
     color: #fff;
 }
 
-.account-profile .form-group .input-wrap .row {
+.content-right .wrapper .form-group .input-wrap .row {
     padding: 7px 0;
     height: 46px;
     display: flex;
     align-items: center;
 }
 
-.register-form .content .birthday-picker .form-control {
+.content-right .wrapper .content .birthday-picker .form-control {
     width: 30%!important;
     margin-right: 10px;
     display: inline-block;
 }
 
-.account-profile .form-group .control-label span {
+.content-right .wrapper .form-group .control-label span {
     display: block;
     margin-top: 5px;
     color: #eee;
@@ -84,22 +92,22 @@
     position: absolute;
 }
 
-.account-profile .form-group .input-wrap.margin {
+.content-right .wrapper .form-group .input-wrap.margin {
     margin-left: 20%;
 }
 
-.account-profile .form-group .input-wrap .checkbox {
+.content-right .wrapper .form-group .input-wrap .checkbox {
     display: inline-block;
     cursor: pointer;
     font-size: 13px;
 }
 
-.account-profile .form-group .input-wrap .checkbox span{
+.content-right .wrapper .form-group .input-wrap .checkbox span{
 	color: #fff;
 	margin-left: 20px;
 }
 
-.account-profile .form-group .btn-update {
+.content-right .wrapper .form-group .btn-update {
     border: none;
     width: 176px;
     height: 40px;
@@ -109,12 +117,12 @@
     background-color: #fd961a;
 }
 
-.account-profile .form-group .btn-update:hover {
+.content-right .wrapper .form-group .btn-update:hover {
     background: rgba(253, 150, 26,.9) !important;
     outline: none !important;
 }
 
-.account-profile .password-group {
+.content-right .wrapper .password-group {
     transition: 0.1s;
 }
 

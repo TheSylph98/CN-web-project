@@ -5,6 +5,7 @@ const TopPanel_1 = require("../common/TopPanel");
 const Directory_1 = require("../common/Directory");
 const Navigator_1 = require("./Navigator");
 const AccountInfo_1 = require("./AccountInfo");
+const BankAccount_1 = require("./BankAccount");
 const react_router_dom_1 = require("react-router-dom");
 const react_redux_1 = require("react-redux");
 class CustomerPage extends React.Component {
@@ -19,7 +20,8 @@ class CustomerPage extends React.Component {
             React.createElement(Directory_1.default, { location: this.props.location.pathname }),
             React.createElement("div", { class: "customer-content", style: { paddingLeft: "40px", background: "#111" } },
                 React.createElement(Navigator_1.default, { location: this.props.location.pathname }),
-                React.createElement(react_router_dom_1.Route, { path: "/(customer/account|customer)/", component: AccountInfo_1.default })));
+                React.createElement(react_router_dom_1.Route, { exact: true, path: "/(customer/account|customer)/", component: AccountInfo_1.default }),
+                React.createElement(react_router_dom_1.Route, { path: "/customer/bank", component: BankAccount_1.default })));
     }
 }
 function mapStateToProps(state) {

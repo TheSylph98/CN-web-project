@@ -1,35 +1,13 @@
-export function getData(url: string, body = {}, token: string) {
-	return new Promise((resolve, reject) => {
-        fetch(url, {
-            method: "POST", 
-            mode: "cors", 
-            cache: "no-cache", 
-            credentials: "same-origin",
-            headers: {
-                "Content-Type": "application/json",
-                "X-CSRF-Token": token,
-            },
-            redirect: "follow",
-            referrer: "no-referrer", 
-            body: JSON.stringify(body), 
-        })
-        .then(response => {
-           resolve(response.json());
-        })
-        .catch(e => {
-            reject(e);
-        })
-    })
-}
+import {getData} from "./index";
 
-export function loginAuth(name: string, password: string, token: string) {
+export function loginAuth(name: string, password: string) {
 	let data = {
 		"email": name,
 		"password": password,
 	}
 
 	return new Promise((resolve, reject) => {
-        getData("dang-nhap", data, token)
+        getData("dang-nhap", data)
             .then(data => {
             	if (data["login"] === "success") {
                     resolve(data["user"]);
@@ -40,7 +18,7 @@ export function loginAuth(name: string, password: string, token: string) {
         })
 }
 
-export function register(input: {email, password, username, phone, verifyPassword}, token: string) {
+export function register(input: {email, password, username, phone, verifyPassword}) {
     let data = {
         "username": input.username,
         "email": input.email,
@@ -50,7 +28,7 @@ export function register(input: {email, password, username, phone, verifyPasswor
         "password_again": input.verifyPassword
     }
     return new Promise((resolve, reject) => {
-        getData("dang-ki", data, token)
+        getData("dang-ki", data)
             .then(data => {
                 if (data['register'] == 'success') {
                     resolve(data['user']);
@@ -63,10 +41,8 @@ export function register(input: {email, password, username, phone, verifyPasswor
 
 export function logout() {
 
-    let token = document.getElementById("csrf-token").getAttribute("content");
-
     return new Promise((resolve, reject) => {
-        getData("dang-xuat", {}, token)
+        getData("dang-xuat", {})
             .then(message => {
                 if (message["logout"] == 'success') {
                     resolve();
@@ -84,13 +60,18 @@ export function modify(input: {address, username, phone}) {
         sodt: input.phone,
     }
 
-    let token = document.getElementById("csrf-token").getAttribute("content");
-
     return new Promise((resolve, reject) => {
-        getData("quan-li-thong-tin", data, token)
+        getData("quan-li-thong-tin", data)
             .then(data => {
                 if (data['update_info'] == 'true') {
-                    resolve(data['user_info']);
+                    let user = data['user_info'];
+                    resolve({
+                        username: user['ten'],
+                        email: user['email'],
+                        address: user['diachi'],
+                        phone: user['sodienthoai'],
+                        amount: user['sotien']
+                    });
                 } else {
                     reject(data['errors']);
                 }

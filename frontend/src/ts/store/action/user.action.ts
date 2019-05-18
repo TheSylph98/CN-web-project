@@ -9,11 +9,11 @@ export const userActions = {
     modify,
 };
 
-function login(username, password, token) {
+function login(username, password) {
     return dispatch => {
         dispatch(request({ username }));
 
-        backend.loginAuth(username, password, token)
+        backend.loginAuth(username, password)
             .then(
                 user => { 
                     dispatch(success(user));
@@ -51,11 +51,11 @@ function logout() {
     function failure(error) { return { type: userConstants.LOGOUT_FAILURE, error}}
 }
 
-function register(data: {username, password, phone, email, verifyPassword}, token) {
+function register(data: {username, password, phone, email, verifyPassword}) {
     return dispatch => {
         dispatch(request({ username: data.username }));
 
-        backend.register(data, token)
+        backend.register(data)
             .then(
                 user => { 
                     dispatch(success(user));

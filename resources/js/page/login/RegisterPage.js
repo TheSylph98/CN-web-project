@@ -7,14 +7,13 @@ const action_1 = require("../../store/action");
 class RegisterPage extends React.Component {
     onSubmit(e) {
         e.preventDefault();
-        let token = document.getElementById("csrf-token").getAttribute("content");
         this.props.dispatch(action_1.userActions.register({
             email: this.email.value,
             password: this.password.value,
             username: this.username.value,
             verifyPassword: this.verifyPassword.value,
             phone: ""
-        }, token));
+        }));
     }
     render() {
         return React.createElement("div", { class: "register col-xs-12" },

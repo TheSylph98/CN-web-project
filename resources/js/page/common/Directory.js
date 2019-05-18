@@ -20,9 +20,9 @@ class Directory extends React.Component {
             React.createElement("div", { class: "container" },
                 React.createElement("div", { class: "row" },
                     React.createElement("div", { class: "col-md-12" },
-                        React.createElement("ol", { class: "title" }, titles.map(title => {
+                        React.createElement("ol", { class: "title" }, titles.map((title, number) => {
                             link += title + "/";
-                            return React.createElement("li", null,
+                            return React.createElement("li", { key: number },
                                 React.createElement(react_router_dom_1.Link, { to: link }, texts[title]));
                         }))))));
     }

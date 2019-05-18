@@ -23,8 +23,7 @@ export class LoginPage extends React.Component<{dispatch, error: string, history
 
 	onSubmit(e) {
 		e.preventDefault();
-		let token = document.getElementById("csrf-token").getAttribute("content");
-		this.props.dispatch(userActions.login(this.name.value, this.password.value, token));
+		this.props.dispatch(userActions.login(this.name.value, this.password.value));
 	}
 
 	render() {

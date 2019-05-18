@@ -29,29 +29,44 @@ class HomeController extends Controller
       return view('page.login');
     }
 
-  public function LoginAuth(Request $request){
-      $validator = Validator::make($request->all(),
-        [
-          'email' => 'required',
-          'password' => 'required|min:6',
-        ],
-        [
-          'email.required' => 'You have not entered e-mail address!',
-          'password.required' => 'You have not entered a password!',
-          'password.min' => 'Password includes at least 6 characters!',
-        ]);
-      $errs = $validator->errors();
-      $err = $errs->all();
-      if($validator->fails()){
-        return response()->json([
-          'login' => 'failed',
-          'errors' => $err[0]
-        ]);
-      }
-      else
-      {
-        if(Auth::attempt(['email' => $request->email, 'password' => $request->password])){
-            $user = Auth::user();
+
+    public function LoginAuth(Request $request){
+    // Cách sử dụng validator nếu muốn dùng if để kiểm tra lỗi dữ liệu đầu vào trước khi kiểm tra đăng nhập
+    //(Tham khảo mục #Manually Creating Validators tại trang chủ Laravel)
+    $validator = Validator::make($request->all(),
+      [
+        'email' => 'required',
+        'password' => 'required|min:6',
+      ],
+      [
+        'email.required' => 'You have not entered e-mail address!',
+        'password.required' => 'You have not entered a password!',
+        'password.min' => 'Password includes at least 6 characters!',
+      ]);
+    $errs = $validator->errors();
+    $err = $errs->all();
+    if($validator->fails()){
+      return response()->json([
+        'login' => 'failed',
+        'errors' => $err[0]
+      ]);
+    }
+    else
+    {
+      if(Auth::attempt(['email' => $request->email, 'password' => $request->password])){
+          $user = Auth::user();
+          return response()->json([
+            'login' => 'success',
+            'user' => [
+              'username' => $user->ten,
+              'email' => $user->email,
+              'password' => $user->password,
+              'address'=> $user->diachi,
+              'phone'=> $user->sodienthoai,
+              'amount' => $user->sotien,
+            ]
+          ]);
+        } else {
             return response()->json([
               'login' => 'success',
               'user' => [
@@ -212,13 +227,15 @@ class HomeController extends Controller
       ]);
   }
 
-  public function pThemtaikhoan($request){
+   public function pThemtaikhoan(Request $request){
      $validator = Validator::make($request->all(),
      [
-       'taikhoan' => 'required',
+       'sotaikhoan' => 'required',
+       'nganhang' => 'required',
      ],
      [
-       'taikhoan.required' => 'Bạn chưa nhập Tên tài khoản!',
+       'sotaikhoan.required' => 'You have not entered account number yet!',
+       'nganhang.required' => 'You have not specified bank!',
      ]);
      $user = Auth::user();
      $errs = $validator->errors();
@@ -226,14 +243,14 @@ class HomeController extends Controller
      if($validator->fails()){
        return response()->json([
          'add_account' => 'error',
-         'errors' => $err
+         'errors' => $err[0]
        ]); }
      else {
        $tk = new taikhoan;
-       $tk->id_user = $user->id;
+       $tk->users_id = $user->id;
        $tk->sotaikhoan = $request->sotaikhoan;
        $tk->nganhang_id = $request->nganhang;
-       $tk->tongsotien = 5000000;
+       $tk->sotien = 5000000;
        $tk->save();
        return response()->json([
          'add_account'=>'true',
@@ -325,21 +342,20 @@ class HomeController extends Controller
   }
 
   public function GetBankUser(){
-      if(Auth::check()){
-      $user = Auth::user();
-      $id = $user->id;
-      $tk = taikhoan::where('users_id',$id)->get('nganhang_id');
-      $list_bank = array();
-      foreach($tk as $t){
-        $ng_id = $t->nganhang_id;
-        $nganhang = nganhang::where('id',$ng_id)->get();
-        array_push($list_bank,$nganhang);
-      }
-      $bank_u = json_encode($list_bank);
-      return response()->json($bank_u);
+    if(Auth::check()){
+    $user = Auth::user();
+    $id = $user->id;
+    $tk = taikhoan::where('users_id',$id)->get('nganhang_id');
+    $list_bank = array();
+    foreach($tk as $t){
+      $ng_id = $t->nganhang_id;
+      $nganhang = nganhang::where('id',$ng_id)->get();
+      array_push($list_bank,$nganhang[0]);
     }
-     else
-        return response()->json(['message'=>'ban chua dang nhap']);
+    return response()->json($list_bank);
+  }
+   else
+      return response()->json(['message'=>'ban chua dang nhap']);
 }
 
   public function NapThe(Request $request){
@@ -412,7 +428,7 @@ class HomeController extends Controller
         [
           'sotien.required' => 'You have not money!'
         ]);
-        
+
     }else
       return response()->json([
         'thanhtoan'=>'error',
