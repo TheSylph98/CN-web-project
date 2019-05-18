@@ -21,8 +21,10 @@ exports.getBank = getBank;
 function connectAccount(accountNumber, bankId) {
     let data = {
         'sotaikhoan': accountNumber,
-        'nganhang': bankId,
     };
+    if (bankId) {
+        data['nganhang'] = bankId;
+    }
     return new Promise((resolve, reject) => {
         index_1.getData("them-tai-khoan", data)
             .then(result => {
@@ -36,3 +38,20 @@ function connectAccount(accountNumber, bankId) {
     });
 }
 exports.connectAccount = connectAccount;
+function getConnectedAccount() {
+    return new Promise((resolve, reject) => {
+        index_1.getData("bank-user")
+            .then(result => {
+            if (result instanceof Array) {
+                resolve(result.map(bank => ({
+                    name: bank['ten_nganhang'],
+                    id: bank['id'],
+                })));
+            }
+            else {
+                reject(result['message']);
+            }
+        });
+    });
+}
+exports.getConnectedAccount = getConnectedAccount;

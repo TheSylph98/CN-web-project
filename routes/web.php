@@ -23,8 +23,9 @@ Route::post('dang-nhap','HomeController@LoginAuth');
 Route::get('dang-ki','HomeController@Register');
 Route::post('dang-ki','HomeController@DoRegister');
 
+Route::post('dang-xuat','HomeController@Logout');
+
 Route::post('quan-li-thong-tin','HomeController@ChinhSuaThongTin');
-Route::post('dang-xuat', 'HomeController@Logout');
 
 Route::get("transfer", "TransferController@getViewTransfer");
 Route::post("post-transfer", "TransferController@postTransfer")->name("post-transfer");
@@ -33,5 +34,15 @@ Route::post('them-tai-khoan','HomeController@pThemtaikhoan');
 
 //Get bank
 Route::post("bank","HomeController@GetBank");
+Route::post("bank-user","HomeController@GetBankUser");
 //Get Phone Book
-Route::get("danh-ba","HomeController@GetPhoneBook");
+Route::post("danh-ba","HomeController@GetPhoneBook");
+
+//Post Notification
+Route::post("thong-bao","HomeController@PNotification");
+//get TransactionHistory
+Route::get("lich-su-giao-dich","HomeController@TransactionHistory");
+
+//Nap Thes
+Route::get('nap-the','HomeController@GNapThe');
+Route::post('nap-the','HomeController@NapThe');

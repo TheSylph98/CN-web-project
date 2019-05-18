@@ -19,7 +19,9 @@ export function getBank() {
 export function connectAccount(accountNumber: string, bankId: string) {
 	let data = {
 		'sotaikhoan': accountNumber,
-		'nganhang': bankId,
+	}
+	if (bankId) {
+		data['nganhang'] = bankId;
 	}
 	return new Promise((resolve, reject) => {
 		getData("them-tai-khoan", data)
@@ -28,6 +30,22 @@ export function connectAccount(accountNumber: string, bankId: string) {
 					resolve();
 				} else {
 					reject(result['errors']);
+				}
+			})
+	})
+}
+
+export function getConnectedAccount() {
+	return new Promise((resolve, reject) => {
+		getData("bank-user")
+			.then(result => {
+				if (result instanceof Array) {
+					resolve(result.map(bank => ({
+						name: bank['ten_nganhang'],
+						id: bank['id'],
+					})))
+				} else {
+					reject(result['message']);
 				}
 			})
 	})

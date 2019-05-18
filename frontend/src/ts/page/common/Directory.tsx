@@ -23,9 +23,9 @@ export default class Directory extends React.Component<{location: string}, {}> {
                 <div class="row">
                     <div class="col-md-12">
                         <ol class="title">
-                            {titles.map(title => {
+                            {titles.map((title, number) => {
                                 link += title + "/";
-                                return <li><Link to={link}>{texts[title]}</Link></li>
+                                return <li key={number}><Link to={link}>{texts[title]}</Link></li>
                             })}
                         </ol>
                     </div>

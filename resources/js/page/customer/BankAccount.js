@@ -15,20 +15,37 @@ class BankAccount extends React.Component {
             chosenBankId: id,
         });
     }
-    connect() {
+    connect(e) {
+        e.preventDefault();
         this.props.dispatch(action_1.accountActions.connectAccount(this.account.value, this.state.chosenBankId));
     }
     render() {
-        if (!this.props.loading && this.props.banks.length == 0) {
+        if (!this.props.bank.loading && this.props.bank.banks.length == 0) {
             this.props.dispatch(action_1.bankActions.getBank());
         }
-        let banks = this.props.banks;
+        if (!this.props.account.error && !this.props.account.loading && !this.props.account.loaded && this.props.account.accounts.length == 0) {
+            this.props.dispatch(action_1.accountActions.getConnectedAccount());
+        }
+        let banks = this.props.bank.banks;
+        let accounts = this.props.account.accounts;
         return React.createElement("div", { class: "content-right" },
             React.createElement("h1", { class: "title" }, "Bank Account"),
             React.createElement("div", { className: "wrapper bank-account" },
+                React.createElement("div", { className: "title" }, "Connected bank account"),
+                accounts.length == 0 ?
+                    React.createElement("div", { className: "small-text" }, "You have not connected to any account")
+                    :
+                        React.createElement("div", { className: "account-list" }, accounts.map(account => React.createElement("div", { className: "account", key: account.id },
+                            React.createElement("div", { className: "avatar" },
+                                React.createElement("img", { src: "resources/images/banks/" + account.name.toLowerCase() + ".png" })),
+                            React.createElement("div", { className: "text" },
+                                React.createElement("span", null, account.name),
+                                "Free Withdrawing"),
+                            React.createElement("button", null, "Withdraw")))),
                 React.createElement("div", { className: "title" }, "Choose a bank account to connect"),
                 React.createElement("div", { className: "bank-list" }, banks.map(bank => React.createElement("div", { onClick: () => this.chooseBank(bank.id), id: bank.id, class: "bank" + (this.state.chosenBankId == bank.id ? " active" : "") },
-                    React.createElement("img", { class: "bank-avatar", src: "resources/images/banks/" + bank.name.toLowerCase() + ".png" }),
+                    React.createElement("div", { class: "avatar" },
+                        React.createElement("img", { class: "bank-avatar", src: "resources/images/banks/" + bank.name.toLowerCase() + ".png" })),
                     React.createElement("span", null, bank.name)))),
                 React.createElement("form", { class: "content", id: "edit-account" },
                     React.createElement("div", { class: "form-group" },
@@ -45,11 +62,9 @@ class BankAccount extends React.Component {
     }
 }
 function mapStateToProps(state) {
-    const { banks, loading } = state.bank;
-    const { account } = state;
+    const { bank, account } = state;
     return {
-        banks,
-        loading,
+        bank,
         account,
     };
 }

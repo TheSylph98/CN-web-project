@@ -44,7 +44,6 @@ class HomeController extends Controller
       ]);
     $errs = $validator->errors();
     $err = $errs->all();
-    //echo $err;
     if($validator->fails()){
       return response()->json([
         'login' => 'failed',
@@ -62,7 +61,8 @@ class HomeController extends Controller
               'email' => $user->email,
               'password' => $user->password,
               'address'=> $user->diachi,
-              'phone'=> $user->sodienthoai
+              'phone'=> $user->sodienthoai,
+              'amount' => $user->sotien,
             ]
           ]);
         } else {
@@ -131,6 +131,7 @@ class HomeController extends Controller
         'user' => [
           'username' => $user->ten,
           'email' => $user->email,
+          'password' => $user->password,
           'address'=> $user->diachi,
           'phone'=> $user->sodienthoai,
           'sotien'=> $user->sotien
@@ -179,7 +180,7 @@ class HomeController extends Controller
       if($validator->fails()){
         return response()->json([
           'update_info' => 'error',
-          'errors' => $err[0]
+          'errors' => $err
         ]); }
       else {
         $user = Auth::user();
@@ -189,13 +190,7 @@ class HomeController extends Controller
         $user->save();
         return response()->json([
           'update_info'=> 'true',
-          'user_info' => [
-            'username' => $user->ten,
-            'email' => $user->email,
-            'address'=> $user->diachi,
-            'phone'=> $user->sodienthoai,
-            'sotien'=> $user->sotien
-          ],
+          'user_info' => $user,
           'message' =>'Chinh sua thanh cong'
         ]);
     //return redirect('quan-ly-thong-tin')->with('message','Thay Đổi thông tin Người Dùng thành công!');
@@ -252,26 +247,149 @@ class HomeController extends Controller
        ]);
    }
  }
- public function GetBank(){
-   $bank = nganhang::all();
-    return response()->json($bank);
- }
-
- public function GetPhoneBook(){
-   $user = Auth::user();
-   $user_id = $user->id;
-   $friend = array();
-   $friend_id = danhba::where('users_id',$user_id)->get('friend_id');
-  // $friends = json_decode($friend_id)
-   foreach ($friend_id as $id) {
-      $id = $id->friend_id;
-      $friend_info = User::where('id',$id)->get();
-      echo $friend_info;
-      array_push($friend,$friend_info);
+   public function GetBank(){
+     $bank = nganhang::all();
+      return response()->json($bank);
    }
-   $fr = json_encode($friend);
-   
-   return response()->json($fr);
- }
+
+   public function GetPhoneBook(){
+     $user = Auth::user();
+     $user_id = $user->id;
+     $friend = array();
+     $friend_id = danhba::where('users_id',$user_id)->get('friend_id');
+    // $friends = json_decode($friend_id)
+     foreach ($friend_id as $id) {
+        $id = $id->friend_id;
+        $friend_info = User::where('id',$id)->get();
+        //echo $friend_info;
+        array_push($friend,$friend_info);
+     }
+     $fr = json_encode($friend);
+
+     return response()->json($fr);
+   }
+
+  public function PNotification(Request $request){
+    $validator = Validator::make($request->all(),
+    [
+      'tieude' => 'required',
+      'noidung'=> 'require'
+    ],
+    [
+      'tieude.required' => 'Empty !',
+      'noidung.require' => 'Empty !'
+    ]);
+    $errs = $validator->errors();
+    $err = $errs->all();
+    if($validator->fails()){
+      return response()->json([
+        'nofi' => 'error',
+        'errors' => $err
+      ]); }
+    else {
+      $notification = new thongbao;
+      $notification->tieude = $request->title;
+      $notification->noidung = $request->content;
+      //$notification->
+      $notification->save();
+      return response()->json([
+        'nofi' => 'success',
+        $notification
+      ]);
+    }
+  }
+
+  public function TransactionHistory(){
+    $user = Auth::user();
+    $id = $user->id;
+
+    $user_account = taikhoan::where('users_id',$id)->get();
+    $list = array();
+
+    //ls nap tien
+    array_push($list,"naptien");
+    $naptien = naptien::where('users_id',$id)->get();
+    array_push($list,$naptien);
+    //ls chuyentien
+    array_push($list,"chuyentien");
+    $chuyentien = chuyentien::where('id_chuyen',$id)->get();
+    array_push($list,$chuyentien);
+    //ls  napthe
+    array_push($list,"napthe");
+    $napthe = napthe::where('Users_id',$id)->get();
+    array_push($list,$napthe);
+    //ls ruttien
+    array_push($list,"ruttien");
+    $ruttien = ruttien::where('users_id',$id)->get();
+    array_push($list,$ruttien);
+    //ls thanhtoan
+    array_push($list,"thanhtoan");
+    $thanhtoan = thanhtoan::where('users_id',$id)->get();
+    array_push($list,$thanhtoan);
+
+    $lsgd = json_encode($list);
+    return response()->json($lsgd);
+  }
+
+  public function GetBankUser(){
+    if(Auth::check()){
+    $user = Auth::user();
+    $id = $user->id;
+    $tk = taikhoan::where('users_id',$id)->get('nganhang_id');
+    $list_bank = array();
+    foreach($tk as $t){
+      $ng_id = $t->nganhang_id;
+      $nganhang = nganhang::where('id',$ng_id)->get();
+      array_push($list_bank,$nganhang[0]);
+    }
+    // $bank_u = json_encode($list_bank);
+    return response()->json($list_bank);
+  }
+   else
+      return response()->json(['message'=>'ban chua dang nhap']);
+}
+
+  public function NapThe(Request $request){
+    if(Auth::check()){
+    $validator = Validator::make($request->all(),
+      [
+        'sotien' => 'required'
+      ],
+      [
+        'sotien.required' => 'You have not sotien!'
+      ]);
+
+    $user = Auth::user();
+    $tien_user = $user->sotien;
+    $tiennapthe = $request->sotien;
+    echo $tien_user;
+    echo   $tiennapthe;
+    // if ($tiennapthe > $tien_user){
+    //   return response()->json([
+    //     'napthe'=>'error',
+    //     'message'=>'khong du tien nap the'
+    //   ]);
+    // }else {
+    //   $napthe = new napthe;
+    //   $napthe->sotien = intVal("$tiennapthe");
+    //   $nathe->users_id = $user->id;
+    //   $napthe->nhamang_id = $request->nhamang;
+    //   $napthe->save();
+    //
+    //   $user->sotien = $tien_user - $tiennapthe;
+    //   $user->save();
+    //   return response()->json($napthe);
+    // }
+  } else
+     return response()->json([
+      'bank'=>'error',
+      'message'=> 'ban chua dang nha '
+     ]);
+  }
+
+  public function GNapThe(){
+    $nhamang = nhamang::all();
+    return view('page.napthe',['nhamang' => $nhamang]);
+  }
 
 }

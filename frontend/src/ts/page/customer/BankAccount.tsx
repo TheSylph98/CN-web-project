@@ -2,7 +2,7 @@ import React = require("react");
 import { bankActions, accountActions } from "../../store/action";
 import { connect } from "react-redux";
 
-class BankAccount extends React.Component<{dispatch, banks, loading, account}, {chosenBankId}> {
+class BankAccount extends React.Component<{dispatch, bank, account}, {chosenBankId}> {
 
 	account;
 
@@ -19,25 +19,59 @@ class BankAccount extends React.Component<{dispatch, banks, loading, account}, {
 		})
 	}
 
-	connect() {
+	connect(e) {
+		e.preventDefault();
 		this.props.dispatch(accountActions.connectAccount(this.account.value, this.state.chosenBankId));
 	}
 
 	render() {
-		if (!this.props.loading && this.props.banks.length == 0) {
+		if (!this.props.bank.loading && this.props.bank.banks.length == 0) {
 			this.props.dispatch(bankActions.getBank());
+
 		}
-		let banks = this.props.banks;
+		if (!this.props.account.error && !this.props.account.loading && !this.props.account.loaded && this.props.account.accounts.length == 0) {
+			this.props.dispatch(accountActions.getConnectedAccount());
+		}
+
+		let banks = this.props.bank.banks;
+		let accounts = this.props.account.accounts;
+
 		return <div class="content-right">
             <h1 class="title">Bank Account</h1>
             <div className="wrapper bank-account">
+            	<div className="title">
+					Connected bank account
+				</div>
+				{accounts.length == 0 ?
+					<div className="small-text">
+						You have not connected to any account
+					</div> 
+						:
+					<div className="account-list">
+						{accounts.map(account => 
+							<div className="account" key={account.id}>
+								<div className="avatar">
+									<img src={"resources/images/banks/" + account.name.toLowerCase() + ".png"}/>
+								</div>
+								<div className="text">
+									<span>{account.name}</span>
+									Free Withdrawing
+								</div>
+								<button>Withdraw</button>
+							</div>
+						)}
+					</div>
+				}
+				
 				<div className="title">
 					Choose a bank account to connect
 				</div>
 				<div className="bank-list">
 					{banks.map(bank => 
 						<div onClick={() => this.chooseBank(bank.id)} id={bank.id} class={"bank" + (this.state.chosenBankId == bank.id ? " active" : "")}> 
-							<img class="bank-avatar" src={"resources/images/banks/" + bank.name.toLowerCase() + ".png"}/>
+							<div class="avatar">
+								<img class="bank-avatar" src={"resources/images/banks/" + bank.name.toLowerCase() + ".png"}/>
+							</div>
 							<span>{bank.name}</span>
 						</div>)}
 				</div>
@@ -69,11 +103,9 @@ class BankAccount extends React.Component<{dispatch, banks, loading, account}, {
 }
 
 function mapStateToProps(state) {
-	const { banks, loading } = state.bank;
-	const { account } = state;
+	const { bank, account } = state;
 	return {
-		banks,
-		loading,
+		bank,
 		account,
 	}
 }

@@ -3,6 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const React = require("react");
 const react_redux_1 = require("react-redux");
 const action_1 = require("../../store/action");
+const utils = require("../../utils");
 class AccountInfo extends React.Component {
     constructor(props) {
         super(props);
@@ -29,6 +30,9 @@ class AccountInfo extends React.Component {
             React.createElement("h1", { class: "title" }, "Account Info"),
             React.createElement("div", { class: "wrapper" },
                 React.createElement("form", { class: "content", id: "edit-account" },
+                    React.createElement("div", { class: "form-group" },
+                        React.createElement("label", { class: "control-label", htmlFor: "amount" }, "Amount "),
+                        React.createElement("div", { class: "input-wrap amount" }, utils.toMoneyFormat(user.amount) + "đ")),
                     React.createElement("div", { class: "form-group" },
                         React.createElement("label", { class: "control-label", htmlFor: "full_name" }, "Full name "),
                         React.createElement("div", { class: "input-wrap" },
@@ -65,14 +69,14 @@ class AccountInfo extends React.Component {
                             React.createElement("div", { id: "birthday-picker", class: "birthday-picker" },
                                 React.createElement("fieldset", { class: "birthday-picker" },
                                     React.createElement("select", { class: "birth-day form-control", name: "birth[day]" },
-                                        React.createElement("option", { value: "0" }, "Day"),
-                                        Array.from(Array(31).keys()).map(number => React.createElement("option", { value: (number + 1).toString() }, number + 1))),
+                                        React.createElement("option", { key: "0", defaultValue: "0" }, "Day"),
+                                        Array.from(Array(31).keys()).map(number => React.createElement("option", { key: (number + 1).toString(), value: (number + 1).toString() }, number + 1))),
                                     React.createElement("select", { class: "birth-month form-control", name: "birth[month]" },
-                                        React.createElement("option", { value: "0" }, "Month"),
-                                        Array.from(Array(12).keys()).map(number => React.createElement("option", { value: (number + 1).toString() }, number + 1))),
+                                        React.createElement("option", { key: "0", defaultValue: "0" }, "Month"),
+                                        Array.from(Array(12).keys()).map(number => React.createElement("option", { key: (number + 1).toString(), defaultValue: (number + 1).toString() }, number + 1))),
                                     React.createElement("select", { class: "birth-year form-control", name: "birth[year]" },
-                                        React.createElement("option", { value: "0" }, "Year"),
-                                        Array.from(Array(120).keys()).map(number => React.createElement("option", { value: (number + 1899).toString() }, number + 1899))))))),
+                                        React.createElement("option", { key: "0", defaultValue: "0" }, "Year"),
+                                        Array.from(Array(120).keys()).map(number => React.createElement("option", { key: (number + 1).toString(), defaultValue: (number + 1899).toString() }, number + 1899))))))),
                     React.createElement("div", { class: "form-group" },
                         React.createElement("div", { class: "input-wrap margin" },
                             React.createElement("label", { class: "checkbox" },
@@ -82,17 +86,17 @@ class AccountInfo extends React.Component {
                         React.createElement("div", { class: "form-group" },
                             React.createElement("label", { class: "control-label", htmlFor: "old_password" }, "Old password"),
                             React.createElement("div", { class: "input-wrap" },
-                                React.createElement("input", { type: "password", name: "old_password", class: "form-control", id: "old_password", value: "", autoComplete: "off", placeholder: "Enter old password" }),
+                                React.createElement("input", { type: "password", name: "old_password", class: "form-control", id: "old_password", autoComplete: "off", placeholder: "Enter old password" }),
                                 React.createElement("span", { class: "help-block" }))),
                         React.createElement("div", { class: "form-group" },
                             React.createElement("label", { class: "control-label", htmlFor: "new-password" }, "New password"),
                             React.createElement("div", { class: "input-wrap" },
-                                React.createElement("input", { type: "password", name: "new_password", class: "form-control", id: "new_password", value: "", autoComplete: "off", placeholder: "Length from 6 to 32 characters" }),
+                                React.createElement("input", { type: "password", name: "new_password", class: "form-control", id: "new_password", autoComplete: "off", placeholder: "Length from 6 to 32 characters" }),
                                 React.createElement("span", { class: "help-block" }))),
                         React.createElement("div", { class: "form-group" },
                             React.createElement("label", { class: "control-label", htmlFor: "re_new_password" }, "Verify password"),
                             React.createElement("div", { class: "input-wrap" },
-                                React.createElement("input", { type: "password", name: "re_new_password", class: "form-control", id: "re_new_password", value: "", autoComplete: "off", placeholder: "Enter new password again" }),
+                                React.createElement("input", { type: "password", name: "re_new_password", class: "form-control", id: "re_new_password", autoComplete: "off", placeholder: "Enter new password again" }),
                                 React.createElement("span", { class: "help-block" })))),
                     React.createElement("div", { class: "form-group" },
                         React.createElement("div", { class: "form-message" }, this.props.modify.modified ?

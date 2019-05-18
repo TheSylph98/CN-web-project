@@ -29998,6 +29998,9 @@
 	    CONNECT_SUCCESS: 'CONNECT_SUCCESS',
 	    CONNECT_FAILURE: 'CONNECT_ERROR',
 	    CONNECT_REQUEST: 'CONNECT_FAILURE',
+	    ACCOUNT_SUCCESS: 'ACCOUNT_SUCCESS',
+	    ACCOUNT_FAILURE: 'ACCOUNT_ERROR',
+	    ACCOUNT_REQUEST: 'ACCOUNT_FAILURE',
 	};
 
 
@@ -30124,20 +30127,17 @@
 	function account(state = { accounts: [] }, action) {
 	    switch (action.type) {
 	        case constants_1.accountConstants.CONNECT_REQUEST:
-	            return {
-	                accounts: state.accounts,
-	                connecting: true,
-	            };
+	            return Object.assign({}, state, { accounts: state.accounts, connecting: true });
 	        case constants_1.accountConstants.CONNECT_SUCCESS:
-	            return {
-	                connected: true,
-	                accounts: state.accounts,
-	            };
+	            return Object.assign({}, state, { connected: true, accounts: state.accounts });
 	        case constants_1.accountConstants.CONNECT_FAILURE:
-	            return {
-	                error: action.error,
-	                accounts: state.accounts,
-	            };
+	            return Object.assign({}, state, { error: action.error, accounts: state.accounts });
+	        case constants_1.accountConstants.ACCOUNT_REQUEST:
+	            return Object.assign({}, state, { accounts: state.accounts, loading: true });
+	        case constants_1.accountConstants.ACCOUNT_SUCCESS:
+	            return Object.assign({}, state, { loaded: true, accounts: action.accounts });
+	        case constants_1.accountConstants.ACCOUNT_FAILURE:
+	            return Object.assign({}, state, { error: action.error, accounts: state.accounts });
 	        default:
 	            return state;
 	    }
@@ -32477,7 +32477,14 @@
 	        index_1.getData("quan-li-thong-tin", data)
 	            .then(data => {
 	            if (data['update_info'] == 'true') {
-	                resolve(data['user_info']);
+	                let user = data['user_info'];
+	                resolve({
+	                    username: user['ten'],
+	                    email: user['email'],
+	                    address: user['diachi'],
+	                    phone: user['sodienthoai'],
+	                    amount: user['sotien']
+	                });
 	            }
 	            else {
 	                reject(data['errors']);
@@ -32515,8 +32522,10 @@
 	function connectAccount(accountNumber, bankId) {
 	    let data = {
 	        'sotaikhoan': accountNumber,
-	        'nganhang': bankId,
 	    };
+	    if (bankId) {
+	        data['nganhang'] = bankId;
+	    }
 	    return new Promise((resolve, reject) => {
 	        index_1.getData("them-tai-khoan", data)
 	            .then(result => {
@@ -32530,6 +32539,23 @@
 	    });
 	}
 	exports.connectAccount = connectAccount;
+	function getConnectedAccount() {
+	    return new Promise((resolve, reject) => {
+	        index_1.getData("bank-user")
+	            .then(result => {
+	            if (result instanceof Array) {
+	                resolve(result.map(bank => ({
+	                    name: bank['ten_nganhang'],
+	                    id: bank['id'],
+	                })));
+	            }
+	            else {
+	                reject(result['message']);
+	            }
+	        });
+	    });
+	}
+	exports.getConnectedAccount = getConnectedAccount;
 
 
 /***/ }),
@@ -32572,6 +32598,7 @@
 	const backend = __webpack_require__(98);
 	exports.accountActions = {
 	    connectAccount,
+	    getConnectedAccount,
 	};
 	function connectAccount(accountNumber, bankId) {
 	    return dispatch => {
@@ -32579,6 +32606,7 @@
 	        backend.connectAccount(accountNumber, bankId)
 	            .then(() => {
 	            dispatch(success());
+	            dispatch(getConnectedAccount());
 	        }, error => {
 	            dispatch(failure(error));
 	        });
@@ -32588,6 +32616,23 @@
 	    function success() { return { type: constants_1.accountConstants.CONNECT_SUCCESS }; }
 	    ;
 	    function failure(error) { return { type: constants_1.accountConstants.CONNECT_FAILURE, error }; }
+	    ;
+	}
+	function getConnectedAccount() {
+	    return dispatch => {
+	        dispatch(request());
+	        backend.getConnectedAccount()
+	            .then(accounts => {
+	            dispatch(success(accounts));
+	        }, error => {
+	            dispatch(failure(error));
+	        });
+	    };
+	    function request() { return { type: constants_1.accountConstants.ACCOUNT_REQUEST }; }
+	    ;
+	    function success(accounts) { return { type: constants_1.accountConstants.ACCOUNT_SUCCESS, accounts }; }
+	    ;
+	    function failure(error) { return { type: constants_1.accountConstants.ACCOUNT_FAILURE, error }; }
 	    ;
 	}
 
@@ -32817,7 +32862,7 @@
 	const Directory_1 = __webpack_require__(109);
 	const Navigator_1 = __webpack_require__(110);
 	const AccountInfo_1 = __webpack_require__(111);
-	const BankAccount_1 = __webpack_require__(112);
+	const BankAccount_1 = __webpack_require__(114);
 	const react_router_dom_1 = __webpack_require__(78);
 	const react_redux_1 = __webpack_require__(18);
 	class CustomerPage extends React.Component {
@@ -32871,9 +32916,9 @@
 	            React.createElement("div", { class: "container" },
 	                React.createElement("div", { class: "row" },
 	                    React.createElement("div", { class: "col-md-12" },
-	                        React.createElement("ol", { class: "title" }, titles.map(title => {
+	                        React.createElement("ol", { class: "title" }, titles.map((title, number) => {
 	                            link += title + "/";
-	                            return React.createElement("li", null,
+	                            return React.createElement("li", { key: number },
 	                                React.createElement(react_router_dom_1.Link, { to: link }, texts[title]));
 	                        }))))));
 	    }
@@ -32953,6 +32998,7 @@
 	const React = __webpack_require__(4);
 	const react_redux_1 = __webpack_require__(18);
 	const action_1 = __webpack_require__(95);
+	const utils = __webpack_require__(112);
 	class AccountInfo extends React.Component {
 	    constructor(props) {
 	        super(props);
@@ -32979,6 +33025,9 @@
 	            React.createElement("h1", { class: "title" }, "Account Info"),
 	            React.createElement("div", { class: "wrapper" },
 	                React.createElement("form", { class: "content", id: "edit-account" },
+	                    React.createElement("div", { class: "form-group" },
+	                        React.createElement("label", { class: "control-label", htmlFor: "amount" }, "Amount "),
+	                        React.createElement("div", { class: "input-wrap amount" }, utils.toMoneyFormat(user.amount) + "đ")),
 	                    React.createElement("div", { class: "form-group" },
 	                        React.createElement("label", { class: "control-label", htmlFor: "full_name" }, "Full name "),
 	                        React.createElement("div", { class: "input-wrap" },
@@ -33015,14 +33064,14 @@
 	                            React.createElement("div", { id: "birthday-picker", class: "birthday-picker" },
 	                                React.createElement("fieldset", { class: "birthday-picker" },
 	                                    React.createElement("select", { class: "birth-day form-control", name: "birth[day]" },
-	                                        React.createElement("option", { value: "0" }, "Day"),
-	                                        Array.from(Array(31).keys()).map(number => React.createElement("option", { value: (number + 1).toString() }, number + 1))),
+	                                        React.createElement("option", { key: "0", defaultValue: "0" }, "Day"),
+	                                        Array.from(Array(31).keys()).map(number => React.createElement("option", { key: (number + 1).toString(), value: (number + 1).toString() }, number + 1))),
 	                                    React.createElement("select", { class: "birth-month form-control", name: "birth[month]" },
-	                                        React.createElement("option", { value: "0" }, "Month"),
-	                                        Array.from(Array(12).keys()).map(number => React.createElement("option", { value: (number + 1).toString() }, number + 1))),
+	                                        React.createElement("option", { key: "0", defaultValue: "0" }, "Month"),
+	                                        Array.from(Array(12).keys()).map(number => React.createElement("option", { key: (number + 1).toString(), defaultValue: (number + 1).toString() }, number + 1))),
 	                                    React.createElement("select", { class: "birth-year form-control", name: "birth[year]" },
-	                                        React.createElement("option", { value: "0" }, "Year"),
-	                                        Array.from(Array(120).keys()).map(number => React.createElement("option", { value: (number + 1899).toString() }, number + 1899))))))),
+	                                        React.createElement("option", { key: "0", defaultValue: "0" }, "Year"),
+	                                        Array.from(Array(120).keys()).map(number => React.createElement("option", { key: (number + 1).toString(), defaultValue: (number + 1899).toString() }, number + 1899))))))),
 	                    React.createElement("div", { class: "form-group" },
 	                        React.createElement("div", { class: "input-wrap margin" },
 	                            React.createElement("label", { class: "checkbox" },
@@ -33032,17 +33081,17 @@
 	                        React.createElement("div", { class: "form-group" },
 	                            React.createElement("label", { class: "control-label", htmlFor: "old_password" }, "Old password"),
 	                            React.createElement("div", { class: "input-wrap" },
-	                                React.createElement("input", { type: "password", name: "old_password", class: "form-control", id: "old_password", value: "", autoComplete: "off", placeholder: "Enter old password" }),
+	                                React.createElement("input", { type: "password", name: "old_password", class: "form-control", id: "old_password", autoComplete: "off", placeholder: "Enter old password" }),
 	                                React.createElement("span", { class: "help-block" }))),
 	                        React.createElement("div", { class: "form-group" },
 	                            React.createElement("label", { class: "control-label", htmlFor: "new-password" }, "New password"),
 	                            React.createElement("div", { class: "input-wrap" },
-	                                React.createElement("input", { type: "password", name: "new_password", class: "form-control", id: "new_password", value: "", autoComplete: "off", placeholder: "Length from 6 to 32 characters" }),
+	                                React.createElement("input", { type: "password", name: "new_password", class: "form-control", id: "new_password", autoComplete: "off", placeholder: "Length from 6 to 32 characters" }),
 	                                React.createElement("span", { class: "help-block" }))),
 	                        React.createElement("div", { class: "form-group" },
 	                            React.createElement("label", { class: "control-label", htmlFor: "re_new_password" }, "Verify password"),
 	                            React.createElement("div", { class: "input-wrap" },
-	                                React.createElement("input", { type: "password", name: "re_new_password", class: "form-control", id: "re_new_password", value: "", autoComplete: "off", placeholder: "Enter new password again" }),
+	                                React.createElement("input", { type: "password", name: "re_new_password", class: "form-control", id: "re_new_password", autoComplete: "off", placeholder: "Enter new password again" }),
 	                                React.createElement("span", { class: "help-block" })))),
 	                    React.createElement("div", { class: "form-group" },
 	                        React.createElement("div", { class: "form-message" }, this.props.modify.modified ?
@@ -33068,6 +33117,38 @@
 /***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
+	function __export(m) {
+	    for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
+	}
+	Object.defineProperty(exports, "__esModule", { value: true });
+	__export(__webpack_require__(113));
+
+
+/***/ }),
+/* 113 */
+/***/ (function(module, exports) {
+
+	"use strict";
+	Object.defineProperty(exports, "__esModule", { value: true });
+	function toMoneyFormat(money) {
+	    let temp = money.toString().split("").reverse().join("");
+	    let result = "";
+	    for (let i = 0; i < temp.length; ++i) {
+	        if (i != 0 && i % 3 == 0) {
+	            result = "." + result;
+	        }
+	        result = temp[i] + result;
+	    }
+	    return result;
+	}
+	exports.toMoneyFormat = toMoneyFormat;
+
+
+/***/ }),
+/* 114 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	"use strict";
 	Object.defineProperty(exports, "__esModule", { value: true });
 	const React = __webpack_require__(4);
 	const action_1 = __webpack_require__(95);
@@ -33084,20 +33165,37 @@
 	            chosenBankId: id,
 	        });
 	    }
-	    connect() {
+	    connect(e) {
+	        e.preventDefault();
 	        this.props.dispatch(action_1.accountActions.connectAccount(this.account.value, this.state.chosenBankId));
 	    }
 	    render() {
-	        if (!this.props.loading && this.props.banks.length == 0) {
+	        if (!this.props.bank.loading && this.props.bank.banks.length == 0) {
 	            this.props.dispatch(action_1.bankActions.getBank());
 	        }
-	        let banks = this.props.banks;
+	        if (!this.props.account.error && !this.props.account.loading && !this.props.account.loaded && this.props.account.accounts.length == 0) {
+	            this.props.dispatch(action_1.accountActions.getConnectedAccount());
+	        }
+	        let banks = this.props.bank.banks;
+	        let accounts = this.props.account.accounts;
 	        return React.createElement("div", { class: "content-right" },
 	            React.createElement("h1", { class: "title" }, "Bank Account"),
 	            React.createElement("div", { className: "wrapper bank-account" },
+	                React.createElement("div", { className: "title" }, "Connected bank account"),
+	                accounts.length == 0 ?
+	                    React.createElement("div", { className: "small-text" }, "You have not connected to any account")
+	                    :
+	                        React.createElement("div", { className: "account-list" }, accounts.map(account => React.createElement("div", { className: "account", key: account.id },
+	                            React.createElement("div", { className: "avatar" },
+	                                React.createElement("img", { src: "resources/images/banks/" + account.name.toLowerCase() + ".png" })),
+	                            React.createElement("div", { className: "text" },
+	                                React.createElement("span", null, account.name),
+	                                "Free Withdrawing"),
+	                            React.createElement("button", null, "Withdraw")))),
 	                React.createElement("div", { className: "title" }, "Choose a bank account to connect"),
 	                React.createElement("div", { className: "bank-list" }, banks.map(bank => React.createElement("div", { onClick: () => this.chooseBank(bank.id), id: bank.id, class: "bank" + (this.state.chosenBankId == bank.id ? " active" : "") },
-	                    React.createElement("img", { class: "bank-avatar", src: "resources/images/banks/" + bank.name.toLowerCase() + ".png" }),
+	                    React.createElement("div", { class: "avatar" },
+	                        React.createElement("img", { class: "bank-avatar", src: "resources/images/banks/" + bank.name.toLowerCase() + ".png" })),
 	                    React.createElement("span", null, bank.name)))),
 	                React.createElement("form", { class: "content", id: "edit-account" },
 	                    React.createElement("div", { class: "form-group" },
@@ -33114,11 +33212,9 @@
 	    }
 	}
 	function mapStateToProps(state) {
-	    const { banks, loading } = state.bank;
-	    const { account } = state;
+	    const { bank, account } = state;
 	    return {
-	        banks,
-	        loading,
+	        bank,
 	        account,
 	    };
 	}

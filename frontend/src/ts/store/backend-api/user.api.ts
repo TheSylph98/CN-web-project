@@ -64,7 +64,14 @@ export function modify(input: {address, username, phone}) {
         getData("quan-li-thong-tin", data)
             .then(data => {
                 if (data['update_info'] == 'true') {
-                    resolve(data['user_info']);
+                    let user = data['user_info'];
+                    resolve({
+                        username: user['ten'],
+                        email: user['email'],
+                        address: user['diachi'],
+                        phone: user['sodienthoai'],
+                        amount: user['sotien']
+                    });
                 } else {
                     reject(data['errors']);
                 }

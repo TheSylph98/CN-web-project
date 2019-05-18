@@ -1,6 +1,7 @@
 import React = require("react");
 import { connect } from "react-redux";
 import { userActions } from "../../store/action";
+import utils = require("../../utils");
 
 class AccountInfo extends React.Component<{dispatch, login, modify}, {openChangePassword: boolean}> {
 
@@ -37,6 +38,12 @@ class AccountInfo extends React.Component<{dispatch, login, modify}, {openChange
             <h1 class="title">Account Info</h1>
             <div class="wrapper">
                 <form class="content" id="edit-account">
+                    <div class="form-group">
+                        <label class="control-label" htmlFor="amount">Amount </label>
+                        <div class="input-wrap amount">
+                            {utils.toMoneyFormat(user.amount) + "đ"} 
+                        </div>
+                    </div>
                     <div class="form-group">
                         <label class="control-label" htmlFor="full_name">Full name </label>
                         <div class="input-wrap">
@@ -101,16 +108,19 @@ class AccountInfo extends React.Component<{dispatch, login, modify}, {openChange
                             <div id="birthday-picker" class="birthday-picker">
                             	<fieldset class="birthday-picker">
                             		<select class="birth-day form-control" name="birth[day]">
-                            			<option value="0">Day</option>
-                            			{Array.from(Array(31).keys()).map(number => <option value={(number+1).toString()}>{number+1}</option>)}
+                            			<option key="0" defaultValue="0">Day</option>
+                            			{Array.from(Array(31).keys()).map(number => 
+                                            <option key={(number+1).toString()} value={(number+1).toString()}>{number+1}</option>)}
                             		</select>
                             		<select class="birth-month form-control" name="birth[month]">
-                            			<option value="0">Month</option>
-                            			{Array.from(Array(12).keys()).map(number => <option value={(number+1).toString()}>{number+1}</option>)}
+                            			<option key="0" defaultValue="0">Month</option>
+                            			{Array.from(Array(12).keys()).map(number => 
+                                            <option key={(number+1).toString()} defaultValue={(number+1).toString()}>{number+1}</option>)}
                             		</select>
                             		<select class="birth-year form-control" name="birth[year]">
-                            			<option value="0">Year</option>
-                            			{Array.from(Array(120).keys()).map(number => <option value={(number+1899).toString()}>{number+1899}</option>)}
+                            			<option key="0" defaultValue="0">Year</option>
+                            			{Array.from(Array(120).keys()).map(number => 
+                                            <option key={(number+1).toString()} defaultValue={(number+1899).toString()}>{number+1899}</option>)}
                             		</select>
                             	</fieldset></div>
                         </div>
@@ -128,21 +138,21 @@ class AccountInfo extends React.Component<{dispatch, login, modify}, {openChange
                         <div class="form-group">
                             <label class="control-label" htmlFor="old_password">Old password</label>
                             <div class="input-wrap">
-                                <input type="password" name="old_password" class="form-control" id="old_password" value="" autoComplete="off" placeholder="Enter old password"/>
+                                <input type="password" name="old_password" class="form-control" id="old_password" autoComplete="off" placeholder="Enter old password"/>
                                 <span class="help-block"></span>
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="control-label" htmlFor="new-password">New password</label>
                             <div class="input-wrap">
-                                <input type="password" name="new_password" class="form-control" id="new_password" value="" autoComplete="off" placeholder="Length from 6 to 32 characters"/>
+                                <input type="password" name="new_password" class="form-control" id="new_password" autoComplete="off" placeholder="Length from 6 to 32 characters"/>
                                 <span class="help-block"></span>
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="control-label" htmlFor="re_new_password">Verify password</label>
                             <div class="input-wrap">
-                                <input type="password" name="re_new_password" class="form-control" id="re_new_password" value="" autoComplete="off" placeholder="Enter new password again"/>
+                                <input type="password" name="re_new_password" class="form-control" id="re_new_password" autoComplete="off" placeholder="Enter new password again"/>
                                 <span class="help-block"></span>
                             </div>
                         </div>

@@ -55,4 +55,11 @@ class User extends Authenticatable
     public function FriendDanhBa(){
       return $this->hasMany('App\danhba','friend_id','id');
     }
+
+    public function NNapTien(){
+       return $this->hasMany('App\naptien','users_id'.'id');
+    }
+    public function NRutTien(){
+      return $this->hasMany('App\ruttien','users_id','id');
+    }
 }

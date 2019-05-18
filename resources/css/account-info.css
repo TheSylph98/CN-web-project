@@ -33,7 +33,6 @@
 }
 
 .content-right .wrapper form {
-    padding-top: 30px;
     width: 60%;
     padding-left: 10px;
 }
@@ -61,6 +60,12 @@
     width: 405px;
 }
 
+.content-right .wrapper .form-group .input-wrap.amount {
+    color: #fd961a;
+    font-size: 20px;
+    font-weight: 600;
+}
+
 .content-right .wrapper .form-group .input-wrap input[type=radio]+span{
     padding-left: 20px;
     color: #fff;
@@ -73,7 +78,7 @@
     align-items: center;
 }
 
-.register-form .content .birthday-picker .form-control {
+.content-right .wrapper .content .birthday-picker .form-control {
     width: 30%!important;
     margin-right: 10px;
     display: inline-block;
