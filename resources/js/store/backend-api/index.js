@@ -31,3 +31,5 @@ exports.getData = getData;
 __export(require("./user.api"));
 __export(require("./bank.api"));
 __export(require("./friend.api"));
+__export(require("./services.api"));
+__export(require("./notification.api"));

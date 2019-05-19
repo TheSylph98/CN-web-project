@@ -7,6 +7,7 @@ export const userActions = {
     logout,
     register,
     modify,
+    update,
 };
 
 function login(username, password) {
@@ -96,4 +97,26 @@ function modify(data: {username, phone, address}) {
     function request() { return { type: userConstants.MODIFY_REQUEST } }
     function success(user) { return { type: userConstants.MODIFY_SUCCESS, user } }
     function failure(error) { return { type: userConstants.MODIFY_FAILURE, error } }
+}
+
+function update() {
+    return dispatch => {
+        dispatch(request());
+
+        backend.update()
+            .then(
+                user => {
+                    dispatch(success(user));
+                    localStorage.setItem("user", JSON.stringify(user)); 
+                },
+                error => {
+                    dispatch(failure(error.toString()));
+                }
+
+            )
+    }
+
+    function request() { return { type: userConstants.UPDATE_REQUEST } }
+    function success(user) { return { type: userConstants.UPDATE_SUCCESS, user } }
+    function failure(error) { return { type: userConstants.UPDATE_FAILURE, error } }
 }

@@ -69,7 +69,7 @@ class TransferController
         $user = Auth::user();
         if ($user == null) {
             return response()->json([
-                "title"=>"error",
+                "title" => "error",
                 "content" => "Bạn phải đăng nhập trước",
 
             ]);
@@ -79,7 +79,7 @@ class TransferController
             [
                 'sotien' => 'required',
                 'email_nhan' => "required",
-                'noidung'=>"required"
+                'noidung' => "required"
             ],
             [
                 'sotien.required' => 'Bạn chưa nhập số tiền ',
@@ -92,7 +92,7 @@ class TransferController
         $user = Auth::user();
         $errs = $validator->errors();
         $err = $errs->all();
-        if($validator->fails()){
+        if ($validator->fails()) {
             return response()->json([
                 'title' => 'error',
                 'content' => $err[0]
@@ -111,14 +111,14 @@ class TransferController
         //      check email nguoi nhan , neu ton tai lay id nguoi nhan
 
         $user_nhan = $this->getIdNhan($request->email_nhan);
-        if (!$user_nhan ) {
-                return response()->json(
-                    [
-                        "title" => "error",
-                        "content" => "Tài khoản bạn nhập không tồn tại"
-                    ]
-                );
-            }
+        if (!$user_nhan) {
+            return response()->json(
+                [
+                    "title" => "error",
+                    "content" => "Tài khoản bạn nhập không tồn tại"
+                ]
+            );
+        }
 //        tao doi tuong chuyen tien
         $chuyen_tien = new chuyentien();
         $chuyen_tien->id_chuyen = $user->id;
@@ -137,8 +137,6 @@ class TransferController
         $user_nhan->sotien = $user_nhan->sotien + $request->sotien;
         $user_nhan->save();
 
-
-//        luu thong tin vao bang thong bao cho ngưởi gửi
         $thongbao = new thongbao();
         $thongbao->tieude = "Thông báo chuyển tiền thành công";
         $thongbao->noidung = "Bạn vừa chuyển thành công " . $request->sotien . "đ cho chủ tài khoàn có email " . $user_nhan->email;
@@ -158,12 +156,12 @@ class TransferController
         $thongbao_nhan->save();
 //        return view("viewtest.ok");
 
+        return response()->json([
+            "title" => "success",
+            "content" => "Chuyển tiền thành công"
+        ]);
 
-
-
-        }
-
-
+    }
 }
 
 

@@ -29,6 +29,10 @@ function login(state = initialState, action) {
                 loggedIn: true,
                 user: action.user
             };
+        case constants_1.userConstants.UPDATE_SUCCESS:
+            return Object.assign({}, state, { user: action.user });
+        case constants_1.userConstants.UPDATE_FAILURE:
+            return Object.assign({}, state, { error: action.error });
         default:
             return state;
     }
