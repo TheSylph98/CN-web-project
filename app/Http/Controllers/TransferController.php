@@ -151,12 +151,14 @@ class TransferController
         $thongbao_nhan = new thongbao();
         $thongbao_nhan->tieude = "Thông báo nhận tiền thành công";
         $thongbao_nhan->noidung = "Tài khoản của bạn  nhận thành công " . $request->sotien . "đ  từ chủ tài khoàn có email " . $user->email;
-        $thongbao_nhan->user_id = $user->id;
+        $thongbao_nhan->user_id = $user_nhan->id;
         $thongbao_nhan->daxem = 0;
         $thongbao_nhan->type = "nhantien";
 
         $thongbao_nhan->save();
 //        return view("viewtest.ok");
+
+
 
 
         }

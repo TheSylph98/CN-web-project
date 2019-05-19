@@ -51,14 +51,7 @@ class AddMoneyToWallet
 
         $account = DB::table("taikhoan")->where("nganhang_id", $bank->id)->where("users_id", $user->id)->first();;
 //        print_r($account);
-        if ($account== null) {
-            return response()->json([
-                "title" => "error",
-                "content" => "Ngân hàng chưa liên kết với tài khoản của ban",
-
-
-            ]);
-        }
+        return $account;
 
 
 
@@ -76,7 +69,22 @@ class AddMoneyToWallet
             ]);
         }
 //        check ngan hang
-        $this->checkBanksAsociateToUser($request->nganhang);
+        $account = $this->checkBanksAsociateToUser($request->nganhang);
+        if ($account == null) {
+            return response()->json([
+                "title" => "error",
+                "content" => "Ngân hàng chưa liên kết với ví điện tử của bạn",
+
+            ]);
+        }
+//        check so tien trong tk so với tiên định nạp
+        if ($account->sotien <= $request->sotien) {
+            return response()->json([
+                "title" => "error",
+                "content" => "Số dư trong tài khoản ngân hàng của bạn không đủ để thực hiện giao dich",
+
+            ]);
+        }
 
     }
 
