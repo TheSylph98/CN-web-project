@@ -66,10 +66,18 @@ class TransferController
 
     public function postTransfer(Request $request)
     {
+        $user = Auth::user();
+        if ($user == null) {
+            return response()->json([
+                "title"=>"error",
+                "content" => "Bạn phải đăng nhập trước",
+
+            ]);
+        }
+
         $validator = Validator::make($request->all(),
             [
                 'sotien' => 'required',
-//                'id_chuyen' => 'required',
                 'email_nhan' => "required",
                 'noidung'=>"required"
             ],
@@ -93,7 +101,6 @@ class TransferController
 
 
 //        check so tien con
-//        var_dump($user);
         $check = $this->check_sotien($user->id, $request->sotien);
         if ($check == 0) {
             return response()->json(

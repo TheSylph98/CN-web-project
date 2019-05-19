@@ -32,7 +32,8 @@ Route::post('quan-li-thong-tin','HomeController@ChinhSuaThongTin');
 //chuyen tien
 Route::get("transfer", "TransferController@getViewTransfer");
 Route::post("post-transfer", "TransferController@postTransfer");
-
+//nap tien vao vi
+Route::get("addmoney", 'AddMoneyToWallet@getViewAddMoney');
 
 
 

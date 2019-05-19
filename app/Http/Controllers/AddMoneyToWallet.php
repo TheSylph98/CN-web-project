@@ -32,7 +32,7 @@ class AddMoneyToWallet
 {
     public function getViewAddMoney()
     {
-        return view("addMoney");
+        return view("viewtest.addMoney");
     }
 
 
