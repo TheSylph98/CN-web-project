@@ -34,6 +34,8 @@ Route::get("transfer", "TransferController@getViewTransfer");
 Route::post("post-transfer", "TransferController@postTransfer");
 //nap tien vao vi
 Route::get("addmoney", 'AddMoneyToWallet@getViewAddMoney');
+Route::post("post-add-money", 'AddMoneyToWallet@postAddMoney');
+
 
 
 
