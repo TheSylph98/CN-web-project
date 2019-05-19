@@ -121,6 +121,11 @@
 	margin: 0px;
 }
 
+.account-list .account a {
+	position: absolute;
+	right: 20px;
+}
+
 .account-list .account button {
 	color: #fd961a;
 	font-size: 13px;
@@ -128,9 +133,7 @@
 	border: 1px solid #fd961a;
 	text-align: center;
 	padding: 7px;
-	position: absolute;
 	outline: none;
-	right: 20px;
 	background: transparent;
 }
 

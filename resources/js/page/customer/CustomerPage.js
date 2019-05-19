@@ -9,6 +9,7 @@ const BankAccount_1 = require("./BankAccount");
 const Services_1 = require("./Services");
 const react_router_dom_1 = require("react-router-dom");
 const react_redux_1 = require("react-redux");
+const FavoriteList_1 = require("./FavoriteList");
 class CustomerPage extends React.Component {
     render() {
         if (!this.props.loggedIn) {
@@ -23,7 +24,8 @@ class CustomerPage extends React.Component {
                 React.createElement(Navigator_1.default, { location: this.props.location.pathname }),
                 React.createElement(react_router_dom_1.Route, { exact: true, path: "/(customer/account|customer)/", component: AccountInfo_1.default }),
                 React.createElement(react_router_dom_1.Route, { path: "/customer/bank", component: BankAccount_1.default }),
-                React.createElement(react_router_dom_1.Route, { path: "/customer/services", component: Services_1.default })));
+                React.createElement(react_router_dom_1.Route, { path: "/customer/services", component: Services_1.default }),
+                React.createElement(react_router_dom_1.Route, { path: "/customer/favorite", component: FavoriteList_1.default })));
     }
 }
 function mapStateToProps(state) {

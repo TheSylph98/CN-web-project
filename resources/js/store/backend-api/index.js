@@ -3,8 +3,6 @@ function __export(m) {
     for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
 }
 Object.defineProperty(exports, "__esModule", { value: true });
-__export(require("./user.api"));
-__export(require("./bank.api"));
 function getData(url, body = {}) {
     let token = document.getElementById("csrf-token").getAttribute("content");
     return new Promise((resolve, reject) => {
@@ -30,3 +28,6 @@ function getData(url, body = {}) {
     });
 }
 exports.getData = getData;
+__export(require("./user.api"));
+__export(require("./bank.api"));
+__export(require("./friend.api"));

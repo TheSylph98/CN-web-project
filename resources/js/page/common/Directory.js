@@ -19,6 +19,7 @@ class Directory extends React.Component {
             "withdraw": "Withdraw",
             "transact": "Transact",
             "deposit": "Deposit",
+            "favorite": "Favorite List",
         };
         return React.createElement("div", { class: "directory" },
             React.createElement("div", { class: "container" },

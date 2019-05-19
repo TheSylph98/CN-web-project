@@ -57,6 +57,7 @@
 
 .content-right .wrapper .form-group .input-wrap {
     display: inline-block;
+    position: relative;
     width: 405px;
 }
 

@@ -299,7 +299,7 @@ class HomeController extends Controller
         $id = $id->friend_id;
         $friend_info = User::where('id',$id)->get();
         //echo $friend_info;
-        array_push($friend,$friend_info);
+        array_push($friend,$friend_info[0]);
      }
      //$fr = json_encode($friend);
 

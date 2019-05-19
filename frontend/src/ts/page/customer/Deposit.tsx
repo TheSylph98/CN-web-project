@@ -2,7 +2,7 @@ import React = require("react");
 import { connect } from "react-redux";
 import { accountActions } from "../../store/action";
 
-class Deposit extends React.Component<{account, dispatch},{chosenBankId}> {
+class Deposit extends React.Component<{account, dispatch, location},{chosenBankId}> {
 
     amount;
 
@@ -20,6 +20,15 @@ class Deposit extends React.Component<{account, dispatch},{chosenBankId}> {
     componentWillMount() {
         if (this.props.account.notLoad) {
             this.props.dispatch(accountActions.getConnectedAccount());
+        }
+        if (this.props.location.account) {
+            this.chooseAccount(this.props.location.account);
+        }
+    }
+
+    componentWillReceiveProps(nextProps) {
+        if (nextProps.location.account) {
+            this.chooseAccount(nextProps.location.account);
         }
     }
 
@@ -39,18 +48,19 @@ class Deposit extends React.Component<{account, dispatch},{chosenBankId}> {
             </div>
             <div className="bank-list">
                 {accounts.map(bank => 
-                    <div onClick={() => this.chooseAccount(bank.id)} id={bank.id} class={"bank" + (this.state.chosenBankId == bank.id ? " active" : "")}> 
+                     <div onClick={() => this.chooseAccount(bank.id)} id={bank.id} class={"bank" + (this.state.chosenBankId == bank.id ? " active" : "")}> 
                         <div class="avatar">
                             <img class="bank-avatar" src={"resources/images/banks/" + bank.name.toLowerCase() + ".png"}/>
                         </div>
                         <span>{bank.name}</span>
-                    </div>)}
+                    </div>
+                )}
             </div>
             <form class="content">
                 <div class="form-group">
                     <label class="control-label" htmlFor="amount">Amount</label>
                     <div class="input-wrap">
-                        <input ref={input => this.amount = input } type="number" name="amount" class="form-control" 
+                        <input step={1000} ref={input => this.amount = input } type="number" name="amount" class="form-control" 
                             placeholder="Enter amount of money to deposit"/>
                     </div>
                 </div>

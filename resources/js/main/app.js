@@ -10,6 +10,11 @@ class App extends React.Component {
     componentWillMount() {
         window["routerHistory"] = this.props.history;
     }
+    componentDidUpdate(prevProps) {
+        if (this.props.location !== prevProps.location) {
+            window.scrollTo(0, 0);
+        }
+    }
     render() {
         return React.createElement("div", null,
             React.createElement(react_router_dom_1.Route, { path: "/", exact: true, component: homepage_1.default }),

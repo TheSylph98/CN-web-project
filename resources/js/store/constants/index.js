@@ -7,3 +7,4 @@ __export(require("./alert.constants"));
 __export(require("./user.constants"));
 __export(require("./bank.constants"));
 __export(require("./account.constants"));
+__export(require("./friend.constants"));

@@ -29,8 +29,8 @@ class Navigator extends React.Component<{location: string, login}, {}> {
 			        <li class={location.endsWith("history") ? "active" : ""}>
 			            <Link to="/customer/history"> <i class="fa fa-credit-card"></i> <span>Transaction history</span></Link>
 			        </li>
-			        <li class={location.endsWith("friends") ? "active" : ""}>
-			            <Link to="/customer/friends"> <i class="fa fa-address-book"></i> <span>Friend list</span></Link>
+			        <li class={location.endsWith("favorite") ? "active" : ""}>
+			            <Link to="/customer/favorite"> <i class="fa fa-address-book"></i> <span>Friend list</span></Link>
 			        </li>
 			    </ul>
 			</div>

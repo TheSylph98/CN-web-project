@@ -1,11 +1,8 @@
-export * from "./user.api";
-export * from "./bank.api";
-
 export function getData(url: string, body = {}) {
 
     let token = document.getElementById("csrf-token").getAttribute("content");
 
-	return new Promise((resolve, reject) => {
+    return new Promise((resolve, reject) => {
         fetch(url, {
             method: "POST", 
             mode: "cors", 
@@ -27,3 +24,8 @@ export function getData(url: string, body = {}) {
         })
     })
 }
+
+export * from "./user.api";
+export * from "./bank.api";
+export * from "./friend.api";
+

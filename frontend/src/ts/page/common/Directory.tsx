@@ -20,6 +20,7 @@ export default class Directory extends React.Component<{location: string}, {}> {
             "withdraw": "Withdraw",
             "transact": "Transact",
             "deposit": "Deposit",
+            "favorite": "Favorite List",
         };
 
         return <div class="directory">

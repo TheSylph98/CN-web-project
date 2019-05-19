@@ -1,0 +1,5 @@
+export const friendConstants = {
+    FRIEND_SUCCESS: 'FRIEND_SUCCESS',
+    FRIEND_FAILURE: 'FRIEND_ERROR',
+    FRIEND_REQUEST: 'FRIEND_FAILURE',
+};

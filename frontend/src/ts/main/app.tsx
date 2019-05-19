@@ -5,9 +5,15 @@ import CustomerPage from "../page/customer/CustomerPage";
 import { Route, withRouter } from "react-router-dom";
 import React = require("react");
 
-export class App extends React.Component<{history}, {}> {
+export class App extends React.Component<{history, location}, {}> {
 	componentWillMount() {
 		window["routerHistory"] = this.props.history;
+	}
+
+	componentDidUpdate(prevProps) {
+		if (this.props.location !== prevProps.location) {
+			window.scrollTo(0, 0)
+		}
 	}
 
 	render() {

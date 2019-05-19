@@ -17,6 +17,14 @@ class Deposit extends React.Component {
         if (this.props.account.notLoad) {
             this.props.dispatch(action_1.accountActions.getConnectedAccount());
         }
+        if (this.props.location.account) {
+            this.chooseAccount(this.props.location.account);
+        }
+    }
+    componentWillReceiveProps(nextProps) {
+        if (nextProps.location.account) {
+            this.chooseAccount(nextProps.location.account);
+        }
     }
     chooseAccount(id) {
         this.setState({
@@ -35,7 +43,7 @@ class Deposit extends React.Component {
                 React.createElement("div", { class: "form-group" },
                     React.createElement("label", { class: "control-label", htmlFor: "amount" }, "Amount"),
                     React.createElement("div", { class: "input-wrap" },
-                        React.createElement("input", { ref: input => this.amount = input, type: "number", name: "amount", class: "form-control", placeholder: "Enter amount of money to deposit" }))),
+                        React.createElement("input", { step: 1000, ref: input => this.amount = input, type: "number", name: "amount", class: "form-control", placeholder: "Enter amount of money to deposit" }))),
                 React.createElement("div", { class: "form-group" },
                     React.createElement("div", { class: "form-message" }),
                     React.createElement("div", { class: "input-wrap margin" },

@@ -1,6 +1,7 @@
 import React = require("react");
 import { bankActions, accountActions } from "../../store/action";
 import { connect } from "react-redux";
+import { Link } from "react-router-dom";
 
 class BankAccount extends React.Component<{dispatch, bank, account}, {chosenBankId}> {
 
@@ -27,9 +28,8 @@ class BankAccount extends React.Component<{dispatch, bank, account}, {chosenBank
 	render() {
 		if (!this.props.bank.loading && this.props.bank.banks.length == 0) {
 			this.props.dispatch(bankActions.getBank());
-
 		}
-		if (!this.props.account.error && !this.props.account.loading && !this.props.account.loaded && this.props.account.accounts.length == 0) {
+		if (this.props.account.notLoad) {
 			this.props.dispatch(accountActions.getConnectedAccount());
 		}
 
@@ -55,9 +55,11 @@ class BankAccount extends React.Component<{dispatch, bank, account}, {chosenBank
 								</div>
 								<div className="text">
 									<span>{account.name}</span>
-									Free Withdrawing
+									Free deposit
 								</div>
-								<button>Withdraw</button>
+								<Link to={{pathname: "/customer/services/deposit", account: account.id}}>
+									<button>Deposit</button>
+								</Link>
 							</div>
 						)}
 					</div>
