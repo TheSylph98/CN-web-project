@@ -54,3 +54,7 @@ Route::post("lich-su-giao-dich","HomeController@TransactionHistory");
 //Nap Thes
 Route::get('nap-the','HomeController@GNapThe');
 Route::post('nap-the','HomeController@NapThe');
+
+//Them danh ba
+Route::get('them-danh-ba','HomeController@GetAddPhoneBook');
+Route::post('them-danh-ba','HomeController@PostAddPhoneBook');

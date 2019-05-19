@@ -21,9 +21,11 @@ class HomeController extends Controller
     public function index(){
         return view('index');
     }
+
     public function Login(){
         return view('page.login');
     }
+
     public function LoginAuth(Request $request){
         $validator = Validator::make($request->all(),
             [
@@ -66,6 +68,7 @@ class HomeController extends Controller
             }
         }
     }
+
     public function Logout(){
         Auth::logout();
         return response()->json([
@@ -73,9 +76,11 @@ class HomeController extends Controller
             'message'=>'!'
         ]);
     }
+
     public function Register(){
         return view('page.register');
     }
+
     public function DoRegister(Request $request){
         $validator = Validator::make($request->all(),
             [
@@ -126,6 +131,7 @@ class HomeController extends Controller
             ]
         ]);
     }
+
     public function ThongTinCaNhan(){
         if(Auth::check()){
             $user = Auth::user();
@@ -143,6 +149,7 @@ class HomeController extends Controller
                 'message'=>'Bạn chưa Đăng Nhập!'
             ]);
     }
+
     public function ChinhSuaThongTin(Request $request){
         $validator = Validator::make($request->all(),
             [
@@ -181,6 +188,7 @@ class HomeController extends Controller
             //return redirect('quan-ly-thong-tin')->with('message','Thay Đổi thông tin Người Dùng thành công!');
         }
     }
+
     public function gThemTaiKhoan(){
         if(Auth::check()){
             $user = Auth::user();
@@ -199,6 +207,7 @@ class HomeController extends Controller
                 'message'=>'Ban chua dang nhap'
             ]);
     }
+
     public function pThemtaikhoan(Request $request){
         $validator = Validator::make($request->all(),
             [
@@ -266,13 +275,13 @@ class HomeController extends Controller
             'user' => $user
         ]);
     }
-    
-  public function GetBank(){
+
+    public function GetBank(){
      $bank = nganhang::all();
       return response()->json($bank);
    }
 
-  public function GetPhoneBook(){
+    public function GetPhoneBook(){
      $user = Auth::user();
      $user_id = $user->id;
      $friend = array();
@@ -283,12 +292,10 @@ class HomeController extends Controller
         //echo $friend_info;
         array_push($friend,$friend_info[0]);
      }
-     //$fr = json_encode($friend);
+     return response()->json(['danhba'=>$friend]);
+    }
 
-     return response()->json($friend);
-   }
-
-  public function PNotification(Request $request){
+    public function PNotification(Request $request){
     $validator = Validator::make($request->all(),
     [
       'tieude' => 'required',
@@ -316,7 +323,7 @@ class HomeController extends Controller
       ]);
     }
   }
-    
+
     public function TransactionHistory(){
         if(Auth::check()){
             $user = Auth::user();
@@ -346,23 +353,28 @@ class HomeController extends Controller
             ]);
         }
     }
+
     public function GetBankUser(){
         if(Auth::check()){
             $user = Auth::user();
             $id = $user->id;
-            $tk = taikhoan::where('users_id',$id)->get('nganhang_id');
+            $tk = taikhoan::where('users_id',$id)->get();
             $list_bank = array();
             foreach($tk as $t){
                 $ng_id = $t->nganhang_id;
                 $nganhang = nganhang::where('id',$ng_id)->get();
                 array_push($list_bank,$nganhang[0]);
             }
-            // $bank_u = json_encode($list_bank);
-            return response()->json($list_bank);
+
+            return response()->json([
+              'account'=> $tk,
+              'bank'=>$list_bank
+            ]);
         }
         else
             return response()->json(['message'=>'ban chua dang nhap']);
     }
+
     public function NapThe(Request $request){
         if(Auth::check()){
             $validator = Validator::make($request->all(),
@@ -400,38 +412,75 @@ class HomeController extends Controller
                 'message'=> 'ban chua dang nhap '
             ]);
     }
+
     public function GNapThe(){
         $user = Auth::user();
         $nhamang = nhamang::all();
         return view('page.napthe',['nhamang' => $nhamang,'user'=>$user]);
     }
-    public function GetThanhToan(){
-        if (Auth::check()){
-            $user = Auth::user();
-            $loaihd = loaihoadon::all();
-            return response()->json([
-                'loaihoadon'=> $loaihd
-            ]);
-        }else
-            return response()->json([
-                'thanhtoan'=> 'error',
-                'message'=>'ban chua dang nhap'
-            ]);
+
+    public function GetAddPhoneBook(){
+      if(Auth::check()){
+        return view('page.themdanhba',['user'=>Auth::user()]);
+      }else
+        return response()->json(['message'=>'ban chua dang nhap']);
     }
-    public function PostThanhToan(Request $request){
-        if(Auth::check()){
-            $user = Auth::user();
-            $validator = Validator::make($request->all(),
-                [
-                    'sotien' => 'required'
-                ],
-                [
-                    'sotien.required' => 'You have not money!'
-                ]);
-        }else
-            return response()->json([
-                'thanhtoan'=>'error',
-                'message'=>'ban chua dang nhap'
-            ]);
+
+    public function PostAddPhoneBook(Request $request){
+      $validator = Validator::make($request->all(),
+      [
+        'sodt' =>'required'
+      ],
+      [
+        'sodt.required' => 'Ban chua nhap sodt'
+      ]);
+
+      $errs = $validator->errors();
+      $err = $errs->all();
+      $phonenumber = $request->sodt;
+
+      if($validator->fails()){
+          return response()->json([
+              'link' => 'error',
+              'errors' => $err[0],
+          ]);
+      }
+
+      if(!Auth::check()){
+        return response()->json([
+          'message'=>'ban chua dang nhap'
+        ]);
+        exit();
+      }
+      $user = Auth::user();
+      $phone_friend = User::where('sodienthoai',$phonenumber)->get();
+
+      if($phonenumber == $user->sodienthoai){
+        return response()->json(['message'=>'day la so dt cua ban']);
+      }
+      //kiemtra so do da co trong danh ba
+      $danhba_user = danhba::where('users_id',$user->id)->get();
+      foreach ($danhba_user as $key ) {
+        $friend_id =  $key->friend_id;
+        $friend = User::where('id',$friend_id)->get();
+        if($phonenumber == $friend[0]->sodienthoai){
+          return response()->json(['message'=>'so dien thoai nay da co trong danh ba vui long kiem tra danh ba']);
+          exit();
+        }
+      }
+      //kiem tra co tai khoan nao co sdt tren ko
+      if(count($phone_friend) == 0){
+        return response()->json(['message'=>'ko ton tai user co sdt nay']);
+      }else{
+        $db = new danhba;
+        $db->users_id = $user->id;
+        $db->friend_id = $phone_friend[0]->id;
+        $db->save();
+        return response()->json([
+          'link_phone_number' =>'success',
+          'user' =>  $user,
+          'friend'=> $phonenumber
+        ]);
+      }
     }
 }
