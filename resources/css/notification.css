@@ -1,10 +1,8 @@
 .noti-list {
-	border: solid 1px #3d3d3d;
+	border: solid 1px #1d1d1d;
 	display: flex;
 	flex-direction: column;	
 	margin: 10px;
-	background: #3d3d3d;
-	width: 50%;
 }
 
 .noti-list .noti {
@@ -13,6 +11,7 @@
 	position: relative;
 	margin: 0;
 	height: fit-content;
+	border-radius: 3px;
 }
 
 .noti-list .noti:hover {
@@ -21,7 +20,7 @@
 }
 
 .noti-list .noti+.noti {
-	border-top: 1px solid #3d3d3d;
+	margin-top: 10px;
 }
 
 .noti-list .noti .avatar {

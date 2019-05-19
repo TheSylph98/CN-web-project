@@ -8,6 +8,7 @@ const AccountInfo_1 = require("./AccountInfo");
 const BankAccount_1 = require("./BankAccount");
 const Services_1 = require("./Services");
 const Notification_1 = require("./Notification");
+const Transaction_1 = require("./Transaction");
 const react_router_dom_1 = require("react-router-dom");
 const react_redux_1 = require("react-redux");
 const FavoriteList_1 = require("./FavoriteList");
@@ -27,7 +28,8 @@ class CustomerPage extends React.Component {
                 React.createElement(react_router_dom_1.Route, { path: "/customer/bank", component: BankAccount_1.default }),
                 React.createElement(react_router_dom_1.Route, { path: "/customer/services", component: Services_1.default }),
                 React.createElement(react_router_dom_1.Route, { path: "/customer/favorite", component: FavoriteList_1.default }),
-                React.createElement(react_router_dom_1.Route, { path: "/customer/notification", component: Notification_1.default })));
+                React.createElement(react_router_dom_1.Route, { path: "/customer/notification", component: Notification_1.default }),
+                React.createElement(react_router_dom_1.Route, { path: "/customer/transaction", component: Transaction_1.default })));
     }
 }
 function mapStateToProps(state) {

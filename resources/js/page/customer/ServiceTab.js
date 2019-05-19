@@ -13,9 +13,9 @@ class ServiceTab extends React.Component {
             React.createElement(react_router_dom_1.Link, { to: "/customer/services/deposit", className: "tab" + (tab == "deposit" ? " active" : "") },
                 React.createElement("i", { className: "fa fa-sign-in-alt" }),
                 React.createElement("span", null, "Deposit")),
-            React.createElement(react_router_dom_1.Link, { to: "/customer/services/transact", className: "tab" + (tab == "transact" ? " active" : "") },
+            React.createElement(react_router_dom_1.Link, { to: "/customer/services/pay", className: "tab" + (tab == "pay" ? " active" : "") },
                 React.createElement("i", { className: "fa fa-credit-card" }),
-                React.createElement("span", null, "Transact")));
+                React.createElement("span", null, "Pay")));
     }
 }
 exports.default = ServiceTab;

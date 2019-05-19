@@ -29865,23 +29865,23 @@
 	const redux_1 = __webpack_require__(42);
 	const login_reducer_1 = __webpack_require__(67);
 	const register_reducer_1 = __webpack_require__(76);
-	const alert_reducer_1 = __webpack_require__(77);
-	const modify_reducer_1 = __webpack_require__(78);
-	const bank_reducer_1 = __webpack_require__(79);
-	const account_reducer_1 = __webpack_require__(80);
-	const friend_reducer_1 = __webpack_require__(81);
-	const services_reducer_1 = __webpack_require__(82);
-	const notification_reducer_1 = __webpack_require__(83);
+	const modify_reducer_1 = __webpack_require__(77);
+	const bank_reducer_1 = __webpack_require__(78);
+	const account_reducer_1 = __webpack_require__(79);
+	const friend_reducer_1 = __webpack_require__(80);
+	const services_reducer_1 = __webpack_require__(81);
+	const notification_reducer_1 = __webpack_require__(82);
+	const transaction_reducer_1 = __webpack_require__(83);
 	const rootReducer = redux_1.combineReducers({
 	    login: login_reducer_1.login,
 	    register: register_reducer_1.register,
-	    alert: alert_reducer_1.alert,
 	    bank: bank_reducer_1.bank,
 	    modify: modify_reducer_1.modify,
 	    account: account_reducer_1.account,
 	    friend: friend_reducer_1.friend,
 	    services: services_reducer_1.services,
 	    notification: notification_reducer_1.notification,
+	    transaction: transaction_reducer_1.transaction,
 	});
 	exports.default = rootReducer;
 
@@ -29956,20 +29956,6 @@
 
 	"use strict";
 	Object.defineProperty(exports, "__esModule", { value: true });
-	exports.alertConstants = {
-	    SUCCESS: 'ALERT_SUCCESS',
-	    ERROR: 'ALERT_ERROR',
-	    CLEAR: 'ALERT_CLEAR',
-	    INIT: "INIT",
-	};
-
-
-/***/ }),
-/* 70 */
-/***/ (function(module, exports) {
-
-	"use strict";
-	Object.defineProperty(exports, "__esModule", { value: true });
 	exports.userConstants = {
 	    REGISTER_REQUEST: 'USERS_REGISTER_REQUEST',
 	    REGISTER_SUCCESS: 'USERS_REGISTER_SUCCESS',
@@ -29989,7 +29975,7 @@
 
 
 /***/ }),
-/* 71 */
+/* 70 */
 /***/ (function(module, exports) {
 
 	"use strict";
@@ -30005,7 +29991,7 @@
 
 
 /***/ }),
-/* 72 */
+/* 71 */
 /***/ (function(module, exports) {
 
 	"use strict";
@@ -30021,7 +30007,7 @@
 
 
 /***/ }),
-/* 73 */
+/* 72 */
 /***/ (function(module, exports) {
 
 	"use strict";
@@ -30034,7 +30020,7 @@
 
 
 /***/ }),
-/* 74 */
+/* 73 */
 /***/ (function(module, exports) {
 
 	"use strict";
@@ -30050,7 +30036,7 @@
 
 
 /***/ }),
-/* 75 */
+/* 74 */
 /***/ (function(module, exports) {
 
 	"use strict";
@@ -30059,6 +30045,19 @@
 	    NOTIFICATION_REQUEST: "NOTIFICATION_REQUEST",
 	    NOTIFICATION_SUCCESS: "NOTIFICATION_SUCCESS",
 	    NOTIFICATION_FAILURE: "NOTIFICATION_FAILURE",
+	};
+
+
+/***/ }),
+/* 75 */
+/***/ (function(module, exports) {
+
+	"use strict";
+	Object.defineProperty(exports, "__esModule", { value: true });
+	exports.transactionConstants = {
+	    TRANSACTION_REQUEST: "TRANSACTION_REQUEST",
+	    TRANSACTION_SUCCESS: "TRANSACTION_SUCCESS",
+	    TRANSACTION_FAILURE: "TRANSACTION_FAILURE",
 	};
 
 
@@ -30091,38 +30090,6 @@
 	"use strict";
 	Object.defineProperty(exports, "__esModule", { value: true });
 	const constants_1 = __webpack_require__(68);
-	function alert(state = {}, action) {
-	    switch (action.type) {
-	        case constants_1.alertConstants.INIT:
-	            return {
-	                history: action.history
-	            };
-	        case constants_1.alertConstants.SUCCESS:
-	            return {
-	                type: 'alert-success',
-	                message: action.message
-	            };
-	        case constants_1.alertConstants.ERROR:
-	            return {
-	                type: 'alert-danger',
-	                message: action.message
-	            };
-	        case constants_1.alertConstants.CLEAR:
-	            return {};
-	        default:
-	            return state;
-	    }
-	}
-	exports.alert = alert;
-
-
-/***/ }),
-/* 78 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	"use strict";
-	Object.defineProperty(exports, "__esModule", { value: true });
-	const constants_1 = __webpack_require__(68);
 	function modify(state = {}, action) {
 	    switch (action.type) {
 	        case constants_1.userConstants.MODIFY_REQUEST:
@@ -30145,7 +30112,7 @@
 
 
 /***/ }),
-/* 79 */
+/* 78 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -30176,7 +30143,7 @@
 
 
 /***/ }),
-/* 80 */
+/* 79 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -30204,7 +30171,7 @@
 
 
 /***/ }),
-/* 81 */
+/* 80 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -30238,7 +30205,7 @@
 
 
 /***/ }),
-/* 82 */
+/* 81 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -30266,7 +30233,7 @@
 
 
 /***/ }),
-/* 83 */
+/* 82 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -30278,25 +30245,75 @@
 	            return {
 	                notLoad: false,
 	                loading: true,
-	                notifications: [],
+	                notifications: state.notifications,
 	            };
 	        case constants_1.notificationConstants.NOTIFICATION_SUCCESS:
 	            return {
 	                notLoad: false,
 	                loaded: true,
-	                notifications: action.notifications,
+	                notifications: action.notifications.sort((noti1, noti2) => {
+	                    if (noti1.time > noti2.time) {
+	                        return -1;
+	                    }
+	                    if (noti1.time == noti2.time) {
+	                        return 0;
+	                    }
+	                    return 1;
+	                }),
 	            };
 	        case constants_1.notificationConstants.NOTIFICATION_FAILURE:
 	            return {
 	                notLoad: true,
 	                error: action.error,
-	                notifications: []
+	                notifications: state.notifications,
 	            };
 	        default:
 	            return state;
 	    }
 	}
 	exports.notification = notification;
+
+
+/***/ }),
+/* 83 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	"use strict";
+	Object.defineProperty(exports, "__esModule", { value: true });
+	const constants_1 = __webpack_require__(68);
+	function transaction(state = { notLoad: true, transactions: [] }, action) {
+	    switch (action.type) {
+	        case constants_1.transactionConstants.TRANSACTION_REQUEST:
+	            return {
+	                notLoad: false,
+	                loading: true,
+	                transactions: state.transactions,
+	            };
+	        case constants_1.transactionConstants.TRANSACTION_SUCCESS:
+	            return {
+	                notLoad: false,
+	                loaded: true,
+	                transactions: action.transactions.sort((trans1, trans2) => {
+	                    if (trans1.time > trans2.time) {
+	                        return -1;
+	                    }
+	                    if (trans1.time == trans2.time) {
+	                        return 0;
+	                    }
+	                    return 1;
+	                }),
+	            };
+	        case constants_1.transactionConstants.TRANSACTION_FAILURE:
+	            return {
+	                notLoad: true,
+	                error: action.error,
+	                transactions: state.transactions,
+	            };
+	        default:
+	            return state;
+	    }
+	}
+	exports.transaction = transaction;
 
 
 /***/ }),
@@ -32212,14 +32229,17 @@
 	"use strict";
 	Object.defineProperty(exports, "__esModule", { value: true });
 	const homepage_1 = __webpack_require__(98);
-	const RegisterPage_1 = __webpack_require__(118);
-	const LoginPage_1 = __webpack_require__(119);
-	const CustomerPage_1 = __webpack_require__(120);
+	const RegisterPage_1 = __webpack_require__(122);
+	const LoginPage_1 = __webpack_require__(123);
+	const CustomerPage_1 = __webpack_require__(124);
 	const react_router_dom_1 = __webpack_require__(84);
 	const React = __webpack_require__(4);
+	const react_redux_1 = __webpack_require__(18);
+	const action_1 = __webpack_require__(101);
 	class App extends React.Component {
 	    componentWillMount() {
 	        window["routerHistory"] = this.props.history;
+	        setInterval(() => this.props.dispatch(action_1.notificationActions.load()), 1000);
 	    }
 	    componentDidUpdate(prevProps) {
 	        if (this.props.location !== prevProps.location) {
@@ -32235,7 +32255,7 @@
 	    }
 	}
 	exports.App = App;
-	exports.default = react_router_dom_1.withRouter(App);
+	exports.default = react_redux_1.connect()(react_router_dom_1.withRouter(App));
 
 
 /***/ }),
@@ -32246,8 +32266,8 @@
 	Object.defineProperty(exports, "__esModule", { value: true });
 	const React = __webpack_require__(4);
 	const TopPanel_1 = __webpack_require__(99);
-	const Slider_1 = __webpack_require__(115);
-	const Feature_1 = __webpack_require__(117);
+	const Slider_1 = __webpack_require__(119);
+	const Feature_1 = __webpack_require__(121);
 	const react_redux_1 = __webpack_require__(18);
 	const react_router_dom_1 = __webpack_require__(84);
 	class HomePage extends React.Component {
@@ -32288,23 +32308,6 @@
 	                React.createElement("div", { class: "main-logo col-xs-12 col-md-3 col-md-2 col-lg-2 hidden-xs" },
 	                    React.createElement(react_router_dom_1.Link, { to: "/" },
 	                        React.createElement("img", { id: "logo", class: "img-responsive", src: "resources/images/logo-dark.png", alt: "logo" }))),
-	                React.createElement("div", { class: "col-md-6 col-lg-6" },
-	                    React.createElement("ul", { class: "guess bitcoin-stats text-center" },
-	                        React.createElement("li", null,
-	                            React.createElement("h6", null, "9,450 USD"),
-	                            React.createElement("span", null, "Last trade price")),
-	                        React.createElement("li", null,
-	                            React.createElement("h6", null, "+5.26%"),
-	                            React.createElement("span", null, "24 hour price")),
-	                        React.createElement("li", null,
-	                            React.createElement("h6", null, "12.820 BTC"),
-	                            React.createElement("span", null, "24 hour volume")),
-	                        React.createElement("li", null,
-	                            React.createElement("h6", null, "2,231,775"),
-	                            React.createElement("span", null, "active traders")),
-	                        React.createElement("li", null,
-	                            React.createElement("h6", null, "2,231,775"),
-	                            React.createElement("span", null, "active traders")))),
 	                !this.props.login.loggedIn ?
 	                    React.createElement("div", { class: "col-md-4 col-lg-4" },
 	                        React.createElement("div", { class: "guess user" },
@@ -32320,7 +32323,10 @@
 	                        React.createElement("div", { class: "logged-in user" },
 	                            React.createElement("div", { class: "account" },
 	                                React.createElement(react_router_dom_1.Link, { to: "/customer" },
-	                                    React.createElement("i", { class: "fa fa-user" }),
+	                                    React.createElement("div", { class: "avatar" },
+	                                        React.createElement("i", { class: "fa fa-user" }),
+	                                        this.props.numUnread > 0 &&
+	                                            React.createElement("div", { className: "notification" }, this.props.numUnread)),
 	                                    React.createElement("span", null, this.props.login.user.username))),
 	                            React.createElement("div", { class: "sign-out" },
 	                                React.createElement(react_router_dom_1.Link, { to: "/", class: "btn btn-primary", onClick: this.onSignOut.bind(this) },
@@ -32331,8 +32337,11 @@
 	}
 	function mapStateToProps(state) {
 	    const { login } = state;
+	    const { notifications } = state.notification;
+	    let numUnread = notifications.filter(noti => !noti.read).length;
 	    return {
-	        login
+	        login,
+	        numUnread,
 	    };
 	}
 	exports.default = react_redux_1.connect(mapStateToProps)(TopPanel);
@@ -32384,11 +32393,11 @@
 	                            React.createElement("li", null,
 	                                React.createElement(react_router_dom_1.Link, { to: "/customer" }, "Customer")),
 	                            React.createElement("li", null,
-	                                React.createElement("a", { href: "services.html" }, "Services")),
+	                                React.createElement(react_router_dom_1.Link, { to: "/customer/services" }, "Services")),
 	                            React.createElement("li", null,
-	                                React.createElement("a", { href: "pricing.html" }, "Guide")),
+	                                React.createElement(react_router_dom_1.Link, { to: "/guide" }, "Guide")),
 	                            React.createElement("li", null,
-	                                React.createElement("a", { href: "contact.html" }, "Contact")),
+	                                React.createElement(react_router_dom_1.Link, { to: "/contact" }, "Contact")),
 	                            React.createElement("li", { class: "cart" },
 	                                React.createElement("a", { href: "shopping-cart.html" },
 	                                    React.createElement("i", { class: "fa fa-shopping-cart" }))),
@@ -32413,12 +32422,12 @@
 	}
 	Object.defineProperty(exports, "__esModule", { value: true });
 	__export(__webpack_require__(102));
-	__export(__webpack_require__(103));
-	__export(__webpack_require__(110));
-	__export(__webpack_require__(111));
-	__export(__webpack_require__(112));
 	__export(__webpack_require__(113));
 	__export(__webpack_require__(114));
+	__export(__webpack_require__(115));
+	__export(__webpack_require__(116));
+	__export(__webpack_require__(117));
+	__export(__webpack_require__(118));
 
 
 /***/ }),
@@ -32428,35 +32437,7 @@
 	"use strict";
 	Object.defineProperty(exports, "__esModule", { value: true });
 	const constants_1 = __webpack_require__(68);
-	exports.alertActions = {
-	    success,
-	    error,
-	    clear,
-	    init
-	};
-	function success(message) {
-	    return { type: constants_1.alertConstants.SUCCESS, message };
-	}
-	function error(message) {
-	    return { type: constants_1.alertConstants.ERROR, message };
-	}
-	function clear() {
-	    return { type: constants_1.alertConstants.CLEAR };
-	}
-	function init(history) {
-	    return { type: constants_1.alertConstants.INIT, history };
-	}
-
-
-/***/ }),
-/* 103 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	"use strict";
-	Object.defineProperty(exports, "__esModule", { value: true });
-	const constants_1 = __webpack_require__(68);
-	const _1 = __webpack_require__(101);
-	const backend = __webpack_require__(104);
+	const backend = __webpack_require__(103);
 	exports.userActions = {
 	    login,
 	    logout,
@@ -32475,7 +32456,6 @@
 	            window["routerHistory"].push("/");
 	        }, error => {
 	            dispatch(failure(error.toString()));
-	            dispatch(_1.alertActions.error(error.toString()));
 	        });
 	    };
 	    function request(user) { return { type: constants_1.userConstants.LOGIN_REQUEST, user }; }
@@ -32504,10 +32484,8 @@
 	            localStorage.setItem("user", JSON.stringify(user));
 	            alert("Registration successfully! Please login to continue");
 	            window["routerHistory"].push("/login");
-	            dispatch(_1.alertActions.success('Registration successful'));
 	        }, error => {
 	            dispatch(failure(error.toString()));
-	            dispatch(_1.alertActions.error(error.toString()));
 	        });
 	    };
 	    function request(user) { return { type: constants_1.userConstants.REGISTER_REQUEST, user }; }
@@ -32547,7 +32525,7 @@
 
 
 /***/ }),
-/* 104 */
+/* 103 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -32572,7 +32550,13 @@
 	            body: JSON.stringify(body),
 	        })
 	            .then(response => {
-	            resolve(response.json());
+	            const contentType = response.headers.get("content-type");
+	            if (contentType && contentType.indexOf("application/json") !== -1) {
+	                resolve(response.json());
+	            }
+	            else {
+	                resolve(response.text());
+	            }
 	        })
 	            .catch(e => {
 	            reject(e);
@@ -32580,6 +32564,7 @@
 	    });
 	}
 	exports.getData = getData;
+	__export(__webpack_require__(104));
 	__export(__webpack_require__(105));
 	__export(__webpack_require__(106));
 	__export(__webpack_require__(107));
@@ -32588,12 +32573,12 @@
 
 
 /***/ }),
-/* 105 */
+/* 104 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
 	Object.defineProperty(exports, "__esModule", { value: true });
-	const index_1 = __webpack_require__(104);
+	const index_1 = __webpack_require__(103);
 	function loginAuth(name, password) {
 	    let data = {
 	        "email": name,
@@ -32698,12 +32683,12 @@
 
 
 /***/ }),
-/* 106 */
+/* 105 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
 	Object.defineProperty(exports, "__esModule", { value: true });
-	const index_1 = __webpack_require__(104);
+	const index_1 = __webpack_require__(103);
 	function getBank() {
 	    return new Promise((resolve, reject) => {
 	        index_1.getData("bank")
@@ -32761,12 +32746,12 @@
 
 
 /***/ }),
-/* 107 */
+/* 106 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
 	Object.defineProperty(exports, "__esModule", { value: true });
-	const index_1 = __webpack_require__(104);
+	const index_1 = __webpack_require__(103);
 	function getFriendList() {
 	    return new Promise((resolve, reject) => {
 	        index_1.getData("danh-ba")
@@ -32789,12 +32774,12 @@
 
 
 /***/ }),
-/* 108 */
+/* 107 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
 	Object.defineProperty(exports, "__esModule", { value: true });
-	const _1 = __webpack_require__(104);
+	const _1 = __webpack_require__(103);
 	function transfer({ amount, email, message }) {
 	    let data = {
 	        "sotien": amount,
@@ -32817,22 +32802,25 @@
 
 
 /***/ }),
-/* 109 */
+/* 108 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
 	Object.defineProperty(exports, "__esModule", { value: true });
-	const _1 = __webpack_require__(104);
+	const _1 = __webpack_require__(103);
 	function getNotification() {
 	    return new Promise((resolve, reject) => {
 	        _1.getData("thong-bao", {})
 	            .then(result => {
 	            if (result['noti'] == 'success') {
 	                resolve(result['thongbao'].map(notification => ({
+	                    id: notification["id"],
 	                    title: notification["tieude"],
 	                    content: notification["noidung"],
-	                    time: notification["time"],
-	                    read: true,
+	                    time: new Date(notification["time"]),
+	                    read: notification["daxem"] == 1,
+	                    type: notification["type"].split("_")[0],
+	                    transactionId: notification["type"].split("_")[1],
 	                })));
 	            }
 	            else {
@@ -32842,6 +32830,71 @@
 	    });
 	}
 	exports.getNotification = getNotification;
+	function readNotification(id) {
+	    return new Promise(() => {
+	        let data = {
+	            id
+	        };
+	        _1.getData("update-thongbao", data);
+	    });
+	}
+	exports.readNotification = readNotification;
+
+
+/***/ }),
+/* 109 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	"use strict";
+	Object.defineProperty(exports, "__esModule", { value: true });
+	const _1 = __webpack_require__(103);
+	const utils_1 = __webpack_require__(110);
+	function getTransaction() {
+	    return new Promise((resolve, reject) => {
+	        _1.getData("lich-su-giao-dich", {})
+	            .then(result => {
+	            if (result['trans'] == 'success') {
+	                let transactions = [];
+	                transactions = transactions.concat(result['chuyentien'].map(transaction => ({
+	                    type: utils_1.TransactionType.TRANSFER,
+	                    id: transaction["id"],
+	                    receiver: transaction["id_nhan"],
+	                    message: transaction["noidung"],
+	                    time: new Date(transaction["time"]),
+	                    amount: transaction["sotien"],
+	                })));
+	                transactions = transactions.concat(result['naptien'].map(transaction => ({
+	                    type: utils_1.TransactionType.DEPOSIT,
+	                    id: transaction["id"],
+	                    account: transaction["account_id"],
+	                    message: transaction["noidung"],
+	                    time: new Date(transaction["time"]),
+	                    amount: transaction["sotien"],
+	                })));
+	                transactions = transactions.concat(result['napthe'].map(transaction => ({
+	                    type: utils_1.TransactionType.MOBILE_PAY,
+	                    id: transaction["id"],
+	                    telecom: transaction["nhamang_id"],
+	                    time: new Date(transaction["created_at"]),
+	                    amount: transaction["sotien"],
+	                })));
+	                // transactions = transactions.concat(result['nhantien'].map(transaction => ({
+	                // 	type: TransactionType.RECEIVE,
+	                // 	id: transaction["id"],
+	                // 	sender: transaction["id_gui"],
+	                // 	time: new Date(transaction["created_at"]),
+	                // 	message: transaction["noidung"],
+	                // 	amount: transaction["sotien"],
+	                // })));
+	                resolve(transactions);
+	            }
+	            else {
+	                reject(result["errors"]);
+	            }
+	        });
+	    });
+	}
+	exports.getTransaction = getTransaction;
 
 
 /***/ }),
@@ -32849,9 +32902,83 @@
 /***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
+	function __export(m) {
+	    for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
+	}
+	Object.defineProperty(exports, "__esModule", { value: true });
+	__export(__webpack_require__(111));
+	__export(__webpack_require__(112));
+
+
+/***/ }),
+/* 111 */
+/***/ (function(module, exports) {
+
+	"use strict";
+	Object.defineProperty(exports, "__esModule", { value: true });
+	function toMoneyFormat(money) {
+	    let temp = money.toString().split("").reverse().join("");
+	    let result = "";
+	    for (let i = 0; i < temp.length; ++i) {
+	        if (i != 0 && i % 3 == 0) {
+	            result = "." + result;
+	        }
+	        result = temp[i] + result;
+	    }
+	    return result;
+	}
+	exports.toMoneyFormat = toMoneyFormat;
+
+
+/***/ }),
+/* 112 */
+/***/ (function(module, exports) {
+
+	"use strict";
+	Object.defineProperty(exports, "__esModule", { value: true });
+	exports.NotificationType = {
+	    TRANSFER: "chuyentien",
+	    PAY: "thanhtoan",
+	    DEPOSIT: "naptien",
+	    RECEIVE: "nhantien",
+	    MOBILE_PAY: "napthe",
+	};
+	exports.TransactionType = {
+	    TRANSFER: "TRANSFER",
+	    PAY: "PAY",
+	    DEPOSIT: "DEPOSIT",
+	    RECEIVE: "RECEIVE",
+	    MOBILE_PAY: "MOBILE_PAY",
+	};
+	function compare(noti, trans) {
+	    if (noti == exports.NotificationType.TRANSFER && trans == exports.TransactionType.TRANSFER) {
+	        return true;
+	    }
+	    if (noti == exports.NotificationType.PAY && trans == exports.TransactionType.PAY) {
+	        return true;
+	    }
+	    if (noti == exports.NotificationType.DEPOSIT && trans == exports.TransactionType.DEPOSIT) {
+	        return true;
+	    }
+	    if (noti == exports.NotificationType.RECEIVE && trans == exports.TransactionType.RECEIVE) {
+	        return true;
+	    }
+	    if (noti == exports.NotificationType.MOBILE_PAY && trans == exports.TransactionType.MOBILE_PAY) {
+	        return true;
+	    }
+	    return false;
+	}
+	exports.compare = compare;
+
+
+/***/ }),
+/* 113 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	"use strict";
 	Object.defineProperty(exports, "__esModule", { value: true });
 	const constants_1 = __webpack_require__(68);
-	const backend = __webpack_require__(104);
+	const backend = __webpack_require__(103);
 	exports.bankActions = {
 	    getBank,
 	};
@@ -32875,13 +33002,13 @@
 
 
 /***/ }),
-/* 111 */
+/* 114 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
 	Object.defineProperty(exports, "__esModule", { value: true });
 	const constants_1 = __webpack_require__(68);
-	const backend = __webpack_require__(104);
+	const backend = __webpack_require__(103);
 	exports.accountActions = {
 	    connectAccount,
 	    getConnectedAccount,
@@ -32924,13 +33051,13 @@
 
 
 /***/ }),
-/* 112 */
+/* 115 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
 	Object.defineProperty(exports, "__esModule", { value: true });
 	const constants_1 = __webpack_require__(68);
-	const backend = __webpack_require__(104);
+	const backend = __webpack_require__(103);
 	exports.friendActions = {
 	    getFriendList,
 	};
@@ -32954,14 +33081,14 @@
 
 
 /***/ }),
-/* 113 */
+/* 116 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
 	Object.defineProperty(exports, "__esModule", { value: true });
 	const constants_1 = __webpack_require__(68);
 	const _1 = __webpack_require__(101);
-	const backend = __webpack_require__(104);
+	const backend = __webpack_require__(103);
 	exports.servicesActions = {
 	    transfer,
 	};
@@ -32986,22 +33113,31 @@
 
 
 /***/ }),
-/* 114 */
+/* 117 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
 	Object.defineProperty(exports, "__esModule", { value: true });
 	const constants_1 = __webpack_require__(68);
-	const backend = __webpack_require__(104);
+	const backend = __webpack_require__(103);
+	const _1 = __webpack_require__(101);
 	exports.notificationActions = {
 	    load,
+	    read,
 	};
 	function load() {
-	    return dispatch => {
+	    return (dispatch, getState) => {
 	        dispatch(request());
 	        backend.getNotification()
 	            .then(notifications => {
-	            dispatch(success(notifications));
+	            let oldNotis = getState().notification.notifications;
+	            let newNotis = notifications;
+	            let oldUnread = oldNotis.filter(noti => !noti.read).length;
+	            let newUnread = newNotis.filter(noti => !noti.read).length;
+	            if (oldUnread != newUnread || oldNotis.length != newNotis.length) {
+	                dispatch(success(notifications));
+	                dispatch(_1.transactionActions.load());
+	            }
 	        }, error => {
 	            dispatch(failure(error));
 	        });
@@ -33013,16 +33149,54 @@
 	    function failure(error) { return { type: constants_1.notificationConstants.NOTIFICATION_FAILURE, error }; }
 	    ;
 	}
+	function read(id) {
+	    return dispatch => {
+	        backend.readNotification(id)
+	            .then(() => {
+	            dispatch(load());
+	        });
+	    };
+	}
 
 
 /***/ }),
-/* 115 */
+/* 118 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	"use strict";
+	Object.defineProperty(exports, "__esModule", { value: true });
+	const constants_1 = __webpack_require__(68);
+	const backend = __webpack_require__(103);
+	exports.transactionActions = {
+	    load,
+	};
+	function load() {
+	    return (dispatch) => {
+	        dispatch(request());
+	        backend.getTransaction()
+	            .then(transactions => {
+	            dispatch(success(transactions));
+	        }, error => {
+	            dispatch(failure(error));
+	        });
+	    };
+	    function request() { return { type: constants_1.transactionConstants.TRANSACTION_REQUEST }; }
+	    ;
+	    function success(transactions) { return { type: constants_1.transactionConstants.TRANSACTION_SUCCESS, transactions }; }
+	    ;
+	    function failure(error) { return { type: constants_1.transactionConstants.TRANSACTION_FAILURE, error }; }
+	    ;
+	}
+
+
+/***/ }),
+/* 119 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
 	Object.defineProperty(exports, "__esModule", { value: true });
 	const React = __webpack_require__(4);
-	const react_bootstrap_carousel_1 = __webpack_require__(116);
+	const react_bootstrap_carousel_1 = __webpack_require__(120);
 	class Slider extends React.Component {
 	    render() {
 	        let leftIcon = React.createElement("span", { className: "fa fa-angle-left" });
@@ -33062,7 +33236,7 @@
 
 
 /***/ }),
-/* 116 */
+/* 120 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	!function(e,t){ true?module.exports=t(__webpack_require__(4)):"function"==typeof define&&define.amd?define("ReactBootstrap_Carousel",["react"],t):"object"==typeof exports?exports.ReactBootstrap_Carousel=t(require("react")):e.ReactBootstrap_Carousel=t(e.react)}(window,function(e){return function(e){var t={};function n(r){if(t[r])return t[r].exports;var o=t[r]={i:r,l:!1,exports:{}};return e[r].call(o.exports,o,o.exports,n),o.l=!0,o.exports}return n.m=e,n.c=t,n.d=function(e,t,r){n.o(e,t)||Object.defineProperty(e,t,{enumerable:!0,get:r})},n.r=function(e){"undefined"!=typeof Symbol&&Symbol.toStringTag&&Object.defineProperty(e,Symbol.toStringTag,{value:"Module"}),Object.defineProperty(e,"__esModule",{value:!0})},n.t=function(e,t){if(1&t&&(e=n(e)),8&t)return e;if(4&t&&"object"==typeof e&&e&&e.__esModule)return e;var r=Object.create(null);if(n.r(r),Object.defineProperty(r,"default",{enumerable:!0,value:e}),2&t&&"string"!=typeof e)for(var o in e)n.d(r,o,function(t){return e[t]}.bind(null,o));return r},n.n=function(e){var t=e&&e.__esModule?function(){return e.default}:function(){return e};return n.d(t,"a",t),t},n.o=function(e,t){return Object.prototype.hasOwnProperty.call(e,t)},n.p="",n(n.s=7)}([function(t,n){t.exports=e},function(e,t,n){var r;
@@ -33079,7 +33253,7 @@
 	!function(){"use strict";var n={}.hasOwnProperty;function o(){for(var e=[],t=0;t<arguments.length;t++){var r=arguments[t];if(r){var i=typeof r;if("string"===i||"number"===i)e.push(r);else if(Array.isArray(r)&&r.length){var a=o.apply(null,r);a&&e.push(a)}else if("object"===i)for(var u in r)n.call(r,u)&&r[u]&&e.push(u)}}return e.join(" ")}e.exports?(o.default=o,e.exports=o):void 0===(r=function(){return o}.apply(t,[]))||(e.exports=r)}()},function(e,t,n){e.exports=n(3)()},function(e,t,n){"use strict";var r=n(4),o=n(5),i=n(6);e.exports=function(){function e(e,t,n,r,a,u){u!==i&&o(!1,"Calling PropTypes validators directly is not supported by the `prop-types` package. Use PropTypes.checkPropTypes() to call them. Read more at http://fb.me/use-check-prop-types")}function t(){return e}e.isRequired=e;var n={array:e,bool:e,func:e,number:e,object:e,string:e,symbol:e,any:e,arrayOf:t,element:e,instanceOf:t,node:e,objectOf:t,oneOf:t,oneOfType:t,shape:t,exact:t};return n.checkPropTypes=r,n.PropTypes=n,n}},function(e,t,n){"use strict";function r(e){return function(){return e}}var o=function(){};o.thatReturns=r,o.thatReturnsFalse=r(!1),o.thatReturnsTrue=r(!0),o.thatReturnsNull=r(null),o.thatReturnsThis=function(){return this},o.thatReturnsArgument=function(e){return e},e.exports=o},function(e,t,n){"use strict";var r=function(e){};e.exports=function(e,t,n,o,i,a,u,c){if(r(t),!e){var l;if(void 0===t)l=new Error("Minified exception occurred; use the non-minified dev environment for the full error message and additional helpful warnings.");else{var s=[n,o,i,a,u,c],f=0;(l=new Error(t.replace(/%s/g,function(){return s[f++]}))).name="Invariant Violation"}throw l.framesToPop=1,l}}},function(e,t,n){"use strict";e.exports="SECRET_DO_NOT_PASS_THIS_OR_YOU_WILL_BE_FIRED"},function(e,t,n){"use strict";n.r(t);var r=n(0),o=n.n(r),i=n(2),a=n.n(i);function u(e){return(u="function"==typeof Symbol&&"symbol"==typeof Symbol.iterator?function(e){return typeof e}:function(e){return e&&"function"==typeof Symbol&&e.constructor===Symbol&&e!==Symbol.prototype?"symbol":typeof e})(e)}function c(e,t){for(var n=0;n<t.length;n++){var r=t[n];r.enumerable=r.enumerable||!1,r.configurable=!0,"value"in r&&(r.writable=!0),Object.defineProperty(e,r.key,r)}}function l(e){return(l=Object.setPrototypeOf?Object.getPrototypeOf:function(e){return e.__proto__||Object.getPrototypeOf(e)})(e)}function s(e,t){return(s=Object.setPrototypeOf||function(e,t){return e.__proto__=t,e})(e,t)}function f(e){if(void 0===e)throw new ReferenceError("this hasn't been initialised - super() hasn't been called");return e}function p(e,t,n){return t in e?Object.defineProperty(e,t,{value:n,enumerable:!0,configurable:!0,writable:!0}):e[t]=n,e}var y=function(e){function t(e){var n;return function(e,t){if(!(e instanceof t))throw new TypeError("Cannot call a class as a function")}(this,t),p(f(f(n=function(e,t){return!t||"object"!==u(t)&&"function"!=typeof t?f(e):t}(this,l(t).call(this,e)))),"safeSetState",function(e){!n.isUnmount&&n.setState(e)}),n.isUnmounted=!1,n}return function(e,t){if("function"!=typeof t&&null!==t)throw new TypeError("Super expression must either be null or a function");e.prototype=Object.create(t&&t.prototype,{constructor:{value:e,writable:!0,configurable:!0}}),t&&s(e,t)}(t,o.a.PureComponent),function(e,t,n){t&&c(e.prototype,t),n&&c(e,n)}(t,[{key:"componentDidMount",value:function(){window.addEventListener("beforeunload",this.unmount),window.addEventListener("visibilitychange",this.visibilitychange),"function"==typeof this.init&&this.init()}},{key:"componentWillUnmount",value:function(){this.isUnmount=!0,"function"==typeof this.unmount&&this.unmount(),window.removeEventListener("beforeunload",this.unmount),window.removeEventListener("visibilitychange",this.visibilitychange)}},{key:"render",value:function(){return o.a.createElement("div",null,"The Base Component")}}]),t}();p(y,"propTypes",{init:a.a.func,unmount:a.a.func});var d=n(1),h=n.n(d);function b(e){return(b="function"==typeof Symbol&&"symbol"==typeof Symbol.iterator?function(e){return typeof e}:function(e){return e&&"function"==typeof Symbol&&e.constructor===Symbol&&e!==Symbol.prototype?"symbol":typeof e})(e)}function m(e,t){for(var n=0;n<t.length;n++){var r=t[n];r.enumerable=r.enumerable||!1,r.configurable=!0,"value"in r&&(r.writable=!0),Object.defineProperty(e,r.key,r)}}function v(e){return(v=Object.setPrototypeOf?Object.getPrototypeOf:function(e){return e.__proto__||Object.getPrototypeOf(e)})(e)}function _(e,t){return(_=Object.setPrototypeOf||function(e,t){return e.__proto__=t,e})(e,t)}function O(e){if(void 0===e)throw new ReferenceError("this hasn't been initialised - super() hasn't been called");return e}function g(e,t,n){return t in e?Object.defineProperty(e,t,{value:n,enumerable:!0,configurable:!0,writable:!0}):e[t]=n,e}var w=function(e){function t(e){var n;return function(e,t){if(!(e instanceof t))throw new TypeError("Cannot call a class as a function")}(this,t),g(O(O(n=function(e,t){return!t||"object"!==b(t)&&"function"!=typeof t?O(e):t}(this,v(t).call(this,e)))),"_onClick",function(e){var t=n.props.activeIndex<e?"next":"prev";n.props.indClick(e,t)}),n.state={css:"carousel-indicators"},n}return function(e,t){if("function"!=typeof t&&null!==t)throw new TypeError("Super expression must either be null or a function");e.prototype=Object.create(t&&t.prototype,{constructor:{value:e,writable:!0,configurable:!0}}),t&&_(e,t)}(t,o.a.PureComponent),function(e,t,n){t&&m(e.prototype,t),n&&m(e,n)}(t,[{key:"render",value:function(){var e=this,t=this.props,n=t.data,r=t.activeIndex;if(Array.isArray(n)){var i=n.map(function(t,n){var i=n==r?"active":"";return o.a.createElement("li",{key:n,onClick:e._onClick.bind(e,n),className:i,style:{marginLeft:10}})});return o.a.createElement("ol",{className:this.state.css},i)}return null}}]),t}();function P(e){return(P="function"==typeof Symbol&&"symbol"==typeof Symbol.iterator?function(e){return typeof e}:function(e){return e&&"function"==typeof Symbol&&e.constructor===Symbol&&e!==Symbol.prototype?"symbol":typeof e})(e)}function x(e,t){if(!(e instanceof t))throw new TypeError("Cannot call a class as a function")}function j(e,t){for(var n=0;n<t.length;n++){var r=t[n];r.enumerable=r.enumerable||!1,r.configurable=!0,"value"in r&&(r.writable=!0),Object.defineProperty(e,r.key,r)}}function S(e,t,n){return t&&j(e.prototype,t),n&&j(e,n),e}function k(e,t){return!t||"object"!==P(t)&&"function"!=typeof t?I(e):t}function E(e){return(E=Object.setPrototypeOf?Object.getPrototypeOf:function(e){return e.__proto__||Object.getPrototypeOf(e)})(e)}function C(e,t){if("function"!=typeof t&&null!==t)throw new TypeError("Super expression must either be null or a function");e.prototype=Object.create(t&&t.prototype,{constructor:{value:e,writable:!0,configurable:!0}}),t&&T(e,t)}function T(e,t){return(T=Object.setPrototypeOf||function(e,t){return e.__proto__=t,e})(e,t)}function I(e){if(void 0===e)throw new ReferenceError("this hasn't been initialised - super() hasn't been called");return e}function N(e,t,n){return t in e?Object.defineProperty(e,t,{value:n,enumerable:!0,configurable:!0,writable:!0}):e[t]=n,e}g(w,"defaultProps",{data:[],activeIndex:0,indClick:function(){}});var R=function(e){function t(e){var n;return x(this,t),N(I(I(n=k(this,E(t).call(this,e)))),"_onclick",function(e){n.props.controlsClick(e)}),n.state={},n}return C(t,o.a.PureComponent),S(t,[{key:"render",value:function(){var e=this.props,t=e.rightIcon,n=e.leftIcon,r=e.dataLength,i=e.version,a="",u="";if(r<2)return null;switch(i){case 4:a="left carousel-control-prev",u="right carousel-control-next",n=n||o.a.createElement("i",{className:"icon icon-chevron-left"}),t=t||o.a.createElement("i",{className:"icon icon-chevron-right"});break;default:a="left carousel-control",u="right carousel-control",n=n||o.a.createElement("i",{className:"glyphicon glyphicon-chevron-left"}),t=t||o.a.createElement("i",{className:"glyphicon glyphicon-chevron-right"})}return o.a.createElement("div",null,o.a.createElement("a",{className:a,onClick:this._onclick.bind(this,"prev")},o.a.createElement(A,{icon:n})),o.a.createElement("a",{className:u,onClick:this._onclick.bind(this,"next")},o.a.createElement(L,{icon:t})))}}]),t}();N(R,"defaultProps",{dataLength:0,controlsClick:function(){},version:3});var L=function(e){function t(e){return x(this,t),k(this,E(t).call(this,e))}return C(t,o.a.PureComponent),S(t,[{key:"render",value:function(){var e=this.props.icon;return o.a.createElement("span",{className:"rightControl"},e)}}]),t}(),A=function(e){function t(e){return x(this,t),k(this,E(t).call(this,e))}return C(t,o.a.PureComponent),S(t,[{key:"render",value:function(){var e=this.props.icon;return o.a.createElement("span",{className:"leftControl"},e)}}]),t}();function M(e){return(M="function"==typeof Symbol&&"symbol"==typeof Symbol.iterator?function(e){return typeof e}:function(e){return e&&"function"==typeof Symbol&&e.constructor===Symbol&&e!==Symbol.prototype?"symbol":typeof e})(e)}function U(e,t){for(var n=0;n<t.length;n++){var r=t[n];r.enumerable=r.enumerable||!1,r.configurable=!0,"value"in r&&(r.writable=!0),Object.defineProperty(e,r.key,r)}}function B(e,t){return!t||"object"!==M(t)&&"function"!=typeof t?function(e){if(void 0===e)throw new ReferenceError("this hasn't been initialised - super() hasn't been called");return e}(e):t}function D(e){return(D=Object.setPrototypeOf?Object.getPrototypeOf:function(e){return e.__proto__||Object.getPrototypeOf(e)})(e)}function F(e,t){return(F=Object.setPrototypeOf||function(e,t){return e.__proto__=t,e})(e,t)}var q=function(e){function t(e){return function(e,t){if(!(e instanceof t))throw new TypeError("Cannot call a class as a function")}(this,t),B(this,D(t).call(this,e))}return function(e,t){if("function"!=typeof t&&null!==t)throw new TypeError("Super expression must either be null or a function");e.prototype=Object.create(t&&t.prototype,{constructor:{value:e,writable:!0,configurable:!0}}),t&&F(e,t)}(t,o.a.PureComponent),function(e,t,n){t&&U(e.prototype,t),n&&U(e,n)}(t,[{key:"render",value:function(){var e=this.props,t=e.data,n=e.activeIndex,r=e.version,i=e.animation,a=4==r?"carousel-item":"item",u=[];return Array.isArray(t)?(u=t.map(function(e,t){var u,c;switch(!0){case!0===i&&t>n&&4==r:u="carousel-item-right",c="carousel-item-next";break;case!0===i&&t>n:u="right",c="next";break;case!0===i&&t<n&&4==r:u="carousel-item-left",c="carousel-item-prev";break;case!0===i&&t<n:u="left",c="prev"}var l=h()(a,c,u);return l=t===n?h()(a,"active"):l,o.a.createElement("div",{key:t,className:l},e)}),o.a.createElement("div",{className:"carousel-inner",role:"listbox"},u)):o.a.createElement("div",{key:0,className:h()(a,"active")},t)}}]),t}();function V(e){return(V="function"==typeof Symbol&&"symbol"==typeof Symbol.iterator?function(e){return typeof e}:function(e){return e&&"function"==typeof Symbol&&e.constructor===Symbol&&e!==Symbol.prototype?"symbol":typeof e})(e)}function W(e,t){for(var n=0;n<t.length;n++){var r=t[n];r.enumerable=r.enumerable||!1,r.configurable=!0,"value"in r&&(r.writable=!0),Object.defineProperty(e,r.key,r)}}function H(e){return(H=Object.setPrototypeOf?Object.getPrototypeOf:function(e){return e.__proto__||Object.getPrototypeOf(e)})(e)}function Y(e,t){return(Y=Object.setPrototypeOf||function(e,t){return e.__proto__=t,e})(e,t)}function z(e){if(void 0===e)throw new ReferenceError("this hasn't been initialised - super() hasn't been called");return e}function G(e,t,n){return t in e?Object.defineProperty(e,t,{value:n,enumerable:!0,configurable:!0,writable:!0}):e[t]=n,e}!function(e,t,n){t in e?Object.defineProperty(e,t,{value:n,enumerable:!0,configurable:!0,writable:!0}):e[t]=n}(q,"defaultProps",{data:[],activeIndex:0,direction:null,version:3});var J=function(e){function t(e){var n;return function(e,t){if(!(e instanceof t))throw new TypeError("Cannot call a class as a function")}(this,t),G(z(z(n=function(e,t){return!t||"object"!==V(t)&&"function"!=typeof t?z(e):t}(this,H(t).call(this,e)))),"visibilitychange",function(){(document.hidden||n.props.hidden)&&n.props.pauseOnVisibility?n._pause():n._autoPlay()}),G(z(z(n)),"_checkChildrenLength",function(){var e=n.props.children;Array.isArray(e)&&e.length>0&&n._autoPlay()}),G(z(z(n)),"_autoPlay",function(){n._pause(),n.props.autoplay&&n._play()}),G(z(z(n)),"slideNext",function(){var e=n.state.activeIndex,t=n.props.wrap,r=e+1;if(r>n.props.children.length-1){if(!t)return;r=0}n.safeSetState({activeIndex:r,direction:"next"})}),G(z(z(n)),"goToSlide",function(e){n.timeout&&clearTimeout(n.timeout),n.setState({activeIndex:e})}),G(z(z(n)),"slidePrev",function(){var e=n.state.activeIndex,t=n.props.wrap,r=e-1,o=n.props.children.length;if(r<0){if(!t)return;r=o-1}n.setState({activeIndex:r,direction:"prev"})}),G(z(z(n)),"_handleMouseOver",function(){n._pause()}),G(z(z(n)),"_handleMouseOut",function(){n.isPaused&&n.props.autoplay&&n._play()}),G(z(z(n)),"_pause",function(){n.isPaused=!0,n.timeout&&clearTimeout(n.timeout)}),G(z(z(n)),"_play",function(){n.isPaused=!1,n._waitForNext()}),G(z(z(n)),"_indClick",function(e,t){n.timeout&&clearTimeout(n.timeout),n.setState({activeIndex:e,direction:t}),n.isPaused=!1}),G(z(z(n)),"_controlsClick",function(e){n.timeout&&clearTimeout(n.timeout),n.isPaused=!1,"prev"==e?n.slidePrev():n.slideNext()}),G(z(z(n)),"render_ind",function(){var e=n.props,t=e.children,r=e.indicators,i=n.state.activeIndex;if(r)return o.a.createElement(w,{data:t,activeIndex:i,indClick:n._indClick})}),G(z(z(n)),"render_control",function(){var e=n.props,t=e.children,r=e.controls,i=e.leftIcon,a=e.rightIcon,u=e.version;if(r)return o.a.createElement(R,{dataLength:t.length,leftIcon:i,rightIcon:a,prev:n.slidePrev,next:n.slideNext,controlsClick:n._controlsClick,version:u})}),n.state={activeIndex:n.props.defaultActiveIndex,className:h()("carousel slide",n.props.className)},n}return function(e,t){if("function"!=typeof t&&null!==t)throw new TypeError("Super expression must either be null or a function");e.prototype=Object.create(t&&t.prototype,{constructor:{value:e,writable:!0,configurable:!0}}),t&&Y(e,t)}(t,y),function(e,t,n){t&&W(e.prototype,t),n&&W(e,n)}(t,[{key:"componentDidUpdate",value:function(e,t){if(this._checkChildrenLength(),this.props.autoplay!==e.autoplay&&this._autoPlay(),t.activeIndex!==this.state.activeIndex){var n=this.state,r=n.direction,o=n.activeIndex;this.props.onSelect(o,r)}}},{key:"init",value:function(){this._checkChildrenLength()}},{key:"unmount",value:function(){this.timeout&&clearTimeout(this.timeout)}},{key:"_waitForNext",value:function(){this.timeout=setTimeout(this.slideNext,this.props.slideshowSpeed)}},{key:"render",value:function(){var e=this.props,t=e.children,n=e.version,r=this.state,i=r.activeIndex,a=r.className,u=this.props.animation;return o.a.createElement("div",{className:h()(a),onMouseOver:this._handleMouseOver,onMouseOut:this._handleMouseOut},this.render_ind(),o.a.createElement(q,{animation:u,data:t,activeIndex:i,version:n}),this.render_control())}}]),t}();G(J,"defaultProps",{indicators:!0,controls:!0,slideshowSpeed:7e3,defaultActiveIndex:0,wrap:!0,autoplay:!0,children:[],animation:!0,className:"",version:3,pauseOnVisibility:!1,hidden:!1,onSelect:function(){}}),n.d(t,"React_Bootstrap_Carousel",function(){return J});t.default=J}])});
 
 /***/ }),
-/* 117 */
+/* 121 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -33114,7 +33288,7 @@
 
 
 /***/ }),
-/* 118 */
+/* 122 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -33171,7 +33345,7 @@
 
 
 /***/ }),
-/* 119 */
+/* 123 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -33230,22 +33404,23 @@
 
 
 /***/ }),
-/* 120 */
+/* 124 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
 	Object.defineProperty(exports, "__esModule", { value: true });
 	const React = __webpack_require__(4);
 	const TopPanel_1 = __webpack_require__(99);
-	const Directory_1 = __webpack_require__(121);
-	const Navigator_1 = __webpack_require__(122);
-	const AccountInfo_1 = __webpack_require__(123);
-	const BankAccount_1 = __webpack_require__(126);
-	const Services_1 = __webpack_require__(127);
-	const Notification_1 = __webpack_require__(131);
+	const Directory_1 = __webpack_require__(125);
+	const Navigator_1 = __webpack_require__(126);
+	const AccountInfo_1 = __webpack_require__(127);
+	const BankAccount_1 = __webpack_require__(128);
+	const Services_1 = __webpack_require__(129);
+	const Notification_1 = __webpack_require__(133);
+	const Transaction_1 = __webpack_require__(134);
 	const react_router_dom_1 = __webpack_require__(84);
 	const react_redux_1 = __webpack_require__(18);
-	const FavoriteList_1 = __webpack_require__(132);
+	const FavoriteList_1 = __webpack_require__(135);
 	class CustomerPage extends React.Component {
 	    render() {
 	        if (!this.props.loggedIn) {
@@ -33262,7 +33437,8 @@
 	                React.createElement(react_router_dom_1.Route, { path: "/customer/bank", component: BankAccount_1.default }),
 	                React.createElement(react_router_dom_1.Route, { path: "/customer/services", component: Services_1.default }),
 	                React.createElement(react_router_dom_1.Route, { path: "/customer/favorite", component: FavoriteList_1.default }),
-	                React.createElement(react_router_dom_1.Route, { path: "/customer/notification", component: Notification_1.default })));
+	                React.createElement(react_router_dom_1.Route, { path: "/customer/notification", component: Notification_1.default }),
+	                React.createElement(react_router_dom_1.Route, { path: "/customer/transaction", component: Transaction_1.default })));
 	    }
 	}
 	function mapStateToProps(state) {
@@ -33275,7 +33451,7 @@
 
 
 /***/ }),
-/* 121 */
+/* 125 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -33292,12 +33468,12 @@
 	            "customer": "Customer",
 	            "account": "Account Info",
 	            "notification": "Notification",
-	            "history": "Traction History",
+	            "transaction": "Traction History",
 	            "services": "Services",
 	            "bank": "Bank Account",
 	            "transfer": "Transfer",
 	            "withdraw": "Withdraw",
-	            "transact": "Transact",
+	            "pay": "Pay",
 	            "deposit": "Deposit",
 	            "favorite": "Favorite List",
 	        };
@@ -33316,7 +33492,7 @@
 
 
 /***/ }),
-/* 122 */
+/* 126 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -33359,10 +33535,9 @@
 	                            React.createElement("i", { class: "fa fa-bell" }),
 	                            " ",
 	                            React.createElement("span", null, "Notification"),
-	                            " ",
-	                            React.createElement("span", { class: "num-noti-nav" }, "2"))),
-	                    React.createElement("li", { class: location.endsWith("history") ? "active" : "" },
-	                        React.createElement(react_router_dom_1.Link, { to: "/customer/history" },
+	                            this.props.numUnread > 0 && React.createElement("span", { class: "num-noti-nav" }, this.props.numUnread))),
+	                    React.createElement("li", { class: location.endsWith("transaction") ? "active" : "" },
+	                        React.createElement(react_router_dom_1.Link, { to: "/customer/transaction" },
 	                            " ",
 	                            React.createElement("i", { class: "fa fa-credit-card" }),
 	                            " ",
@@ -33377,15 +33552,18 @@
 	}
 	function mapStateToProps(state) {
 	    const { login } = state;
+	    const { notifications } = state.notification;
+	    let numUnread = notifications.filter(noti => !noti.read).length;
 	    return {
-	        login
+	        login,
+	        numUnread,
 	    };
 	}
 	exports.default = react_redux_1.connect(mapStateToProps)(Navigator);
 
 
 /***/ }),
-/* 123 */
+/* 127 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -33393,7 +33571,7 @@
 	const React = __webpack_require__(4);
 	const react_redux_1 = __webpack_require__(18);
 	const action_1 = __webpack_require__(101);
-	const utils = __webpack_require__(124);
+	const utils = __webpack_require__(110);
 	class AccountInfo extends React.Component {
 	    constructor(props) {
 	        super(props);
@@ -33508,39 +33686,7 @@
 
 
 /***/ }),
-/* 124 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	"use strict";
-	function __export(m) {
-	    for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
-	}
-	Object.defineProperty(exports, "__esModule", { value: true });
-	__export(__webpack_require__(125));
-
-
-/***/ }),
-/* 125 */
-/***/ (function(module, exports) {
-
-	"use strict";
-	Object.defineProperty(exports, "__esModule", { value: true });
-	function toMoneyFormat(money) {
-	    let temp = money.toString().split("").reverse().join("");
-	    let result = "";
-	    for (let i = 0; i < temp.length; ++i) {
-	        if (i != 0 && i % 3 == 0) {
-	            result = "." + result;
-	        }
-	        result = temp[i] + result;
-	    }
-	    return result;
-	}
-	exports.toMoneyFormat = toMoneyFormat;
-
-
-/***/ }),
-/* 126 */
+/* 128 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -33619,15 +33765,15 @@
 
 
 /***/ }),
-/* 127 */
+/* 129 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
 	Object.defineProperty(exports, "__esModule", { value: true });
 	const React = __webpack_require__(4);
-	const ServiceTab_1 = __webpack_require__(128);
-	const Transfer_1 = __webpack_require__(129);
-	const Deposit_1 = __webpack_require__(130);
+	const ServiceTab_1 = __webpack_require__(130);
+	const Transfer_1 = __webpack_require__(131);
+	const Deposit_1 = __webpack_require__(132);
 	const react_router_dom_1 = __webpack_require__(84);
 	class Services extends React.Component {
 	    render() {
@@ -33642,7 +33788,7 @@
 
 
 /***/ }),
-/* 128 */
+/* 130 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -33660,16 +33806,16 @@
 	            React.createElement(react_router_dom_1.Link, { to: "/customer/services/deposit", className: "tab" + (tab == "deposit" ? " active" : "") },
 	                React.createElement("i", { className: "fa fa-sign-in-alt" }),
 	                React.createElement("span", null, "Deposit")),
-	            React.createElement(react_router_dom_1.Link, { to: "/customer/services/transact", className: "tab" + (tab == "transact" ? " active" : "") },
+	            React.createElement(react_router_dom_1.Link, { to: "/customer/services/pay", className: "tab" + (tab == "pay" ? " active" : "") },
 	                React.createElement("i", { className: "fa fa-credit-card" }),
-	                React.createElement("span", null, "Transact")));
+	                React.createElement("span", null, "Pay")));
 	    }
 	}
 	exports.default = ServiceTab;
 
 
 /***/ }),
-/* 129 */
+/* 131 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -33774,7 +33920,7 @@
 
 
 /***/ }),
-/* 130 */
+/* 132 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -33839,7 +33985,7 @@
 
 
 /***/ }),
-/* 131 */
+/* 133 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -33847,27 +33993,47 @@
 	const React = __webpack_require__(4);
 	const react_redux_1 = __webpack_require__(18);
 	const action_1 = __webpack_require__(101);
+	const utils_1 = __webpack_require__(110);
+	4;
+	const react_router_dom_1 = __webpack_require__(84);
 	class Notification extends React.Component {
 	    componentWillMount() {
 	        if (this.props.notification.notLoad) {
 	            this.props.dispatch(action_1.notificationActions.load());
 	        }
 	    }
+	    onRead(id) {
+	        this.props.dispatch(action_1.notificationActions.read(id));
+	    }
 	    render() {
+	        let notifications = this.props.notification.notifications;
+	        let numOfUnread = notifications.filter(noti => noti.read == false).length;
 	        return React.createElement("div", { className: "content-right" },
 	            React.createElement("h1", { className: "title" }, "Notification"),
-	            React.createElement("div", { className: "wrapper" }, this.props.notification.notifications.length == 0 ?
+	            React.createElement("div", { className: "wrapper" }, notifications.length == 0 ?
 	                React.createElement("div", { className: "small-text" }, this.props.notification.loading ?
 	                    "Loading notifications..." :
 	                    "You do not have any notifications")
 	                :
-	                    React.createElement("div", { className: "noti-list" }, this.props.notification.notifications.map(notification => React.createElement("div", { className: "noti" + (notification.read ? " read" : "") },
-	                        React.createElement("div", { className: "avatar" },
-	                            React.createElement("i", { className: "fa fa-sign-in-alt" })),
-	                        React.createElement("div", { className: "text" },
-	                            React.createElement("span", { className: "title" }, notification.title),
-	                            React.createElement("span", { className: "content" }, notification.content),
-	                            React.createElement("span", { className: "time" }, notification.time)))))));
+	                    React.createElement("div", null,
+	                        React.createElement("div", { className: "small-text" }, "You have " + numOfUnread + " unread notification(s)"),
+	                        React.createElement("div", { className: "noti-list" }, notifications.map(notification => React.createElement(react_router_dom_1.Link, { to: { pathname: "/customer/transaction", details: { id: notification.transactionId, type: notification.type } } },
+	                            React.createElement("div", { onClick: () => this.onRead(notification.id), className: "noti" + (notification.read ? " read" : "") },
+	                                React.createElement("div", { className: "avatar" }, notification.type == utils_1.NotificationType.TRANSFER ?
+	                                    React.createElement("i", { className: "fa fa-sign-out-alt", style: { color: "green" } })
+	                                    : notification.type == utils_1.NotificationType.DEPOSIT ?
+	                                        React.createElement("i", { className: "fa fa-sign-in-alt", style: { color: "blue" } })
+	                                        : notification.type == utils_1.NotificationType.RECEIVE ?
+	                                            React.createElement("i", { className: "fa fa-money-bill", style: { color: "red" } })
+	                                            : notification.type == utils_1.NotificationType.PAY ?
+	                                                React.createElement("i", { className: "fa fa-credit-card", style: { color: "yellow" } })
+	                                                : notification.type == utils_1.NotificationType.MOBILE_PAY ?
+	                                                    React.createElement("i", { className: "fa fa-mobile-alt", style: { color: "#fd961a" } })
+	                                                    : React.createElement("i", null)),
+	                                React.createElement("div", { className: "text" },
+	                                    React.createElement("span", { className: "title" }, notification.title),
+	                                    React.createElement("span", { className: "content" }, notification.content),
+	                                    React.createElement("span", { className: "time" }, notification.time.toLocaleString())))))))));
 	    }
 	}
 	function mapStateToProps(state) {
@@ -33880,7 +34046,187 @@
 
 
 /***/ }),
-/* 132 */
+/* 134 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	"use strict";
+	Object.defineProperty(exports, "__esModule", { value: true });
+	const React = __webpack_require__(4);
+	const react_redux_1 = __webpack_require__(18);
+	const action_1 = __webpack_require__(101);
+	const utils_1 = __webpack_require__(110);
+	class Transaction extends React.Component {
+	    constructor(props) {
+	        super(props);
+	        this.state = {
+	            transaction: null,
+	        };
+	    }
+	    componentWillMount() {
+	        if (this.props.transaction.notLoad) {
+	            this.props.dispatch(action_1.transactionActions.load());
+	        }
+	        if (this.props.account.notLoad) {
+	            this.props.dispatch(action_1.accountActions.getConnectedAccount());
+	        }
+	        if (this.props.location.details) {
+	            let details = this.props.location.details;
+	            this.setState({
+	                transaction: this.props.transaction.transactions.find(trans => {
+	                    return utils_1.compare(details.type, trans.type)
+	                        && details.id == trans.id;
+	                })
+	            });
+	        }
+	    }
+	    onRead(transaction) {
+	        this.setState({
+	            transaction: transaction
+	        });
+	    }
+	    getSource(transaction) {
+	        switch (transaction.type) {
+	            case utils_1.TransactionType.DEPOSIT:
+	                let bank = this.props.account.accounts.find(account => account.id == transaction.account).name;
+	                return bank;
+	            case utils_1.TransactionType.RECEIVE:
+	                return transaction.sender;
+	            default:
+	                return "e-wallet";
+	        }
+	    }
+	    getOtherInfoSection(transaction) {
+	        switch (transaction.type) {
+	            case utils_1.TransactionType.TRANSFER:
+	                return React.createElement("div", null,
+	                    React.createElement("div", { className: "section-title" }, "Other Infomation"),
+	                    React.createElement("section", null,
+	                        React.createElement("div", { className: "info" },
+	                            React.createElement("label", null, "Receiver"),
+	                            React.createElement("span", null, transaction.receiver)),
+	                        React.createElement("div", { className: "info" },
+	                            React.createElement("label", null, "Email"),
+	                            React.createElement("span", null, transaction.receiver)),
+	                        React.createElement("div", { className: "info" },
+	                            React.createElement("label", null, "Amount"),
+	                            React.createElement("span", null, this.getAmount(transaction))),
+	                        React.createElement("div", { className: "info" },
+	                            React.createElement("label", null, "Message"),
+	                            React.createElement("span", null, transaction.message))));
+	            case utils_1.TransactionType.PAY:
+	                return React.createElement("div", null,
+	                    React.createElement("div", { className: "section-title" }, "Other Infomation"),
+	                    React.createElement("section", null,
+	                        React.createElement("div", { className: "info" },
+	                            React.createElement("label", null, "Service"),
+	                            React.createElement("span", null, transaction.bill)),
+	                        React.createElement("div", { className: "info" },
+	                            React.createElement("label", null, "Bill code"),
+	                            React.createElement("span", null, transaction.bill)),
+	                        React.createElement("div", { className: "info" },
+	                            React.createElement("label", null, "Description"),
+	                            React.createElement("span", null, transaction.description))));
+	            case utils_1.TransactionType.MOBILE_PAY:
+	                return React.createElement("div", null,
+	                    React.createElement("div", { className: "section-title" }, "Other Infomation"),
+	                    React.createElement("section", null,
+	                        React.createElement("div", { className: "info" },
+	                            React.createElement("label", null, "Telecom Company"),
+	                            React.createElement("span", null, transaction.telecom)),
+	                        React.createElement("div", { className: "info" },
+	                            React.createElement("label", null, "Bill code"),
+	                            React.createElement("span", null, transaction.bill)),
+	                        React.createElement("div", { className: "info" },
+	                            React.createElement("label", null, "Cost"),
+	                            React.createElement("span", null, transaction.amount))));
+	            default:
+	                return React.createElement("span", null);
+	        }
+	    }
+	    getAmount(transaction) {
+	        if (transaction.type == utils_1.TransactionType.TRANSFER
+	            || transaction.type == utils_1.TransactionType.PAY
+	            || transaction.type == utils_1.TransactionType.MOBILE_PAY) {
+	            return "-" + utils_1.toMoneyFormat(transaction.amount) + "đ";
+	        }
+	        return "+" + utils_1.toMoneyFormat(transaction.amount) + "đ";
+	    }
+	    getContent(transaction) {
+	        if (transaction.type == utils_1.TransactionType.TRANSFER) {
+	            return "Transfer to " + transaction.receiver;
+	        }
+	        if (transaction.type == utils_1.TransactionType.DEPOSIT) {
+	            let bank = this.props.account.accounts.find(account => account.id == transaction.account).name;
+	            return "Add money to wallet from " + bank;
+	        }
+	        if (transaction.type == utils_1.TransactionType.PAY) {
+	            return "PAY BILL";
+	        }
+	        if (transaction.type == utils_1.TransactionType.RECEIVE) {
+	            return "Receive money from " + transaction.sender;
+	        }
+	        return "Buy mobile card from " + transaction.telecom;
+	    }
+	    render() {
+	        let transactions = this.props.transaction.transactions;
+	        let transaction = this.state.transaction;
+	        return React.createElement("div", { className: "content-right" },
+	            React.createElement("h1", { className: "title" }, "Transaction"),
+	            React.createElement("div", { className: "wrapper trans" },
+	                React.createElement("div", { className: "sub-wrapper" },
+	                    React.createElement("div", { className: "title" }, "May 2019"),
+	                    React.createElement("div", { className: "trans-list" }, transactions.map((transaction, number) => React.createElement("div", { onClick: () => this.onRead(transaction), key: number, className: "trans" + (transaction == this.state.transaction ? " active" : "") },
+	                        React.createElement("div", { className: "avatar" }, transaction.type == utils_1.TransactionType.TRANSFER ?
+	                            React.createElement("i", { className: "fa fa-sign-out-alt", style: { color: "green" } })
+	                            : transaction.type == utils_1.TransactionType.DEPOSIT ?
+	                                React.createElement("i", { className: "fa fa-sign-in-alt", style: { color: "blue" } })
+	                                : transaction.type == utils_1.TransactionType.RECEIVE ?
+	                                    React.createElement("i", { className: "fa fa-money-bill", style: { color: "red" } })
+	                                    : transaction.type == utils_1.TransactionType.PAY ?
+	                                        React.createElement("i", { className: "fa fa-credit-card", style: { color: "yellow" } })
+	                                        : transaction.type == utils_1.TransactionType.MOBILE_PAY ?
+	                                            React.createElement("i", { className: "fa fa-mobile-alt", style: { color: "#fd961a" } })
+	                                            : React.createElement("i", null)),
+	                        React.createElement("div", { className: "text" },
+	                            React.createElement("span", { className: "title" }, this.getContent(transaction)),
+	                            React.createElement("span", { className: "time" }, transaction.time.toLocaleDateString()),
+	                            React.createElement("span", { className: "status" }, "Success"),
+	                            React.createElement("span", { className: "amount" }, this.getAmount(transaction))))))),
+	                transaction &&
+	                    React.createElement("div", { className: "sub-wrapper trans-details" },
+	                        React.createElement("div", { className: "title" }, "Transaction Details"),
+	                        React.createElement("section", null,
+	                            React.createElement("span", { className: "type" }, transaction.type),
+	                            React.createElement("span", { className: "amount" }, this.getAmount(transaction)),
+	                            React.createElement("span", { className: "status" }, "Success")),
+	                        React.createElement("section", null,
+	                            React.createElement("div", { className: "info" },
+	                                React.createElement("label", null, "Source"),
+	                                React.createElement("span", null, this.getSource(transaction))),
+	                            React.createElement("div", { className: "info" },
+	                                React.createElement("label", null, "Transaction fee"),
+	                                React.createElement("span", null, "Free")),
+	                            React.createElement("div", { className: "info" },
+	                                React.createElement("label", null, "Transaction id"),
+	                                React.createElement("span", null, transaction.id)),
+	                            React.createElement("div", { className: "info" },
+	                                React.createElement("label", null, "Time"),
+	                                React.createElement("span", null, transaction.time.toLocaleString()))),
+	                        this.getOtherInfoSection(transaction))));
+	    }
+	}
+	function mapStateToProps(state) {
+	    const { transaction, account } = state;
+	    return {
+	        transaction,
+	        account,
+	    };
+	}
+	exports.default = react_redux_1.connect(mapStateToProps)(Transaction);
+
+
+/***/ }),
+/* 135 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";

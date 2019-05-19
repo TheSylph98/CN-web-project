@@ -15,9 +15,9 @@ export default class ServiceTab extends React.Component<{location: string}, {}> 
 				<i className="fa fa-sign-in-alt"/>
 				<span>Deposit</span>
 			</Link>
-			<Link to="/customer/services/transact" className={"tab" + (tab == "transact" ? " active" : "")}>
+			<Link to="/customer/services/pay" className={"tab" + (tab == "pay" ? " active" : "")}>
 				<i className="fa fa-credit-card"/>
-				<span>Transact</span>
+				<span>Pay</span>
 			</Link>
 		</div>
 	}

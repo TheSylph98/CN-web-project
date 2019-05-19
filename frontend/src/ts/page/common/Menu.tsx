@@ -55,9 +55,9 @@ export default class Menu extends React.Component<{},{expandSearch: boolean}> {
 	                    <ul class="nav navbar-nav">
 	                        <li><Link to="/">Home</Link></li>
 	                        <li><Link to="/customer">Customer</Link></li>
-	                        <li><a href="services.html">Services</a></li>
-	                        <li><a href="pricing.html">Guide</a></li>
-	                        <li><a href="contact.html">Contact</a></li>
+	                        <li><Link to="/customer/services">Services</Link></li>
+	                        <li><Link to="/guide">Guide</Link></li>
+	                        <li><Link to="/contact">Contact</Link></li>
 							
 							<li class="cart"><a href="shopping-cart.html"><i class="fa fa-shopping-cart"></i></a></li>
 							

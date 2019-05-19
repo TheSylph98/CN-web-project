@@ -1,36 +1,36 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const constants_1 = require("../constants");
-function notification(state = { notLoad: true, notifications: [] }, action) {
+function transaction(state = { notLoad: true, transactions: [] }, action) {
     switch (action.type) {
-        case constants_1.notificationConstants.NOTIFICATION_REQUEST:
+        case constants_1.transactionConstants.TRANSACTION_REQUEST:
             return {
                 notLoad: false,
                 loading: true,
-                notifications: state.notifications,
+                transactions: state.transactions,
             };
-        case constants_1.notificationConstants.NOTIFICATION_SUCCESS:
+        case constants_1.transactionConstants.TRANSACTION_SUCCESS:
             return {
                 notLoad: false,
                 loaded: true,
-                notifications: action.notifications.sort((noti1, noti2) => {
-                    if (noti1.time > noti2.time) {
+                transactions: action.transactions.sort((trans1, trans2) => {
+                    if (trans1.time > trans2.time) {
                         return -1;
                     }
-                    if (noti1.time == noti2.time) {
+                    if (trans1.time == trans2.time) {
                         return 0;
                     }
                     return 1;
                 }),
             };
-        case constants_1.notificationConstants.NOTIFICATION_FAILURE:
+        case constants_1.transactionConstants.TRANSACTION_FAILURE:
             return {
                 notLoad: true,
                 error: action.error,
-                notifications: state.notifications,
+                transactions: state.transactions,
             };
         default:
             return state;
     }
 }
-exports.notification = notification;
+exports.transaction = transaction;

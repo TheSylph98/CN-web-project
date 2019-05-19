@@ -1,5 +1,4 @@
 import { userConstants } from '../constants';
-import { alertActions } from './';
 import backend = require("../backend-api");
 
 export const userActions = {
@@ -24,7 +23,6 @@ function login(username, password) {
                 },
                 error => {
                     dispatch(failure(error.toString()));
-                    dispatch(alertActions.error(error.toString()));
                 }
             );
     };
@@ -63,11 +61,9 @@ function register(data: {username, password, phone, email, verifyPassword}) {
                     localStorage.setItem("user", JSON.stringify(user)); 
                     alert("Registration successfully! Please login to continue");
                     window["routerHistory"].push("/login");
-                    dispatch(alertActions.success('Registration successful'));
                 },
                 error => {
                     dispatch(failure(error.toString()));
-                    dispatch(alertActions.error(error.toString()));
                 }
             );
     };

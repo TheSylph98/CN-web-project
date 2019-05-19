@@ -1,0 +1,157 @@
+.content-right .wrapper.trans {
+	flex-direction: row;
+}
+
+.content-right .wrapper .sub-wrapper {
+	width: 45%;
+	margin-left: 10px;
+}
+
+.content-right .wrapper .sub-wrapper {
+	margin-left: 30px;
+}
+
+.trans-list {
+	border: solid 1px #1d1d1d;
+	display: flex;
+	flex-direction: column;	
+	width: 100%;
+}
+
+.trans-list .trans {
+	display: flex;
+    padding: 10px;
+    position: relative;
+    margin: 0;
+    height: 70px;
+    background: #2d2d2d;
+    align-items: center;
+}
+
+.trans-list .trans:first-child, .trans-list .trans:last-child {
+	border-radius: 3px;
+}
+
+.trans-list .trans:hover {
+	background: #5d5d5d!important;
+	cursor: pointer;
+}
+
+.trans-list .trans+.trans {
+	border-top: 1px solid #1d1d1d;
+}
+
+.trans-list .trans .avatar {
+    width: 35px;
+    height: 35px;
+    text-align: center;
+    background: transparent; 
+    display: flex;
+    align-items: center;
+    border-radius: 50%;
+    border: 1px solid #3d3d3d;
+    margin-left: 5px;
+}
+
+.trans-list .trans .avatar i {
+	margin: auto;
+    font-size: 15px;
+}
+
+.trans-list .trans .text {
+	display: inline-flex;
+	flex-direction: column;
+	font-size: 13px;
+	font-family: "Open Sans", sans-serif;
+	color: #fff;
+	margin-left: 20px;
+}
+
+.trans-list .trans .text span.title {
+	font-size: 14px;
+	font-weight: 600;
+	margin: 0px;
+	color: #fd961a;
+}
+
+.trans-list .trans .text span.status {
+    font-size: 12px;
+    color: green;
+}
+
+.trans-list .trans .text span.time {
+    font-size: 12px;
+    color: #fff;
+}
+
+.trans-list .trans .text span.amount {
+	position: absolute;
+	bottom: 10px;
+	right: 10px;
+    font-size: 15px;
+    color: #fff;
+}
+
+.trans-list .trans.active {
+	background: #4d4d4d;
+}
+
+.trans-details {
+	display: inline-block;
+	width: 40%;
+}
+
+.trans-details section {
+	background: #2d2d2d;
+	border-radius: 3px;
+	padding: 10px 15px;
+	font-size: 13px;
+	font-family: "Open Sans", sans-serif;
+	color: #fff;
+	padding-bottom: 0px;
+}
+
+.trans-details section+section {
+	margin-top: 10px;
+}
+
+.trans-details > section:first-of-type {
+	display: flex;
+	flex-direction: column;
+	text-align: center;
+	padding-bottom: 10px;
+}
+
+.trans-details section .type {
+	font-size: 13px;
+}
+
+.trans-details .section-title {
+	color: #fff;
+	font-size: 13px;
+    margin: 2px 0;
+}
+
+.trans-details section .amount {
+	font-size: 25px;
+	font-weight: 600;
+}
+
+.trans-details section .status {
+	font-size: 13px;
+	color: green;
+}
+
+.trans-details div.info label {
+	padding-bottom: 5px;
+}
+
+.trans-details section label {
+	color: #ccc;
+	font-weight: normal;
+}
+
+.trans-details section span {
+	float: right;
+}
+

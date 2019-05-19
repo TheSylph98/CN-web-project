@@ -2,7 +2,7 @@ import React = require("react");
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 
-class Navigator extends React.Component<{location: string, login}, {}> {
+class Navigator extends React.Component<{location: string, numUnread, login}, {}> {
 	
 	render() {
 		let location = this.props.location.replace(/\/$/, "");
@@ -24,10 +24,11 @@ class Navigator extends React.Component<{location: string, login}, {}> {
 			            <Link to="/customer/services"> <i class="fa fa-tools"></i> <span>Services</span> </Link>
 			        </li>
 			        <li class={location.endsWith("notification") ? "active" : ""}>
-			            <Link to="/customer/notification"><i class="fa fa-bell"></i> <span>Notification</span> <span class="num-noti-nav">2</span></Link>
+			            <Link to="/customer/notification"><i class="fa fa-bell"></i> <span>Notification</span> 
+			            {this.props.numUnread > 0 && <span class="num-noti-nav">{this.props.numUnread}</span>}</Link>
 			        </li>
-			        <li class={location.endsWith("history") ? "active" : ""}>
-			            <Link to="/customer/history"> <i class="fa fa-credit-card"></i> <span>Transaction history</span></Link>
+			        <li class={location.endsWith("transaction") ? "active" : ""}>
+			            <Link to="/customer/transaction"> <i class="fa fa-credit-card"></i> <span>Transaction history</span></Link>
 			        </li>
 			        <li class={location.endsWith("favorite") ? "active" : ""}>
 			            <Link to="/customer/favorite"> <i class="fa fa-address-book"></i> <span>Favorite list</span></Link>
@@ -40,8 +41,11 @@ class Navigator extends React.Component<{location: string, login}, {}> {
 
 function mapStateToProps(state) {
 	const { login } = state;
+	const { notifications } = state.notification;
+	let numUnread = notifications.filter(noti => !noti.read).length;
 	return {
-		login
+		login,
+		numUnread,
 	}
 }
 

@@ -168,7 +168,7 @@ class TransferController
     public function updateNotification(Request $request)
     {
 
-        $thongbao = DB::table('thongbao')->where('id',$request->id)->first();
+        $thongbao = DB::table('thongbao')->where('id',$request->id);
         if ($thongbao == null) {
             return response()->json([
                 "title" => "error",
@@ -176,8 +176,7 @@ class TransferController
 
             ]);
         }
-        $thongbao->daxem = 1;
-        $thongbao->save();
+        $thongbao->update(['daxem' => 1]);
     }
 
 }

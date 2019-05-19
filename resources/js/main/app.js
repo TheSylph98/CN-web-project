@@ -6,9 +6,12 @@ const LoginPage_1 = require("../page/login/LoginPage");
 const CustomerPage_1 = require("../page/customer/CustomerPage");
 const react_router_dom_1 = require("react-router-dom");
 const React = require("react");
+const react_redux_1 = require("react-redux");
+const action_1 = require("../store/action");
 class App extends React.Component {
     componentWillMount() {
         window["routerHistory"] = this.props.history;
+        setInterval(() => this.props.dispatch(action_1.notificationActions.load()), 1000);
     }
     componentDidUpdate(prevProps) {
         if (this.props.location !== prevProps.location) {
@@ -24,4 +27,4 @@ class App extends React.Component {
     }
 }
 exports.App = App;
-exports.default = react_router_dom_1.withRouter(App);
+exports.default = react_redux_1.connect()(react_router_dom_1.withRouter(App));

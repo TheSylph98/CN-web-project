@@ -27,6 +27,7 @@
     <link rel="stylesheet" type="text/css" href="resources/css/services.css"/>
     <link rel="stylesheet" type="text/css" href="resources/css/favorite.css"/>
     <link rel="stylesheet" type="text/css" href="resources/css/notification.css"/>
+    <link rel="stylesheet" type="text/css" href="resources/css/transaction.css"/>
 </head>
 
 <body>

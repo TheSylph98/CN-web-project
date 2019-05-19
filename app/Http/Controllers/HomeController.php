@@ -320,6 +320,7 @@ class HomeController extends Controller
             //ls thanhtoan
             $thanhtoan = thanhtoan::where('users_id',$id)->get();
             return response()->json([
+                'trans' => 'success',
                 'naptien' => $naptien,
                 'chuyentien' => $chuyentien,
                 'napthe' => $napthe,

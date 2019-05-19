@@ -1,7 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const constants_1 = require("../constants");
-const _1 = require("./");
 const backend = require("../backend-api");
 exports.userActions = {
     login,
@@ -21,7 +20,6 @@ function login(username, password) {
             window["routerHistory"].push("/");
         }, error => {
             dispatch(failure(error.toString()));
-            dispatch(_1.alertActions.error(error.toString()));
         });
     };
     function request(user) { return { type: constants_1.userConstants.LOGIN_REQUEST, user }; }
@@ -50,10 +48,8 @@ function register(data) {
             localStorage.setItem("user", JSON.stringify(user));
             alert("Registration successfully! Please login to continue");
             window["routerHistory"].push("/login");
-            dispatch(_1.alertActions.success('Registration successful'));
         }, error => {
             dispatch(failure(error.toString()));
-            dispatch(_1.alertActions.error(error.toString()));
         });
     };
     function request(user) { return { type: constants_1.userConstants.REGISTER_REQUEST, user }; }

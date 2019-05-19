@@ -54,6 +54,29 @@ div.account span {
     margin-left: 10px;
 }
 
+div.account div.avatar {
+    width: 24px;
+    position: relative;
+    font-size: 24px;
+}
+
+div.account div.avatar i {
+}
+
+div.account div.avatar .notification {
+    background: #fa3e3e;
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    font-size: 10px;
+    height: 15px;
+    line-height: 15px;
+    border-radius: 2px;
+    color: #fff;
+    width: 12px;
+    text-align: center;
+}
+
 .logged-in {
     margin: 0;
 }
@@ -61,7 +84,9 @@ div.account span {
 div.logged-in a {
     color: #fd961a;
     font-size: 13px;
-    font-family: "Open Sans", sans-serif
+    display: inline-flex;
+    align-items: center;
+    font-family: "Open Sans", sans-serif;
 }
 
 div.user div.sign-in, div.user div.sign-out {

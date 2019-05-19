@@ -38,10 +38,9 @@ class Navigator extends React.Component {
                             React.createElement("i", { class: "fa fa-bell" }),
                             " ",
                             React.createElement("span", null, "Notification"),
-                            " ",
-                            React.createElement("span", { class: "num-noti-nav" }, "2"))),
-                    React.createElement("li", { class: location.endsWith("history") ? "active" : "" },
-                        React.createElement(react_router_dom_1.Link, { to: "/customer/history" },
+                            this.props.numUnread > 0 && React.createElement("span", { class: "num-noti-nav" }, this.props.numUnread))),
+                    React.createElement("li", { class: location.endsWith("transaction") ? "active" : "" },
+                        React.createElement(react_router_dom_1.Link, { to: "/customer/transaction" },
                             " ",
                             React.createElement("i", { class: "fa fa-credit-card" }),
                             " ",
@@ -56,8 +55,11 @@ class Navigator extends React.Component {
 }
 function mapStateToProps(state) {
     const { login } = state;
+    const { notifications } = state.notification;
+    let numUnread = notifications.filter(noti => !noti.read).length;
     return {
-        login
+        login,
+        numUnread,
     };
 }
 exports.default = react_redux_1.connect(mapStateToProps)(Navigator);

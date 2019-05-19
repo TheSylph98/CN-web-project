@@ -106,13 +106,16 @@
 }
 
 .navigator .menu ul li a .noti-nav, .navigator .menu ul li a .num-noti-nav {
-    border-radius: 10px;
-    background-color: #fd961a;
-    display: inline-block;
-    padding: 0 6px;
-    font-size: 11px;
+    background: #fa3e3e;
+    font-size: 10px;
+    height: 15px;
+    line-height: 15px;
+    border-radius: 2px;
     color: #fff;
-    margin-left: 5px;
+    width: 12px;
+    text-align: center;
+    display: inline-block;
+    margin-left: 15px;
 }
 
 
