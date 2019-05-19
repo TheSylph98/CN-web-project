@@ -34017,8 +34017,8 @@
 	                :
 	                    React.createElement("div", null,
 	                        React.createElement("div", { className: "small-text" }, "You have " + numOfUnread + " unread notification(s)"),
-	                        React.createElement("div", { className: "noti-list" }, notifications.map(notification => React.createElement(react_router_dom_1.Link, { to: { pathname: "/customer/transaction", details: { id: notification.transactionId, type: notification.type } } },
-	                            React.createElement("div", { onClick: () => this.onRead(notification.id), className: "noti" + (notification.read ? " read" : "") },
+	                        React.createElement("div", { className: "noti-list" }, notifications.map(notification => React.createElement("div", { onClick: () => this.onRead(notification.id) },
+	                            React.createElement(react_router_dom_1.Link, { to: { pathname: "/customer/transaction", details: { id: notification.transactionId, type: notification.type } }, className: "noti" + (notification.read ? " read" : "") },
 	                                React.createElement("div", { className: "avatar" }, notification.type == utils_1.NotificationType.TRANSFER ?
 	                                    React.createElement("i", { className: "fa fa-sign-out-alt", style: { color: "green" } })
 	                                    : notification.type == utils_1.NotificationType.DEPOSIT ?
@@ -34073,6 +34073,17 @@
 	            let details = this.props.location.details;
 	            this.setState({
 	                transaction: this.props.transaction.transactions.find(trans => {
+	                    return utils_1.compare(details.type, trans.type)
+	                        && details.id == trans.id;
+	                })
+	            });
+	        }
+	    }
+	    componentWillReceiveProps(nextProps) {
+	        if (nextProps.location.details) {
+	            let details = nextProps.location.details;
+	            this.setState({
+	                transaction: nextProps.transaction.transactions.find(trans => {
 	                    return utils_1.compare(details.type, trans.type)
 	                        && details.id == trans.id;
 	                })

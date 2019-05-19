@@ -66,8 +66,7 @@ class TransferController
 
     public function postTransfer(Request $request)
     {
-        $user = Auth::user();
-        if ($user == null) {
+        if (!Auth::check()) {
             return response()->json([
                 "title" => "error",
                 "content" => "Bạn phải đăng nhập trước",
@@ -84,12 +83,10 @@ class TransferController
             [
                 'sotien.required' => 'Bạn chưa nhập số tiền ',
                 'noidung.required' => 'Bạn chưa nhập nội dung chuyển tiền',
-//                'id_chuyen.required' => 'Empty !',
                 'email_nhan.required' => 'Bạn chưa nhập email',
 
             ]);
 
-        $user = Auth::user();
         $errs = $validator->errors();
         $err = $errs->all();
         if ($validator->fails()) {
@@ -99,6 +96,7 @@ class TransferController
             ]);
         }
 
+        $user = Auth::user();
 
 //        check so tien con
         $check = $this->check_sotien($user->id, $request->sotien);
@@ -164,22 +162,9 @@ class TransferController
         ]);
 
     }
-//    cap nhat lai daxem trong thongbao
-    public function updateNotification(Request $request)
-    {
-
-        $thongbao = DB::table('thongbao')->where('id',$request->id);
-        if ($thongbao == null) {
-            return response()->json([
-                "title" => "error",
-                "content" => "Lỗi update thông báo",
-
-            ]);
-        }
-        $thongbao->update(['daxem' => 1]);
-    }
 
 }
+
 
 
 

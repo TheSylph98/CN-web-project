@@ -30,6 +30,18 @@ class Transaction extends React.Component<{dispatch, transaction, account, locat
 		}
 	}
 
+	componentWillReceiveProps(nextProps) {
+		if (nextProps.location.details) {
+			let details = nextProps.location.details
+			this.setState({
+				transaction: nextProps.transaction.transactions.find(trans => {
+					return compare(details.type, trans.type)
+						&& details.id == trans.id;
+				})
+			})
+		}
+	}
+
 	onRead(transaction) {
 		this.setState({
 			transaction: transaction

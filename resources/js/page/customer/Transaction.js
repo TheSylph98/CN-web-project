@@ -28,6 +28,17 @@ class Transaction extends React.Component {
             });
         }
     }
+    componentWillReceiveProps(nextProps) {
+        if (nextProps.location.details) {
+            let details = nextProps.location.details;
+            this.setState({
+                transaction: nextProps.transaction.transactions.find(trans => {
+                    return utils_1.compare(details.type, trans.type)
+                        && details.id == trans.id;
+                })
+            });
+        }
+    }
     onRead(transaction) {
         this.setState({
             transaction: transaction

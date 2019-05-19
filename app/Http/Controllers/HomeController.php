@@ -15,6 +15,8 @@ use App\nhamang;
 use App\ruttien;
 use App\thanhtoan;
 use App\thongbao;
+use DB;
+
 class HomeController extends Controller
 {
     //
@@ -421,5 +423,15 @@ class HomeController extends Controller
                 'thanhtoan'=>'error',
                 'message'=>'ban chua dang nhap'
             ]);
+    }
+
+    //    cap nhat lai daxem trong thongbao
+    public function updateNotification(Request $request)
+    {
+
+        DB::table('thongbao')
+            ->where('id',$request->id )
+            ->update(['daxem' => 1]);
+
     }
 }
