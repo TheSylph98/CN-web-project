@@ -81,3 +81,24 @@ function modify(input) {
     });
 }
 exports.modify = modify;
+function update() {
+    return new Promise((resolve, reject) => {
+        index_1.getData("thong-tin-ca-nhan", {})
+            .then(result => {
+            if (result["check"] == 'true') {
+                let user = result['user_info'];
+                resolve({
+                    username: user['ten'],
+                    email: user['email'],
+                    address: user['diachi'],
+                    phone: user['sodienthoai'],
+                    amount: user['sotien']
+                });
+            }
+            else {
+                reject(result['message']);
+            }
+        });
+    });
+}
+exports.update = update;

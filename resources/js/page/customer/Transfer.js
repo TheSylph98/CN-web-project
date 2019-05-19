@@ -17,6 +17,11 @@ class Transfer extends React.Component {
     }
     onSubmit(e) {
         e.preventDefault();
+        this.props.dispatch(action_1.servicesActions.transfer({
+            amount: this.amount.value,
+            email: this.receiver.value,
+            message: this.message.value,
+        }));
     }
     onFocus() {
         this.setState({
@@ -74,15 +79,21 @@ class Transfer extends React.Component {
                     React.createElement("div", { class: "input-wrap" },
                         React.createElement("input", { ref: input => this.message = input, type: "text", name: "amount", class: "form-control", id: "message", placeholder: "Message" }))),
                 React.createElement("div", { class: "form-group" },
-                    React.createElement("div", { class: "form-message" }),
+                    React.createElement("div", { class: "form-message" }, this.props.services.transfering ?
+                        "Transfering..." :
+                        this.props.services.transfered ?
+                            "Transfer successfully!" :
+                            this.props.services.transferError ?
+                                this.props.services.transferError : ""),
                     React.createElement("div", { class: "input-wrap margin" },
                         React.createElement("button", { onClick: this.onSubmit.bind(this), type: "submit", class: "btn btn-info btn-block btn-update" }, "Transfer")))));
     }
 }
 function mapStateToProps(state) {
-    const { friend } = state;
+    const { friend, services } = state;
     return {
-        friend
+        friend,
+        services,
     };
 }
 exports.default = react_redux_1.connect(mapStateToProps)(Transfer);

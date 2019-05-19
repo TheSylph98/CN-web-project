@@ -129,7 +129,7 @@ class HomeController extends Controller
     public function ThongTinCaNhan(){
         if(Auth::check()){
             $user = Auth::user();
-            $tk = taikhoan::where('id_user',$user->id)->get();
+            $tk = taikhoan::where('users_id',$user->id)->get();
             //return view('page.thongtincanhan',['user_info' => Auth::user(), 'tk' => $tk]);
             return response()->json([
                 'check'=>'true',
@@ -289,32 +289,19 @@ class HomeController extends Controller
    }
 
   public function PNotification(Request $request){
-    $validator = Validator::make($request->all(),
-    [
-      'tieude' => 'required',
-      'noidung'=> 'require'
-    ],
-    [
-      'tieude.required' => 'Empty !',
-      'noidung.require' => 'Empty !'
-    ]);
-    $errs = $validator->errors();
-    $err = $errs->all();
-    if($validator->fails()){
-      return response()->json([
-        'nofi' => 'error',
-        'errors' => $err
-      ]); }
-    else {
-      $notification = new thongbao;
-      $notification->tieude = $request->tieude;
-      $notification->noidung = $request->noidung;
-      $notification->save();
-      return response()->json([
-        'nofi' => 'success',
-        $notification
-      ]);
+    $user = Auth::user();
+    if ($user == null) {
+        return response()->json([
+            "noti"=>"error",
+            "content" => "Bạn phải đăng nhập trước",
+        ]);
     }
+
+    $notification = thongbao::where('user_id', $user->id)->get();
+    return response()->json([
+        'noti' => 'success',
+        'thongbao' => $notification
+    ]);
   }
     
     public function TransactionHistory(){

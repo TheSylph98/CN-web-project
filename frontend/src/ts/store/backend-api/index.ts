@@ -28,4 +28,5 @@ export function getData(url: string, body = {}) {
 export * from "./user.api";
 export * from "./bank.api";
 export * from "./friend.api";
-
+export * from "./services.api";
+export * from "./notification.api";

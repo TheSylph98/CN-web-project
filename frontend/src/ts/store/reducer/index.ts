@@ -6,6 +6,8 @@ import { modify } from "./modify.reducer";
 import { bank } from "./bank.reducer";
 import { account } from "./account.reducer";
 import { friend } from "./friend.reducer";
+import { services } from "./services.reducer";
+import { notification } from "./notification.reducer";
 
 const rootReducer = combineReducers({
   login,
@@ -15,6 +17,8 @@ const rootReducer = combineReducers({
   modify,
   account,
   friend,
+  services,
+  notification,
 });
 
 export default rootReducer;

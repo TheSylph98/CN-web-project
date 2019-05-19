@@ -5,6 +5,7 @@ import Navigator from "./Navigator";
 import AccountInfo from "./AccountInfo";
 import BankAccount from "./BankAccount";
 import Services from "./Services";
+import Notification from "./Notification";
 import {Route, withRouter} from "react-router-dom";
 import { connect } from "react-redux";
 import FavoriteList from "./FavoriteList";
@@ -26,6 +27,7 @@ class CustomerPage extends React.Component<{history, loggedIn: boolean, location
 				<Route path="/customer/bank" component={BankAccount}/>
 				<Route path="/customer/services" component={Services}/>
 				<Route path="/customer/favorite" component={FavoriteList}/>
+				<Route path="/customer/notification" component={Notification}/>
 			</div>
 		</div>
 	}

@@ -8,3 +8,5 @@ __export(require("./user.action"));
 __export(require("./bank.action"));
 __export(require("./account.action"));
 __export(require("./friend.action"));
+__export(require("./services.action"));
+__export(require("./notification.action"));
