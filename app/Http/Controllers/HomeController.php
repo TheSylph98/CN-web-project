@@ -421,4 +421,14 @@ class HomeController extends Controller
                 'message'=>'ban chua dang nhap'
             ]);
     }
+
+    //    cap nhat lai daxem trong thongbao
+    public function updateNotification(Request $request)
+    {
+
+        DB::table('thongbao')
+            ->where('type',$request->type )
+            ->update(['daxem' => 1]);
+
+    }
 }

@@ -66,6 +66,7 @@ class TransferController
 
     public function postTransfer(Request $request)
     {
+
         $user = Auth::user();
         if ($user == null) {
             return response()->json([
@@ -164,23 +165,9 @@ class TransferController
         ]);
 
     }
-//    cap nhat lai daxem trong thongbao
-    public function updateNotification(Request $request)
-    {
-
-        $thongbao = DB::table('thongbao')->where('id',$request->id)->first();
-        if ($thongbao == null) {
-            return response()->json([
-                "title" => "error",
-                "content" => "Lỗi update thông báo",
-
-            ]);
-        }
-        $thongbao->daxem = 1;
-        $thongbao->save();
-    }
 
 }
+
 
 
 
