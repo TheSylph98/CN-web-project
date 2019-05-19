@@ -30,7 +30,7 @@ class Navigator extends React.Component<{location: string, login}, {}> {
 			            <Link to="/customer/history"> <i class="fa fa-credit-card"></i> <span>Transaction history</span></Link>
 			        </li>
 			        <li class={location.endsWith("favorite") ? "active" : ""}>
-			            <Link to="/customer/favorite"> <i class="fa fa-address-book"></i> <span>Friend list</span></Link>
+			            <Link to="/customer/favorite"> <i class="fa fa-address-book"></i> <span>Favorite list</span></Link>
 			        </li>
 			    </ul>
 			</div>

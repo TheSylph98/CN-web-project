@@ -51,7 +51,7 @@ class Navigator extends React.Component {
                             " ",
                             React.createElement("i", { class: "fa fa-address-book" }),
                             " ",
-                            React.createElement("span", null, "Friend list"))))));
+                            React.createElement("span", null, "Favorite list"))))));
     }
 }
 function mapStateToProps(state) {
