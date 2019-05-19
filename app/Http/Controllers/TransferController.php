@@ -137,12 +137,31 @@ class TransferController
         $user_nhan->sotien = $user_nhan->sotien + $request->sotien;
         $user_nhan->save();
 
+        $thongbao = new thongbao();
+        $thongbao->tieude = "Thông báo chuyển tiền thành công";
+        $thongbao->noidung = "Bạn vừa chuyển thành công " . $request->sotien . "đ cho chủ tài khoàn có email " . $user_nhan->email;
+        $thongbao->user_id = $user->id;
+        $thongbao->daxem = 0;
+        $thongbao->type = "chuyentien";
+
+        $thongbao->save();
+//        luu vao bang thong bao cho nguoi nhan
+        $thongbao_nhan = new thongbao();
+        $thongbao_nhan->tieude = "Thông báo nhận tiền thành công";
+        $thongbao_nhan->noidung = "Tài khoản của bạn  nhận thành công " . $request->sotien . "đ  từ chủ tài khoàn có email " . $user->email;
+        $thongbao_nhan->user_id = $user->id;
+        $thongbao_nhan->daxem = 0;
+        $thongbao_nhan->type = "nhantien";
+
+        $thongbao_nhan->save();
+//        return view("viewtest.ok");
+
         return response()->json([
             "title" => "success",
-            "content" => "Chuyển tiền thành công",
+            "content" => "Chuyển tiền thành công"
         ]);
 
-        }
+    }
 
 
 }
