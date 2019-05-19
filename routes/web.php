@@ -35,6 +35,8 @@ Route::post("post-transfer", "TransferController@postTransfer");
 Route::get("addmoney", 'AddMoneyToWallet@getViewAddMoney');
 Route::post("post-add-money", 'AddMoneyToWallet@postAddMoney');
 
+//cap nhật lại trường daxem thongbao
+Route::post("update-thongbao", "TransferController@updateNotification");
 
 
 

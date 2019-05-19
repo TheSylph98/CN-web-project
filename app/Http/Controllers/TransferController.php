@@ -125,8 +125,8 @@ class TransferController
         $chuyen_tien->id_nhan = $user_nhan->id;
         $chuyen_tien->sotien = $request->sotien;
         $chuyen_tien->noidung = $request->noidung;
-
         $chuyen_tien->save();
+
 
 //        cập nhật lai số tiên trong wallet
 
@@ -137,12 +137,15 @@ class TransferController
         $user_nhan->sotien = $user_nhan->sotien + $request->sotien;
         $user_nhan->save();
 
+//        get id chuuyen tien
+        $id_chuyentien = chuyentien::max("id");
+
         $thongbao = new thongbao();
         $thongbao->tieude = "Thông báo chuyển tiền thành công";
         $thongbao->noidung = "Bạn vừa chuyển thành công " . $request->sotien . "đ cho chủ tài khoàn có email " . $user_nhan->email;
         $thongbao->user_id = $user->id;
         $thongbao->daxem = 0;
-        $thongbao->type = "chuyentien";
+        $thongbao->type = "chuyentien_".$id_chuyentien;
 
         $thongbao->save();
 //        luu vao bang thong bao cho nguoi nhan
@@ -151,10 +154,9 @@ class TransferController
         $thongbao_nhan->noidung = "Tài khoản của bạn  nhận thành công " . $request->sotien . "đ  từ chủ tài khoàn có email " . $user->email;
         $thongbao_nhan->user_id = $user_nhan->id;
         $thongbao_nhan->daxem = 0;
-        $thongbao_nhan->type = "nhantien";
-
+        $thongbao_nhan->type = "nhantien_".$id_chuyentien;
         $thongbao_nhan->save();
-//        return view("viewtest.ok");
+
 
         return response()->json([
             "title" => "success",
@@ -162,6 +164,22 @@ class TransferController
         ]);
 
     }
+//    cap nhat lai daxem trong thongbao
+    public function updateNotification(Request $request)
+    {
+
+        $thongbao = DB::table('thongbao')->where('id',$request->id)->first();
+        if ($thongbao == null) {
+            return response()->json([
+                "title" => "error",
+                "content" => "Lỗi update thông báo",
+
+            ]);
+        }
+        $thongbao->daxem = 1;
+        $thongbao->save();
+    }
+
 }
 
 
