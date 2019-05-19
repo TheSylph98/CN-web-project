@@ -66,9 +66,7 @@ class TransferController
 
     public function postTransfer(Request $request)
     {
-
-        $user = Auth::user();
-        if ($user == null) {
+        if (!Auth::check()) {
             return response()->json([
                 "title" => "error",
                 "content" => "Bạn phải đăng nhập trước",
@@ -85,12 +83,10 @@ class TransferController
             [
                 'sotien.required' => 'Bạn chưa nhập số tiền ',
                 'noidung.required' => 'Bạn chưa nhập nội dung chuyển tiền',
-//                'id_chuyen.required' => 'Empty !',
                 'email_nhan.required' => 'Bạn chưa nhập email',
 
             ]);
 
-        $user = Auth::user();
         $errs = $validator->errors();
         $err = $errs->all();
         if ($validator->fails()) {
@@ -100,6 +96,7 @@ class TransferController
             ]);
         }
 
+        $user = Auth::user();
 
 //        check so tien con
         $check = $this->check_sotien($user->id, $request->sotien);

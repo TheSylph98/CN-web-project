@@ -60,14 +60,35 @@ class AddMoneyToWallet
     public function postAddMoney(Request $request)
     {
 //        check dang nhap
-        $user = Auth::user();
-        if ($user == null) {
+        if (Auth::check()) {
             return response()->json([
                 "title"=>"error",
                 "content" => "Bạn phải đăng nhập trước",
 
             ]);
         }
+
+        $validator = Validator::make($request->all(),
+            [
+                'sotien' => 'required',
+                'nganhang' => "required"
+            ],
+            [
+                'sotien.required' => 'Bạn chưa nhập số tiền ',
+                'nganhang.required' => 'Bạn phải chọn ngân hàng',
+
+            ]);
+
+        $errs = $validator->errors();
+        $err = $errs->all();
+        if ($validator->fails()) {
+            return response()->json([
+                'title' => 'error',
+                'content' => $err[0]
+            ]);
+        }
+
+
 //        check ngan hang
         $account = $this->checkBanksAsociateToUser($request->nganhang);
         if ($account == null) {
@@ -77,6 +98,9 @@ class AddMoneyToWallet
 
             ]);
         }
+
+
+
 //        check so tien trong tk so với tiên định nạp
         if ($account->sotien <= $request->sotien) {
             return response()->json([
@@ -85,6 +109,10 @@ class AddMoneyToWallet
 
             ]);
         }
+
+
+
+        $user = Auth::user();
 
 //        thuc hiên nap tien
         $naptien = new naptien();
