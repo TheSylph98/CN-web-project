@@ -137,7 +137,7 @@ class TransferController
         $user_nhan->sotien = $user_nhan->sotien + $request->sotien;
         $user_nhan->save();
 
-        return view("viewtest.ok");
+//        return view("viewtest.ok");
 
 
         }
