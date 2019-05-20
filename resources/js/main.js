@@ -50,8 +50,8 @@
 	const React = __webpack_require__(4);
 	const react_redux_1 = __webpack_require__(18);
 	const helper_1 = __webpack_require__(55);
-	const react_router_dom_1 = __webpack_require__(80);
-	const app_1 = __webpack_require__(93);
+	const react_router_dom_1 = __webpack_require__(84);
+	const app_1 = __webpack_require__(97);
 	ReactDOM.render(React.createElement(react_redux_1.Provider, { store: helper_1.store },
 	    React.createElement(react_router_dom_1.HashRouter, null,
 	        React.createElement(react_router_dom_1.Route, { path: "/", component: app_1.default }))), document.getElementById("app"));
@@ -29864,20 +29864,24 @@
 	Object.defineProperty(exports, "__esModule", { value: true });
 	const redux_1 = __webpack_require__(42);
 	const login_reducer_1 = __webpack_require__(67);
-	const register_reducer_1 = __webpack_require__(74);
-	const alert_reducer_1 = __webpack_require__(75);
-	const modify_reducer_1 = __webpack_require__(76);
-	const bank_reducer_1 = __webpack_require__(77);
-	const account_reducer_1 = __webpack_require__(78);
-	const friend_reducer_1 = __webpack_require__(79);
+	const register_reducer_1 = __webpack_require__(76);
+	const modify_reducer_1 = __webpack_require__(77);
+	const bank_reducer_1 = __webpack_require__(78);
+	const account_reducer_1 = __webpack_require__(79);
+	const friend_reducer_1 = __webpack_require__(80);
+	const services_reducer_1 = __webpack_require__(81);
+	const notification_reducer_1 = __webpack_require__(82);
+	const transaction_reducer_1 = __webpack_require__(83);
 	const rootReducer = redux_1.combineReducers({
 	    login: login_reducer_1.login,
 	    register: register_reducer_1.register,
-	    alert: alert_reducer_1.alert,
 	    bank: bank_reducer_1.bank,
 	    modify: modify_reducer_1.modify,
 	    account: account_reducer_1.account,
 	    friend: friend_reducer_1.friend,
+	    services: services_reducer_1.services,
+	    notification: notification_reducer_1.notification,
+	    transaction: transaction_reducer_1.transaction,
 	});
 	exports.default = rootReducer;
 
@@ -29917,6 +29921,10 @@
 	                loggedIn: true,
 	                user: action.user
 	            };
+	        case constants_1.userConstants.UPDATE_SUCCESS:
+	            return Object.assign({}, state, { user: action.user });
+	        case constants_1.userConstants.UPDATE_FAILURE:
+	            return Object.assign({}, state, { error: action.error });
 	        default:
 	            return state;
 	    }
@@ -29938,24 +29946,12 @@
 	__export(__webpack_require__(71));
 	__export(__webpack_require__(72));
 	__export(__webpack_require__(73));
+	__export(__webpack_require__(74));
+	__export(__webpack_require__(75));
 
 
 /***/ }),
 /* 69 */
-/***/ (function(module, exports) {
-
-	"use strict";
-	Object.defineProperty(exports, "__esModule", { value: true });
-	exports.alertConstants = {
-	    SUCCESS: 'ALERT_SUCCESS',
-	    ERROR: 'ALERT_ERROR',
-	    CLEAR: 'ALERT_CLEAR',
-	    INIT: "INIT",
-	};
-
-
-/***/ }),
-/* 70 */
 /***/ (function(module, exports) {
 
 	"use strict";
@@ -29970,13 +29966,16 @@
 	    MODIFY_REQUEST: 'USERS_MODIFY_REQUEST',
 	    MODIFY_SUCCESS: 'USERS_MODIFY_SUCCESS',
 	    MODIFY_FAILURE: 'USERS_MODIFY_FAILURE',
+	    UPDATE_REQUEST: 'USERS_UPDATE_REQUEST',
+	    UPDATE_SUCCESS: 'USERS_UPDATE_SUCCESS',
+	    UPDATE_FAILURE: 'USERS_UPDATE_FAILURE',
 	    LOGOUT_SUCCESS: 'USERS_LOGOUT_SUCCESS',
 	    LOGOUT_FAILURE: 'USERS_LOGOUT_FAILURE',
 	};
 
 
 /***/ }),
-/* 71 */
+/* 70 */
 /***/ (function(module, exports) {
 
 	"use strict";
@@ -29992,7 +29991,7 @@
 
 
 /***/ }),
-/* 72 */
+/* 71 */
 /***/ (function(module, exports) {
 
 	"use strict";
@@ -30008,7 +30007,7 @@
 
 
 /***/ }),
-/* 73 */
+/* 72 */
 /***/ (function(module, exports) {
 
 	"use strict";
@@ -30021,7 +30020,49 @@
 
 
 /***/ }),
+/* 73 */
+/***/ (function(module, exports) {
+
+	"use strict";
+	Object.defineProperty(exports, "__esModule", { value: true });
+	exports.servicesConstants = {
+	    TRANSFER_SUCCESS: 'TRANSFER_SUCCESS',
+	    TRANSFER_FAILURE: 'TRANSFER_ERROR',
+	    TRANSFER_REQUEST: 'TRANSFER_FAILURE',
+	    TRANSACT_SUCCESS: 'TRANSACT_SUCCESS',
+	    TRANSACT_FAILURE: 'TRANSACT_ERROR',
+	    TRANSACT_REQUEST: 'TRANSACT_FAILURE',
+	};
+
+
+/***/ }),
 /* 74 */
+/***/ (function(module, exports) {
+
+	"use strict";
+	Object.defineProperty(exports, "__esModule", { value: true });
+	exports.notificationConstants = {
+	    NOTIFICATION_REQUEST: "NOTIFICATION_REQUEST",
+	    NOTIFICATION_SUCCESS: "NOTIFICATION_SUCCESS",
+	    NOTIFICATION_FAILURE: "NOTIFICATION_FAILURE",
+	};
+
+
+/***/ }),
+/* 75 */
+/***/ (function(module, exports) {
+
+	"use strict";
+	Object.defineProperty(exports, "__esModule", { value: true });
+	exports.transactionConstants = {
+	    TRANSACTION_REQUEST: "TRANSACTION_REQUEST",
+	    TRANSACTION_SUCCESS: "TRANSACTION_SUCCESS",
+	    TRANSACTION_FAILURE: "TRANSACTION_FAILURE",
+	};
+
+
+/***/ }),
+/* 76 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -30043,39 +30084,7 @@
 
 
 /***/ }),
-/* 75 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	"use strict";
-	Object.defineProperty(exports, "__esModule", { value: true });
-	const constants_1 = __webpack_require__(68);
-	function alert(state = {}, action) {
-	    switch (action.type) {
-	        case constants_1.alertConstants.INIT:
-	            return {
-	                history: action.history
-	            };
-	        case constants_1.alertConstants.SUCCESS:
-	            return {
-	                type: 'alert-success',
-	                message: action.message
-	            };
-	        case constants_1.alertConstants.ERROR:
-	            return {
-	                type: 'alert-danger',
-	                message: action.message
-	            };
-	        case constants_1.alertConstants.CLEAR:
-	            return {};
-	        default:
-	            return state;
-	    }
-	}
-	exports.alert = alert;
-
-
-/***/ }),
-/* 76 */
+/* 77 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -30103,7 +30112,7 @@
 
 
 /***/ }),
-/* 77 */
+/* 78 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -30134,7 +30143,7 @@
 
 
 /***/ }),
-/* 78 */
+/* 79 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -30162,7 +30171,7 @@
 
 
 /***/ }),
-/* 79 */
+/* 80 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -30196,49 +30205,161 @@
 
 
 /***/ }),
-/* 80 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	/* WEBPACK VAR INJECTION */(function(process) {"use strict";
-	
-	if (process.env.NODE_ENV === "production") {
-	  module.exports = __webpack_require__(81);
-	} else {
-	  module.exports = __webpack_require__(92);
-	}
-	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2)))
-
-/***/ }),
 /* 81 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	"use strict";function _interopDefault(t){return t&&"object"==typeof t&&"default"in t?t.default:t}Object.defineProperty(exports,"__esModule",{value:!0});var React=_interopDefault(__webpack_require__(4)),reactRouter=__webpack_require__(82),history=__webpack_require__(57);__webpack_require__(24),__webpack_require__(61);var invariant=_interopDefault(__webpack_require__(62));function _extends(){return(_extends=Object.assign||function(t){for(var e=1;e<arguments.length;e++){var r=arguments[e];for(var o in r)Object.prototype.hasOwnProperty.call(r,o)&&(t[o]=r[o])}return t}).apply(this,arguments)}function _inheritsLoose(t,e){t.prototype=Object.create(e.prototype),(t.prototype.constructor=t).__proto__=e}function _objectWithoutPropertiesLoose(t,e){if(null==t)return{};var r,o,n={},i=Object.keys(t);for(o=0;o<i.length;o++)r=i[o],0<=e.indexOf(r)||(n[r]=t[r]);return n}var BrowserRouter=function(n){function t(){for(var t,e=arguments.length,r=new Array(e),o=0;o<e;o++)r[o]=arguments[o];return(t=n.call.apply(n,[this].concat(r))||this).history=history.createBrowserHistory(t.props),t}return _inheritsLoose(t,n),t.prototype.render=function(){return React.createElement(reactRouter.Router,{history:this.history,children:this.props.children})},t}(React.Component),HashRouter=function(n){function t(){for(var t,e=arguments.length,r=new Array(e),o=0;o<e;o++)r[o]=arguments[o];return(t=n.call.apply(n,[this].concat(r))||this).history=history.createHashHistory(t.props),t}return _inheritsLoose(t,n),t.prototype.render=function(){return React.createElement(reactRouter.Router,{history:this.history,children:this.props.children})},t}(React.Component);function isModifiedEvent(t){return!!(t.metaKey||t.altKey||t.ctrlKey||t.shiftKey)}var Link=function(t){function e(){return t.apply(this,arguments)||this}_inheritsLoose(e,t);var r=e.prototype;return r.handleClick=function(t,e){(this.props.onClick&&this.props.onClick(t),t.defaultPrevented||0!==t.button||this.props.target&&"_self"!==this.props.target||isModifiedEvent(t))||(t.preventDefault(),(this.props.replace?e.replace:e.push)(this.props.to))},r.render=function(){var o=this,t=this.props,n=t.innerRef,i=(t.replace,t.to),a=_objectWithoutPropertiesLoose(t,["innerRef","replace","to"]);return React.createElement(reactRouter.__RouterContext.Consumer,null,function(e){e||invariant(!1);var t="string"==typeof i?history.createLocation(i,null,null,e.location):i,r=t?e.history.createHref(t):"";return React.createElement("a",_extends({},a,{onClick:function(t){return o.handleClick(t,e.history)},href:r,ref:n}))})},e}(React.Component);function joinClassnames(){for(var t=arguments.length,e=new Array(t),r=0;r<t;r++)e[r]=arguments[r];return e.filter(function(t){return t}).join(" ")}function NavLink(t){var e=t["aria-current"],a=void 0===e?"page":e,r=t.activeClassName,s=void 0===r?"active":r,c=t.activeStyle,u=t.className,o=t.exact,l=t.isActive,n=t.location,i=t.strict,p=t.style,h=t.to,f=_objectWithoutPropertiesLoose(t,["aria-current","activeClassName","activeStyle","className","exact","isActive","location","strict","style","to"]),y="object"==typeof h?h.pathname:h,v=y&&y.replace(/([.+*?=^!:${}()[\]|/\\])/g,"\\$1");return React.createElement(reactRouter.Route,{path:v,exact:o,strict:i,location:n,children:function(t){var e=t.location,r=t.match,o=!!(l?l(r,e):r),n=o?joinClassnames(u,s):u,i=o?_extends({},p,c):p;return React.createElement(Link,_extends({"aria-current":o&&a||null,className:n,style:i,to:h},f))}})}Object.keys(reactRouter).forEach(function(t){exports[t]=reactRouter[t]}),exports.BrowserRouter=BrowserRouter,exports.HashRouter=HashRouter,exports.Link=Link,exports.NavLink=NavLink;
+	"use strict";
+	Object.defineProperty(exports, "__esModule", { value: true });
+	const constants_1 = __webpack_require__(68);
+	function services(state = {}, action) {
+	    switch (action.type) {
+	        case constants_1.servicesConstants.TRANSFER_REQUEST:
+	            return {
+	                transfering: true,
+	            };
+	        case constants_1.servicesConstants.TRANSFER_SUCCESS:
+	            return {
+	                transfered: true,
+	            };
+	        case constants_1.servicesConstants.TRANSFER_FAILURE:
+	            return {
+	                transferError: action.error,
+	            };
+	        default:
+	            return state;
+	    }
+	}
+	exports.services = services;
 
 
 /***/ }),
 /* 82 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	/* WEBPACK VAR INJECTION */(function(process) {"use strict";
-	
-	if (process.env.NODE_ENV === "production") {
-	  module.exports = __webpack_require__(83);
-	} else {
-	  module.exports = __webpack_require__(91);
+	"use strict";
+	Object.defineProperty(exports, "__esModule", { value: true });
+	const constants_1 = __webpack_require__(68);
+	function notification(state = { notLoad: true, notifications: [] }, action) {
+	    switch (action.type) {
+	        case constants_1.notificationConstants.NOTIFICATION_REQUEST:
+	            return {
+	                notLoad: false,
+	                loading: true,
+	                notifications: state.notifications,
+	            };
+	        case constants_1.notificationConstants.NOTIFICATION_SUCCESS:
+	            return {
+	                notLoad: false,
+	                loaded: true,
+	                notifications: action.notifications.sort((noti1, noti2) => {
+	                    if (noti1.time > noti2.time) {
+	                        return -1;
+	                    }
+	                    if (noti1.time == noti2.time) {
+	                        return 0;
+	                    }
+	                    return 1;
+	                }),
+	            };
+	        case constants_1.notificationConstants.NOTIFICATION_FAILURE:
+	            return {
+	                notLoad: true,
+	                error: action.error,
+	                notifications: state.notifications,
+	            };
+	        default:
+	            return state;
+	    }
 	}
-	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2)))
+	exports.notification = notification;
+
 
 /***/ }),
 /* 83 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	"use strict";function _interopDefault(t){return t&&"object"==typeof t&&"default"in t?t.default:t}Object.defineProperty(exports,"__esModule",{value:!0});var createContext=_interopDefault(__webpack_require__(84)),React=_interopDefault(__webpack_require__(4));__webpack_require__(24),__webpack_require__(61);var history=__webpack_require__(57),invariant=_interopDefault(__webpack_require__(62)),pathToRegexp=_interopDefault(__webpack_require__(89));__webpack_require__(25);var hoistStatics=_interopDefault(__webpack_require__(37));function _extends(){return(_extends=Object.assign||function(t){for(var e=1;e<arguments.length;e++){var n=arguments[e];for(var o in n)Object.prototype.hasOwnProperty.call(n,o)&&(t[o]=n[o])}return t}).apply(this,arguments)}function _inheritsLoose(t,e){t.prototype=Object.create(e.prototype),(t.prototype.constructor=t).__proto__=e}function _objectWithoutPropertiesLoose(t,e){if(null==t)return{};var n,o,r={},a=Object.keys(t);for(o=0;o<a.length;o++)n=a[o],0<=e.indexOf(n)||(r[n]=t[n]);return r}var createNamedContext=function(t){var e=createContext();return e.Provider.displayName=t+".Provider",e.Consumer.displayName=t+".Consumer",e},context=createNamedContext("Router"),Router=function(n){function t(t){var e;return(e=n.call(this,t)||this).state={location:t.history.location},e._isMounted=!1,e._pendingLocation=null,t.staticContext||(e.unlisten=t.history.listen(function(t){e._isMounted?e.setState({location:t}):e._pendingLocation=t})),e}_inheritsLoose(t,n),t.computeRootMatch=function(t){return{path:"/",url:"/",params:{},isExact:"/"===t}};var e=t.prototype;return e.componentDidMount=function(){this._isMounted=!0,this._pendingLocation&&this.setState({location:this._pendingLocation})},e.componentWillUnmount=function(){this.unlisten&&this.unlisten()},e.render=function(){return React.createElement(context.Provider,{children:this.props.children||null,value:{history:this.props.history,location:this.state.location,match:t.computeRootMatch(this.state.location.pathname),staticContext:this.props.staticContext}})},t}(React.Component),MemoryRouter=function(r){function t(){for(var t,e=arguments.length,n=new Array(e),o=0;o<e;o++)n[o]=arguments[o];return(t=r.call.apply(r,[this].concat(n))||this).history=history.createMemoryHistory(t.props),t}return _inheritsLoose(t,r),t.prototype.render=function(){return React.createElement(Router,{history:this.history,children:this.props.children})},t}(React.Component),Lifecycle=function(t){function e(){return t.apply(this,arguments)||this}_inheritsLoose(e,t);var n=e.prototype;return n.componentDidMount=function(){this.props.onMount&&this.props.onMount.call(this,this)},n.componentDidUpdate=function(t){this.props.onUpdate&&this.props.onUpdate.call(this,this,t)},n.componentWillUnmount=function(){this.props.onUnmount&&this.props.onUnmount.call(this,this)},n.render=function(){return null},e}(React.Component);function Prompt(t){var o=t.message,e=t.when,r=void 0===e||e;return React.createElement(context.Consumer,null,function(t){if(t||invariant(!1),!r||t.staticContext)return null;var n=t.history.block;return React.createElement(Lifecycle,{onMount:function(t){t.release=n(o)},onUpdate:function(t,e){e.message!==o&&(t.release(),t.release=n(o))},onUnmount:function(t){t.release()},message:o})})}var cache={},cacheLimit=1e4,cacheCount=0;function compilePath(t){if(cache[t])return cache[t];var e=pathToRegexp.compile(t);return cacheCount<cacheLimit&&(cache[t]=e,cacheCount++),e}function generatePath(t,e){return void 0===t&&(t="/"),void 0===e&&(e={}),"/"===t?t:compilePath(t)(e,{pretty:!0})}function Redirect(t){var a=t.computedMatch,i=t.to,e=t.push,c=void 0!==e&&e;return React.createElement(context.Consumer,null,function(t){t||invariant(!1);var e=t.history,n=t.staticContext,o=c?e.push:e.replace,r=history.createLocation(a?"string"==typeof i?generatePath(i,a.params):_extends({},i,{pathname:generatePath(i.pathname,a.params)}):i);return n?(o(r),null):React.createElement(Lifecycle,{onMount:function(){o(r)},onUpdate:function(t,e){history.locationsAreEqual(e.to,r)||o(r)},to:i})})}var cache$1={},cacheLimit$1=1e4,cacheCount$1=0;function compilePath$1(t,e){var n=""+e.end+e.strict+e.sensitive,o=cache$1[n]||(cache$1[n]={});if(o[t])return o[t];var r=[],a={regexp:pathToRegexp(t,r,e),keys:r};return cacheCount$1<cacheLimit$1&&(o[t]=a,cacheCount$1++),a}function matchPath(u,t){void 0===t&&(t={}),"string"==typeof t&&(t={path:t});var e=t,n=e.path,o=e.exact,p=void 0!==o&&o,r=e.strict,h=void 0!==r&&r,a=e.sensitive,l=void 0!==a&&a;return[].concat(n).reduce(function(t,e){if(t)return t;var n=compilePath$1(e,{end:p,strict:h,sensitive:l}),o=n.regexp,r=n.keys,a=o.exec(u);if(!a)return null;var i=a[0],c=a.slice(1),s=u===i;return p&&!s?null:{path:e,url:"/"===e&&""===i?"/":i,isExact:s,params:r.reduce(function(t,e,n){return t[e.name]=c[n],t},{})}},null)}function isEmptyChildren(t){return 0===React.Children.count(t)}var Route=function(t){function e(){return t.apply(this,arguments)||this}return _inheritsLoose(e,t),e.prototype.render=function(){var c=this;return React.createElement(context.Consumer,null,function(t){t||invariant(!1);var e=c.props.location||t.location,n=_extends({},t,{location:e,match:c.props.computedMatch?c.props.computedMatch:c.props.path?matchPath(e.pathname,c.props):t.match}),o=c.props,r=o.children,a=o.component,i=o.render;return Array.isArray(r)&&0===r.length&&(r=null),"function"==typeof r&&void 0===(r=r(n))&&(r=null),React.createElement(context.Provider,{value:n},r&&!isEmptyChildren(r)?r:n.match?a?React.createElement(a,n):i?i(n):null:null)})},e}(React.Component);function addLeadingSlash(t){return"/"===t.charAt(0)?t:"/"+t}function addBasename(t,e){return t?_extends({},e,{pathname:addLeadingSlash(t)+e.pathname}):e}function stripBasename(t,e){if(!t)return e;var n=addLeadingSlash(t);return 0!==e.pathname.indexOf(n)?e:_extends({},e,{pathname:e.pathname.substr(n.length)})}function createURL(t){return"string"==typeof t?t:history.createPath(t)}function staticHandler(t){return function(){invariant(!1)}}function noop(){}var StaticRouter=function(r){function t(){for(var e,t=arguments.length,n=new Array(t),o=0;o<t;o++)n[o]=arguments[o];return(e=r.call.apply(r,[this].concat(n))||this).handlePush=function(t){return e.navigateTo(t,"PUSH")},e.handleReplace=function(t){return e.navigateTo(t,"REPLACE")},e.handleListen=function(){return noop},e.handleBlock=function(){return noop},e}_inheritsLoose(t,r);var e=t.prototype;return e.navigateTo=function(t,e){var n=this.props,o=n.basename,r=void 0===o?"":o,a=n.context;a.action=e,a.location=addBasename(r,history.createLocation(t)),a.url=createURL(a.location)},e.render=function(){var t=this.props,e=t.basename,n=void 0===e?"":e,o=t.context,r=void 0===o?{}:o,a=t.location,i=void 0===a?"/":a,c=_objectWithoutPropertiesLoose(t,["basename","context","location"]),s={createHref:function(t){return addLeadingSlash(n+createURL(t))},action:"POP",location:stripBasename(n,history.createLocation(i)),push:this.handlePush,replace:this.handleReplace,go:staticHandler("go"),goBack:staticHandler("goBack"),goForward:staticHandler("goForward"),listen:this.handleListen,block:this.handleBlock};return React.createElement(Router,_extends({},c,{history:s,staticContext:r}))},t}(React.Component),Switch=function(t){function e(){return t.apply(this,arguments)||this}return _inheritsLoose(e,t),e.prototype.render=function(){var t=this;return React.createElement(context.Consumer,null,function(n){n||invariant(!1);var o,r,a=t.props.location||n.location;return React.Children.forEach(t.props.children,function(t){if(null==r&&React.isValidElement(t)){var e=(o=t).props.path||t.props.from;r=e?matchPath(a.pathname,_extends({},t.props,{path:e})):n.match}}),r?React.cloneElement(o,{location:a,computedMatch:r}):null})},e}(React.Component);function withRouter(o){var t=function(t){var e=t.wrappedComponentRef,n=_objectWithoutPropertiesLoose(t,["wrappedComponentRef"]);return React.createElement(Route,{children:function(t){return React.createElement(o,_extends({},n,t,{ref:e}))}})};return t.displayName="withRouter("+(o.displayName||o.name)+")",t.WrappedComponent=o,hoistStatics(t,o)}exports.MemoryRouter=MemoryRouter,exports.Prompt=Prompt,exports.Redirect=Redirect,exports.Route=Route,exports.Router=Router,exports.StaticRouter=StaticRouter,exports.Switch=Switch,exports.generatePath=generatePath,exports.matchPath=matchPath,exports.withRouter=withRouter,exports.__RouterContext=context;
+	"use strict";
+	Object.defineProperty(exports, "__esModule", { value: true });
+	const constants_1 = __webpack_require__(68);
+	function transaction(state = { notLoad: true, transactions: [] }, action) {
+	    switch (action.type) {
+	        case constants_1.transactionConstants.TRANSACTION_REQUEST:
+	            return {
+	                notLoad: false,
+	                loading: true,
+	                transactions: state.transactions,
+	            };
+	        case constants_1.transactionConstants.TRANSACTION_SUCCESS:
+	            return {
+	                notLoad: false,
+	                loaded: true,
+	                transactions: action.transactions.sort((trans1, trans2) => {
+	                    if (trans1.time > trans2.time) {
+	                        return -1;
+	                    }
+	                    if (trans1.time == trans2.time) {
+	                        return 0;
+	                    }
+	                    return 1;
+	                }),
+	            };
+	        case constants_1.transactionConstants.TRANSACTION_FAILURE:
+	            return {
+	                notLoad: true,
+	                error: action.error,
+	                transactions: state.transactions,
+	            };
+	        default:
+	            return state;
+	    }
+	}
+	exports.transaction = transaction;
 
 
 /***/ }),
 /* 84 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	/* WEBPACK VAR INJECTION */(function(process) {"use strict";
+	
+	if (process.env.NODE_ENV === "production") {
+	  module.exports = __webpack_require__(85);
+	} else {
+	  module.exports = __webpack_require__(96);
+	}
+	
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2)))
+
+/***/ }),
+/* 85 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	"use strict";function _interopDefault(t){return t&&"object"==typeof t&&"default"in t?t.default:t}Object.defineProperty(exports,"__esModule",{value:!0});var React=_interopDefault(__webpack_require__(4)),reactRouter=__webpack_require__(86),history=__webpack_require__(57);__webpack_require__(24),__webpack_require__(61);var invariant=_interopDefault(__webpack_require__(62));function _extends(){return(_extends=Object.assign||function(t){for(var e=1;e<arguments.length;e++){var r=arguments[e];for(var o in r)Object.prototype.hasOwnProperty.call(r,o)&&(t[o]=r[o])}return t}).apply(this,arguments)}function _inheritsLoose(t,e){t.prototype=Object.create(e.prototype),(t.prototype.constructor=t).__proto__=e}function _objectWithoutPropertiesLoose(t,e){if(null==t)return{};var r,o,n={},i=Object.keys(t);for(o=0;o<i.length;o++)r=i[o],0<=e.indexOf(r)||(n[r]=t[r]);return n}var BrowserRouter=function(n){function t(){for(var t,e=arguments.length,r=new Array(e),o=0;o<e;o++)r[o]=arguments[o];return(t=n.call.apply(n,[this].concat(r))||this).history=history.createBrowserHistory(t.props),t}return _inheritsLoose(t,n),t.prototype.render=function(){return React.createElement(reactRouter.Router,{history:this.history,children:this.props.children})},t}(React.Component),HashRouter=function(n){function t(){for(var t,e=arguments.length,r=new Array(e),o=0;o<e;o++)r[o]=arguments[o];return(t=n.call.apply(n,[this].concat(r))||this).history=history.createHashHistory(t.props),t}return _inheritsLoose(t,n),t.prototype.render=function(){return React.createElement(reactRouter.Router,{history:this.history,children:this.props.children})},t}(React.Component);function isModifiedEvent(t){return!!(t.metaKey||t.altKey||t.ctrlKey||t.shiftKey)}var Link=function(t){function e(){return t.apply(this,arguments)||this}_inheritsLoose(e,t);var r=e.prototype;return r.handleClick=function(t,e){(this.props.onClick&&this.props.onClick(t),t.defaultPrevented||0!==t.button||this.props.target&&"_self"!==this.props.target||isModifiedEvent(t))||(t.preventDefault(),(this.props.replace?e.replace:e.push)(this.props.to))},r.render=function(){var o=this,t=this.props,n=t.innerRef,i=(t.replace,t.to),a=_objectWithoutPropertiesLoose(t,["innerRef","replace","to"]);return React.createElement(reactRouter.__RouterContext.Consumer,null,function(e){e||invariant(!1);var t="string"==typeof i?history.createLocation(i,null,null,e.location):i,r=t?e.history.createHref(t):"";return React.createElement("a",_extends({},a,{onClick:function(t){return o.handleClick(t,e.history)},href:r,ref:n}))})},e}(React.Component);function joinClassnames(){for(var t=arguments.length,e=new Array(t),r=0;r<t;r++)e[r]=arguments[r];return e.filter(function(t){return t}).join(" ")}function NavLink(t){var e=t["aria-current"],a=void 0===e?"page":e,r=t.activeClassName,s=void 0===r?"active":r,c=t.activeStyle,u=t.className,o=t.exact,l=t.isActive,n=t.location,i=t.strict,p=t.style,h=t.to,f=_objectWithoutPropertiesLoose(t,["aria-current","activeClassName","activeStyle","className","exact","isActive","location","strict","style","to"]),y="object"==typeof h?h.pathname:h,v=y&&y.replace(/([.+*?=^!:${}()[\]|/\\])/g,"\\$1");return React.createElement(reactRouter.Route,{path:v,exact:o,strict:i,location:n,children:function(t){var e=t.location,r=t.match,o=!!(l?l(r,e):r),n=o?joinClassnames(u,s):u,i=o?_extends({},p,c):p;return React.createElement(Link,_extends({"aria-current":o&&a||null,className:n,style:i,to:h},f))}})}Object.keys(reactRouter).forEach(function(t){exports[t]=reactRouter[t]}),exports.BrowserRouter=BrowserRouter,exports.HashRouter=HashRouter,exports.Link=Link,exports.NavLink=NavLink;
+
+
+/***/ }),
+/* 86 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	/* WEBPACK VAR INJECTION */(function(process) {"use strict";
+	
+	if (process.env.NODE_ENV === "production") {
+	  module.exports = __webpack_require__(87);
+	} else {
+	  module.exports = __webpack_require__(95);
+	}
+	
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2)))
+
+/***/ }),
+/* 87 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	"use strict";function _interopDefault(t){return t&&"object"==typeof t&&"default"in t?t.default:t}Object.defineProperty(exports,"__esModule",{value:!0});var createContext=_interopDefault(__webpack_require__(88)),React=_interopDefault(__webpack_require__(4));__webpack_require__(24),__webpack_require__(61);var history=__webpack_require__(57),invariant=_interopDefault(__webpack_require__(62)),pathToRegexp=_interopDefault(__webpack_require__(93));__webpack_require__(25);var hoistStatics=_interopDefault(__webpack_require__(37));function _extends(){return(_extends=Object.assign||function(t){for(var e=1;e<arguments.length;e++){var n=arguments[e];for(var o in n)Object.prototype.hasOwnProperty.call(n,o)&&(t[o]=n[o])}return t}).apply(this,arguments)}function _inheritsLoose(t,e){t.prototype=Object.create(e.prototype),(t.prototype.constructor=t).__proto__=e}function _objectWithoutPropertiesLoose(t,e){if(null==t)return{};var n,o,r={},a=Object.keys(t);for(o=0;o<a.length;o++)n=a[o],0<=e.indexOf(n)||(r[n]=t[n]);return r}var createNamedContext=function(t){var e=createContext();return e.Provider.displayName=t+".Provider",e.Consumer.displayName=t+".Consumer",e},context=createNamedContext("Router"),Router=function(n){function t(t){var e;return(e=n.call(this,t)||this).state={location:t.history.location},e._isMounted=!1,e._pendingLocation=null,t.staticContext||(e.unlisten=t.history.listen(function(t){e._isMounted?e.setState({location:t}):e._pendingLocation=t})),e}_inheritsLoose(t,n),t.computeRootMatch=function(t){return{path:"/",url:"/",params:{},isExact:"/"===t}};var e=t.prototype;return e.componentDidMount=function(){this._isMounted=!0,this._pendingLocation&&this.setState({location:this._pendingLocation})},e.componentWillUnmount=function(){this.unlisten&&this.unlisten()},e.render=function(){return React.createElement(context.Provider,{children:this.props.children||null,value:{history:this.props.history,location:this.state.location,match:t.computeRootMatch(this.state.location.pathname),staticContext:this.props.staticContext}})},t}(React.Component),MemoryRouter=function(r){function t(){for(var t,e=arguments.length,n=new Array(e),o=0;o<e;o++)n[o]=arguments[o];return(t=r.call.apply(r,[this].concat(n))||this).history=history.createMemoryHistory(t.props),t}return _inheritsLoose(t,r),t.prototype.render=function(){return React.createElement(Router,{history:this.history,children:this.props.children})},t}(React.Component),Lifecycle=function(t){function e(){return t.apply(this,arguments)||this}_inheritsLoose(e,t);var n=e.prototype;return n.componentDidMount=function(){this.props.onMount&&this.props.onMount.call(this,this)},n.componentDidUpdate=function(t){this.props.onUpdate&&this.props.onUpdate.call(this,this,t)},n.componentWillUnmount=function(){this.props.onUnmount&&this.props.onUnmount.call(this,this)},n.render=function(){return null},e}(React.Component);function Prompt(t){var o=t.message,e=t.when,r=void 0===e||e;return React.createElement(context.Consumer,null,function(t){if(t||invariant(!1),!r||t.staticContext)return null;var n=t.history.block;return React.createElement(Lifecycle,{onMount:function(t){t.release=n(o)},onUpdate:function(t,e){e.message!==o&&(t.release(),t.release=n(o))},onUnmount:function(t){t.release()},message:o})})}var cache={},cacheLimit=1e4,cacheCount=0;function compilePath(t){if(cache[t])return cache[t];var e=pathToRegexp.compile(t);return cacheCount<cacheLimit&&(cache[t]=e,cacheCount++),e}function generatePath(t,e){return void 0===t&&(t="/"),void 0===e&&(e={}),"/"===t?t:compilePath(t)(e,{pretty:!0})}function Redirect(t){var a=t.computedMatch,i=t.to,e=t.push,c=void 0!==e&&e;return React.createElement(context.Consumer,null,function(t){t||invariant(!1);var e=t.history,n=t.staticContext,o=c?e.push:e.replace,r=history.createLocation(a?"string"==typeof i?generatePath(i,a.params):_extends({},i,{pathname:generatePath(i.pathname,a.params)}):i);return n?(o(r),null):React.createElement(Lifecycle,{onMount:function(){o(r)},onUpdate:function(t,e){history.locationsAreEqual(e.to,r)||o(r)},to:i})})}var cache$1={},cacheLimit$1=1e4,cacheCount$1=0;function compilePath$1(t,e){var n=""+e.end+e.strict+e.sensitive,o=cache$1[n]||(cache$1[n]={});if(o[t])return o[t];var r=[],a={regexp:pathToRegexp(t,r,e),keys:r};return cacheCount$1<cacheLimit$1&&(o[t]=a,cacheCount$1++),a}function matchPath(u,t){void 0===t&&(t={}),"string"==typeof t&&(t={path:t});var e=t,n=e.path,o=e.exact,p=void 0!==o&&o,r=e.strict,h=void 0!==r&&r,a=e.sensitive,l=void 0!==a&&a;return[].concat(n).reduce(function(t,e){if(t)return t;var n=compilePath$1(e,{end:p,strict:h,sensitive:l}),o=n.regexp,r=n.keys,a=o.exec(u);if(!a)return null;var i=a[0],c=a.slice(1),s=u===i;return p&&!s?null:{path:e,url:"/"===e&&""===i?"/":i,isExact:s,params:r.reduce(function(t,e,n){return t[e.name]=c[n],t},{})}},null)}function isEmptyChildren(t){return 0===React.Children.count(t)}var Route=function(t){function e(){return t.apply(this,arguments)||this}return _inheritsLoose(e,t),e.prototype.render=function(){var c=this;return React.createElement(context.Consumer,null,function(t){t||invariant(!1);var e=c.props.location||t.location,n=_extends({},t,{location:e,match:c.props.computedMatch?c.props.computedMatch:c.props.path?matchPath(e.pathname,c.props):t.match}),o=c.props,r=o.children,a=o.component,i=o.render;return Array.isArray(r)&&0===r.length&&(r=null),"function"==typeof r&&void 0===(r=r(n))&&(r=null),React.createElement(context.Provider,{value:n},r&&!isEmptyChildren(r)?r:n.match?a?React.createElement(a,n):i?i(n):null:null)})},e}(React.Component);function addLeadingSlash(t){return"/"===t.charAt(0)?t:"/"+t}function addBasename(t,e){return t?_extends({},e,{pathname:addLeadingSlash(t)+e.pathname}):e}function stripBasename(t,e){if(!t)return e;var n=addLeadingSlash(t);return 0!==e.pathname.indexOf(n)?e:_extends({},e,{pathname:e.pathname.substr(n.length)})}function createURL(t){return"string"==typeof t?t:history.createPath(t)}function staticHandler(t){return function(){invariant(!1)}}function noop(){}var StaticRouter=function(r){function t(){for(var e,t=arguments.length,n=new Array(t),o=0;o<t;o++)n[o]=arguments[o];return(e=r.call.apply(r,[this].concat(n))||this).handlePush=function(t){return e.navigateTo(t,"PUSH")},e.handleReplace=function(t){return e.navigateTo(t,"REPLACE")},e.handleListen=function(){return noop},e.handleBlock=function(){return noop},e}_inheritsLoose(t,r);var e=t.prototype;return e.navigateTo=function(t,e){var n=this.props,o=n.basename,r=void 0===o?"":o,a=n.context;a.action=e,a.location=addBasename(r,history.createLocation(t)),a.url=createURL(a.location)},e.render=function(){var t=this.props,e=t.basename,n=void 0===e?"":e,o=t.context,r=void 0===o?{}:o,a=t.location,i=void 0===a?"/":a,c=_objectWithoutPropertiesLoose(t,["basename","context","location"]),s={createHref:function(t){return addLeadingSlash(n+createURL(t))},action:"POP",location:stripBasename(n,history.createLocation(i)),push:this.handlePush,replace:this.handleReplace,go:staticHandler("go"),goBack:staticHandler("goBack"),goForward:staticHandler("goForward"),listen:this.handleListen,block:this.handleBlock};return React.createElement(Router,_extends({},c,{history:s,staticContext:r}))},t}(React.Component),Switch=function(t){function e(){return t.apply(this,arguments)||this}return _inheritsLoose(e,t),e.prototype.render=function(){var t=this;return React.createElement(context.Consumer,null,function(n){n||invariant(!1);var o,r,a=t.props.location||n.location;return React.Children.forEach(t.props.children,function(t){if(null==r&&React.isValidElement(t)){var e=(o=t).props.path||t.props.from;r=e?matchPath(a.pathname,_extends({},t.props,{path:e})):n.match}}),r?React.cloneElement(o,{location:a,computedMatch:r}):null})},e}(React.Component);function withRouter(o){var t=function(t){var e=t.wrappedComponentRef,n=_objectWithoutPropertiesLoose(t,["wrappedComponentRef"]);return React.createElement(Route,{children:function(t){return React.createElement(o,_extends({},n,t,{ref:e}))}})};return t.displayName="withRouter("+(o.displayName||o.name)+")",t.WrappedComponent=o,hoistStatics(t,o)}exports.MemoryRouter=MemoryRouter,exports.Prompt=Prompt,exports.Redirect=Redirect,exports.Route=Route,exports.Router=Router,exports.StaticRouter=StaticRouter,exports.Switch=Switch,exports.generatePath=generatePath,exports.matchPath=matchPath,exports.withRouter=withRouter,exports.__RouterContext=context;
+
+
+/***/ }),
+/* 88 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -30249,7 +30370,7 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _implementation = __webpack_require__(85);
+	var _implementation = __webpack_require__(89);
 	
 	var _implementation2 = _interopRequireDefault(_implementation);
 	
@@ -30259,7 +30380,7 @@
 	module.exports = exports['default'];
 
 /***/ }),
-/* 85 */
+/* 89 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
@@ -30274,11 +30395,11 @@
 	
 	var _propTypes2 = _interopRequireDefault(_propTypes);
 	
-	var _gud = __webpack_require__(86);
+	var _gud = __webpack_require__(90);
 	
 	var _gud2 = _interopRequireDefault(_gud);
 	
-	var _warning = __webpack_require__(87);
+	var _warning = __webpack_require__(91);
 	
 	var _warning2 = _interopRequireDefault(_warning);
 	
@@ -30461,7 +30582,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2)))
 
 /***/ }),
-/* 86 */
+/* 90 */
 /***/ (function(module, exports) {
 
 	/* WEBPACK VAR INJECTION */(function(global) {// @flow
@@ -30476,7 +30597,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
 
 /***/ }),
-/* 87 */
+/* 91 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -30489,7 +30610,7 @@
 	
 	'use strict';
 	
-	var emptyFunction = __webpack_require__(88);
+	var emptyFunction = __webpack_require__(92);
 	
 	/**
 	 * Similar to invariant but only logs a warning if the condition is not met.
@@ -30544,7 +30665,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2)))
 
 /***/ }),
-/* 88 */
+/* 92 */
 /***/ (function(module, exports) {
 
 	"use strict";
@@ -30585,10 +30706,10 @@
 	module.exports = emptyFunction;
 
 /***/ }),
-/* 89 */
+/* 93 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var isarray = __webpack_require__(90)
+	var isarray = __webpack_require__(94)
 	
 	/**
 	 * Expose `pathToRegexp`.
@@ -31017,7 +31138,7 @@
 
 
 /***/ }),
-/* 90 */
+/* 94 */
 /***/ (function(module, exports) {
 
 	module.exports = Array.isArray || function (arr) {
@@ -31026,7 +31147,7 @@
 
 
 /***/ }),
-/* 91 */
+/* 95 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -31035,13 +31156,13 @@
 	
 	function _interopDefault (ex) { return (ex && (typeof ex === 'object') && 'default' in ex) ? ex['default'] : ex; }
 	
-	var createContext = _interopDefault(__webpack_require__(84));
+	var createContext = _interopDefault(__webpack_require__(88));
 	var React = _interopDefault(__webpack_require__(4));
 	var PropTypes = _interopDefault(__webpack_require__(24));
 	var warning = _interopDefault(__webpack_require__(61));
 	var history = __webpack_require__(57);
 	var invariant = _interopDefault(__webpack_require__(62));
-	var pathToRegexp = _interopDefault(__webpack_require__(89));
+	var pathToRegexp = _interopDefault(__webpack_require__(93));
 	var reactIs = __webpack_require__(25);
 	var hoistStatics = _interopDefault(__webpack_require__(37));
 	
@@ -31804,7 +31925,7 @@
 
 
 /***/ }),
-/* 92 */
+/* 96 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -31814,7 +31935,7 @@
 	function _interopDefault (ex) { return (ex && (typeof ex === 'object') && 'default' in ex) ? ex['default'] : ex; }
 	
 	var React = _interopDefault(__webpack_require__(4));
-	var reactRouter = __webpack_require__(82);
+	var reactRouter = __webpack_require__(86);
 	var history = __webpack_require__(57);
 	var PropTypes = _interopDefault(__webpack_require__(24));
 	var warning = _interopDefault(__webpack_require__(61));
@@ -32102,20 +32223,23 @@
 
 
 /***/ }),
-/* 93 */
+/* 97 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
 	Object.defineProperty(exports, "__esModule", { value: true });
-	const homepage_1 = __webpack_require__(94);
-	const RegisterPage_1 = __webpack_require__(110);
-	const LoginPage_1 = __webpack_require__(111);
-	const CustomerPage_1 = __webpack_require__(112);
-	const react_router_dom_1 = __webpack_require__(80);
+	const homepage_1 = __webpack_require__(98);
+	const RegisterPage_1 = __webpack_require__(122);
+	const LoginPage_1 = __webpack_require__(123);
+	const CustomerPage_1 = __webpack_require__(124);
+	const react_router_dom_1 = __webpack_require__(84);
 	const React = __webpack_require__(4);
+	const react_redux_1 = __webpack_require__(18);
+	const action_1 = __webpack_require__(101);
 	class App extends React.Component {
 	    componentWillMount() {
 	        window["routerHistory"] = this.props.history;
+	        setInterval(() => this.props.dispatch(action_1.notificationActions.load()), 1000);
 	    }
 	    componentDidUpdate(prevProps) {
 	        if (this.props.location !== prevProps.location) {
@@ -32131,21 +32255,21 @@
 	    }
 	}
 	exports.App = App;
-	exports.default = react_router_dom_1.withRouter(App);
+	exports.default = react_redux_1.connect()(react_router_dom_1.withRouter(App));
 
 
 /***/ }),
-/* 94 */
+/* 98 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
 	Object.defineProperty(exports, "__esModule", { value: true });
 	const React = __webpack_require__(4);
-	const TopPanel_1 = __webpack_require__(95);
-	const Slider_1 = __webpack_require__(107);
-	const Feature_1 = __webpack_require__(109);
+	const TopPanel_1 = __webpack_require__(99);
+	const Slider_1 = __webpack_require__(119);
+	const Feature_1 = __webpack_require__(121);
 	const react_redux_1 = __webpack_require__(18);
-	const react_router_dom_1 = __webpack_require__(80);
+	const react_router_dom_1 = __webpack_require__(84);
 	class HomePage extends React.Component {
 	    render() {
 	        return React.createElement("div", null,
@@ -32164,16 +32288,16 @@
 
 
 /***/ }),
-/* 95 */
+/* 99 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
 	Object.defineProperty(exports, "__esModule", { value: true });
 	const React = __webpack_require__(4);
-	const Menu_1 = __webpack_require__(96);
-	const react_router_dom_1 = __webpack_require__(80);
+	const Menu_1 = __webpack_require__(100);
+	const react_router_dom_1 = __webpack_require__(84);
 	const react_redux_1 = __webpack_require__(18);
-	const action_1 = __webpack_require__(97);
+	const action_1 = __webpack_require__(101);
 	class TopPanel extends React.Component {
 	    onSignOut() {
 	        this.props.dispatch(action_1.userActions.logout());
@@ -32184,23 +32308,6 @@
 	                React.createElement("div", { class: "main-logo col-xs-12 col-md-3 col-md-2 col-lg-2 hidden-xs" },
 	                    React.createElement(react_router_dom_1.Link, { to: "/" },
 	                        React.createElement("img", { id: "logo", class: "img-responsive", src: "resources/images/logo-dark.png", alt: "logo" }))),
-	                React.createElement("div", { class: "col-md-6 col-lg-6" },
-	                    React.createElement("ul", { class: "guess bitcoin-stats text-center" },
-	                        React.createElement("li", null,
-	                            React.createElement("h6", null, "9,450 USD"),
-	                            React.createElement("span", null, "Last trade price")),
-	                        React.createElement("li", null,
-	                            React.createElement("h6", null, "+5.26%"),
-	                            React.createElement("span", null, "24 hour price")),
-	                        React.createElement("li", null,
-	                            React.createElement("h6", null, "12.820 BTC"),
-	                            React.createElement("span", null, "24 hour volume")),
-	                        React.createElement("li", null,
-	                            React.createElement("h6", null, "2,231,775"),
-	                            React.createElement("span", null, "active traders")),
-	                        React.createElement("li", null,
-	                            React.createElement("h6", null, "2,231,775"),
-	                            React.createElement("span", null, "active traders")))),
 	                !this.props.login.loggedIn ?
 	                    React.createElement("div", { class: "col-md-4 col-lg-4" },
 	                        React.createElement("div", { class: "guess user" },
@@ -32216,7 +32323,10 @@
 	                        React.createElement("div", { class: "logged-in user" },
 	                            React.createElement("div", { class: "account" },
 	                                React.createElement(react_router_dom_1.Link, { to: "/customer" },
-	                                    React.createElement("i", { class: "fa fa-user" }),
+	                                    React.createElement("div", { class: "avatar" },
+	                                        React.createElement("i", { class: "fa fa-user" }),
+	                                        this.props.numUnread > 0 &&
+	                                            React.createElement("div", { className: "notification" }, this.props.numUnread)),
 	                                    React.createElement("span", null, this.props.login.user.username))),
 	                            React.createElement("div", { class: "sign-out" },
 	                                React.createElement(react_router_dom_1.Link, { to: "/", class: "btn btn-primary", onClick: this.onSignOut.bind(this) },
@@ -32227,21 +32337,24 @@
 	}
 	function mapStateToProps(state) {
 	    const { login } = state;
+	    const { notifications } = state.notification;
+	    let numUnread = notifications.filter(noti => !noti.read).length;
 	    return {
-	        login
+	        login,
+	        numUnread,
 	    };
 	}
 	exports.default = react_redux_1.connect(mapStateToProps)(TopPanel);
 
 
 /***/ }),
-/* 96 */
+/* 100 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
 	Object.defineProperty(exports, "__esModule", { value: true });
 	const React = __webpack_require__(4);
-	const react_router_dom_1 = __webpack_require__(80);
+	const react_router_dom_1 = __webpack_require__(84);
 	class Menu extends React.Component {
 	    constructor(props) {
 	        super(props);
@@ -32280,11 +32393,11 @@
 	                            React.createElement("li", null,
 	                                React.createElement(react_router_dom_1.Link, { to: "/customer" }, "Customer")),
 	                            React.createElement("li", null,
-	                                React.createElement("a", { href: "services.html" }, "Services")),
+	                                React.createElement(react_router_dom_1.Link, { to: "/customer/services" }, "Services")),
 	                            React.createElement("li", null,
-	                                React.createElement("a", { href: "pricing.html" }, "Guide")),
+	                                React.createElement(react_router_dom_1.Link, { to: "/guide" }, "Guide")),
 	                            React.createElement("li", null,
-	                                React.createElement("a", { href: "contact.html" }, "Contact")),
+	                                React.createElement(react_router_dom_1.Link, { to: "/contact" }, "Contact")),
 	                            React.createElement("li", { class: "cart" },
 	                                React.createElement("a", { href: "shopping-cart.html" },
 	                                    React.createElement("i", { class: "fa fa-shopping-cart" }))),
@@ -32300,7 +32413,7 @@
 
 
 /***/ }),
-/* 97 */
+/* 101 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -32308,54 +32421,29 @@
 	    for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
 	}
 	Object.defineProperty(exports, "__esModule", { value: true });
-	__export(__webpack_require__(98));
-	__export(__webpack_require__(99));
-	__export(__webpack_require__(104));
-	__export(__webpack_require__(105));
-	__export(__webpack_require__(106));
+	__export(__webpack_require__(102));
+	__export(__webpack_require__(113));
+	__export(__webpack_require__(114));
+	__export(__webpack_require__(115));
+	__export(__webpack_require__(116));
+	__export(__webpack_require__(117));
+	__export(__webpack_require__(118));
 
 
 /***/ }),
-/* 98 */
+/* 102 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
 	Object.defineProperty(exports, "__esModule", { value: true });
 	const constants_1 = __webpack_require__(68);
-	exports.alertActions = {
-	    success,
-	    error,
-	    clear,
-	    init
-	};
-	function success(message) {
-	    return { type: constants_1.alertConstants.SUCCESS, message };
-	}
-	function error(message) {
-	    return { type: constants_1.alertConstants.ERROR, message };
-	}
-	function clear() {
-	    return { type: constants_1.alertConstants.CLEAR };
-	}
-	function init(history) {
-	    return { type: constants_1.alertConstants.INIT, history };
-	}
-
-
-/***/ }),
-/* 99 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	"use strict";
-	Object.defineProperty(exports, "__esModule", { value: true });
-	const constants_1 = __webpack_require__(68);
-	const _1 = __webpack_require__(97);
-	const backend = __webpack_require__(100);
+	const backend = __webpack_require__(103);
 	exports.userActions = {
 	    login,
 	    logout,
 	    register,
 	    modify,
+	    update,
 	};
 	function login(username, password) {
 	    return dispatch => {
@@ -32368,7 +32456,6 @@
 	            window["routerHistory"].push("/");
 	        }, error => {
 	            dispatch(failure(error.toString()));
-	            dispatch(_1.alertActions.error(error.toString()));
 	        });
 	    };
 	    function request(user) { return { type: constants_1.userConstants.LOGIN_REQUEST, user }; }
@@ -32397,10 +32484,8 @@
 	            localStorage.setItem("user", JSON.stringify(user));
 	            alert("Registration successfully! Please login to continue");
 	            window["routerHistory"].push("/login");
-	            dispatch(_1.alertActions.success('Registration successful'));
 	        }, error => {
 	            dispatch(failure(error.toString()));
-	            dispatch(_1.alertActions.error(error.toString()));
 	        });
 	    };
 	    function request(user) { return { type: constants_1.userConstants.REGISTER_REQUEST, user }; }
@@ -32422,10 +32507,25 @@
 	    function success(user) { return { type: constants_1.userConstants.MODIFY_SUCCESS, user }; }
 	    function failure(error) { return { type: constants_1.userConstants.MODIFY_FAILURE, error }; }
 	}
+	function update() {
+	    return dispatch => {
+	        dispatch(request());
+	        backend.update()
+	            .then(user => {
+	            dispatch(success(user));
+	            localStorage.setItem("user", JSON.stringify(user));
+	        }, error => {
+	            dispatch(failure(error.toString()));
+	        });
+	    };
+	    function request() { return { type: constants_1.userConstants.UPDATE_REQUEST }; }
+	    function success(user) { return { type: constants_1.userConstants.UPDATE_SUCCESS, user }; }
+	    function failure(error) { return { type: constants_1.userConstants.UPDATE_FAILURE, error }; }
+	}
 
 
 /***/ }),
-/* 100 */
+/* 103 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -32450,7 +32550,13 @@
 	            body: JSON.stringify(body),
 	        })
 	            .then(response => {
-	            resolve(response.json());
+	            const contentType = response.headers.get("content-type");
+	            if (contentType && contentType.indexOf("application/json") !== -1) {
+	                resolve(response.json());
+	            }
+	            else {
+	                resolve(response.text());
+	            }
 	        })
 	            .catch(e => {
 	            reject(e);
@@ -32458,18 +32564,21 @@
 	    });
 	}
 	exports.getData = getData;
-	__export(__webpack_require__(101));
-	__export(__webpack_require__(102));
-	__export(__webpack_require__(103));
+	__export(__webpack_require__(104));
+	__export(__webpack_require__(105));
+	__export(__webpack_require__(106));
+	__export(__webpack_require__(107));
+	__export(__webpack_require__(108));
+	__export(__webpack_require__(109));
 
 
 /***/ }),
-/* 101 */
+/* 104 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
 	Object.defineProperty(exports, "__esModule", { value: true });
-	const index_1 = __webpack_require__(100);
+	const index_1 = __webpack_require__(103);
 	function loginAuth(name, password) {
 	    let data = {
 	        "email": name,
@@ -32550,15 +32659,36 @@
 	    });
 	}
 	exports.modify = modify;
+	function update() {
+	    return new Promise((resolve, reject) => {
+	        index_1.getData("thong-tin-ca-nhan", {})
+	            .then(result => {
+	            if (result["check"] == 'true') {
+	                let user = result['user_info'];
+	                resolve({
+	                    username: user['ten'],
+	                    email: user['email'],
+	                    address: user['diachi'],
+	                    phone: user['sodienthoai'],
+	                    amount: user['sotien']
+	                });
+	            }
+	            else {
+	                reject(result['message']);
+	            }
+	        });
+	    });
+	}
+	exports.update = update;
 
 
 /***/ }),
-/* 102 */
+/* 105 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
 	Object.defineProperty(exports, "__esModule", { value: true });
-	const index_1 = __webpack_require__(100);
+	const index_1 = __webpack_require__(103);
 	function getBank() {
 	    return new Promise((resolve, reject) => {
 	        index_1.getData("bank")
@@ -32616,12 +32746,12 @@
 
 
 /***/ }),
-/* 103 */
+/* 106 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
 	Object.defineProperty(exports, "__esModule", { value: true });
-	const index_1 = __webpack_require__(100);
+	const index_1 = __webpack_require__(103);
 	function getFriendList() {
 	    return new Promise((resolve, reject) => {
 	        index_1.getData("danh-ba")
@@ -32644,13 +32774,211 @@
 
 
 /***/ }),
-/* 104 */
+/* 107 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	"use strict";
+	Object.defineProperty(exports, "__esModule", { value: true });
+	const _1 = __webpack_require__(103);
+	function transfer({ amount, email, message }) {
+	    let data = {
+	        "sotien": amount,
+	        "email_nhan": email,
+	        "noidung": message,
+	    };
+	    return new Promise((resolve, reject) => {
+	        _1.getData("post-transfer", data)
+	            .then(result => {
+	            if (result["title"] == "error") {
+	                reject(result["content"]);
+	            }
+	            else {
+	                resolve();
+	            }
+	        });
+	    });
+	}
+	exports.transfer = transfer;
+
+
+/***/ }),
+/* 108 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	"use strict";
+	Object.defineProperty(exports, "__esModule", { value: true });
+	const _1 = __webpack_require__(103);
+	function getNotification() {
+	    return new Promise((resolve, reject) => {
+	        _1.getData("thong-bao", {})
+	            .then(result => {
+	            if (result['noti'] == 'success') {
+	                resolve(result['thongbao'].map(notification => ({
+	                    id: notification["id"],
+	                    title: notification["tieude"],
+	                    content: notification["noidung"],
+	                    time: new Date(notification["time"]),
+	                    read: notification["daxem"] == 1,
+	                    type: notification["type"].split("_")[0],
+	                    transactionId: notification["type"].split("_")[1],
+	                })));
+	            }
+	            else {
+	                reject(result['errors']);
+	            }
+	        });
+	    });
+	}
+	exports.getNotification = getNotification;
+	function readNotification(id) {
+	    return new Promise(() => {
+	        let data = {
+	            id
+	        };
+	        _1.getData("update-thongbao", data);
+	    });
+	}
+	exports.readNotification = readNotification;
+
+
+/***/ }),
+/* 109 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	"use strict";
+	Object.defineProperty(exports, "__esModule", { value: true });
+	const _1 = __webpack_require__(103);
+	const utils_1 = __webpack_require__(110);
+	function getTransaction() {
+	    return new Promise((resolve, reject) => {
+	        _1.getData("lich-su-giao-dich", {})
+	            .then(result => {
+	            if (result['trans'] == 'success') {
+	                let transactions = [];
+	                transactions = transactions.concat(result['chuyentien'].map(transaction => ({
+	                    type: utils_1.TransactionType.TRANSFER,
+	                    id: transaction["id"],
+	                    receiver: transaction["id_nhan"],
+	                    message: transaction["noidung"],
+	                    time: new Date(transaction["time"]),
+	                    amount: transaction["sotien"],
+	                })));
+	                transactions = transactions.concat(result['naptien'].map(transaction => ({
+	                    type: utils_1.TransactionType.DEPOSIT,
+	                    id: transaction["id"],
+	                    account: transaction["account_id"],
+	                    message: transaction["noidung"],
+	                    time: new Date(transaction["time"]),
+	                    amount: transaction["sotien"],
+	                })));
+	                transactions = transactions.concat(result['napthe'].map(transaction => ({
+	                    type: utils_1.TransactionType.MOBILE_PAY,
+	                    id: transaction["id"],
+	                    telecom: transaction["nhamang_id"],
+	                    time: new Date(transaction["created_at"]),
+	                    amount: transaction["sotien"],
+	                })));
+	                // transactions = transactions.concat(result['nhantien'].map(transaction => ({
+	                // 	type: TransactionType.RECEIVE,
+	                // 	id: transaction["id"],
+	                // 	sender: transaction["id_gui"],
+	                // 	time: new Date(transaction["created_at"]),
+	                // 	message: transaction["noidung"],
+	                // 	amount: transaction["sotien"],
+	                // })));
+	                resolve(transactions);
+	            }
+	            else {
+	                reject(result["errors"]);
+	            }
+	        });
+	    });
+	}
+	exports.getTransaction = getTransaction;
+
+
+/***/ }),
+/* 110 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	"use strict";
+	function __export(m) {
+	    for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
+	}
+	Object.defineProperty(exports, "__esModule", { value: true });
+	__export(__webpack_require__(111));
+	__export(__webpack_require__(112));
+
+
+/***/ }),
+/* 111 */
+/***/ (function(module, exports) {
+
+	"use strict";
+	Object.defineProperty(exports, "__esModule", { value: true });
+	function toMoneyFormat(money) {
+	    let temp = money.toString().split("").reverse().join("");
+	    let result = "";
+	    for (let i = 0; i < temp.length; ++i) {
+	        if (i != 0 && i % 3 == 0) {
+	            result = "." + result;
+	        }
+	        result = temp[i] + result;
+	    }
+	    return result;
+	}
+	exports.toMoneyFormat = toMoneyFormat;
+
+
+/***/ }),
+/* 112 */
+/***/ (function(module, exports) {
+
+	"use strict";
+	Object.defineProperty(exports, "__esModule", { value: true });
+	exports.NotificationType = {
+	    TRANSFER: "chuyentien",
+	    PAY: "thanhtoan",
+	    DEPOSIT: "naptien",
+	    RECEIVE: "nhantien",
+	    MOBILE_PAY: "napthe",
+	};
+	exports.TransactionType = {
+	    TRANSFER: "TRANSFER",
+	    PAY: "PAY",
+	    DEPOSIT: "DEPOSIT",
+	    RECEIVE: "RECEIVE",
+	    MOBILE_PAY: "MOBILE_PAY",
+	};
+	function compare(noti, trans) {
+	    if (noti == exports.NotificationType.TRANSFER && trans == exports.TransactionType.TRANSFER) {
+	        return true;
+	    }
+	    if (noti == exports.NotificationType.PAY && trans == exports.TransactionType.PAY) {
+	        return true;
+	    }
+	    if (noti == exports.NotificationType.DEPOSIT && trans == exports.TransactionType.DEPOSIT) {
+	        return true;
+	    }
+	    if (noti == exports.NotificationType.RECEIVE && trans == exports.TransactionType.RECEIVE) {
+	        return true;
+	    }
+	    if (noti == exports.NotificationType.MOBILE_PAY && trans == exports.TransactionType.MOBILE_PAY) {
+	        return true;
+	    }
+	    return false;
+	}
+	exports.compare = compare;
+
+
+/***/ }),
+/* 113 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
 	Object.defineProperty(exports, "__esModule", { value: true });
 	const constants_1 = __webpack_require__(68);
-	const backend = __webpack_require__(100);
+	const backend = __webpack_require__(103);
 	exports.bankActions = {
 	    getBank,
 	};
@@ -32674,13 +33002,13 @@
 
 
 /***/ }),
-/* 105 */
+/* 114 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
 	Object.defineProperty(exports, "__esModule", { value: true });
 	const constants_1 = __webpack_require__(68);
-	const backend = __webpack_require__(100);
+	const backend = __webpack_require__(103);
 	exports.accountActions = {
 	    connectAccount,
 	    getConnectedAccount,
@@ -32723,13 +33051,13 @@
 
 
 /***/ }),
-/* 106 */
+/* 115 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
 	Object.defineProperty(exports, "__esModule", { value: true });
 	const constants_1 = __webpack_require__(68);
-	const backend = __webpack_require__(100);
+	const backend = __webpack_require__(103);
 	exports.friendActions = {
 	    getFriendList,
 	};
@@ -32753,13 +33081,122 @@
 
 
 /***/ }),
-/* 107 */
+/* 116 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	"use strict";
+	Object.defineProperty(exports, "__esModule", { value: true });
+	const constants_1 = __webpack_require__(68);
+	const _1 = __webpack_require__(101);
+	const backend = __webpack_require__(103);
+	exports.servicesActions = {
+	    transfer,
+	};
+	function transfer({ amount, email, message }) {
+	    return dispatch => {
+	        dispatch(request());
+	        backend.transfer({ amount, email, message })
+	            .then(() => {
+	            dispatch(_1.userActions.update());
+	            dispatch(success());
+	        }, error => {
+	            dispatch(failure(error));
+	        });
+	    };
+	    function request() { return { type: constants_1.servicesConstants.TRANSFER_REQUEST }; }
+	    ;
+	    function success() { return { type: constants_1.servicesConstants.TRANSFER_SUCCESS }; }
+	    ;
+	    function failure(error) { return { type: constants_1.servicesConstants.TRANSFER_FAILURE, error }; }
+	    ;
+	}
+
+
+/***/ }),
+/* 117 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	"use strict";
+	Object.defineProperty(exports, "__esModule", { value: true });
+	const constants_1 = __webpack_require__(68);
+	const backend = __webpack_require__(103);
+	const _1 = __webpack_require__(101);
+	exports.notificationActions = {
+	    load,
+	    read,
+	};
+	function load() {
+	    return (dispatch, getState) => {
+	        dispatch(request());
+	        backend.getNotification()
+	            .then(notifications => {
+	            let oldNotis = getState().notification.notifications;
+	            let newNotis = notifications;
+	            let oldUnread = oldNotis.filter(noti => !noti.read).length;
+	            let newUnread = newNotis.filter(noti => !noti.read).length;
+	            if (oldUnread != newUnread || oldNotis.length != newNotis.length) {
+	                dispatch(success(notifications));
+	                dispatch(_1.transactionActions.load());
+	            }
+	        }, error => {
+	            dispatch(failure(error));
+	        });
+	    };
+	    function request() { return { type: constants_1.notificationConstants.NOTIFICATION_REQUEST }; }
+	    ;
+	    function success(notifications) { return { type: constants_1.notificationConstants.NOTIFICATION_SUCCESS, notifications }; }
+	    ;
+	    function failure(error) { return { type: constants_1.notificationConstants.NOTIFICATION_FAILURE, error }; }
+	    ;
+	}
+	function read(id) {
+	    return dispatch => {
+	        backend.readNotification(id)
+	            .then(() => {
+	            dispatch(load());
+	        });
+	    };
+	}
+
+
+/***/ }),
+/* 118 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	"use strict";
+	Object.defineProperty(exports, "__esModule", { value: true });
+	const constants_1 = __webpack_require__(68);
+	const backend = __webpack_require__(103);
+	exports.transactionActions = {
+	    load,
+	};
+	function load() {
+	    return (dispatch) => {
+	        dispatch(request());
+	        backend.getTransaction()
+	            .then(transactions => {
+	            dispatch(success(transactions));
+	        }, error => {
+	            dispatch(failure(error));
+	        });
+	    };
+	    function request() { return { type: constants_1.transactionConstants.TRANSACTION_REQUEST }; }
+	    ;
+	    function success(transactions) { return { type: constants_1.transactionConstants.TRANSACTION_SUCCESS, transactions }; }
+	    ;
+	    function failure(error) { return { type: constants_1.transactionConstants.TRANSACTION_FAILURE, error }; }
+	    ;
+	}
+
+
+/***/ }),
+/* 119 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
 	Object.defineProperty(exports, "__esModule", { value: true });
 	const React = __webpack_require__(4);
-	const react_bootstrap_carousel_1 = __webpack_require__(108);
+	const react_bootstrap_carousel_1 = __webpack_require__(120);
 	class Slider extends React.Component {
 	    render() {
 	        let leftIcon = React.createElement("span", { className: "fa fa-angle-left" });
@@ -32799,7 +33236,7 @@
 
 
 /***/ }),
-/* 108 */
+/* 120 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	!function(e,t){ true?module.exports=t(__webpack_require__(4)):"function"==typeof define&&define.amd?define("ReactBootstrap_Carousel",["react"],t):"object"==typeof exports?exports.ReactBootstrap_Carousel=t(require("react")):e.ReactBootstrap_Carousel=t(e.react)}(window,function(e){return function(e){var t={};function n(r){if(t[r])return t[r].exports;var o=t[r]={i:r,l:!1,exports:{}};return e[r].call(o.exports,o,o.exports,n),o.l=!0,o.exports}return n.m=e,n.c=t,n.d=function(e,t,r){n.o(e,t)||Object.defineProperty(e,t,{enumerable:!0,get:r})},n.r=function(e){"undefined"!=typeof Symbol&&Symbol.toStringTag&&Object.defineProperty(e,Symbol.toStringTag,{value:"Module"}),Object.defineProperty(e,"__esModule",{value:!0})},n.t=function(e,t){if(1&t&&(e=n(e)),8&t)return e;if(4&t&&"object"==typeof e&&e&&e.__esModule)return e;var r=Object.create(null);if(n.r(r),Object.defineProperty(r,"default",{enumerable:!0,value:e}),2&t&&"string"!=typeof e)for(var o in e)n.d(r,o,function(t){return e[t]}.bind(null,o));return r},n.n=function(e){var t=e&&e.__esModule?function(){return e.default}:function(){return e};return n.d(t,"a",t),t},n.o=function(e,t){return Object.prototype.hasOwnProperty.call(e,t)},n.p="",n(n.s=7)}([function(t,n){t.exports=e},function(e,t,n){var r;
@@ -32816,7 +33253,7 @@
 	!function(){"use strict";var n={}.hasOwnProperty;function o(){for(var e=[],t=0;t<arguments.length;t++){var r=arguments[t];if(r){var i=typeof r;if("string"===i||"number"===i)e.push(r);else if(Array.isArray(r)&&r.length){var a=o.apply(null,r);a&&e.push(a)}else if("object"===i)for(var u in r)n.call(r,u)&&r[u]&&e.push(u)}}return e.join(" ")}e.exports?(o.default=o,e.exports=o):void 0===(r=function(){return o}.apply(t,[]))||(e.exports=r)}()},function(e,t,n){e.exports=n(3)()},function(e,t,n){"use strict";var r=n(4),o=n(5),i=n(6);e.exports=function(){function e(e,t,n,r,a,u){u!==i&&o(!1,"Calling PropTypes validators directly is not supported by the `prop-types` package. Use PropTypes.checkPropTypes() to call them. Read more at http://fb.me/use-check-prop-types")}function t(){return e}e.isRequired=e;var n={array:e,bool:e,func:e,number:e,object:e,string:e,symbol:e,any:e,arrayOf:t,element:e,instanceOf:t,node:e,objectOf:t,oneOf:t,oneOfType:t,shape:t,exact:t};return n.checkPropTypes=r,n.PropTypes=n,n}},function(e,t,n){"use strict";function r(e){return function(){return e}}var o=function(){};o.thatReturns=r,o.thatReturnsFalse=r(!1),o.thatReturnsTrue=r(!0),o.thatReturnsNull=r(null),o.thatReturnsThis=function(){return this},o.thatReturnsArgument=function(e){return e},e.exports=o},function(e,t,n){"use strict";var r=function(e){};e.exports=function(e,t,n,o,i,a,u,c){if(r(t),!e){var l;if(void 0===t)l=new Error("Minified exception occurred; use the non-minified dev environment for the full error message and additional helpful warnings.");else{var s=[n,o,i,a,u,c],f=0;(l=new Error(t.replace(/%s/g,function(){return s[f++]}))).name="Invariant Violation"}throw l.framesToPop=1,l}}},function(e,t,n){"use strict";e.exports="SECRET_DO_NOT_PASS_THIS_OR_YOU_WILL_BE_FIRED"},function(e,t,n){"use strict";n.r(t);var r=n(0),o=n.n(r),i=n(2),a=n.n(i);function u(e){return(u="function"==typeof Symbol&&"symbol"==typeof Symbol.iterator?function(e){return typeof e}:function(e){return e&&"function"==typeof Symbol&&e.constructor===Symbol&&e!==Symbol.prototype?"symbol":typeof e})(e)}function c(e,t){for(var n=0;n<t.length;n++){var r=t[n];r.enumerable=r.enumerable||!1,r.configurable=!0,"value"in r&&(r.writable=!0),Object.defineProperty(e,r.key,r)}}function l(e){return(l=Object.setPrototypeOf?Object.getPrototypeOf:function(e){return e.__proto__||Object.getPrototypeOf(e)})(e)}function s(e,t){return(s=Object.setPrototypeOf||function(e,t){return e.__proto__=t,e})(e,t)}function f(e){if(void 0===e)throw new ReferenceError("this hasn't been initialised - super() hasn't been called");return e}function p(e,t,n){return t in e?Object.defineProperty(e,t,{value:n,enumerable:!0,configurable:!0,writable:!0}):e[t]=n,e}var y=function(e){function t(e){var n;return function(e,t){if(!(e instanceof t))throw new TypeError("Cannot call a class as a function")}(this,t),p(f(f(n=function(e,t){return!t||"object"!==u(t)&&"function"!=typeof t?f(e):t}(this,l(t).call(this,e)))),"safeSetState",function(e){!n.isUnmount&&n.setState(e)}),n.isUnmounted=!1,n}return function(e,t){if("function"!=typeof t&&null!==t)throw new TypeError("Super expression must either be null or a function");e.prototype=Object.create(t&&t.prototype,{constructor:{value:e,writable:!0,configurable:!0}}),t&&s(e,t)}(t,o.a.PureComponent),function(e,t,n){t&&c(e.prototype,t),n&&c(e,n)}(t,[{key:"componentDidMount",value:function(){window.addEventListener("beforeunload",this.unmount),window.addEventListener("visibilitychange",this.visibilitychange),"function"==typeof this.init&&this.init()}},{key:"componentWillUnmount",value:function(){this.isUnmount=!0,"function"==typeof this.unmount&&this.unmount(),window.removeEventListener("beforeunload",this.unmount),window.removeEventListener("visibilitychange",this.visibilitychange)}},{key:"render",value:function(){return o.a.createElement("div",null,"The Base Component")}}]),t}();p(y,"propTypes",{init:a.a.func,unmount:a.a.func});var d=n(1),h=n.n(d);function b(e){return(b="function"==typeof Symbol&&"symbol"==typeof Symbol.iterator?function(e){return typeof e}:function(e){return e&&"function"==typeof Symbol&&e.constructor===Symbol&&e!==Symbol.prototype?"symbol":typeof e})(e)}function m(e,t){for(var n=0;n<t.length;n++){var r=t[n];r.enumerable=r.enumerable||!1,r.configurable=!0,"value"in r&&(r.writable=!0),Object.defineProperty(e,r.key,r)}}function v(e){return(v=Object.setPrototypeOf?Object.getPrototypeOf:function(e){return e.__proto__||Object.getPrototypeOf(e)})(e)}function _(e,t){return(_=Object.setPrototypeOf||function(e,t){return e.__proto__=t,e})(e,t)}function O(e){if(void 0===e)throw new ReferenceError("this hasn't been initialised - super() hasn't been called");return e}function g(e,t,n){return t in e?Object.defineProperty(e,t,{value:n,enumerable:!0,configurable:!0,writable:!0}):e[t]=n,e}var w=function(e){function t(e){var n;return function(e,t){if(!(e instanceof t))throw new TypeError("Cannot call a class as a function")}(this,t),g(O(O(n=function(e,t){return!t||"object"!==b(t)&&"function"!=typeof t?O(e):t}(this,v(t).call(this,e)))),"_onClick",function(e){var t=n.props.activeIndex<e?"next":"prev";n.props.indClick(e,t)}),n.state={css:"carousel-indicators"},n}return function(e,t){if("function"!=typeof t&&null!==t)throw new TypeError("Super expression must either be null or a function");e.prototype=Object.create(t&&t.prototype,{constructor:{value:e,writable:!0,configurable:!0}}),t&&_(e,t)}(t,o.a.PureComponent),function(e,t,n){t&&m(e.prototype,t),n&&m(e,n)}(t,[{key:"render",value:function(){var e=this,t=this.props,n=t.data,r=t.activeIndex;if(Array.isArray(n)){var i=n.map(function(t,n){var i=n==r?"active":"";return o.a.createElement("li",{key:n,onClick:e._onClick.bind(e,n),className:i,style:{marginLeft:10}})});return o.a.createElement("ol",{className:this.state.css},i)}return null}}]),t}();function P(e){return(P="function"==typeof Symbol&&"symbol"==typeof Symbol.iterator?function(e){return typeof e}:function(e){return e&&"function"==typeof Symbol&&e.constructor===Symbol&&e!==Symbol.prototype?"symbol":typeof e})(e)}function x(e,t){if(!(e instanceof t))throw new TypeError("Cannot call a class as a function")}function j(e,t){for(var n=0;n<t.length;n++){var r=t[n];r.enumerable=r.enumerable||!1,r.configurable=!0,"value"in r&&(r.writable=!0),Object.defineProperty(e,r.key,r)}}function S(e,t,n){return t&&j(e.prototype,t),n&&j(e,n),e}function k(e,t){return!t||"object"!==P(t)&&"function"!=typeof t?I(e):t}function E(e){return(E=Object.setPrototypeOf?Object.getPrototypeOf:function(e){return e.__proto__||Object.getPrototypeOf(e)})(e)}function C(e,t){if("function"!=typeof t&&null!==t)throw new TypeError("Super expression must either be null or a function");e.prototype=Object.create(t&&t.prototype,{constructor:{value:e,writable:!0,configurable:!0}}),t&&T(e,t)}function T(e,t){return(T=Object.setPrototypeOf||function(e,t){return e.__proto__=t,e})(e,t)}function I(e){if(void 0===e)throw new ReferenceError("this hasn't been initialised - super() hasn't been called");return e}function N(e,t,n){return t in e?Object.defineProperty(e,t,{value:n,enumerable:!0,configurable:!0,writable:!0}):e[t]=n,e}g(w,"defaultProps",{data:[],activeIndex:0,indClick:function(){}});var R=function(e){function t(e){var n;return x(this,t),N(I(I(n=k(this,E(t).call(this,e)))),"_onclick",function(e){n.props.controlsClick(e)}),n.state={},n}return C(t,o.a.PureComponent),S(t,[{key:"render",value:function(){var e=this.props,t=e.rightIcon,n=e.leftIcon,r=e.dataLength,i=e.version,a="",u="";if(r<2)return null;switch(i){case 4:a="left carousel-control-prev",u="right carousel-control-next",n=n||o.a.createElement("i",{className:"icon icon-chevron-left"}),t=t||o.a.createElement("i",{className:"icon icon-chevron-right"});break;default:a="left carousel-control",u="right carousel-control",n=n||o.a.createElement("i",{className:"glyphicon glyphicon-chevron-left"}),t=t||o.a.createElement("i",{className:"glyphicon glyphicon-chevron-right"})}return o.a.createElement("div",null,o.a.createElement("a",{className:a,onClick:this._onclick.bind(this,"prev")},o.a.createElement(A,{icon:n})),o.a.createElement("a",{className:u,onClick:this._onclick.bind(this,"next")},o.a.createElement(L,{icon:t})))}}]),t}();N(R,"defaultProps",{dataLength:0,controlsClick:function(){},version:3});var L=function(e){function t(e){return x(this,t),k(this,E(t).call(this,e))}return C(t,o.a.PureComponent),S(t,[{key:"render",value:function(){var e=this.props.icon;return o.a.createElement("span",{className:"rightControl"},e)}}]),t}(),A=function(e){function t(e){return x(this,t),k(this,E(t).call(this,e))}return C(t,o.a.PureComponent),S(t,[{key:"render",value:function(){var e=this.props.icon;return o.a.createElement("span",{className:"leftControl"},e)}}]),t}();function M(e){return(M="function"==typeof Symbol&&"symbol"==typeof Symbol.iterator?function(e){return typeof e}:function(e){return e&&"function"==typeof Symbol&&e.constructor===Symbol&&e!==Symbol.prototype?"symbol":typeof e})(e)}function U(e,t){for(var n=0;n<t.length;n++){var r=t[n];r.enumerable=r.enumerable||!1,r.configurable=!0,"value"in r&&(r.writable=!0),Object.defineProperty(e,r.key,r)}}function B(e,t){return!t||"object"!==M(t)&&"function"!=typeof t?function(e){if(void 0===e)throw new ReferenceError("this hasn't been initialised - super() hasn't been called");return e}(e):t}function D(e){return(D=Object.setPrototypeOf?Object.getPrototypeOf:function(e){return e.__proto__||Object.getPrototypeOf(e)})(e)}function F(e,t){return(F=Object.setPrototypeOf||function(e,t){return e.__proto__=t,e})(e,t)}var q=function(e){function t(e){return function(e,t){if(!(e instanceof t))throw new TypeError("Cannot call a class as a function")}(this,t),B(this,D(t).call(this,e))}return function(e,t){if("function"!=typeof t&&null!==t)throw new TypeError("Super expression must either be null or a function");e.prototype=Object.create(t&&t.prototype,{constructor:{value:e,writable:!0,configurable:!0}}),t&&F(e,t)}(t,o.a.PureComponent),function(e,t,n){t&&U(e.prototype,t),n&&U(e,n)}(t,[{key:"render",value:function(){var e=this.props,t=e.data,n=e.activeIndex,r=e.version,i=e.animation,a=4==r?"carousel-item":"item",u=[];return Array.isArray(t)?(u=t.map(function(e,t){var u,c;switch(!0){case!0===i&&t>n&&4==r:u="carousel-item-right",c="carousel-item-next";break;case!0===i&&t>n:u="right",c="next";break;case!0===i&&t<n&&4==r:u="carousel-item-left",c="carousel-item-prev";break;case!0===i&&t<n:u="left",c="prev"}var l=h()(a,c,u);return l=t===n?h()(a,"active"):l,o.a.createElement("div",{key:t,className:l},e)}),o.a.createElement("div",{className:"carousel-inner",role:"listbox"},u)):o.a.createElement("div",{key:0,className:h()(a,"active")},t)}}]),t}();function V(e){return(V="function"==typeof Symbol&&"symbol"==typeof Symbol.iterator?function(e){return typeof e}:function(e){return e&&"function"==typeof Symbol&&e.constructor===Symbol&&e!==Symbol.prototype?"symbol":typeof e})(e)}function W(e,t){for(var n=0;n<t.length;n++){var r=t[n];r.enumerable=r.enumerable||!1,r.configurable=!0,"value"in r&&(r.writable=!0),Object.defineProperty(e,r.key,r)}}function H(e){return(H=Object.setPrototypeOf?Object.getPrototypeOf:function(e){return e.__proto__||Object.getPrototypeOf(e)})(e)}function Y(e,t){return(Y=Object.setPrototypeOf||function(e,t){return e.__proto__=t,e})(e,t)}function z(e){if(void 0===e)throw new ReferenceError("this hasn't been initialised - super() hasn't been called");return e}function G(e,t,n){return t in e?Object.defineProperty(e,t,{value:n,enumerable:!0,configurable:!0,writable:!0}):e[t]=n,e}!function(e,t,n){t in e?Object.defineProperty(e,t,{value:n,enumerable:!0,configurable:!0,writable:!0}):e[t]=n}(q,"defaultProps",{data:[],activeIndex:0,direction:null,version:3});var J=function(e){function t(e){var n;return function(e,t){if(!(e instanceof t))throw new TypeError("Cannot call a class as a function")}(this,t),G(z(z(n=function(e,t){return!t||"object"!==V(t)&&"function"!=typeof t?z(e):t}(this,H(t).call(this,e)))),"visibilitychange",function(){(document.hidden||n.props.hidden)&&n.props.pauseOnVisibility?n._pause():n._autoPlay()}),G(z(z(n)),"_checkChildrenLength",function(){var e=n.props.children;Array.isArray(e)&&e.length>0&&n._autoPlay()}),G(z(z(n)),"_autoPlay",function(){n._pause(),n.props.autoplay&&n._play()}),G(z(z(n)),"slideNext",function(){var e=n.state.activeIndex,t=n.props.wrap,r=e+1;if(r>n.props.children.length-1){if(!t)return;r=0}n.safeSetState({activeIndex:r,direction:"next"})}),G(z(z(n)),"goToSlide",function(e){n.timeout&&clearTimeout(n.timeout),n.setState({activeIndex:e})}),G(z(z(n)),"slidePrev",function(){var e=n.state.activeIndex,t=n.props.wrap,r=e-1,o=n.props.children.length;if(r<0){if(!t)return;r=o-1}n.setState({activeIndex:r,direction:"prev"})}),G(z(z(n)),"_handleMouseOver",function(){n._pause()}),G(z(z(n)),"_handleMouseOut",function(){n.isPaused&&n.props.autoplay&&n._play()}),G(z(z(n)),"_pause",function(){n.isPaused=!0,n.timeout&&clearTimeout(n.timeout)}),G(z(z(n)),"_play",function(){n.isPaused=!1,n._waitForNext()}),G(z(z(n)),"_indClick",function(e,t){n.timeout&&clearTimeout(n.timeout),n.setState({activeIndex:e,direction:t}),n.isPaused=!1}),G(z(z(n)),"_controlsClick",function(e){n.timeout&&clearTimeout(n.timeout),n.isPaused=!1,"prev"==e?n.slidePrev():n.slideNext()}),G(z(z(n)),"render_ind",function(){var e=n.props,t=e.children,r=e.indicators,i=n.state.activeIndex;if(r)return o.a.createElement(w,{data:t,activeIndex:i,indClick:n._indClick})}),G(z(z(n)),"render_control",function(){var e=n.props,t=e.children,r=e.controls,i=e.leftIcon,a=e.rightIcon,u=e.version;if(r)return o.a.createElement(R,{dataLength:t.length,leftIcon:i,rightIcon:a,prev:n.slidePrev,next:n.slideNext,controlsClick:n._controlsClick,version:u})}),n.state={activeIndex:n.props.defaultActiveIndex,className:h()("carousel slide",n.props.className)},n}return function(e,t){if("function"!=typeof t&&null!==t)throw new TypeError("Super expression must either be null or a function");e.prototype=Object.create(t&&t.prototype,{constructor:{value:e,writable:!0,configurable:!0}}),t&&Y(e,t)}(t,y),function(e,t,n){t&&W(e.prototype,t),n&&W(e,n)}(t,[{key:"componentDidUpdate",value:function(e,t){if(this._checkChildrenLength(),this.props.autoplay!==e.autoplay&&this._autoPlay(),t.activeIndex!==this.state.activeIndex){var n=this.state,r=n.direction,o=n.activeIndex;this.props.onSelect(o,r)}}},{key:"init",value:function(){this._checkChildrenLength()}},{key:"unmount",value:function(){this.timeout&&clearTimeout(this.timeout)}},{key:"_waitForNext",value:function(){this.timeout=setTimeout(this.slideNext,this.props.slideshowSpeed)}},{key:"render",value:function(){var e=this.props,t=e.children,n=e.version,r=this.state,i=r.activeIndex,a=r.className,u=this.props.animation;return o.a.createElement("div",{className:h()(a),onMouseOver:this._handleMouseOver,onMouseOut:this._handleMouseOut},this.render_ind(),o.a.createElement(q,{animation:u,data:t,activeIndex:i,version:n}),this.render_control())}}]),t}();G(J,"defaultProps",{indicators:!0,controls:!0,slideshowSpeed:7e3,defaultActiveIndex:0,wrap:!0,autoplay:!0,children:[],animation:!0,className:"",version:3,pauseOnVisibility:!1,hidden:!1,onSelect:function(){}}),n.d(t,"React_Bootstrap_Carousel",function(){return J});t.default=J}])});
 
 /***/ }),
-/* 109 */
+/* 121 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -32851,15 +33288,15 @@
 
 
 /***/ }),
-/* 110 */
+/* 122 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
 	Object.defineProperty(exports, "__esModule", { value: true });
 	const React = __webpack_require__(4);
 	const react_redux_1 = __webpack_require__(18);
-	const react_router_dom_1 = __webpack_require__(80);
-	const action_1 = __webpack_require__(97);
+	const react_router_dom_1 = __webpack_require__(84);
+	const action_1 = __webpack_require__(101);
 	class RegisterPage extends React.Component {
 	    onSubmit(e) {
 	        e.preventDefault();
@@ -32908,15 +33345,15 @@
 
 
 /***/ }),
-/* 111 */
+/* 123 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
 	Object.defineProperty(exports, "__esModule", { value: true });
 	const React = __webpack_require__(4);
-	const react_router_dom_1 = __webpack_require__(80);
+	const react_router_dom_1 = __webpack_require__(84);
 	const react_redux_1 = __webpack_require__(18);
-	const action_1 = __webpack_require__(97);
+	const action_1 = __webpack_require__(101);
 	class LoginPage extends React.Component {
 	    constructor(props) {
 	        super(props);
@@ -32967,21 +33404,23 @@
 
 
 /***/ }),
-/* 112 */
+/* 124 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
 	Object.defineProperty(exports, "__esModule", { value: true });
 	const React = __webpack_require__(4);
-	const TopPanel_1 = __webpack_require__(95);
-	const Directory_1 = __webpack_require__(113);
-	const Navigator_1 = __webpack_require__(114);
-	const AccountInfo_1 = __webpack_require__(115);
-	const BankAccount_1 = __webpack_require__(118);
-	const Services_1 = __webpack_require__(119);
-	const react_router_dom_1 = __webpack_require__(80);
+	const TopPanel_1 = __webpack_require__(99);
+	const Directory_1 = __webpack_require__(125);
+	const Navigator_1 = __webpack_require__(126);
+	const AccountInfo_1 = __webpack_require__(127);
+	const BankAccount_1 = __webpack_require__(128);
+	const Services_1 = __webpack_require__(129);
+	const Notification_1 = __webpack_require__(133);
+	const Transaction_1 = __webpack_require__(134);
+	const react_router_dom_1 = __webpack_require__(84);
 	const react_redux_1 = __webpack_require__(18);
-	const FavoriteList_1 = __webpack_require__(123);
+	const FavoriteList_1 = __webpack_require__(135);
 	class CustomerPage extends React.Component {
 	    render() {
 	        if (!this.props.loggedIn) {
@@ -32997,7 +33436,9 @@
 	                React.createElement(react_router_dom_1.Route, { exact: true, path: "/(customer/account|customer)/", component: AccountInfo_1.default }),
 	                React.createElement(react_router_dom_1.Route, { path: "/customer/bank", component: BankAccount_1.default }),
 	                React.createElement(react_router_dom_1.Route, { path: "/customer/services", component: Services_1.default }),
-	                React.createElement(react_router_dom_1.Route, { path: "/customer/favorite", component: FavoriteList_1.default })));
+	                React.createElement(react_router_dom_1.Route, { path: "/customer/favorite", component: FavoriteList_1.default }),
+	                React.createElement(react_router_dom_1.Route, { path: "/customer/notification", component: Notification_1.default }),
+	                React.createElement(react_router_dom_1.Route, { path: "/customer/transaction", component: Transaction_1.default })));
 	    }
 	}
 	function mapStateToProps(state) {
@@ -33010,13 +33451,13 @@
 
 
 /***/ }),
-/* 113 */
+/* 125 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
 	Object.defineProperty(exports, "__esModule", { value: true });
 	const React = __webpack_require__(4);
-	const react_router_dom_1 = __webpack_require__(80);
+	const react_router_dom_1 = __webpack_require__(84);
 	class Directory extends React.Component {
 	    render() {
 	        let location = this.props.location.replace(/\/$/, '');
@@ -33027,12 +33468,12 @@
 	            "customer": "Customer",
 	            "account": "Account Info",
 	            "notification": "Notification",
-	            "history": "Traction History",
+	            "transaction": "Traction History",
 	            "services": "Services",
 	            "bank": "Bank Account",
 	            "transfer": "Transfer",
 	            "withdraw": "Withdraw",
-	            "transact": "Transact",
+	            "pay": "Pay",
 	            "deposit": "Deposit",
 	            "favorite": "Favorite List",
 	        };
@@ -33051,13 +33492,13 @@
 
 
 /***/ }),
-/* 114 */
+/* 126 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
 	Object.defineProperty(exports, "__esModule", { value: true });
 	const React = __webpack_require__(4);
-	const react_router_dom_1 = __webpack_require__(80);
+	const react_router_dom_1 = __webpack_require__(84);
 	const react_redux_1 = __webpack_require__(18);
 	class Navigator extends React.Component {
 	    render() {
@@ -33094,10 +33535,9 @@
 	                            React.createElement("i", { class: "fa fa-bell" }),
 	                            " ",
 	                            React.createElement("span", null, "Notification"),
-	                            " ",
-	                            React.createElement("span", { class: "num-noti-nav" }, "2"))),
-	                    React.createElement("li", { class: location.endsWith("history") ? "active" : "" },
-	                        React.createElement(react_router_dom_1.Link, { to: "/customer/history" },
+	                            this.props.numUnread > 0 && React.createElement("span", { class: "num-noti-nav" }, this.props.numUnread))),
+	                    React.createElement("li", { class: location.endsWith("transaction") ? "active" : "" },
+	                        React.createElement(react_router_dom_1.Link, { to: "/customer/transaction" },
 	                            " ",
 	                            React.createElement("i", { class: "fa fa-credit-card" }),
 	                            " ",
@@ -33112,23 +33552,26 @@
 	}
 	function mapStateToProps(state) {
 	    const { login } = state;
+	    const { notifications } = state.notification;
+	    let numUnread = notifications.filter(noti => !noti.read).length;
 	    return {
-	        login
+	        login,
+	        numUnread,
 	    };
 	}
 	exports.default = react_redux_1.connect(mapStateToProps)(Navigator);
 
 
 /***/ }),
-/* 115 */
+/* 127 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
 	Object.defineProperty(exports, "__esModule", { value: true });
 	const React = __webpack_require__(4);
 	const react_redux_1 = __webpack_require__(18);
-	const action_1 = __webpack_require__(97);
-	const utils = __webpack_require__(116);
+	const action_1 = __webpack_require__(101);
+	const utils = __webpack_require__(110);
 	class AccountInfo extends React.Component {
 	    constructor(props) {
 	        super(props);
@@ -33243,47 +33686,15 @@
 
 
 /***/ }),
-/* 116 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	"use strict";
-	function __export(m) {
-	    for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
-	}
-	Object.defineProperty(exports, "__esModule", { value: true });
-	__export(__webpack_require__(117));
-
-
-/***/ }),
-/* 117 */
-/***/ (function(module, exports) {
-
-	"use strict";
-	Object.defineProperty(exports, "__esModule", { value: true });
-	function toMoneyFormat(money) {
-	    let temp = money.toString().split("").reverse().join("");
-	    let result = "";
-	    for (let i = 0; i < temp.length; ++i) {
-	        if (i != 0 && i % 3 == 0) {
-	            result = "." + result;
-	        }
-	        result = temp[i] + result;
-	    }
-	    return result;
-	}
-	exports.toMoneyFormat = toMoneyFormat;
-
-
-/***/ }),
-/* 118 */
+/* 128 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
 	Object.defineProperty(exports, "__esModule", { value: true });
 	const React = __webpack_require__(4);
-	const action_1 = __webpack_require__(97);
+	const action_1 = __webpack_require__(101);
 	const react_redux_1 = __webpack_require__(18);
-	const react_router_dom_1 = __webpack_require__(80);
+	const react_router_dom_1 = __webpack_require__(84);
 	class BankAccount extends React.Component {
 	    constructor(props) {
 	        super(props);
@@ -33354,16 +33765,16 @@
 
 
 /***/ }),
-/* 119 */
+/* 129 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
 	Object.defineProperty(exports, "__esModule", { value: true });
 	const React = __webpack_require__(4);
-	const ServiceTab_1 = __webpack_require__(120);
-	const Transfer_1 = __webpack_require__(121);
-	const Deposit_1 = __webpack_require__(122);
-	const react_router_dom_1 = __webpack_require__(80);
+	const ServiceTab_1 = __webpack_require__(130);
+	const Transfer_1 = __webpack_require__(131);
+	const Deposit_1 = __webpack_require__(132);
+	const react_router_dom_1 = __webpack_require__(84);
 	class Services extends React.Component {
 	    render() {
 	        return React.createElement("div", { class: "content-right" },
@@ -33377,13 +33788,13 @@
 
 
 /***/ }),
-/* 120 */
+/* 130 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
 	Object.defineProperty(exports, "__esModule", { value: true });
 	const React = __webpack_require__(4);
-	const react_router_dom_1 = __webpack_require__(80);
+	const react_router_dom_1 = __webpack_require__(84);
 	class ServiceTab extends React.Component {
 	    render() {
 	        let location = this.props.location.split("/").filter(path => path != "");
@@ -33395,23 +33806,23 @@
 	            React.createElement(react_router_dom_1.Link, { to: "/customer/services/deposit", className: "tab" + (tab == "deposit" ? " active" : "") },
 	                React.createElement("i", { className: "fa fa-sign-in-alt" }),
 	                React.createElement("span", null, "Deposit")),
-	            React.createElement(react_router_dom_1.Link, { to: "/customer/services/transact", className: "tab" + (tab == "transact" ? " active" : "") },
+	            React.createElement(react_router_dom_1.Link, { to: "/customer/services/pay", className: "tab" + (tab == "pay" ? " active" : "") },
 	                React.createElement("i", { className: "fa fa-credit-card" }),
-	                React.createElement("span", null, "Transact")));
+	                React.createElement("span", null, "Pay")));
 	    }
 	}
 	exports.default = ServiceTab;
 
 
 /***/ }),
-/* 121 */
+/* 131 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
 	Object.defineProperty(exports, "__esModule", { value: true });
 	const React = __webpack_require__(4);
 	const react_redux_1 = __webpack_require__(18);
-	const action_1 = __webpack_require__(97);
+	const action_1 = __webpack_require__(101);
 	class Transfer extends React.Component {
 	    componentWillMount() {
 	        if (this.props.friend.notLoad) {
@@ -33426,6 +33837,11 @@
 	    }
 	    onSubmit(e) {
 	        e.preventDefault();
+	        this.props.dispatch(action_1.servicesActions.transfer({
+	            amount: this.amount.value,
+	            email: this.receiver.value,
+	            message: this.message.value,
+	        }));
 	    }
 	    onFocus() {
 	        this.setState({
@@ -33483,29 +33899,35 @@
 	                    React.createElement("div", { class: "input-wrap" },
 	                        React.createElement("input", { ref: input => this.message = input, type: "text", name: "amount", class: "form-control", id: "message", placeholder: "Message" }))),
 	                React.createElement("div", { class: "form-group" },
-	                    React.createElement("div", { class: "form-message" }),
+	                    React.createElement("div", { class: "form-message" }, this.props.services.transfering ?
+	                        "Transfering..." :
+	                        this.props.services.transfered ?
+	                            "Transfer successfully!" :
+	                            this.props.services.transferError ?
+	                                this.props.services.transferError : ""),
 	                    React.createElement("div", { class: "input-wrap margin" },
 	                        React.createElement("button", { onClick: this.onSubmit.bind(this), type: "submit", class: "btn btn-info btn-block btn-update" }, "Transfer")))));
 	    }
 	}
 	function mapStateToProps(state) {
-	    const { friend } = state;
+	    const { friend, services } = state;
 	    return {
-	        friend
+	        friend,
+	        services,
 	    };
 	}
 	exports.default = react_redux_1.connect(mapStateToProps)(Transfer);
 
 
 /***/ }),
-/* 122 */
+/* 132 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
 	Object.defineProperty(exports, "__esModule", { value: true });
 	const React = __webpack_require__(4);
 	const react_redux_1 = __webpack_require__(18);
-	const action_1 = __webpack_require__(97);
+	const action_1 = __webpack_require__(101);
 	class Deposit extends React.Component {
 	    constructor(props) {
 	        super(props);
@@ -33563,15 +33985,267 @@
 
 
 /***/ }),
-/* 123 */
+/* 133 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
 	Object.defineProperty(exports, "__esModule", { value: true });
 	const React = __webpack_require__(4);
 	const react_redux_1 = __webpack_require__(18);
-	const action_1 = __webpack_require__(97);
-	const react_router_dom_1 = __webpack_require__(80);
+	const action_1 = __webpack_require__(101);
+	const utils_1 = __webpack_require__(110);
+	4;
+	const react_router_dom_1 = __webpack_require__(84);
+	class Notification extends React.Component {
+	    componentWillMount() {
+	        if (this.props.notification.notLoad) {
+	            this.props.dispatch(action_1.notificationActions.load());
+	        }
+	    }
+	    onRead(id) {
+	        this.props.dispatch(action_1.notificationActions.read(id));
+	    }
+	    render() {
+	        let notifications = this.props.notification.notifications;
+	        let numOfUnread = notifications.filter(noti => noti.read == false).length;
+	        return React.createElement("div", { className: "content-right" },
+	            React.createElement("h1", { className: "title" }, "Notification"),
+	            React.createElement("div", { className: "wrapper" }, notifications.length == 0 ?
+	                React.createElement("div", { className: "small-text" }, this.props.notification.loading ?
+	                    "Loading notifications..." :
+	                    "You do not have any notifications")
+	                :
+	                    React.createElement("div", null,
+	                        React.createElement("div", { className: "small-text" }, "You have " + numOfUnread + " unread notification(s)"),
+	                        React.createElement("div", { className: "noti-list" }, notifications.map(notification => React.createElement("div", { onClick: () => this.onRead(notification.id) },
+	                            React.createElement(react_router_dom_1.Link, { to: { pathname: "/customer/transaction", details: { id: notification.transactionId, type: notification.type } }, className: "noti" + (notification.read ? " read" : "") },
+	                                React.createElement("div", { className: "avatar" }, notification.type == utils_1.NotificationType.TRANSFER ?
+	                                    React.createElement("i", { className: "fa fa-sign-out-alt", style: { color: "green" } })
+	                                    : notification.type == utils_1.NotificationType.DEPOSIT ?
+	                                        React.createElement("i", { className: "fa fa-sign-in-alt", style: { color: "blue" } })
+	                                        : notification.type == utils_1.NotificationType.RECEIVE ?
+	                                            React.createElement("i", { className: "fa fa-money-bill", style: { color: "red" } })
+	                                            : notification.type == utils_1.NotificationType.PAY ?
+	                                                React.createElement("i", { className: "fa fa-credit-card", style: { color: "yellow" } })
+	                                                : notification.type == utils_1.NotificationType.MOBILE_PAY ?
+	                                                    React.createElement("i", { className: "fa fa-mobile-alt", style: { color: "#fd961a" } })
+	                                                    : React.createElement("i", null)),
+	                                React.createElement("div", { className: "text" },
+	                                    React.createElement("span", { className: "title" }, notification.title),
+	                                    React.createElement("span", { className: "content" }, notification.content),
+	                                    React.createElement("span", { className: "time" }, notification.time.toLocaleString())))))))));
+	    }
+	}
+	function mapStateToProps(state) {
+	    const { notification } = state;
+	    return {
+	        notification
+	    };
+	}
+	exports.default = react_redux_1.connect(mapStateToProps)(Notification);
+
+
+/***/ }),
+/* 134 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	"use strict";
+	Object.defineProperty(exports, "__esModule", { value: true });
+	const React = __webpack_require__(4);
+	const react_redux_1 = __webpack_require__(18);
+	const action_1 = __webpack_require__(101);
+	const utils_1 = __webpack_require__(110);
+	class Transaction extends React.Component {
+	    constructor(props) {
+	        super(props);
+	        this.state = {
+	            transaction: null,
+	        };
+	    }
+	    componentWillMount() {
+	        if (this.props.transaction.notLoad) {
+	            this.props.dispatch(action_1.transactionActions.load());
+	        }
+	        if (this.props.account.notLoad) {
+	            this.props.dispatch(action_1.accountActions.getConnectedAccount());
+	        }
+	        if (this.props.location.details) {
+	            let details = this.props.location.details;
+	            this.setState({
+	                transaction: this.props.transaction.transactions.find(trans => {
+	                    return utils_1.compare(details.type, trans.type)
+	                        && details.id == trans.id;
+	                })
+	            });
+	        }
+	    }
+	    componentWillReceiveProps(nextProps) {
+	        if (nextProps.location.details) {
+	            let details = nextProps.location.details;
+	            this.setState({
+	                transaction: nextProps.transaction.transactions.find(trans => {
+	                    return utils_1.compare(details.type, trans.type)
+	                        && details.id == trans.id;
+	                })
+	            });
+	        }
+	    }
+	    onRead(transaction) {
+	        this.setState({
+	            transaction: transaction
+	        });
+	    }
+	    getSource(transaction) {
+	        switch (transaction.type) {
+	            case utils_1.TransactionType.DEPOSIT:
+	                let bank = this.props.account.accounts.find(account => account.id == transaction.account).name;
+	                return bank;
+	            case utils_1.TransactionType.RECEIVE:
+	                return transaction.sender;
+	            default:
+	                return "e-wallet";
+	        }
+	    }
+	    getOtherInfoSection(transaction) {
+	        switch (transaction.type) {
+	            case utils_1.TransactionType.TRANSFER:
+	                return React.createElement("div", null,
+	                    React.createElement("div", { className: "section-title" }, "Other Infomation"),
+	                    React.createElement("section", null,
+	                        React.createElement("div", { className: "info" },
+	                            React.createElement("label", null, "Receiver"),
+	                            React.createElement("span", null, transaction.receiver)),
+	                        React.createElement("div", { className: "info" },
+	                            React.createElement("label", null, "Email"),
+	                            React.createElement("span", null, transaction.receiver)),
+	                        React.createElement("div", { className: "info" },
+	                            React.createElement("label", null, "Amount"),
+	                            React.createElement("span", null, this.getAmount(transaction))),
+	                        React.createElement("div", { className: "info" },
+	                            React.createElement("label", null, "Message"),
+	                            React.createElement("span", null, transaction.message))));
+	            case utils_1.TransactionType.PAY:
+	                return React.createElement("div", null,
+	                    React.createElement("div", { className: "section-title" }, "Other Infomation"),
+	                    React.createElement("section", null,
+	                        React.createElement("div", { className: "info" },
+	                            React.createElement("label", null, "Service"),
+	                            React.createElement("span", null, transaction.bill)),
+	                        React.createElement("div", { className: "info" },
+	                            React.createElement("label", null, "Bill code"),
+	                            React.createElement("span", null, transaction.bill)),
+	                        React.createElement("div", { className: "info" },
+	                            React.createElement("label", null, "Description"),
+	                            React.createElement("span", null, transaction.description))));
+	            case utils_1.TransactionType.MOBILE_PAY:
+	                return React.createElement("div", null,
+	                    React.createElement("div", { className: "section-title" }, "Other Infomation"),
+	                    React.createElement("section", null,
+	                        React.createElement("div", { className: "info" },
+	                            React.createElement("label", null, "Telecom Company"),
+	                            React.createElement("span", null, transaction.telecom)),
+	                        React.createElement("div", { className: "info" },
+	                            React.createElement("label", null, "Bill code"),
+	                            React.createElement("span", null, transaction.bill)),
+	                        React.createElement("div", { className: "info" },
+	                            React.createElement("label", null, "Cost"),
+	                            React.createElement("span", null, transaction.amount))));
+	            default:
+	                return React.createElement("span", null);
+	        }
+	    }
+	    getAmount(transaction) {
+	        if (transaction.type == utils_1.TransactionType.TRANSFER
+	            || transaction.type == utils_1.TransactionType.PAY
+	            || transaction.type == utils_1.TransactionType.MOBILE_PAY) {
+	            return "-" + utils_1.toMoneyFormat(transaction.amount) + "đ";
+	        }
+	        return "+" + utils_1.toMoneyFormat(transaction.amount) + "đ";
+	    }
+	    getContent(transaction) {
+	        if (transaction.type == utils_1.TransactionType.TRANSFER) {
+	            return "Transfer to " + transaction.receiver;
+	        }
+	        if (transaction.type == utils_1.TransactionType.DEPOSIT) {
+	            let bank = this.props.account.accounts.find(account => account.id == transaction.account).name;
+	            return "Add money to wallet from " + bank;
+	        }
+	        if (transaction.type == utils_1.TransactionType.PAY) {
+	            return "PAY BILL";
+	        }
+	        if (transaction.type == utils_1.TransactionType.RECEIVE) {
+	            return "Receive money from " + transaction.sender;
+	        }
+	        return "Buy mobile card from " + transaction.telecom;
+	    }
+	    render() {
+	        let transactions = this.props.transaction.transactions;
+	        let transaction = this.state.transaction;
+	        return React.createElement("div", { className: "content-right" },
+	            React.createElement("h1", { className: "title" }, "Transaction"),
+	            React.createElement("div", { className: "wrapper trans" },
+	                React.createElement("div", { className: "sub-wrapper" },
+	                    React.createElement("div", { className: "title" }, "May 2019"),
+	                    React.createElement("div", { className: "trans-list" }, transactions.map((transaction, number) => React.createElement("div", { onClick: () => this.onRead(transaction), key: number, className: "trans" + (transaction == this.state.transaction ? " active" : "") },
+	                        React.createElement("div", { className: "avatar" }, transaction.type == utils_1.TransactionType.TRANSFER ?
+	                            React.createElement("i", { className: "fa fa-sign-out-alt", style: { color: "green" } })
+	                            : transaction.type == utils_1.TransactionType.DEPOSIT ?
+	                                React.createElement("i", { className: "fa fa-sign-in-alt", style: { color: "blue" } })
+	                                : transaction.type == utils_1.TransactionType.RECEIVE ?
+	                                    React.createElement("i", { className: "fa fa-money-bill", style: { color: "red" } })
+	                                    : transaction.type == utils_1.TransactionType.PAY ?
+	                                        React.createElement("i", { className: "fa fa-credit-card", style: { color: "yellow" } })
+	                                        : transaction.type == utils_1.TransactionType.MOBILE_PAY ?
+	                                            React.createElement("i", { className: "fa fa-mobile-alt", style: { color: "#fd961a" } })
+	                                            : React.createElement("i", null)),
+	                        React.createElement("div", { className: "text" },
+	                            React.createElement("span", { className: "title" }, this.getContent(transaction)),
+	                            React.createElement("span", { className: "time" }, transaction.time.toLocaleDateString()),
+	                            React.createElement("span", { className: "status" }, "Success"),
+	                            React.createElement("span", { className: "amount" }, this.getAmount(transaction))))))),
+	                transaction &&
+	                    React.createElement("div", { className: "sub-wrapper trans-details" },
+	                        React.createElement("div", { className: "title" }, "Transaction Details"),
+	                        React.createElement("section", null,
+	                            React.createElement("span", { className: "type" }, transaction.type),
+	                            React.createElement("span", { className: "amount" }, this.getAmount(transaction)),
+	                            React.createElement("span", { className: "status" }, "Success")),
+	                        React.createElement("section", null,
+	                            React.createElement("div", { className: "info" },
+	                                React.createElement("label", null, "Source"),
+	                                React.createElement("span", null, this.getSource(transaction))),
+	                            React.createElement("div", { className: "info" },
+	                                React.createElement("label", null, "Transaction fee"),
+	                                React.createElement("span", null, "Free")),
+	                            React.createElement("div", { className: "info" },
+	                                React.createElement("label", null, "Transaction id"),
+	                                React.createElement("span", null, transaction.id)),
+	                            React.createElement("div", { className: "info" },
+	                                React.createElement("label", null, "Time"),
+	                                React.createElement("span", null, transaction.time.toLocaleString()))),
+	                        this.getOtherInfoSection(transaction))));
+	    }
+	}
+	function mapStateToProps(state) {
+	    const { transaction, account } = state;
+	    return {
+	        transaction,
+	        account,
+	    };
+	}
+	exports.default = react_redux_1.connect(mapStateToProps)(Transaction);
+
+
+/***/ }),
+/* 135 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	"use strict";
+	Object.defineProperty(exports, "__esModule", { value: true });
+	const React = __webpack_require__(4);
+	const react_redux_1 = __webpack_require__(18);
+	const action_1 = __webpack_require__(101);
+	const react_router_dom_1 = __webpack_require__(84);
 	class FavoriteList extends React.Component {
 	    componentWillMount() {
 	        if (this.props.friend.notLoad) {

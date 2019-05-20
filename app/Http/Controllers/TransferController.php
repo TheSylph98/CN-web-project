@@ -66,10 +66,9 @@ class TransferController
 
     public function postTransfer(Request $request)
     {
-        $user = Auth::user();
-        if ($user == null) {
+        if (!Auth::check()) {
             return response()->json([
-                "title"=>"error",
+                "title" => "error",
                 "content" => "Bạn phải đăng nhập trước",
 
             ]);
@@ -79,26 +78,25 @@ class TransferController
             [
                 'sotien' => 'required',
                 'email_nhan' => "required",
-                'noidung'=>"required"
+                'noidung' => "required"
             ],
             [
                 'sotien.required' => 'Bạn chưa nhập số tiền ',
                 'noidung.required' => 'Bạn chưa nhập nội dung chuyển tiền',
-//                'id_chuyen.required' => 'Empty !',
                 'email_nhan.required' => 'Bạn chưa nhập email',
 
             ]);
 
-        $user = Auth::user();
         $errs = $validator->errors();
         $err = $errs->all();
-        if($validator->fails()){
+        if ($validator->fails()) {
             return response()->json([
                 'title' => 'error',
                 'content' => $err[0]
             ]);
         }
 
+        $user = Auth::user();
 
 //        check so tien con
         $check = $this->check_sotien($user->id, $request->sotien);
@@ -111,22 +109,22 @@ class TransferController
         //      check email nguoi nhan , neu ton tai lay id nguoi nhan
 
         $user_nhan = $this->getIdNhan($request->email_nhan);
-        if (!$user_nhan ) {
-                return response()->json(
-                    [
-                        "title" => "error",
-                        "content" => "Tài khoản bạn nhập không tồn tại"
-                    ]
-                );
-            }
+        if (!$user_nhan) {
+            return response()->json(
+                [
+                    "title" => "error",
+                    "content" => "Tài khoản bạn nhập không tồn tại"
+                ]
+            );
+        }
 //        tao doi tuong chuyen tien
         $chuyen_tien = new chuyentien();
         $chuyen_tien->id_chuyen = $user->id;
         $chuyen_tien->id_nhan = $user_nhan->id;
         $chuyen_tien->sotien = $request->sotien;
         $chuyen_tien->noidung = $request->noidung;
-
         $chuyen_tien->save();
+
 
 //        cập nhật lai số tiên trong wallet
 
@@ -139,11 +137,29 @@ class TransferController
 
         return view("viewtest.ok");
 
+        $thongbao = new thongbao();
+        $thongbao->tieude = "Thông báo chuyển tiền thành công";
+        $thongbao->noidung = "Bạn vừa chuyển thành công " . $request->sotien . "đ cho chủ tài khoàn có email " . $user_nhan->email;
+        $thongbao->user_id = $user->id;
+        $thongbao->daxem = 0;
+        $thongbao->type = "chuyentien_".$id_chuyentien;
 
-        }
+        $thongbao->save();
+//        luu vao bang thong bao cho nguoi nhan
+        $thongbao_nhan = new thongbao();
+        $thongbao_nhan->tieude = "Thông báo nhận tiền thành công";
+        $thongbao_nhan->noidung = "Tài khoản của bạn  nhận thành công " . $request->sotien . "đ  từ chủ tài khoàn có email " . $user->email;
+        $thongbao_nhan->user_id = $user_nhan->id;
+        $thongbao_nhan->daxem = 0;
+        $thongbao_nhan->type = "nhantien_".$id_chuyentien;
+        $thongbao_nhan->save();
 
+
+        return response()->json([
+            "title" => "success",
+            "content" => "Chuyển tiền thành công"
+        ]);
+
+    }
 
 }
-
-
-

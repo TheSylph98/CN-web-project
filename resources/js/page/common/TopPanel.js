@@ -15,23 +15,6 @@ class TopPanel extends React.Component {
                 React.createElement("div", { class: "main-logo col-xs-12 col-md-3 col-md-2 col-lg-2 hidden-xs" },
                     React.createElement(react_router_dom_1.Link, { to: "/" },
                         React.createElement("img", { id: "logo", class: "img-responsive", src: "resources/images/logo-dark.png", alt: "logo" }))),
-                React.createElement("div", { class: "col-md-6 col-lg-6" },
-                    React.createElement("ul", { class: "guess bitcoin-stats text-center" },
-                        React.createElement("li", null,
-                            React.createElement("h6", null, "9,450 USD"),
-                            React.createElement("span", null, "Last trade price")),
-                        React.createElement("li", null,
-                            React.createElement("h6", null, "+5.26%"),
-                            React.createElement("span", null, "24 hour price")),
-                        React.createElement("li", null,
-                            React.createElement("h6", null, "12.820 BTC"),
-                            React.createElement("span", null, "24 hour volume")),
-                        React.createElement("li", null,
-                            React.createElement("h6", null, "2,231,775"),
-                            React.createElement("span", null, "active traders")),
-                        React.createElement("li", null,
-                            React.createElement("h6", null, "2,231,775"),
-                            React.createElement("span", null, "active traders")))),
                 !this.props.login.loggedIn ?
                     React.createElement("div", { class: "col-md-4 col-lg-4" },
                         React.createElement("div", { class: "guess user" },
@@ -47,7 +30,10 @@ class TopPanel extends React.Component {
                         React.createElement("div", { class: "logged-in user" },
                             React.createElement("div", { class: "account" },
                                 React.createElement(react_router_dom_1.Link, { to: "/customer" },
-                                    React.createElement("i", { class: "fa fa-user" }),
+                                    React.createElement("div", { class: "avatar" },
+                                        React.createElement("i", { class: "fa fa-user" }),
+                                        this.props.numUnread > 0 &&
+                                            React.createElement("div", { className: "notification" }, this.props.numUnread)),
                                     React.createElement("span", null, this.props.login.user.username))),
                             React.createElement("div", { class: "sign-out" },
                                 React.createElement(react_router_dom_1.Link, { to: "/", class: "btn btn-primary", onClick: this.onSignOut.bind(this) },
@@ -58,8 +44,11 @@ class TopPanel extends React.Component {
 }
 function mapStateToProps(state) {
     const { login } = state;
+    const { notifications } = state.notification;
+    let numUnread = notifications.filter(noti => !noti.read).length;
     return {
-        login
+        login,
+        numUnread,
     };
 }
 exports.default = react_redux_1.connect(mapStateToProps)(TopPanel);

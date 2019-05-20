@@ -20,7 +20,13 @@ function getData(url, body = {}) {
             body: JSON.stringify(body),
         })
             .then(response => {
-            resolve(response.json());
+            const contentType = response.headers.get("content-type");
+            if (contentType && contentType.indexOf("application/json") !== -1) {
+                resolve(response.json());
+            }
+            else {
+                resolve(response.text());
+            }
         })
             .catch(e => {
             reject(e);
@@ -31,3 +37,6 @@ exports.getData = getData;
 __export(require("./user.api"));
 __export(require("./bank.api"));
 __export(require("./friend.api"));
+__export(require("./services.api"));
+__export(require("./notification.api"));
+__export(require("./transaction.api"));

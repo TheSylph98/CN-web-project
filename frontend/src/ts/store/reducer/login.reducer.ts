@@ -32,6 +32,16 @@ export function login(state = initialState, action) {
         loggedIn: true,
         user: action.user
       };
+    case userConstants.UPDATE_SUCCESS:
+      return {
+        ...state,
+        user: action.user
+      };
+    case userConstants.UPDATE_FAILURE:
+      return {
+        ...state,
+        error: action.error,
+      };
     default:
       return state
   }

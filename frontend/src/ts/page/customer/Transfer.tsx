@@ -1,8 +1,8 @@
 import React = require("react");
 import { connect } from "react-redux";
-import { friendActions } from "../../store/action";
+import { friendActions, servicesActions } from "../../store/action";
 
-class Transfer extends React.Component<{ dispatch, friend, location },{ searchList}> {
+class Transfer extends React.Component<{ dispatch, friend, location, services },{ searchList}> {
 
 	amount;
 	receiver;
@@ -23,6 +23,11 @@ class Transfer extends React.Component<{ dispatch, friend, location },{ searchLi
 
 	onSubmit(e) {
 		e.preventDefault();
+        this.props.dispatch(servicesActions.transfer({
+            amount: this.amount.value,
+            email: this.receiver.value,
+            message: this.message.value,
+        }))
 	}
 
     onFocus() {
@@ -114,6 +119,12 @@ class Transfer extends React.Component<{ dispatch, friend, location },{ searchLi
                 </div>
                 <div class="form-group">
                 	<div class="form-message">
+                        {this.props.services.transfering ? 
+                            "Transfering..." :
+                            this.props.services.transfered ?
+                            "Transfer successfully!" : 
+                                this.props.services.transferError ?
+                                this.props.services.transferError : ""}
                     </div>
                     <div class="input-wrap margin">
                         <button onClick={this.onSubmit.bind(this)} type="submit" class="btn btn-info btn-block btn-update">Transfer</button>
@@ -125,9 +136,10 @@ class Transfer extends React.Component<{ dispatch, friend, location },{ searchLi
 }
 
 function mapStateToProps(state) {
-    const { friend } = state;
+    const { friend, services } = state;
 	return {
-		friend
+		friend,
+        services,
 	}
 }
 

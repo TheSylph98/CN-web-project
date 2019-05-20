@@ -25,15 +25,18 @@ Route::post('dang-ki','HomeController@DoRegister');
 
 Route::post('dang-xuat','HomeController@Logout');
 
-// Route::get('quan-li-thong-tin','HomeController@ThongTinCaNhan');
 Route::post('quan-li-thong-tin','HomeController@ChinhSuaThongTin');
-
+Route::post('thong-tin-ca-nhan','HomeController@ThongTinCaNhan');
 
 //chuyen tien
 Route::get("transfer", "TransferController@getViewTransfer");
 Route::post("post-transfer", "TransferController@postTransfer");
 //nap tien vao vi
 Route::get("addmoney", 'AddMoneyToWallet@getViewAddMoney');
+Route::post("post-add-money", 'AddMoneyToWallet@postAddMoney');
+
+//cap nhật lại trường daxem thongbao
+Route::post("update-thongbao", "HomeController@updateNotification");
 
 
 

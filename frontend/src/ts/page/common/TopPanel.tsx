@@ -4,7 +4,7 @@ import {Link} from "react-router-dom";
 import { connect } from "react-redux";
 import { userActions } from "../../store/action";
 
-class TopPanel extends React.Component<{login, dispatch},{}> {
+class TopPanel extends React.Component<{login, dispatch, numUnread},{}> {
 
     onSignOut() {
         this.props.dispatch(userActions.logout());
@@ -19,7 +19,7 @@ class TopPanel extends React.Component<{login, dispatch},{}> {
                         src="resources/images/logo-dark.png" alt="logo"/>
                     </Link>
                 </div>
-                <div class="col-md-6 col-lg-6">
+                {/*<div class="col-md-6 col-lg-6">
                     <ul class="guess bitcoin-stats text-center">
                         <li>
                             <h6>9,450 USD</h6><span>Last trade price</span></li>
@@ -32,7 +32,7 @@ class TopPanel extends React.Component<{login, dispatch},{}> {
                         <li>
                             <h6>2,231,775</h6><span>active traders</span></li>
                     </ul>
-                </div>
+                </div>*/}
                 { !this.props.login.loggedIn ? 
                     <div class="col-md-4 col-lg-4">
                         <div class="guess user">
@@ -52,7 +52,11 @@ class TopPanel extends React.Component<{login, dispatch},{}> {
                         <div class="logged-in user">
                             <div class="account">
                                 <Link to="/customer">
-                                    <i class="fa fa-user"></i>
+                                    <div class="avatar">
+                                        <i class="fa fa-user"></i>
+                                        {this.props.numUnread > 0 && 
+                                            <div className="notification">{this.props.numUnread}</div>}
+                                    </div>
                                     <span>{this.props.login.user.username}</span>
                                 </Link>
                             </div>
@@ -74,8 +78,11 @@ class TopPanel extends React.Component<{login, dispatch},{}> {
 
 function mapStateToProps(state) {
     const { login } = state;
+    const { notifications } = state.notification;
+    let numUnread = notifications.filter(noti => !noti.read).length;
     return {
-        login
+        login,
+        numUnread,
     }
 }
 

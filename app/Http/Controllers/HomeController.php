@@ -15,6 +15,8 @@ use App\nhamang;
 use App\ruttien;
 use App\thanhtoan;
 use App\thongbao;
+use DB;
+
 class HomeController extends Controller
 {
     //
@@ -135,7 +137,7 @@ class HomeController extends Controller
     public function ThongTinCaNhan(){
         if(Auth::check()){
             $user = Auth::user();
-            $tk = taikhoan::where('id_user',$user->id)->get();
+            $tk = taikhoan::where('users_id',$user->id)->get();
             //return view('page.thongtincanhan',['user_info' => Auth::user(), 'tk' => $tk]);
             return response()->json([
                 'check'=>'true',
@@ -322,6 +324,12 @@ class HomeController extends Controller
         $notification
       ]);
     }
+
+    $notification = thongbao::where('user_id', $user->id)->get();
+    return response()->json([
+        'noti' => 'success',
+        'thongbao' => $notification
+    ]);
   }
 
     public function TransactionHistory(){
@@ -340,6 +348,7 @@ class HomeController extends Controller
             //ls thanhtoan
             $thanhtoan = thanhtoan::where('users_id',$id)->get();
             return response()->json([
+                'trans' => 'success',
                 'naptien' => $naptien,
                 'chuyentien' => $chuyentien,
                 'napthe' => $napthe,
@@ -482,5 +491,15 @@ class HomeController extends Controller
           'friend'=> $phonenumber
         ]);
       }
+    }
+
+    //    cap nhat lai daxem trong thongbao
+    public function updateNotification(Request $request)
+    {
+
+        DB::table('thongbao')
+            ->where('id',$request->id )
+            ->update(['daxem' => 1]);
+
     }
 }

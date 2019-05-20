@@ -78,3 +78,23 @@ export function modify(input: {address, username, phone}) {
             })
     })
 }
+
+export function update() {
+    return new Promise((resolve, reject) => {
+        getData("thong-tin-ca-nhan", {})
+            .then(result => {
+                if (result["check"] == 'true') {
+                    let user = result['user_info'];
+                    resolve({
+                        username: user['ten'],
+                        email: user['email'],
+                        address: user['diachi'],
+                        phone: user['sodienthoai'],
+                        amount: user['sotien']
+                    });
+                } else {
+                    reject(result['message']);
+                }
+            })
+    })
+}

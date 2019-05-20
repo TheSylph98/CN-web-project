@@ -1,13 +1,13 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const constants_1 = require("../constants");
-const _1 = require("./");
 const backend = require("../backend-api");
 exports.userActions = {
     login,
     logout,
     register,
     modify,
+    update,
 };
 function login(username, password) {
     return dispatch => {
@@ -20,7 +20,6 @@ function login(username, password) {
             window["routerHistory"].push("/");
         }, error => {
             dispatch(failure(error.toString()));
-            dispatch(_1.alertActions.error(error.toString()));
         });
     };
     function request(user) { return { type: constants_1.userConstants.LOGIN_REQUEST, user }; }
@@ -49,10 +48,8 @@ function register(data) {
             localStorage.setItem("user", JSON.stringify(user));
             alert("Registration successfully! Please login to continue");
             window["routerHistory"].push("/login");
-            dispatch(_1.alertActions.success('Registration successful'));
         }, error => {
             dispatch(failure(error.toString()));
-            dispatch(_1.alertActions.error(error.toString()));
         });
     };
     function request(user) { return { type: constants_1.userConstants.REGISTER_REQUEST, user }; }
@@ -73,4 +70,19 @@ function modify(data) {
     function request() { return { type: constants_1.userConstants.MODIFY_REQUEST }; }
     function success(user) { return { type: constants_1.userConstants.MODIFY_SUCCESS, user }; }
     function failure(error) { return { type: constants_1.userConstants.MODIFY_FAILURE, error }; }
+}
+function update() {
+    return dispatch => {
+        dispatch(request());
+        backend.update()
+            .then(user => {
+            dispatch(success(user));
+            localStorage.setItem("user", JSON.stringify(user));
+        }, error => {
+            dispatch(failure(error.toString()));
+        });
+    };
+    function request() { return { type: constants_1.userConstants.UPDATE_REQUEST }; }
+    function success(user) { return { type: constants_1.userConstants.UPDATE_SUCCESS, user }; }
+    function failure(error) { return { type: constants_1.userConstants.UPDATE_FAILURE, error }; }
 }

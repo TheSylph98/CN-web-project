@@ -1,5 +1,4 @@
 import { userConstants } from '../constants';
-import { alertActions } from './';
 import backend = require("../backend-api");
 
 export const userActions = {
@@ -7,6 +6,7 @@ export const userActions = {
     logout,
     register,
     modify,
+    update,
 };
 
 function login(username, password) {
@@ -23,7 +23,6 @@ function login(username, password) {
                 },
                 error => {
                     dispatch(failure(error.toString()));
-                    dispatch(alertActions.error(error.toString()));
                 }
             );
     };
@@ -62,11 +61,9 @@ function register(data: {username, password, phone, email, verifyPassword}) {
                     localStorage.setItem("user", JSON.stringify(user)); 
                     alert("Registration successfully! Please login to continue");
                     window["routerHistory"].push("/login");
-                    dispatch(alertActions.success('Registration successful'));
                 },
                 error => {
                     dispatch(failure(error.toString()));
-                    dispatch(alertActions.error(error.toString()));
                 }
             );
     };
@@ -96,4 +93,26 @@ function modify(data: {username, phone, address}) {
     function request() { return { type: userConstants.MODIFY_REQUEST } }
     function success(user) { return { type: userConstants.MODIFY_SUCCESS, user } }
     function failure(error) { return { type: userConstants.MODIFY_FAILURE, error } }
+}
+
+function update() {
+    return dispatch => {
+        dispatch(request());
+
+        backend.update()
+            .then(
+                user => {
+                    dispatch(success(user));
+                    localStorage.setItem("user", JSON.stringify(user)); 
+                },
+                error => {
+                    dispatch(failure(error.toString()));
+                }
+
+            )
+    }
+
+    function request() { return { type: userConstants.UPDATE_REQUEST } }
+    function success(user) { return { type: userConstants.UPDATE_SUCCESS, user } }
+    function failure(error) { return { type: userConstants.UPDATE_FAILURE, error } }
 }

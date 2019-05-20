@@ -2,6 +2,7 @@
 	height: 50px;
 	padding: 0px!important;
 	display: flex;
+    flex-direction: row;
 }
 
 .service-tab .tab {
