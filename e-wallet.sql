@@ -1,5 +1,5 @@
 -- Created by Vertabelo (http://vertabelo.com)
--- Last modification date: 2019-05-20 09:58:33.929
+-- Last modification date: 2019-05-20 10:17:32.757
 
 -- tables
 -- Table: chuyentien
@@ -126,7 +126,6 @@ CREATE TABLE thanhtoan (
     id int NOT NULL AUTO_INCREMENT,
     created_at timestamp NOT NULL,
     update_at timestamp NOT NULL,
-    noidung text NOT NULL,
     users_id int(11) NOT NULL,
     hoadon_id int NOT NULL,
     CONSTRAINT thanhtoan_pk PRIMARY KEY (id)
