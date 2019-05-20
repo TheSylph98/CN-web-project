@@ -41,6 +41,10 @@ Route::post("update-thongbao", "HomeController@updateNotification");
 //lay thong tin user
 Route::post("getInforUser", "HomeController@getInformationUser");
 
+//thanh toán hóa đơn
+Route::get("pay-bill", "PayBillController@getViewPayBill");
+Route::post("post-pay-bill", "PayBillController@postPayBill");
+
 
 
 Route::get('them-tai-khoan','HomeController@gThemTaiKhoan');
