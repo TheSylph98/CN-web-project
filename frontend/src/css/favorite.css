@@ -86,3 +86,41 @@
 	color: #fff;
 	background: #fd961a;
 }
+
+.wrapper.favorite {
+}
+
+.wrapper button.add-user {
+	margin-right: 10px;
+    display: inline-block;
+    width: 130px;
+    color: #fff;
+    background: #fd961a;
+    border: none;
+    height: 44px;
+    font-size: 13px;
+    font-weight: 600;
+    text-transform: uppercase;
+    outline: none;
+}
+
+.wrapper button.add-user:hover {
+	background: rgba(253, 150, 26,.9);
+}
+
+.wrapper button.add-user+.input-wrap input {
+	transition: width 0.3s, padding-left 0.6s;
+	width: 0;
+	border: none;
+	padding: 0;
+}
+
+.wrapper button.add-user+.input-wrap input.display {
+	width: 400px;
+	border: 1px solid #333;
+    padding-left: 20px;
+}
+
+.content-right .wrapper .form-group:last-child {
+	margin-bottom: 0px;
+}

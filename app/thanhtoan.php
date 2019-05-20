@@ -8,8 +8,8 @@ class thanhtoan extends Model
 {
     //
     protected $table = "thanhtoan";
-    public function LoaiHoaDon(){
-      return $this->hasMany('App\loaihoadon','loaihoadon_id','id');
+    public function HoaDon(){
+      return $this->hasMany('App\hoadon','hoadon_id','id');
     }
     public function User(){
       return $this->belongsTo('App\User','users_id','id');

@@ -2,6 +2,7 @@ import React = require("react");
 import { bankActions, accountActions } from "../../store/action";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
+import { toAccountNumberFormat } from "../../utils";
 
 class BankAccount extends React.Component<{dispatch, bank, account}, {chosenBankId}> {
 
@@ -58,7 +59,7 @@ class BankAccount extends React.Component<{dispatch, bank, account}, {chosenBank
 								</div>
 								<div className="text">
 									<span>{account.name}</span>
-									Free deposit
+									{toAccountNumberFormat(account.number)}
 								</div>
 								<Link to={{pathname: "/customer/services/deposit", account: account.id}}>
 									<button>Deposit</button>

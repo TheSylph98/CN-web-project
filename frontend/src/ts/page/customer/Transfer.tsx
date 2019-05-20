@@ -2,7 +2,7 @@ import React = require("react");
 import { connect } from "react-redux";
 import { friendActions, servicesActions } from "../../store/action";
 
-class Transfer extends React.Component<{ dispatch, friend, location, services },{ searchList}> {
+class Transfer extends React.Component<{ dispatch, friend, location, transfer },{ searchList}> {
 
 	amount;
 	receiver;
@@ -119,12 +119,12 @@ class Transfer extends React.Component<{ dispatch, friend, location, services },
                 </div>
                 <div class="form-group">
                 	<div class="form-message">
-                        {this.props.services.transfering ? 
+                        {this.props.transfer.transfering ? 
                             "Transfering..." :
-                            this.props.services.transfered ?
+                            this.props.transfer.transfered ?
                             "Transfer successfully!" : 
-                                this.props.services.transferError ?
-                                this.props.services.transferError : ""}
+                                this.props.transfer.error ?
+                                this.props.transfer.error : ""}
                     </div>
                     <div class="input-wrap margin">
                         <button onClick={this.onSubmit.bind(this)} type="submit" class="btn btn-info btn-block btn-update">Transfer</button>
@@ -136,10 +136,11 @@ class Transfer extends React.Component<{ dispatch, friend, location, services },
 }
 
 function mapStateToProps(state) {
-    const { friend, services } = state;
+    const { friend } = state;
+    const { transfer } = state.services;
 	return {
 		friend,
-        services,
+        transfer,
 	}
 }
 

@@ -20,10 +20,18 @@ export function transfer({amount, email, message}) {
 }
 
 export function payMobileCard(telecomId, amount) {
+	let data = {
+		"sotien": amount,
+		"nhamang": telecomId,
+	}
 	return new Promise((resolve, reject) => {
-		getData("nap-the")
+		getData("nap-the", data)
 			.then(result => {
-				
+				if (result["napthe"] != "error") {
+					resolve(result['code']);	
+				} else {
+					reject(result["message"]);
+				}
 			})
 	});
 }

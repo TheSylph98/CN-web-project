@@ -1,11 +1,12 @@
 import React = require("react");
-import { mobileActions } from "../../store/action";
+import { mobileActions, servicesActions } from "../../store/action";
 import { connect } from "react-redux";
 import { toMoneyFormat } from "../../utils";
 
-class MobilePay extends React.Component<{dispatch, mobile }, {chosenTelecomId}> {
+class MobilePay extends React.Component<{dispatch, mobile, pay }, {chosenTelecomId}> {
 
 	telecom;
+	denomination;
 
 	constructor(props) {
 		super(props);
@@ -28,7 +29,7 @@ class MobilePay extends React.Component<{dispatch, mobile }, {chosenTelecomId}> 
 
 	pay(e) {
 		e.preventDefault();
-		// this.props.dispatch(accountActions.connectAccount(this.account.value, this.state.chosenBankId));
+		this.props.dispatch(servicesActions.payMobileCard(this.state.chosenTelecomId, parseInt(this.denomination.value)));
 	}
 
 	render() {
@@ -59,7 +60,7 @@ class MobilePay extends React.Component<{dispatch, mobile }, {chosenTelecomId}> 
                         <div class="input-wrap">
                             <div id="denomination" class="denomination">
                             	<fieldset>
-                            		<select class="form-control">
+                            		<select class="form-control" ref = {input => this.denomination = input}>
                             			<option key={"0"} defaultValue={"0"}>Value</option>
                             			{denominations.map(denomination => 
                                             <option key={denomination} value={denomination.toString()}>
@@ -70,9 +71,31 @@ class MobilePay extends React.Component<{dispatch, mobile }, {chosenTelecomId}> 
                             </div>
                         </div>
                     </div>
+                    {this.props.pay.error ?
+                    	<div class="form-group">
+                        	<div class="form-message">
+                        		<span className="error">{this.props.pay.error}</span>
+	                        </div>
+	                    </div> 
+	                	: this.props.pay.paying ?
+	                		<div class="form-group">
+	                        	<div class="form-message">
+	                        		<span className="info">Processing...</span>
+		                        </div>
+	                    	</div> 
+	                    	: this.props.pay.payed ?
+	                    		<div class="form-group">
+			                        <label class="control-label">Code</label>
+			                        <div class="input-wrap">
+			                            <input disabled={true} defaultValue={this.props.pay.code} class="form-control"/>
+			                        </div>
+			                        <div class="form-message">
+		                        		<span className="success">Successfully</span>
+			                        </div>
+			                    </div> 
+			                	: <span/>
+			        }
                     <div class="form-group">
-                    	<div class="form-message">
-                        </div>
                         <div class="input-wrap margin">
                             <button onClick={this.pay.bind(this)} type="submit" class="btn btn-info btn-block btn-update">Pay</button>
                         </div>
@@ -86,8 +109,10 @@ class MobilePay extends React.Component<{dispatch, mobile }, {chosenTelecomId}> 
 
 function mapStateToProps(state) {
 	const { mobile } = state;
+	const pay = state.services.mobile;
 	return {
 		mobile,
+		pay,
 	}
 }
 

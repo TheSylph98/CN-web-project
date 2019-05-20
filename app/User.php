@@ -62,4 +62,7 @@ class User extends Authenticatable
     public function NRutTien(){
       return $this->hasMany('App\ruttien','users_id','id');
     }
+    public function ThongBao(){
+      return $this->hasMany('App\thongbao','users_id','id');
+    }
 }

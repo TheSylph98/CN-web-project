@@ -125,6 +125,7 @@ class TransferController
         $chuyen_tien->noidung = $request->noidung;
         $chuyen_tien->save();
 
+        $id_chuyentien = $chuyen_tien->id;
 
 //        cập nhật lai số tiên trong wallet
 
@@ -135,8 +136,7 @@ class TransferController
         $user_nhan->sotien = $user_nhan->sotien + $request->sotien;
         $user_nhan->save();
 
-//        get id chuuyen tien
-        $id_chuyentien = chuyentien::max("id");
+        // return view("viewtest.ok");
 
         $thongbao = new thongbao();
         $thongbao->tieude = "Thông báo chuyển tiền thành công";
@@ -164,7 +164,3 @@ class TransferController
     }
 
 }
-
-
-
-
