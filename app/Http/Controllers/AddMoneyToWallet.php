@@ -36,13 +36,21 @@ class AddMoneyToWallet
     }
 
 // public check ngan hang
-    public function checkBanksAsociateToUser($sotaikhoan)
+    public function checkBanksAsociateToUser($bank_name)
     {
         $user = Auth::user();
+        $bank =DB::table('nganhang')->where('ten_nganhang',$bank_name)->first();
+        if ($bank == null) {
+            return response()->json([
+                "title" => "error",
+                "content" => "Tên ngân hàng không có trong cơ sở dữ liêu",
+
+            ]);
+        }
 
 
-
-        $account = DB::table("taikhoan")->where("sotaikhoan", $sotaikhoan)->first();;
+        $account = DB::table("taikhoan")->where("nganhang_id", $bank->id)->where("users_id", $user->id)->first();;
+//        print_r($account);
         return $account;
 
 
@@ -52,7 +60,7 @@ class AddMoneyToWallet
     public function postAddMoney(Request $request)
     {
 //        check dang nhap
-        if (!Auth::check()) {
+        if (Auth::check()) {
             return response()->json([
                 "title"=>"error",
                 "content" => "Bạn phải đăng nhập trước",
@@ -63,11 +71,11 @@ class AddMoneyToWallet
         $validator = Validator::make($request->all(),
             [
                 'sotien' => 'required',
-                'sotaikhoan' => "required"
+                'nganhang' => "required"
             ],
             [
                 'sotien.required' => 'Bạn chưa nhập số tiền ',
-                'sotaikhoan.required' => 'Bạn phải nhập số tài khoản',
+                'nganhang.required' => 'Bạn phải chọn ngân hàng',
 
             ]);
 
@@ -82,11 +90,11 @@ class AddMoneyToWallet
 
 
 //        check ngan hang
-        $account = $this->checkBanksAsociateToUser($request->sotaikhoan);
+        $account = $this->checkBanksAsociateToUser($request->nganhang);
         if ($account == null) {
             return response()->json([
                 "title" => "error",
-                "content" => "Tài khoản ngân hàng này chưa liên kết với ví điện tử của bạn",
+                "content" => "Ngân hàng chưa liên kết với ví điện tử của bạn",
 
             ]);
         }

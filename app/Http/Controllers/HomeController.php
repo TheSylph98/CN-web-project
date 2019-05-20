@@ -502,24 +502,4 @@ class HomeController extends Controller
             ->update(['daxem' => 1]);
 
     }
-
-//    get information of user
-    public function getInformationUser(Request $request){
-        $user = DB::table('users')
-            ->where('users_id', $request->id)->get();
-
-        if (!$user) {
-            return response()->json([
-                "title" => "Not user",
-                "content"=>"Không tồn tại user này"
-            ]);
-        }
-        return response()->json(
-            [
-                "title"=>"user detail",
-                "content" => $user,
-
-            ]
-        );
-    }
 }
