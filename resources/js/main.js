@@ -32840,7 +32840,7 @@
 	    return new Promise((resolve, reject) => {
 	        index_1.getData("them-danh-ba", data)
 	            .then(result => {
-	            if (result['link_user'] == 'success') {
+	            if (result['link'] == 'success') {
 	                resolve();
 	            }
 	            else {

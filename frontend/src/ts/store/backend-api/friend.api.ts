@@ -24,7 +24,7 @@ export function addFriend(email) {
 	return new Promise((resolve, reject) => {
 		getData("them-danh-ba", data)
 			.then(result => {
-				if (result['link_user'] == 'success') {
+				if (result['link'] == 'success') {
 					resolve();
 				} else {
 					reject(result['message']);
