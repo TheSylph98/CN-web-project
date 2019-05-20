@@ -17,16 +17,16 @@ Route::any('/', function () {
 
 // Route::get('home','HomeController@index');
 
-Route::get('dang-nhap','HomeController@Login');
-Route::post('dang-nhap','HomeController@LoginAuth');
+Route::get('dang-nhap','LoginController@Login');
+Route::post('dang-nhap','LoginController@LoginAuth');
 
-Route::get('dang-ki','HomeController@Register');
-Route::post('dang-ki','HomeController@DoRegister');
+Route::get('dang-ki','RegisterController@Register');
+Route::post('dang-ki','RegisterController@DoRegister');
 
-Route::post('dang-xuat','HomeController@Logout');
+Route::post('dang-xuat','LoginController@Logout');
 
-Route::post('quan-li-thong-tin','HomeController@ChinhSuaThongTin');
-Route::post('thong-tin-ca-nhan','HomeController@ThongTinCaNhan');
+Route::post('quan-li-thong-tin','UserController@ChinhSuaThongTin');
+Route::post('thong-tin-ca-nhan','UserController@ThongTinCaNhan');
 
 //chuyen tien
 Route::get("transfer", "TransferController@getViewTransfer");
@@ -36,31 +36,28 @@ Route::get("addmoney", 'AddMoneyToWallet@getViewAddMoney');
 Route::post("post-add-money", 'AddMoneyToWallet@postAddMoney');
 
 //cap nhật lại trường daxem thongbao
-Route::post("update-thongbao", "HomeController@updateNotification");
-
-//lay thong tin user
-Route::post("getInforUser", "HomeController@getInformationUser");
+Route::post("update-thongbao", "NotificationController@updateNotification");
 
 
 
-Route::get('them-tai-khoan','HomeController@gThemTaiKhoan');
-Route::post('them-tai-khoan','HomeController@pThemtaikhoan');
+Route::get('them-tai-khoan','UserController@gThemTaiKhoan');
+Route::post('them-tai-khoan','UserController@pThemtaikhoan');
 
 //Get bank
-Route::post("bank","HomeController@GetBank");
-Route::post("bank-user","HomeController@GetBankUser");
+Route::post("bank","BankController@GetBank");
+Route::post("bank-user","BankController@GetBankUser");
 //Get Phone Book
-Route::post("danh-ba","HomeController@GetPhoneBook");
+Route::post("danh-ba","PhoneBookController@GetPhoneBook");
 
 //Post Notification
-Route::post("thong-bao","HomeController@PNotification");
+Route::post("thong-bao","NotificationController@PNotification");
 //get TransactionHistory
-Route::post("lich-su-giao-dich","HomeController@TransactionHistory");
+Route::post("lich-su-giao-dich","TransactionHistoryController@TransactionHistory");
 
-//Nap Thes
-Route::get('nap-the','HomeController@GNapThe');
-Route::post('nap-the','HomeController@NapThe');
+//Nap The
+Route::get('nap-the','NapTheController@GNapThe');
+Route::post('nap-the','NapTheController@PNapThe');
 
 //Them danh ba
-Route::get('them-danh-ba','HomeController@GetAddPhoneBook');
-Route::post('them-danh-ba','HomeController@PostAddPhoneBook');
+Route::get('them-danh-ba','PhoneBookController@GetAddPhoneBook');
+Route::post('them-danh-ba','PhoneBookController@PostAddPhoneBook');
