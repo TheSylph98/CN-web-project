@@ -60,7 +60,7 @@ class AddMoneyToWallet
     public function postAddMoney(Request $request)
     {
 //        check dang nhap
-        if (Auth::check()) {
+        if (!Auth::check()) {
             return response()->json([
                 "title"=>"error",
                 "content" => "Bạn phải đăng nhập trước",
