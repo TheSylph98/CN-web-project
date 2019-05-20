@@ -82,7 +82,16 @@ class PayBillController
 
             ]);
         } else {
-//            check so tiền bill so với số tiền trong ví
+//            check xem hoá đơn đã thanh toán hay chưa
+            if ($bill->datra ==1) {
+                return reponse()->json([
+                    "title" => "Đã thanh toán",
+                    "content" => "Hóa đơn này đã đuợc thanh toán",
+
+                ]);
+            }
+            //            check so tiền bill so với số tiền trong ví
+
             $user = Auth::user();
             if ($user->sotien < $bill->sotien) {
                 return reponse()->json([
@@ -91,11 +100,39 @@ class PayBillController
                 ]);
             }
 
-//            thanh toán
+//            update số tiền trong tài khoản
             DB::table('users')
                 ->where('id', $user->id)
                 ->update(['sotien' => $user->sotien-$request->sotien]);
-//            thong bao
+
+            //            thanh toán
+
+            $thanhtoan = new thanhtoan();
+            $thanhtoan->users_id = $user->id;
+            $thanhtoan->hoadon_id = $bill->id;
+            $thanhtoan->save();
+//
+//            update hóa đơn datra
+            DB::table('hoadon')
+                ->where('id', $bill->id)
+                ->update(['datra' =>1]);
+//          thong bao
+            $id_thanhtoan= thanhtoan::max("id");
+
+            $thongbao = new thongbao();
+            $thongbao->tieude = "Thông báo bạn đã thanh toán hóa đơn thành công";
+            $thongbao->noidung = "Bạn vừa thanh toán  thành công  " ;
+            $thongbao->user_id = $user->id;
+            $thongbao->daxem = 0;
+            $thongbao->type = "thanhtoan_".$id_thanhtoan;
+            $thongbao->save();
+
+
+//            thông báo thành công
+            return response()->json([
+                "title" => "success",
+                "content" => "thanh toán hóa đơn  thành công"
+            ]);
         }
 
 
