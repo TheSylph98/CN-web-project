@@ -38,6 +38,9 @@ Route::post("post-add-money", 'AddMoneyToWallet@postAddMoney');
 //cap nhật lại trường daxem thongbao
 Route::post("update-thongbao", "HomeController@updateNotification");
 
+//lay thong tin user
+Route::post("getInforUser", "HomeController@getInformationUser");
+
 
 
 Route::get('them-tai-khoan','HomeController@gThemTaiKhoan');
