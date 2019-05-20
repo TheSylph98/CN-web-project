@@ -46,7 +46,6 @@ Route::get("pay-bill", "PayBillController@getViewPayBill");
 Route::post("post-pay-bill", "PayBillController@postPayBill");
 
 
-
 Route::get('them-tai-khoan','HomeController@gThemTaiKhoan');
 Route::post('them-tai-khoan','HomeController@pThemtaikhoan');
 
