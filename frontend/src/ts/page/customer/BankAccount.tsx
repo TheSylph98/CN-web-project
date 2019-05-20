@@ -14,6 +14,15 @@ class BankAccount extends React.Component<{dispatch, bank, account}, {chosenBank
 		}
 	}
 
+	componentWillMount() {
+		if (this.props.bank.notLoad) {
+			this.props.dispatch(bankActions.getBank());
+		}
+		if (this.props.account.notLoad) {
+			this.props.dispatch(accountActions.getConnectedAccount());
+		}
+	}
+
 	chooseBank(id: string) {
 		this.setState({
 			chosenBankId: id,
@@ -26,12 +35,6 @@ class BankAccount extends React.Component<{dispatch, bank, account}, {chosenBank
 	}
 
 	render() {
-		if (!this.props.bank.loading && this.props.bank.banks.length == 0) {
-			this.props.dispatch(bankActions.getBank());
-		}
-		if (this.props.account.notLoad) {
-			this.props.dispatch(accountActions.getConnectedAccount());
-		}
 
 		let banks = this.props.bank.banks;
 		let accounts = this.props.account.accounts;

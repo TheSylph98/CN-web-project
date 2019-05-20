@@ -19,6 +19,10 @@ export default class ServiceTab extends React.Component<{location: string}, {}> 
 				<i className="fa fa-credit-card"/>
 				<span>Pay</span>
 			</Link>
+			<Link to="/customer/services/mobile" className={"tab" + (tab == "mobile" ? " active" : "")}>
+				<i className="fa fa-mobile-alt"/>
+				<span>Mobile Pay</span>
+			</Link>
 		</div>
 	}
 }

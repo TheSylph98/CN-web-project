@@ -1,0 +1,53 @@
+.mobile-pay .title:not(:first-child) {
+	margin-top: 20px;
+}
+
+.telecom-list {
+	display: flex;
+	flex-wrap: wrap;
+	margin-bottom: 20px;
+}
+
+.telecom-list .telecom {
+	height: 100px;
+	display: inline-flex;
+	width: 100px;
+	align-items: center;
+	text-align: center;
+	background: #2d2d2d;
+	flex-direction: column;
+	margin: 10px;
+	padding: 10px;
+}
+
+.telecom-list .telecom:hover {
+	background: #4d4d4d;
+	cursor: pointer;
+}
+
+.telecom-list .telecom.active {
+	outline: solid 2px #fd961a;
+}
+
+.telecom-list .telecom.active span{
+	color: #fd961a;
+}
+
+.telecom .avatar {
+	width: 90%;
+	height: 80%;
+	margin: 10px;
+	display: flex;
+	align-items: center;
+}
+
+.telecom img {
+	width: 100%;
+}
+
+.telecom span {
+	color: #fff;
+    font-weight: 600;
+    font-family: sans-serif;
+    font-size: 13px;
+}

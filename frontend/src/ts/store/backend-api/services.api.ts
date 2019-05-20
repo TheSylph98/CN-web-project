@@ -18,3 +18,12 @@ export function transfer({amount, email, message}) {
 			})
 	})
 }
+
+export function payMobileCard(telecomId, amount) {
+	return new Promise((resolve, reject) => {
+		getData("nap-the")
+			.then(result => {
+				
+			})
+	});
+}

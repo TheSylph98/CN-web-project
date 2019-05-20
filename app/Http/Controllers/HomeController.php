@@ -321,13 +321,16 @@ class HomeController extends Controller
             $ruttien = ruttien::where('users_id',$id)->get();
             //ls thanhtoan
             $thanhtoan = thanhtoan::where('users_id',$id)->get();
+            // lsnhantien
+            $nhantien = chuyentien::where ('id_nhan',$id)->get();
             return response()->json([
                 'trans' => 'success',
                 'naptien' => $naptien,
                 'chuyentien' => $chuyentien,
                 'napthe' => $napthe,
                 'ruttien' => $ruttien,
-                'thanhtoan' => $thanhtoan
+                'thanhtoan' => $thanhtoan,
+                'nhantien' => $nhantien,
             ]);
         } else {
             return response()->json([
@@ -390,10 +393,9 @@ class HomeController extends Controller
                 'message'=> 'ban chua dang nhap '
             ]);
     }
-    public function GNapThe(){
-        $user = Auth::user();
+    public function NhaMang(){
         $nhamang = nhamang::all();
-        return view('page.napthe',['nhamang' => $nhamang,'user'=>$user]);
+        return response()->json($nhamang);
     }
     public function GetThanhToan(){
         if (Auth::check()){

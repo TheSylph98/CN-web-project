@@ -1,5 +1,4 @@
 import { servicesConstants } from "../constants";
-import { userActions } from "./";
 import backend = require("../backend-api");
 
 export const servicesActions = {
@@ -13,7 +12,6 @@ function transfer({amount, email, message}) {
 		backend.transfer({amount, email, message})
 			.then(
 				() => {
-					dispatch(userActions.update());
 					dispatch(success());
 				},
 				error => {

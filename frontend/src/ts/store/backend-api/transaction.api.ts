@@ -33,14 +33,14 @@ export function getTransaction() {
 						amount: transaction["sotien"],
 					})));
 
-					// transactions = transactions.concat(result['nhantien'].map(transaction => ({
-					// 	type: TransactionType.RECEIVE,
-					// 	id: transaction["id"],
-					// 	sender: transaction["id_gui"],
-					// 	time: new Date(transaction["created_at"]),
-					// 	message: transaction["noidung"],
-					// 	amount: transaction["sotien"],
-					// })));
+					transactions = transactions.concat(result['nhantien'].map(transaction => ({
+						type: TransactionType.RECEIVE,
+						id: transaction["id"],
+						sender: transaction["id_chuyen"],
+						time: new Date(transaction["time"]),
+						message: transaction["noidung"],
+						amount: transaction["sotien"],
+					})));
 
 					resolve(transactions);
 				} else {

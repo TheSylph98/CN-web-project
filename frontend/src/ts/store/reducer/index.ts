@@ -8,6 +8,7 @@ import { friend } from "./friend.reducer";
 import { services } from "./services.reducer";
 import { notification } from "./notification.reducer";
 import { transaction } from "./transaction.reducer";
+import { mobile } from "./mobile.reducer";
 
 const rootReducer = combineReducers({
   login,
@@ -19,6 +20,7 @@ const rootReducer = combineReducers({
   services,
   notification,
   transaction,
+  mobile,
 });
 
 export default rootReducer;

@@ -55,5 +55,6 @@ Route::post("thong-bao","HomeController@PNotification");
 Route::post("lich-su-giao-dich","HomeController@TransactionHistory");
 
 //Nap Thes
-Route::get('nap-the','HomeController@GNapThe');
+// Route::get('nap-the','HomeController@GNapThe');
 Route::post('nap-the','HomeController@NapThe');
+Route::post('nha-mang','HomeController@NhaMang');

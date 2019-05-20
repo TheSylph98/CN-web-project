@@ -2,6 +2,7 @@ import React = require("react");
 import { connect } from "react-redux";
 import { transactionActions, accountActions } from "../../store/action";
 import { TransactionType, toMoneyFormat, compare } from "../../utils";
+import TransactionSummary from "./TransactionSummary";
 
 class Transaction extends React.Component<{dispatch, transaction, account, location}, {transaction}> {
 
@@ -19,26 +20,43 @@ class Transaction extends React.Component<{dispatch, transaction, account, locat
 		if (this.props.account.notLoad) {
 			this.props.dispatch(accountActions.getConnectedAccount());
 		}
+
+		let transactions = this.props.transaction.transactions;
 		if (this.props.location.details) {
 			let details = this.props.location.details
 			this.setState({
-				transaction: this.props.transaction.transactions.find(trans => {
+				transaction: transactions.find(trans => {
 					return compare(details.type, trans.type)
 						&& details.id == trans.id;
 				})
 			})
+		} else {
+			if (transactions.length > 0) {
+				this.setState({
+					transaction: transactions[0]
+				})
+			}
 		}
 	}
 
 	componentWillReceiveProps(nextProps) {
+
+		let transactions = nextProps.transaction.transactions;
+
 		if (nextProps.location.details) {
 			let details = nextProps.location.details
 			this.setState({
-				transaction: nextProps.transaction.transactions.find(trans => {
+				transaction: transactions.find(trans => {
 					return compare(details.type, trans.type)
 						&& details.id == trans.id;
 				})
 			})
+		} else {
+			if (transactions.length > 0) {
+				this.setState({
+					transaction: transactions[0]
+				})
+			}
 		}
 	}
 
@@ -159,6 +177,7 @@ class Transaction extends React.Component<{dispatch, transaction, account, locat
 
 		return <div className="content-right">
 			<h1 className="title">Transaction</h1>
+			<TransactionSummary transactions={transactions}/>
 			<div className="wrapper trans">
 				<div className="sub-wrapper">
 					<div className="title">May 2019</div>
@@ -169,15 +188,15 @@ class Transaction extends React.Component<{dispatch, transaction, account, locat
 								className={"trans" + (transaction == this.state.transaction ? " active" : "")}>
 								<div className="avatar">
 								{transaction.type == TransactionType.TRANSFER ?
-									<i className="fa fa-sign-out-alt" style={{color: "green"}}/>
+									<i className="fa fa-sign-out-alt" style={{color: "#0f7a0b"}}/>
 								: transaction.type == TransactionType.DEPOSIT ?
-									<i className="fa fa-sign-in-alt" style={{color: "blue"}}/>
+									<i className="fa fa-sign-in-alt" style={{color: "#365382"}}/>
 								: transaction.type == TransactionType.RECEIVE ?
-									<i className="fa fa-money-bill" style={{color: "red"}}/>
+									<i className="fa fa-money-bill" style={{color: "#e54837"}}/>
 								: transaction.type == TransactionType.PAY ?
-									<i className="fa fa-credit-card" style={{color: "yellow"}}/> 
+									<i className="fa fa-credit-card" style={{color: "#d1c217"}}/> 
 								: transaction.type == TransactionType.MOBILE_PAY ?
-									<i className="fa fa-mobile-alt" style={{color: "#fd961a"}}/>
+									<i className="fa fa-mobile-alt" style={{color: "#d1c217"}}/>
 								: <i/>
 								}
 								</div>
