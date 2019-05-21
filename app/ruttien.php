@@ -8,7 +8,7 @@ class ruttien extends Model
 {
     //
     protected $table = "ruttien";
-    public function TaiKhoan(){
+    public function NguoiRut(){
       return $this->belongsTo('App\User','users_id','id');
     }
 }

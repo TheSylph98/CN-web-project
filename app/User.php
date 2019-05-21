@@ -52,7 +52,7 @@ class User extends Authenticatable
       return $this->hasMany('App\danhba','users_id','id');
     }
 
-    public function FriendDanhBa(){
+    public function BanBeDanhBa(){
       return $this->hasMany('App\danhba','friend_id','id');
     }
 

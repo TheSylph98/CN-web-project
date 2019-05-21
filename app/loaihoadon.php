@@ -8,7 +8,7 @@ class loaihoadon extends Model
 {
     //
     protected $table ="loaihoadon";
-    public function ThanhToan(){
+    public function HoaDon(){
       return $this->belongsTo('App\hoadon','loaihoadon_id','id');
     }
 }
