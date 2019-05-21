@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: May 21, 2019 at 08:49 AM
+-- Generation Time: May 21, 2019 at 01:35 PM
 -- Server version: 10.1.38-MariaDB
 -- PHP Version: 7.3.4
 
@@ -56,7 +56,8 @@ INSERT INTO `chuyentien` (`sotien`, `noidung`, `time`, `id_chuyen`, `id_nhan`, `
 (2000, 'asfdfd', '2019-05-20 16:51:54', 1, 3, '2019-05-20 09:51:54', '2019-05-20 09:51:54', 10),
 (2000, 'asfdfd', '2019-05-20 16:53:16', 1, 3, '2019-05-20 09:53:16', '2019-05-20 09:53:16', 11),
 (4000, 'jjhj', '2019-05-20 17:02:28', 1, 2, '2019-05-20 10:02:28', '2019-05-20 10:02:28', 12),
-(5000, 'chuyen tien', '2019-05-21 06:34:18', 3, 1, '2019-05-20 23:34:18', '2019-05-20 23:34:18', 13);
+(5000, 'chuyen tien', '2019-05-21 06:34:18', 3, 1, '2019-05-20 23:34:18', '2019-05-20 23:34:18', 13),
+(10000, 'tien nha', '2019-05-21 11:32:46', 1, 2, '2019-05-21 04:32:46', '2019-05-21 04:32:46', 14);
 
 -- --------------------------------------------------------
 
@@ -91,8 +92,16 @@ CREATE TABLE `hoadon` (
   `mahoadon` varchar(20) NOT NULL,
   `sotien` int(11) NOT NULL,
   `ten_nhacungcap` varchar(255) NOT NULL,
-  `loaihoadon_id` int(11) NOT NULL
+  `loaihoadon_id` int(11) NOT NULL,
+  `datra` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `hoadon`
+--
+
+INSERT INTO `hoadon` (`id`, `mahoadon`, `sotien`, `ten_nhacungcap`, `loaihoadon_id`, `datra`) VALUES
+(1, '111', 10000, 'Viettel', 3, 1);
 
 -- --------------------------------------------------------
 
@@ -104,6 +113,17 @@ CREATE TABLE `loaihoadon` (
   `tenloai` varchar(255) NOT NULL,
   `id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `loaihoadon`
+--
+
+INSERT INTO `loaihoadon` (`tenloai`, `id`) VALUES
+('Water', 1),
+('Electricity', 2),
+('Internet', 3),
+('Movie', 4),
+('Television', 5);
 
 -- --------------------------------------------------------
 
@@ -153,7 +173,9 @@ CREATE TABLE `naptien` (
 --
 
 INSERT INTO `naptien` (`sotien`, `time`, `users_id`, `created_at`, `updated_at`, `id`, `id_taikhoan`) VALUES
-(10000, '2019-05-21 06:28:05', 1, '2019-05-20 23:28:05', '2019-05-20 23:28:05', 4, 2);
+(10000, '2019-05-21 06:28:05', 1, '2019-05-20 23:28:05', '2019-05-20 23:28:05', 4, 2),
+(25000, '2019-05-21 11:20:57', 1, '2019-05-21 04:20:57', '2019-05-21 04:20:57', 5, 1),
+(10000, '2019-05-21 11:23:49', 1, '2019-05-21 04:23:49', '2019-05-21 04:23:49', 6, 2);
 
 -- --------------------------------------------------------
 
@@ -243,8 +265,8 @@ CREATE TABLE `taikhoan` (
 --
 
 INSERT INTO `taikhoan` (`sotaikhoan`, `sotien`, `nganhang_id`, `users_id`, `created_at`, `updated_at`, `id`) VALUES
-('11111111111', 5000000, 2, 1, '2019-05-20 10:41:15', '2019-05-20 03:43:32', 1),
-('2222222222', 4970000, 10, 1, '2019-05-20 10:41:28', '2019-05-20 09:33:07', 2),
+('11111111111', 4975000, 2, 1, '2019-05-20 10:41:15', '2019-05-20 03:43:32', 1),
+('2222222222', 4960000, 10, 1, '2019-05-20 10:41:28', '2019-05-20 09:33:07', 2),
 ('3333333333', 4970000, 6, 1, '2019-05-20 10:41:45', NULL, 3);
 
 -- --------------------------------------------------------
@@ -256,10 +278,17 @@ INSERT INTO `taikhoan` (`sotaikhoan`, `sotien`, `nganhang_id`, `users_id`, `crea
 CREATE TABLE `thanhtoan` (
   `id` int(11) NOT NULL,
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  `update_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `updated_at` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
   `users_id` int(11) NOT NULL,
   `hoadon_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `thanhtoan`
+--
+
+INSERT INTO `thanhtoan` (`id`, `created_at`, `updated_at`, `users_id`, `hoadon_id`) VALUES
+(1, '2019-05-21 03:48:29', '2019-05-21 03:48:29', 1, 1);
 
 -- --------------------------------------------------------
 
@@ -291,7 +320,12 @@ INSERT INTO `thongbao` (`id`, `tieude`, `noidung`, `time`, `created_at`, `update
 (5, 'Buy Mobile card successfully', 'You bought a mobile card of Vinaphone with denomination of 20000đ', '2019-05-21 04:39:37', '2019-05-20 21:39:27', '2019-05-20 21:39:27', '1', 'napthe_6', 1),
 (7, 'Deposit successfully', 'You deposited successfully 10000đ from your bank account to your wallet', '2019-05-21 06:28:08', '2019-05-20 23:28:05', '2019-05-20 23:28:05', '1', 'naptien_4', 1),
 (8, 'Thông báo chuyển tiền thành công', 'Bạn vừa chuyển thành công 5000đ cho chủ tài khoàn có email thanhtung29497@gmail.com', '2019-05-21 06:36:46', '2019-05-20 23:34:18', '2019-05-20 23:34:18', '1', 'chuyentien_13', 3),
-(9, 'Thông báo nhận tiền thành công', 'Tài khoản của bạn  nhận thành công 5000đ  từ chủ tài khoàn có email a@1', '2019-05-21 06:37:02', '2019-05-20 23:34:18', '2019-05-20 23:34:18', '1', 'nhantien_13', 1);
+(9, 'Thông báo nhận tiền thành công', 'Tài khoản của bạn  nhận thành công 5000đ  từ chủ tài khoàn có email a@1', '2019-05-21 06:37:02', '2019-05-20 23:34:18', '2019-05-20 23:34:18', '1', 'nhantien_13', 1),
+(10, 'Thông báo bạn đã thanh toán hóa đơn thành công', 'Bạn vừa thanh toán  thành công  ', '2019-05-21 10:48:36', '2019-05-21 03:48:29', '2019-05-21 03:48:29', '1', 'thanhtoan_1', 1),
+(11, 'Deposit successfully', 'You deposited successfully 25000đ from your bank account to your wallet', '2019-05-21 11:25:12', '2019-05-21 04:20:58', '2019-05-21 04:20:58', '1', 'naptien_5', 1),
+(12, 'Deposit successfully', 'You deposited successfully 10000đ from your bank account to your wallet', '2019-05-21 11:24:59', '2019-05-21 04:23:49', '2019-05-21 04:23:49', '1', 'naptien_6', 1),
+(13, 'Thông báo chuyển tiền thành công', 'Bạn vừa chuyển thành công 10000đ cho chủ tài khoàn có email tung@mail', '2019-05-21 11:33:30', '2019-05-21 04:32:46', '2019-05-21 04:32:46', '1', 'chuyentien_14', 1),
+(14, 'Thông báo nhận tiền thành công', 'Tài khoản của bạn  nhận thành công 10000đ  từ chủ tài khoàn có email thanhtung29497@gmail.com', '2019-05-21 11:32:46', '2019-05-21 04:32:46', '2019-05-21 04:32:46', '0', 'nhantien_14', 2);
 
 -- --------------------------------------------------------
 
@@ -317,8 +351,8 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`ten`, `email`, `password`, `diachi`, `sodienthoai`, `remember_token`, `sotien`, `created_at`, `updated_at`, `id`) VALUES
-('Tung Tran Thanh', 'thanhtung29497@gmail.com', '$2y$10$9UYpBew3.OshoJp3Wq3sOOBy6dtYqOtvV8BDQEg.l0.r.zHeHg5A.', 'Hanoi, Vietnam, Minh Khai', 555555555, NULL, 325000, '2019-05-20 03:37:45', '2019-05-20 23:34:18', 1),
-('Tung', 'tung@mail', '$2y$10$/Tkl83pd9FWPEX3bSTai3OovTxxAI80GSpncmoINibHy7JJ9mPygy', NULL, NULL, NULL, 0, '2019-05-20 04:03:00', '2019-05-20 21:30:55', 2),
+('Tung Tran Thanh', 'thanhtung29497@gmail.com', '$2y$10$9UYpBew3.OshoJp3Wq3sOOBy6dtYqOtvV8BDQEg.l0.r.zHeHg5A.', 'Hanoi, Vietnam, Minh Khai', 555555555, NULL, 325000, '2019-05-20 03:37:45', '2019-05-21 04:32:46', 1),
+('Tung', 'tung@mail', '$2y$10$/Tkl83pd9FWPEX3bSTai3OovTxxAI80GSpncmoINibHy7JJ9mPygy', NULL, NULL, NULL, 10000, '2019-05-20 04:03:00', '2019-05-21 04:32:46', 2),
 ('Tung Tran', 'a@1', '$2y$10$So6cXqy494cCdJHLTPq64.JB2NsgJq0gjmNcBGdA8F4bUB.0v/p/6', NULL, NULL, NULL, 5000, '2019-05-20 09:20:34', '2019-05-20 23:34:18', 3);
 
 --
@@ -426,7 +460,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `chuyentien`
 --
 ALTER TABLE `chuyentien`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT for table `danhba`
@@ -438,13 +472,13 @@ ALTER TABLE `danhba`
 -- AUTO_INCREMENT for table `hoadon`
 --
 ALTER TABLE `hoadon`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `loaihoadon`
 --
 ALTER TABLE `loaihoadon`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `napthe`
@@ -456,7 +490,7 @@ ALTER TABLE `napthe`
 -- AUTO_INCREMENT for table `naptien`
 --
 ALTER TABLE `naptien`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `nganhang`
@@ -486,13 +520,13 @@ ALTER TABLE `taikhoan`
 -- AUTO_INCREMENT for table `thanhtoan`
 --
 ALTER TABLE `thanhtoan`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `thongbao`
 --
 ALTER TABLE `thongbao`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT for table `users`
