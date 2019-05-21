@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const constants_1 = require("../constants");
-function services(state = { transfer: {}, mobile: {} }, action) {
+function services(state = { transfer: {}, mobile: {}, deposit: {} }, action) {
     switch (action.type) {
         case constants_1.servicesConstants.TRANSFER_REQUEST:
             return Object.assign({}, state, { transfer: {
@@ -26,6 +26,18 @@ function services(state = { transfer: {}, mobile: {} }, action) {
                 } });
         case constants_1.servicesConstants.MOBILE_FAILURE:
             return Object.assign({}, state, { mobile: {
+                    error: action.error,
+                } });
+        case constants_1.servicesConstants.DEPOSIT_REQUEST:
+            return Object.assign({}, state, { deposit: {
+                    depositing: true,
+                } });
+        case constants_1.servicesConstants.DEPOSIT_SUCCESS:
+            return Object.assign({}, state, { deposit: {
+                    deposited: true,
+                } });
+        case constants_1.servicesConstants.TRANSFER_FAILURE:
+            return Object.assign({}, state, { deposit: {
                     error: action.error,
                 } });
         default:

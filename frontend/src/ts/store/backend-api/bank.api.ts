@@ -51,3 +51,40 @@ export function getConnectedAccount() {
 			})
 	})
 }
+
+export function getBankById(id) {
+	let data = { id };
+	return new Promise((resolve, reject) => {
+		getData("get-bank", data)
+			.then(result => {
+				if (result['get'] == 'success') {
+					let bank = result['nganhang'];
+					resolve({
+						name: bank["ten_nganhang"],
+						id: bank["id"],
+					});
+				} else {
+					reject(result['errors']);
+				}
+			})
+	})
+}
+
+export function getAccountById(id) {
+	let data = { id };
+	return new Promise((resolve, reject) => {
+		getData("get-account", data)
+			.then(result => {
+				if (result['get'] == 'success') {
+					let account = result['taikhoan'];
+					resolve({
+						number: account['sotaikhoan'],
+						name: account["ten_nganhang"],
+						id: account["id"],
+					});
+				} else {
+					reject(result['errors']);
+				}
+			})
+	})
+}

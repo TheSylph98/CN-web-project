@@ -19,6 +19,24 @@ export function transfer({amount, email, message}) {
 	})
 }
 
+export function deposit(account, amount) {
+	let data = {
+		"sotk": account,
+		"sotien": amount,
+	}
+
+	return new Promise((resolve, reject) => {
+		getData("post-add-money", data)
+			.then(result => {
+				if (result["title"] == "error") {
+					reject(result["content"]);
+				} else {
+					resolve();
+				}
+			})
+	})
+}
+
 export function payMobileCard(telecomId, amount) {
 	let data = {
 		"sotien": amount,

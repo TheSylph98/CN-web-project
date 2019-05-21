@@ -16,9 +16,6 @@ class Transaction extends React.Component {
         if (this.props.transaction.notLoad) {
             this.props.dispatch(action_1.transactionActions.load());
         }
-        if (this.props.account.notLoad) {
-            this.props.dispatch(action_1.accountActions.getConnectedAccount());
-        }
         let transactions = this.props.transaction.transactions;
         if (this.props.location.details) {
             let details = this.props.location.details;
@@ -64,10 +61,9 @@ class Transaction extends React.Component {
     getSource(transaction) {
         switch (transaction.type) {
             case utils_1.TransactionType.DEPOSIT:
-                let bank = this.props.account.accounts.find(account => account.id == transaction.account).name;
-                return bank;
+                return transaction.account.name;
             case utils_1.TransactionType.RECEIVE:
-                return transaction.sender;
+                return transaction.sender.username;
             default:
                 return "e-wallet";
         }
@@ -80,13 +76,13 @@ class Transaction extends React.Component {
                     React.createElement("section", null,
                         React.createElement("div", { className: "info" },
                             React.createElement("label", null, "Receiver"),
-                            React.createElement("span", null, transaction.receiver)),
+                            React.createElement("span", null, transaction.receiver.username)),
                         React.createElement("div", { className: "info" },
                             React.createElement("label", null, "Email"),
-                            React.createElement("span", null, transaction.receiver)),
+                            React.createElement("span", null, transaction.receiver.email)),
                         React.createElement("div", { className: "info" },
                             React.createElement("label", null, "Amount"),
-                            React.createElement("span", null, this.getAmount(transaction))),
+                            React.createElement("span", null, this.getAmount(transaction).slice(1))),
                         React.createElement("div", { className: "info" },
                             React.createElement("label", null, "Message"),
                             React.createElement("span", null, transaction.message))));
@@ -109,13 +105,13 @@ class Transaction extends React.Component {
                     React.createElement("section", null,
                         React.createElement("div", { className: "info" },
                             React.createElement("label", null, "Telecom Company"),
-                            React.createElement("span", null, transaction.telecom)),
+                            React.createElement("span", null, transaction.telecom.name)),
                         React.createElement("div", { className: "info" },
                             React.createElement("label", null, "Bill code"),
                             React.createElement("span", null, transaction.bill)),
                         React.createElement("div", { className: "info" },
                             React.createElement("label", null, "Cost"),
-                            React.createElement("span", null, transaction.amount))));
+                            React.createElement("span", null, this.getAmount(transaction).slice(1)))));
             default:
                 return React.createElement("span", null);
         }
@@ -130,19 +126,18 @@ class Transaction extends React.Component {
     }
     getContent(transaction) {
         if (transaction.type == utils_1.TransactionType.TRANSFER) {
-            return "Transfer to " + transaction.receiver;
+            return "Transfer to " + transaction.receiver.username;
         }
         if (transaction.type == utils_1.TransactionType.DEPOSIT) {
-            let bank = this.props.account.accounts.find(account => account.id == transaction.account).name;
-            return "Add money to wallet from " + bank;
+            return "Add money to wallet from " + transaction.account.name;
         }
         if (transaction.type == utils_1.TransactionType.PAY) {
             return "PAY BILL";
         }
         if (transaction.type == utils_1.TransactionType.RECEIVE) {
-            return "Receive money from " + transaction.sender;
+            return "Receive money from " + transaction.sender.username;
         }
-        return "Buy mobile card from " + transaction.telecom;
+        return "Buy mobile card from " + transaction.telecom.name;
     }
     render() {
         let transactions = this.props.transaction.transactions;
@@ -194,10 +189,9 @@ class Transaction extends React.Component {
     }
 }
 function mapStateToProps(state) {
-    const { transaction, account } = state;
+    const { transaction } = state;
     return {
         transaction,
-        account,
     };
 }
 exports.default = react_redux_1.connect(mapStateToProps)(Transaction);

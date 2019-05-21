@@ -20,6 +20,24 @@ function transfer({ amount, email, message }) {
     });
 }
 exports.transfer = transfer;
+function deposit(account, amount) {
+    let data = {
+        "sotk": account,
+        "sotien": amount,
+    };
+    return new Promise((resolve, reject) => {
+        _1.getData("post-add-money", data)
+            .then(result => {
+            if (result["title"] == "error") {
+                reject(result["content"]);
+            }
+            else {
+                resolve();
+            }
+        });
+    });
+}
+exports.deposit = deposit;
 function payMobileCard(telecomId, amount) {
     let data = {
         "sotien": amount,

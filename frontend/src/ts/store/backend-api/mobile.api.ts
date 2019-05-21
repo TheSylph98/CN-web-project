@@ -15,3 +15,20 @@ export function getTelecom() {
 			})
 	})
 }
+
+export function getTelecomById(id) {
+	return new Promise((resolve, reject) => {
+		getData("get-nha-mang", { id })
+			.then(result => {
+				if (result['get'] == 'success') {
+					let telecom = result['nhamang'];
+					resolve({
+						id: telecom["id"],
+						name: telecom["tennhamang"],
+					});
+				} else {
+					reject(result['errors']);
+				}
+			})
+	})
+}

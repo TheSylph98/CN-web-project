@@ -18,3 +18,21 @@ function getTelecom() {
     });
 }
 exports.getTelecom = getTelecom;
+function getTelecomById(id) {
+    return new Promise((resolve, reject) => {
+        _1.getData("get-nha-mang", { id })
+            .then(result => {
+            if (result['get'] == 'success') {
+                let telecom = result['nhamang'];
+                resolve({
+                    id: telecom["id"],
+                    name: telecom["tennhamang"],
+                });
+            }
+            else {
+                reject(result['errors']);
+            }
+        });
+    });
+}
+exports.getTelecomById = getTelecomById;

@@ -4,6 +4,7 @@ import backend = require("../backend-api");
 export const servicesActions = {
 	transfer,
 	payMobileCard,
+	deposit,
 }
 
 function transfer({amount, email, message}) {
@@ -44,4 +45,24 @@ function payMobileCard(telecomId, amount) {
 	function request() { return {type: servicesConstants.MOBILE_REQUEST}};
 	function success(code) { return {type: servicesConstants.MOBILE_SUCCESS, code}};
 	function failure(error) { return {type: servicesConstants.MOBILE_FAILURE, error}};
+}
+
+function deposit(account, amount) {
+	return dispatch => {
+		dispatch(request());
+
+		backend.deposit(account, amount)
+			.then(
+				() => {
+					dispatch(success());
+				},
+				error => {
+					dispatch(failure(error));
+				}
+			);
+	}
+
+	function request() { return {type: servicesConstants.DEPOSIT_REQUEST}};
+	function success() { return {type: servicesConstants.DEPOSIT_SUCCESS }};
+	function failure(error) { return {type: servicesConstants.DEPOSIT_FAILURE, error}};
 }

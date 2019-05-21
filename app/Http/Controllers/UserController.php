@@ -34,6 +34,29 @@ class UserController extends Controller
             ]);
     }
 
+    public function GetUser(Request $request){
+        $validator = Validator::make($request->all(),
+            [
+                'id' => 'required',
+            ],
+            [
+                'id.required' => 'You have not entered user\'s id',
+            ]);
+        $errs = $validator->errors();
+        $err = $errs->all();
+        if ($validator->fails()) {
+            return response()->json([
+                'get' => 'error',
+                'errors' => $err[0],
+            ]); 
+        }
+        $user = user::where("id", $request->id)->get();
+        return response()->json([
+            'get' => 'success',
+            'user' => $user[0],
+        ]);
+    }
+
     public function ChinhSuaThongTin(Request $request){
         $validator = Validator::make($request->all(),
             [

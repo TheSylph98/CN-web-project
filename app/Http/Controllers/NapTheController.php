@@ -57,6 +57,17 @@ class NapTheController extends Controller
                 $napthe->save();
                 $user->sotien = $tien_user - $tiennapthe;
                 $user->save();
+
+                $id_napthe = $napthe->id;
+                $nhamang = nhamang::where('id', $request->nhamang)->get();
+                $thongbao = new thongbao();
+                $thongbao->tieude = "Buy Mobile card successfully";
+                $thongbao->noidung = "You bought a mobile card of " . $nhamang[0]->tennhamang . " with denomination of " .  $request->sotien . "đ";
+                $thongbao->users_id = $user->id;
+                $thongbao->daxem = 0;
+                $thongbao->type = "napthe_".$id_napthe;
+
+                $thongbao->save();
                 return response()->json([
                     'napthe'=> 'success',
                     'code'=> mt_rand(1000000000000, 9999999999999),
@@ -78,5 +89,28 @@ class NapTheController extends Controller
     public function GetNhaMang(){
         $nhamang = nhamang::all();
         return response()->json($nhamang);
+    }
+
+    public function GetNhaMangById(Request $request) {
+        $validator = Validator::make($request->all(),
+            [
+                'id' => 'required',
+            ],
+            [
+                'id.required' => 'You have not entered telecom company\'s id',
+            ]);
+        $errs = $validator->errors();
+        $err = $errs->all();
+        if($validator->fails()){
+            return response()->json([
+                'get' => 'error',
+                'message' => $err[0]
+            ]);
+        }
+        $nhamang = nhamang::where('id', $request->id)->get();
+        return response()->json([
+            'get' => 'success',
+            'nhamang'=> $nhamang[0],
+        ]);
     }
 }

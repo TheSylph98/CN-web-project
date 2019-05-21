@@ -30038,6 +30038,9 @@
 	    MOBILE_SUCCESS: 'PAY_MOBILE_SUCCESS',
 	    MOBILE_FAILURE: 'PAY_MOBILE_ERROR',
 	    MOBILE_REQUEST: 'PAY_MOBILE_FAILURE',
+	    DEPOSIT_SUCCESS: 'DEPOSIT_SUCCESS',
+	    DEPOSIT_FAILURE: 'DEPOSIT_ERROR',
+	    DEPOSIT_REQUEST: 'DEPOSIT_FAILURE',
 	};
 
 
@@ -30224,7 +30227,7 @@
 	"use strict";
 	Object.defineProperty(exports, "__esModule", { value: true });
 	const constants_1 = __webpack_require__(68);
-	function services(state = { transfer: {}, mobile: {} }, action) {
+	function services(state = { transfer: {}, mobile: {}, deposit: {} }, action) {
 	    switch (action.type) {
 	        case constants_1.servicesConstants.TRANSFER_REQUEST:
 	            return Object.assign({}, state, { transfer: {
@@ -30249,6 +30252,18 @@
 	                } });
 	        case constants_1.servicesConstants.MOBILE_FAILURE:
 	            return Object.assign({}, state, { mobile: {
+	                    error: action.error,
+	                } });
+	        case constants_1.servicesConstants.DEPOSIT_REQUEST:
+	            return Object.assign({}, state, { deposit: {
+	                    depositing: true,
+	                } });
+	        case constants_1.servicesConstants.DEPOSIT_SUCCESS:
+	            return Object.assign({}, state, { deposit: {
+	                    deposited: true,
+	                } });
+	        case constants_1.servicesConstants.TRANSFER_FAILURE:
+	            return Object.assign({}, state, { deposit: {
 	                    error: action.error,
 	                } });
 	        default:
@@ -32742,6 +32757,29 @@
 	    });
 	}
 	exports.update = update;
+	function getInfo(id) {
+	    let data = {
+	        id
+	    };
+	    return new Promise((resolve, reject) => {
+	        index_1.getData("thong-tin-user", data)
+	            .then(result => {
+	            if (result["get"] == 'success') {
+	                let user = result['user'];
+	                resolve({
+	                    username: user['ten'],
+	                    email: user['email'],
+	                    address: user['diachi'],
+	                    phone: user['sodienthoai'],
+	                });
+	            }
+	            else {
+	                reject(result['errors']);
+	            }
+	        });
+	    });
+	}
+	exports.getInfo = getInfo;
 
 
 /***/ }),
@@ -32806,6 +32844,45 @@
 	    });
 	}
 	exports.getConnectedAccount = getConnectedAccount;
+	function getBankById(id) {
+	    let data = { id };
+	    return new Promise((resolve, reject) => {
+	        index_1.getData("get-bank", data)
+	            .then(result => {
+	            if (result['get'] == 'success') {
+	                let bank = result['nganhang'];
+	                resolve({
+	                    name: bank["ten_nganhang"],
+	                    id: bank["id"],
+	                });
+	            }
+	            else {
+	                reject(result['errors']);
+	            }
+	        });
+	    });
+	}
+	exports.getBankById = getBankById;
+	function getAccountById(id) {
+	    let data = { id };
+	    return new Promise((resolve, reject) => {
+	        index_1.getData("get-account", data)
+	            .then(result => {
+	            if (result['get'] == 'success') {
+	                let account = result['taikhoan'];
+	                resolve({
+	                    number: account['sotaikhoan'],
+	                    name: account["ten_nganhang"],
+	                    id: account["id"],
+	                });
+	            }
+	            else {
+	                reject(result['errors']);
+	            }
+	        });
+	    });
+	}
+	exports.getAccountById = getAccountById;
 
 
 /***/ }),
@@ -32878,6 +32955,24 @@
 	    });
 	}
 	exports.transfer = transfer;
+	function deposit(account, amount) {
+	    let data = {
+	        "sotk": account,
+	        "sotien": amount,
+	    };
+	    return new Promise((resolve, reject) => {
+	        _1.getData("post-add-money", data)
+	            .then(result => {
+	            if (result["title"] == "error") {
+	                reject(result["content"]);
+	            }
+	            else {
+	                resolve();
+	            }
+	        });
+	    });
+	}
+	exports.deposit = deposit;
 	function payMobileCard(telecomId, amount) {
 	    let data = {
 	        "sotien": amount,
@@ -32963,9 +33058,8 @@
 	                transactions = transactions.concat(result['naptien'].map(transaction => ({
 	                    type: utils_1.TransactionType.DEPOSIT,
 	                    id: transaction["id"],
-	                    account: transaction["account_id"],
-	                    message: transaction["noidung"],
-	                    time: new Date(transaction["time"]),
+	                    account: transaction["id_taikhoan"],
+	                    time: new Date(transaction["created_at"]),
 	                    amount: transaction["sotien"],
 	                })));
 	                transactions = transactions.concat(result['napthe'].map(transaction => ({
@@ -33097,6 +33191,24 @@
 	    });
 	}
 	exports.getTelecom = getTelecom;
+	function getTelecomById(id) {
+	    return new Promise((resolve, reject) => {
+	        _1.getData("get-nha-mang", { id })
+	            .then(result => {
+	            if (result['get'] == 'success') {
+	                let telecom = result['nhamang'];
+	                resolve({
+	                    id: telecom["id"],
+	                    name: telecom["tennhamang"],
+	                });
+	            }
+	            else {
+	                reject(result['errors']);
+	            }
+	        });
+	    });
+	}
+	exports.getTelecomById = getTelecomById;
 
 
 /***/ }),
@@ -33238,6 +33350,7 @@
 	exports.servicesActions = {
 	    transfer,
 	    payMobileCard,
+	    deposit,
 	};
 	function transfer({ amount, email, message }) {
 	    return dispatch => {
@@ -33271,6 +33384,23 @@
 	    function success(code) { return { type: constants_1.servicesConstants.MOBILE_SUCCESS, code }; }
 	    ;
 	    function failure(error) { return { type: constants_1.servicesConstants.MOBILE_FAILURE, error }; }
+	    ;
+	}
+	function deposit(account, amount) {
+	    return dispatch => {
+	        dispatch(request());
+	        backend.deposit(account, amount)
+	            .then(() => {
+	            dispatch(success());
+	        }, error => {
+	            dispatch(failure(error));
+	        });
+	    };
+	    function request() { return { type: constants_1.servicesConstants.DEPOSIT_REQUEST }; }
+	    ;
+	    function success() { return { type: constants_1.servicesConstants.DEPOSIT_SUCCESS }; }
+	    ;
+	    function failure(error) { return { type: constants_1.servicesConstants.DEPOSIT_FAILURE, error }; }
 	    ;
 	}
 
@@ -33331,6 +33461,7 @@
 	Object.defineProperty(exports, "__esModule", { value: true });
 	const constants_1 = __webpack_require__(68);
 	const backend = __webpack_require__(105);
+	const utils_1 = __webpack_require__(112);
 	exports.transactionActions = {
 	    load,
 	};
@@ -33338,8 +33469,47 @@
 	    return (dispatch) => {
 	        dispatch(request());
 	        backend.getTransaction()
-	            .then(transactions => {
-	            dispatch(success(transactions));
+	            .then((transactions) => {
+	            Promise.all(transactions.map(transaction => {
+	                if (transaction.type == utils_1.TransactionType.TRANSFER) {
+	                    return new Promise(resolve => {
+	                        backend.getInfo(transaction.receiver)
+	                            .then(user => {
+	                            transaction.receiver = user;
+	                            resolve();
+	                        });
+	                    });
+	                }
+	                else if (transaction.type == utils_1.TransactionType.RECEIVE) {
+	                    return new Promise(resolve => {
+	                        backend.getInfo(transaction.sender)
+	                            .then(user => {
+	                            transaction.sender = user;
+	                            resolve();
+	                        });
+	                    });
+	                }
+	                else if (transaction.type == utils_1.TransactionType.MOBILE_PAY) {
+	                    return new Promise(resolve => {
+	                        backend.getTelecomById(transaction.telecom)
+	                            .then(telecom => {
+	                            transaction.telecom = telecom;
+	                            resolve();
+	                        });
+	                    });
+	                }
+	                else if (transaction.type == utils_1.TransactionType.DEPOSIT) {
+	                    return new Promise(resolve => {
+	                        backend.getAccountById(transaction.account)
+	                            .then(account => {
+	                            transaction.account = account;
+	                            resolve();
+	                        });
+	                    });
+	                }
+	            })).then(() => {
+	                dispatch(success(transactions));
+	            });
 	        }, error => {
 	            dispatch(failure(error));
 	        });
@@ -34135,11 +34305,12 @@
 	    constructor(props) {
 	        super(props);
 	        this.state = {
-	            chosenBankId: null,
+	            chosenAccount: null,
 	        };
 	    }
 	    onSubmit(e) {
 	        e.preventDefault();
+	        this.props.dispatch(action_1.servicesActions.deposit(this.state.chosenAccount, this.amount.value));
 	    }
 	    componentWillMount() {
 	        if (this.props.account.notLoad) {
@@ -34156,32 +34327,46 @@
 	    }
 	    chooseAccount(id) {
 	        this.setState({
-	            chosenBankId: id
+	            chosenAccount: id
 	        });
 	    }
 	    render() {
 	        let accounts = this.props.account.accounts;
 	        return React.createElement("div", { className: "wrapper" },
 	            React.createElement("div", { className: "title" }, "Choose a bank account to deposit"),
-	            React.createElement("div", { className: "bank-list" }, accounts.map(bank => React.createElement("div", { onClick: () => this.chooseAccount(bank.id), id: bank.id, class: "bank" + (this.state.chosenBankId == bank.id ? " active" : "") },
+	            React.createElement("div", { className: "bank-list" }, accounts.map(account => React.createElement("div", { onClick: () => this.chooseAccount(account.number), key: account.id, class: "bank" + (this.state.chosenAccount == account.number ? " active" : "") },
 	                React.createElement("div", { class: "avatar" },
-	                    React.createElement("img", { class: "bank-avatar", src: "resources/images/banks/" + bank.name.toLowerCase() + ".png" })),
-	                React.createElement("span", null, bank.name)))),
+	                    React.createElement("img", { class: "bank-avatar", src: "resources/images/banks/" + account.name.toLowerCase() + ".png" })),
+	                React.createElement("span", null, account.name)))),
 	            React.createElement("form", { class: "content" },
 	                React.createElement("div", { class: "form-group" },
 	                    React.createElement("label", { class: "control-label", htmlFor: "amount" }, "Amount"),
 	                    React.createElement("div", { class: "input-wrap" },
-	                        React.createElement("input", { step: 1000, ref: input => this.amount = input, type: "number", name: "amount", class: "form-control", placeholder: "Enter amount of money to deposit" }))),
+	                        React.createElement("input", { defaultValue: "10000", min: 10000, step: 1000, ref: input => this.amount = input, type: "number", name: "amount", class: "form-control", placeholder: "Enter amount of money to deposit" }))),
+	                this.props.deposit.error ?
+	                    React.createElement("div", { class: "form-group" },
+	                        React.createElement("div", { class: "form-message" },
+	                            React.createElement("span", { className: "error" }, this.props.deposit.error)))
+	                    : this.props.deposit.depositing ?
+	                        React.createElement("div", { class: "form-group" },
+	                            React.createElement("div", { class: "form-message" },
+	                                React.createElement("span", { className: "info" }, "Processing...")))
+	                        : this.props.deposit.deposited ?
+	                            React.createElement("div", { class: "form-group" },
+	                                React.createElement("div", { class: "form-message" },
+	                                    React.createElement("span", { className: "success" }, "Deposit successfully")))
+	                            : React.createElement("span", null),
 	                React.createElement("div", { class: "form-group" },
-	                    React.createElement("div", { class: "form-message" }),
 	                    React.createElement("div", { class: "input-wrap margin" },
 	                        React.createElement("button", { onClick: this.onSubmit.bind(this), type: "submit", class: "btn btn-info btn-block btn-update" }, "Deposit")))));
 	    }
 	}
 	function mapStateToProps(state) {
 	    const { account } = state;
+	    const { deposit } = state.services;
 	    return {
-	        account
+	        account,
+	        deposit,
 	    };
 	}
 	exports.default = react_redux_1.connect(mapStateToProps)(Deposit);
@@ -34351,9 +34536,6 @@
 	        if (this.props.transaction.notLoad) {
 	            this.props.dispatch(action_1.transactionActions.load());
 	        }
-	        if (this.props.account.notLoad) {
-	            this.props.dispatch(action_1.accountActions.getConnectedAccount());
-	        }
 	        let transactions = this.props.transaction.transactions;
 	        if (this.props.location.details) {
 	            let details = this.props.location.details;
@@ -34399,10 +34581,9 @@
 	    getSource(transaction) {
 	        switch (transaction.type) {
 	            case utils_1.TransactionType.DEPOSIT:
-	                let bank = this.props.account.accounts.find(account => account.id == transaction.account).name;
-	                return bank;
+	                return transaction.account.name;
 	            case utils_1.TransactionType.RECEIVE:
-	                return transaction.sender;
+	                return transaction.sender.username;
 	            default:
 	                return "e-wallet";
 	        }
@@ -34415,13 +34596,13 @@
 	                    React.createElement("section", null,
 	                        React.createElement("div", { className: "info" },
 	                            React.createElement("label", null, "Receiver"),
-	                            React.createElement("span", null, transaction.receiver)),
+	                            React.createElement("span", null, transaction.receiver.username)),
 	                        React.createElement("div", { className: "info" },
 	                            React.createElement("label", null, "Email"),
-	                            React.createElement("span", null, transaction.receiver)),
+	                            React.createElement("span", null, transaction.receiver.email)),
 	                        React.createElement("div", { className: "info" },
 	                            React.createElement("label", null, "Amount"),
-	                            React.createElement("span", null, this.getAmount(transaction))),
+	                            React.createElement("span", null, this.getAmount(transaction).slice(1))),
 	                        React.createElement("div", { className: "info" },
 	                            React.createElement("label", null, "Message"),
 	                            React.createElement("span", null, transaction.message))));
@@ -34444,13 +34625,13 @@
 	                    React.createElement("section", null,
 	                        React.createElement("div", { className: "info" },
 	                            React.createElement("label", null, "Telecom Company"),
-	                            React.createElement("span", null, transaction.telecom)),
+	                            React.createElement("span", null, transaction.telecom.name)),
 	                        React.createElement("div", { className: "info" },
 	                            React.createElement("label", null, "Bill code"),
 	                            React.createElement("span", null, transaction.bill)),
 	                        React.createElement("div", { className: "info" },
 	                            React.createElement("label", null, "Cost"),
-	                            React.createElement("span", null, transaction.amount))));
+	                            React.createElement("span", null, this.getAmount(transaction).slice(1)))));
 	            default:
 	                return React.createElement("span", null);
 	        }
@@ -34465,19 +34646,18 @@
 	    }
 	    getContent(transaction) {
 	        if (transaction.type == utils_1.TransactionType.TRANSFER) {
-	            return "Transfer to " + transaction.receiver;
+	            return "Transfer to " + transaction.receiver.username;
 	        }
 	        if (transaction.type == utils_1.TransactionType.DEPOSIT) {
-	            let bank = this.props.account.accounts.find(account => account.id == transaction.account).name;
-	            return "Add money to wallet from " + bank;
+	            return "Add money to wallet from " + transaction.account.name;
 	        }
 	        if (transaction.type == utils_1.TransactionType.PAY) {
 	            return "PAY BILL";
 	        }
 	        if (transaction.type == utils_1.TransactionType.RECEIVE) {
-	            return "Receive money from " + transaction.sender;
+	            return "Receive money from " + transaction.sender.username;
 	        }
-	        return "Buy mobile card from " + transaction.telecom;
+	        return "Buy mobile card from " + transaction.telecom.name;
 	    }
 	    render() {
 	        let transactions = this.props.transaction.transactions;
@@ -34529,10 +34709,9 @@
 	    }
 	}
 	function mapStateToProps(state) {
-	    const { transaction, account } = state;
+	    const { transaction } = state;
 	    return {
 	        transaction,
-	        account,
 	    };
 	}
 	exports.default = react_redux_1.connect(mapStateToProps)(Transaction);

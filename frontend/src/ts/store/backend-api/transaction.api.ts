@@ -19,9 +19,8 @@ export function getTransaction() {
 					transactions = transactions.concat(result['naptien'].map(transaction => ({
 						type: TransactionType.DEPOSIT,
 						id: transaction["id"],
-						account: transaction["account_id"],
-						message: transaction["noidung"],
-						time: new Date(transaction["time"]),
+						account: transaction["id_taikhoan"],
+						time: new Date(transaction["created_at"]),
 						amount: transaction["sotien"],
 					})));
 

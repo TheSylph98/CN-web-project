@@ -1,10 +1,10 @@
 import React = require("react");
 import { connect } from "react-redux";
-import { transactionActions, accountActions } from "../../store/action";
+import { transactionActions } from "../../store/action";
 import { TransactionType, toMoneyFormat, compare } from "../../utils";
 import TransactionSummary from "./TransactionSummary";
 
-class Transaction extends React.Component<{dispatch, transaction, account, location}, {transaction}> {
+class Transaction extends React.Component<{dispatch, transaction, location}, {transaction}> {
 
 	constructor(props) {
 		super(props);
@@ -16,9 +16,6 @@ class Transaction extends React.Component<{dispatch, transaction, account, locat
 	componentWillMount() {
 		if (this.props.transaction.notLoad) {
 			this.props.dispatch(transactionActions.load());
-		}
-		if (this.props.account.notLoad) {
-			this.props.dispatch(accountActions.getConnectedAccount());
 		}
 
 		let transactions = this.props.transaction.transactions;
@@ -69,10 +66,9 @@ class Transaction extends React.Component<{dispatch, transaction, account, locat
 	getSource(transaction) {
 		switch (transaction.type) {
 			case TransactionType.DEPOSIT:
-				let bank = this.props.account.accounts.find(account => account.id == transaction.account).name;
-				return bank;
+				return transaction.account.name;
 			case TransactionType.RECEIVE:
-				return transaction.sender;
+				return transaction.sender.username;
 			default:
 				return "e-wallet";
 		}
@@ -86,15 +82,15 @@ class Transaction extends React.Component<{dispatch, transaction, account, locat
 					<section>
 						<div className="info">
 							<label>Receiver</label>
-							<span>{transaction.receiver}</span>
+							<span>{transaction.receiver.username}</span>
 						</div>
 						<div className="info">
 							<label>Email</label>
-							<span>{transaction.receiver}</span>
+							<span>{transaction.receiver.email}</span>
 						</div>
 						<div className="info">
 							<label>Amount</label>
-							<span>{this.getAmount(transaction)}</span>
+							<span>{this.getAmount(transaction).slice(1)}</span>
 						</div>
 						<div className="info">
 							<label>Message</label>
@@ -126,7 +122,7 @@ class Transaction extends React.Component<{dispatch, transaction, account, locat
 					<section>
 						<div className="info">
 							<label>Telecom Company</label>
-							<span>{transaction.telecom}</span>
+							<span>{transaction.telecom.name}</span>
 						</div>
 						<div className="info">
 							<label>Bill code</label>
@@ -134,7 +130,7 @@ class Transaction extends React.Component<{dispatch, transaction, account, locat
 						</div>
 						<div className="info">
 							<label>Cost</label>
-							<span>{transaction.amount}</span>
+							<span>{this.getAmount(transaction).slice(1)}</span>
 						</div>
 					</section>
 				</div>
@@ -155,19 +151,18 @@ class Transaction extends React.Component<{dispatch, transaction, account, locat
 
 	getContent(transaction) {
 		if (transaction.type == TransactionType.TRANSFER) {
-			return "Transfer to " + transaction.receiver;
+			return "Transfer to " + transaction.receiver.username;
 		}
 		if (transaction.type == TransactionType.DEPOSIT) {
-			let bank = this.props.account.accounts.find(account => account.id == transaction.account).name;
-			return "Add money to wallet from " + bank;
+			return "Add money to wallet from " + transaction.account.name;
 		}
 		if (transaction.type == TransactionType.PAY) {
 			return "PAY BILL";
 		}
 		if (transaction.type == TransactionType.RECEIVE) {
-			return "Receive money from " + transaction.sender;
+			return "Receive money from " + transaction.sender.username;
 		}
-		return "Buy mobile card from " + transaction.telecom;
+		return "Buy mobile card from " + transaction.telecom.name;
 
 	}
 
@@ -246,10 +241,9 @@ class Transaction extends React.Component<{dispatch, transaction, account, locat
 
 
 function mapStateToProps(state) {
-	const { transaction, account } = state;
+	const { transaction } = state;
 	return {
 		transaction,
-		account,
 	}
 }
 

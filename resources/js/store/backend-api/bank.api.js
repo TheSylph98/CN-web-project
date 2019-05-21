@@ -56,3 +56,42 @@ function getConnectedAccount() {
     });
 }
 exports.getConnectedAccount = getConnectedAccount;
+function getBankById(id) {
+    let data = { id };
+    return new Promise((resolve, reject) => {
+        index_1.getData("get-bank", data)
+            .then(result => {
+            if (result['get'] == 'success') {
+                let bank = result['nganhang'];
+                resolve({
+                    name: bank["ten_nganhang"],
+                    id: bank["id"],
+                });
+            }
+            else {
+                reject(result['errors']);
+            }
+        });
+    });
+}
+exports.getBankById = getBankById;
+function getAccountById(id) {
+    let data = { id };
+    return new Promise((resolve, reject) => {
+        index_1.getData("get-account", data)
+            .then(result => {
+            if (result['get'] == 'success') {
+                let account = result['taikhoan'];
+                resolve({
+                    number: account['sotaikhoan'],
+                    name: account["ten_nganhang"],
+                    id: account["id"],
+                });
+            }
+            else {
+                reject(result['errors']);
+            }
+        });
+    });
+}
+exports.getAccountById = getAccountById;

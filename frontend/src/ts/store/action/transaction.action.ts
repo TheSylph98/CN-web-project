@@ -1,5 +1,6 @@
 import { transactionConstants } from "../constants";
 import backend = require("../backend-api");
+import { TransactionType } from "../../utils";
 
 export const transactionActions = {
 	load,
@@ -11,8 +12,45 @@ function load() {
 
 		backend.getTransaction()
 			.then(
-				transactions => {
-					dispatch(success(transactions));
+				(transactions: Array<any>) => {
+					Promise.all(
+						transactions.map(transaction => {
+							if (transaction.type == TransactionType.TRANSFER) {
+								return new Promise(resolve => {
+									backend.getInfo(transaction.receiver)
+										.then(user => {
+											transaction.receiver = user;
+											resolve();
+										});
+								})
+							} else if (transaction.type == TransactionType.RECEIVE) {
+								return new Promise(resolve => {
+									backend.getInfo(transaction.sender)
+										.then(user => {
+											transaction.sender = user;
+											resolve();
+										})
+								})
+							} else if (transaction.type == TransactionType.MOBILE_PAY) {
+								return new Promise(resolve => {
+									backend.getTelecomById(transaction.telecom)
+										.then(telecom => {
+											transaction.telecom = telecom;
+											resolve();
+										})
+								})
+							} else if (transaction.type == TransactionType.DEPOSIT) {
+								return new Promise(resolve => {
+									backend.getAccountById(transaction.account)
+										.then(account => {
+											transaction.account = account;
+											resolve();
+										})
+								})
+							}
+					})).then(() => {
+						dispatch(success(transactions));
+					})
 				},
 				error => {
 					dispatch(failure(error));
