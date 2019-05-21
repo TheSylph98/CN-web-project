@@ -41,6 +41,13 @@ export function getTransaction() {
 						amount: transaction["sotien"],
 					})));
 
+					transactions = transactions.concat(result['thanhtoan'].map(transaction => ({
+						type: TransactionType.PAY,
+						id: transaction["id"],
+						bill: transaction["hoadon_id"],
+						time: new Date(transaction["created_at"]),
+					})));
+
 					resolve(transactions);
 				} else {
 					reject(result["errors"]);

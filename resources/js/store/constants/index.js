@@ -11,3 +11,4 @@ __export(require("./services.constants"));
 __export(require("./notification.constants"));
 __export(require("./transaction.constants"));
 __export(require("./mobile.constants"));
+__export(require("./bill.constants"));

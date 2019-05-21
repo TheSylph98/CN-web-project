@@ -1,6 +1,6 @@
 import { servicesConstants } from '../constants';
 
-export function services(state = {transfer: {}, mobile: {}, deposit: {}}, action) {
+export function services(state = {transfer: {}, mobile: {}, deposit: {}, pay: {}}, action) {
 	switch (action.type) {
 		case servicesConstants.TRANSFER_REQUEST: 
 			return {
@@ -63,6 +63,27 @@ export function services(state = {transfer: {}, mobile: {}, deposit: {}}, action
 			return {
 				...state,
 				deposit: {
+					error: action.error,
+				}
+			};
+		case servicesConstants.PAY_REQUEST: 
+			return {
+				...state,
+				pay: {
+					paying: true,
+				}
+			};
+		case servicesConstants.PAY_SUCCESS:
+			return {
+				...state,
+				pay: {
+					payed: true,
+				}
+			};
+		case servicesConstants.PAY_FAILURE:
+			return {
+				...state,
+				pay: {
 					error: action.error,
 				}
 			};

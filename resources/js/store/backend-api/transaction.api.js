@@ -38,6 +38,12 @@ function getTransaction() {
                     message: transaction["noidung"],
                     amount: transaction["sotien"],
                 })));
+                transactions = transactions.concat(result['thanhtoan'].map(transaction => ({
+                    type: utils_1.TransactionType.PAY,
+                    id: transaction["id"],
+                    bill: transaction["hoadon_id"],
+                    time: new Date(transaction["created_at"]),
+                })));
                 resolve(transactions);
             }
             else {

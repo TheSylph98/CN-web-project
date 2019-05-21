@@ -5,6 +5,7 @@ export const servicesActions = {
 	transfer,
 	payMobileCard,
 	deposit,
+	payBill,
 }
 
 function transfer({amount, email, message}) {
@@ -65,4 +66,24 @@ function deposit(account, amount) {
 	function request() { return {type: servicesConstants.DEPOSIT_REQUEST}};
 	function success() { return {type: servicesConstants.DEPOSIT_SUCCESS }};
 	function failure(error) { return {type: servicesConstants.DEPOSIT_FAILURE, error}};
+}
+
+function payBill(code, type) {
+	return dispatch => {
+		dispatch(request());
+
+		backend.payBill(code, type)
+			.then(
+				() => {
+					dispatch(success());
+				},
+				error => {
+					dispatch(failure(error));
+				}
+			);
+	}
+
+	function request() { return {type: servicesConstants.PAY_REQUEST}};
+	function success() { return {type: servicesConstants.PAY_SUCCESS }};
+	function failure(error) { return {type: servicesConstants.PAY_FAILURE, error}};
 }

@@ -47,6 +47,15 @@ function load() {
 											resolve();
 										})
 								})
+							} else if (transaction.type == TransactionType.PAY) {
+								return new Promise(resolve => {
+									backend.getBillById(transaction.bill)
+										.then(bill => {
+											transaction.bill = bill;
+											transaction.amount = bill['amount'];
+											resolve();
+										})
+								})
 							}
 					})).then(() => {
 						dispatch(success(transactions));

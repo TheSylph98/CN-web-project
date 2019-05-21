@@ -73,18 +73,25 @@ class Transfer extends React.Component {
                 React.createElement("div", { class: "form-group" },
                     React.createElement("label", { class: "control-label", htmlFor: "receiver" }, "Amount"),
                     React.createElement("div", { class: "input-wrap" },
-                        React.createElement("input", { step: 1000, ref: input => this.amount = input, type: "number", name: "amount", class: "form-control", id: "amount", placeholder: "Enter amount of money" }))),
+                        React.createElement("input", { defaultValue: "10000", min: 10000, step: 1000, ref: input => this.amount = input, type: "number", name: "amount", class: "form-control", id: "amount", placeholder: "Enter amount of money" }))),
                 React.createElement("div", { class: "form-group" },
                     React.createElement("label", { class: "control-label", htmlFor: "message" }, "Message"),
                     React.createElement("div", { class: "input-wrap" },
                         React.createElement("input", { ref: input => this.message = input, type: "text", name: "amount", class: "form-control", id: "message", placeholder: "Message" }))),
+                this.props.transfer.error ?
+                    React.createElement("div", { class: "form-group" },
+                        React.createElement("div", { class: "form-message" },
+                            React.createElement("span", { className: "error" }, this.props.transfer.error)))
+                    : this.props.transfer.transfering ?
+                        React.createElement("div", { class: "form-group" },
+                            React.createElement("div", { class: "form-message" },
+                                React.createElement("span", { className: "info" }, "Transfering...")))
+                        : this.props.transfer.transfered ?
+                            React.createElement("div", { class: "form-group" },
+                                React.createElement("div", { class: "form-message" },
+                                    React.createElement("span", { className: "success" }, "Transfer successfully")))
+                            : React.createElement("span", null),
                 React.createElement("div", { class: "form-group" },
-                    React.createElement("div", { class: "form-message" }, this.props.transfer.transfering ?
-                        "Transfering..." :
-                        this.props.transfer.transfered ?
-                            "Transfer successfully!" :
-                            this.props.transfer.error ?
-                                this.props.transfer.error : ""),
                     React.createElement("div", { class: "input-wrap margin" },
                         React.createElement("button", { onClick: this.onSubmit.bind(this), type: "submit", class: "btn btn-info btn-block btn-update" }, "Transfer")))));
     }

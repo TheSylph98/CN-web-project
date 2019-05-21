@@ -86,19 +86,6 @@ class Transaction extends React.Component {
                         React.createElement("div", { className: "info" },
                             React.createElement("label", null, "Message"),
                             React.createElement("span", null, transaction.message))));
-            case utils_1.TransactionType.PAY:
-                return React.createElement("div", null,
-                    React.createElement("div", { className: "section-title" }, "Other Infomation"),
-                    React.createElement("section", null,
-                        React.createElement("div", { className: "info" },
-                            React.createElement("label", null, "Service"),
-                            React.createElement("span", null, transaction.bill)),
-                        React.createElement("div", { className: "info" },
-                            React.createElement("label", null, "Bill code"),
-                            React.createElement("span", null, transaction.bill)),
-                        React.createElement("div", { className: "info" },
-                            React.createElement("label", null, "Description"),
-                            React.createElement("span", null, transaction.description))));
             case utils_1.TransactionType.MOBILE_PAY:
                 return React.createElement("div", null,
                     React.createElement("div", { className: "section-title" }, "Other Infomation"),
@@ -107,11 +94,21 @@ class Transaction extends React.Component {
                             React.createElement("label", null, "Telecom Company"),
                             React.createElement("span", null, transaction.telecom.name)),
                         React.createElement("div", { className: "info" },
-                            React.createElement("label", null, "Bill code"),
-                            React.createElement("span", null, transaction.bill)),
-                        React.createElement("div", { className: "info" },
                             React.createElement("label", null, "Cost"),
                             React.createElement("span", null, this.getAmount(transaction).slice(1)))));
+            case utils_1.TransactionType.PAY:
+                return React.createElement("div", null,
+                    React.createElement("div", { className: "section-title" }, "Other Infomation"),
+                    React.createElement("section", null,
+                        React.createElement("div", { className: "info" },
+                            React.createElement("label", null, "Service"),
+                            React.createElement("span", null, transaction.bill.type)),
+                        React.createElement("div", { className: "info" },
+                            React.createElement("label", null, "Code"),
+                            React.createElement("span", null, transaction.bill.code)),
+                        React.createElement("div", { className: "info" },
+                            React.createElement("label", null, "Provider"),
+                            React.createElement("span", null, transaction.bill.provider))));
             default:
                 return React.createElement("span", null);
         }
@@ -132,7 +129,7 @@ class Transaction extends React.Component {
             return "Add money to wallet from " + transaction.account.name;
         }
         if (transaction.type == utils_1.TransactionType.PAY) {
-            return "PAY BILL";
+            return "Pay '" + transaction.bill.type + "' bill provided by " + transaction.bill.provider;
         }
         if (transaction.type == utils_1.TransactionType.RECEIVE) {
             return "Receive money from " + transaction.sender.username;

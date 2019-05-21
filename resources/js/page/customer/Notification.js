@@ -27,7 +27,7 @@ class Notification extends React.Component {
                 :
                     React.createElement("div", null,
                         React.createElement("div", { className: "small-text" }, "You have " + numOfUnread + " unread notification(s)"),
-                        React.createElement("div", { className: "noti-list" }, notifications.map(notification => React.createElement("div", { onClick: () => this.onRead(notification.id) },
+                        React.createElement("div", { className: "noti-list" }, notifications.map(notification => React.createElement("div", { key: notification.id, onClick: () => this.onRead(notification.id) },
                             React.createElement(react_router_dom_1.Link, { to: { pathname: "/customer/transaction", details: { id: notification.transactionId, type: notification.type } }, className: "noti" + (notification.read ? " read" : "") },
                                 React.createElement("div", { className: "avatar" }, notification.type == utils_1.NotificationType.TRANSFER ?
                                     React.createElement("i", { className: "fa fa-sign-out-alt", style: { color: "green" } })

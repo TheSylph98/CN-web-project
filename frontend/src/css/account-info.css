@@ -42,6 +42,10 @@
     position: relative;
 }
 
+.content-right .wrapper .form-group .input-wrap fieldset {
+    width: 100%;
+}
+
 .content-right .wrapper .form-group .form-control[disabled] {
     background: #3d3d3d;
     color: #aaa;
@@ -56,9 +60,23 @@
 }
 
 .content-right .wrapper .form-group .input-wrap {
-    display: inline-block;
+    display: inline-flex;
     position: relative;
     width: 405px;
+}
+
+.content-right .wrapper .form-group .input-wrap button {
+    width: 30%;
+    background: #fd961a;
+    outline: none;
+    border: none;
+    color: #fff;
+    font-weight: 600;
+    font-size: 14px;
+}
+
+.content-right .wrapper .form-group .input-wrap button:hover {
+    background: rgba(253, 150, 26,.9);
 }
 
 .content-right .wrapper .form-group .input-wrap.amount {

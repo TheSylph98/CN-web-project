@@ -45,7 +45,7 @@ class BankAccount extends React.Component {
                             React.createElement("div", { className: "text" },
                                 React.createElement("span", null, account.name),
                                 utils_1.toAccountNumberFormat(account.number)),
-                            React.createElement(react_router_dom_1.Link, { to: { pathname: "/customer/services/deposit", account: account.id } },
+                            React.createElement(react_router_dom_1.Link, { to: { pathname: "/customer/services/deposit", account: account.number } },
                                 React.createElement("button", null, "Deposit"))))),
                 React.createElement("div", { className: "title" }, "Choose a bank account to connect"),
                 React.createElement("div", { className: "bank-list" }, banks.map(bank => React.createElement("div", { onClick: () => this.chooseBank(bank.id), id: bank.id, class: "bank" + (this.state.chosenBankId == bank.id ? " active" : "") },

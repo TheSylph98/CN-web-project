@@ -11,3 +11,4 @@ __export(require("./services.action"));
 __export(require("./notification.action"));
 __export(require("./transaction.action"));
 __export(require("./mobile.action"));
+__export(require("./bill.action"));

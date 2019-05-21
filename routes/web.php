@@ -43,6 +43,9 @@ Route::post("update-thongbao", "NotificationController@updateNotification");
 //thanh toán hóa đơn
 Route::get("pay-bill", "PayBillController@getViewPayBill");
 Route::post("post-pay-bill", "PayBillController@postPayBill");
+Route::post("bill-type", "PayBillController@getBillType");
+Route::post("get-bill", "PayBillController@getBillByCodeType");
+Route::post("get-bill-id", "PayBillController@getBillById");
 
 
 

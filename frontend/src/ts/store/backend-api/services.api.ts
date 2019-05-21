@@ -53,3 +53,20 @@ export function payMobileCard(telecomId, amount) {
 			})
 	});
 }
+
+export function payBill(code, type) {
+	let data = {
+		"id_loaihoadon": type,
+		"mahoadon": code,
+	}
+	return new Promise((resolve, reject) => {
+		getData("post-pay-bill", data)
+			.then(result => {
+				if (result["title"] == "success") {
+					resolve();	
+				} else {
+					reject(result["content"]);
+				}
+			})
+	});
+}

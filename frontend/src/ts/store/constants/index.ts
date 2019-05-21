@@ -6,3 +6,4 @@ export * from "./services.constants";
 export * from "./notification.constants";
 export * from "./transaction.constants";
 export * from "./mobile.constants";
+export * from "./bill.constants";

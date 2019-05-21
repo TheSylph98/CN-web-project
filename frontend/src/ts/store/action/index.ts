@@ -6,4 +6,5 @@ export * from "./services.action";
 export * from "./notification.action";
 export * from "./transaction.action";
 export * from "./mobile.action";
+export * from "./bill.action";
 

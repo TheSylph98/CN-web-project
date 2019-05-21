@@ -21,6 +21,7 @@ use App\nganhang;
 use App\taikhoan;
 use App\danhba;
 use App\loaihoadon;
+use App\hoadon;
 use App\napthe;
 use App\nhamang;
 use App\ruttien;
@@ -41,6 +42,96 @@ class PayBillController
         return $bill;
     }
 
+    public function getBillById(Request $request) {
+        if (Auth::check()) {
+            $validator = Validator::make($request->all(),
+                [
+                    'id' => 'required',
+                ],
+                [
+                    'id.required' => 'You have not entered bill\'s id',
+                ]);
+
+            $errs = $validator->errors();
+            $err = $errs->all();
+            if ($validator->fails()) {
+                return response()->json([
+                    'title' => 'error',
+                    'content' => $err[0]
+                ]);
+            }
+        } else {
+            return response()->json([
+                "title"=>"error",
+                "content" => "You have to login first",
+            ]);
+        }
+
+        $bill = hoadon::where('id', $request->id)->first();
+        if ($bill == null) {
+            return response()->json([
+                "title"=>"error",
+                "content" => "Invalid bill id",
+            ]);
+        }
+
+        $loaihoadon = loaihoadon::where('id', $bill->loaihoadon_id)->first();
+
+        return response()->json([
+            "title" => "success",
+            "content" => $bill,
+            "type" => $loaihoadon->tenloai,
+        ]);
+    }
+
+    public function getBillType(Request $request) {
+        $billtype = loaihoadon::all();
+        return response()->json($billtype);
+    }
+
+    public function getBillByCodeType(Request $request) {
+        if (Auth::check()) {
+            $validator = Validator::make($request->all(),
+                [
+                    'mahoadon' => 'required',
+                    'id_loaihoadon' => 'required',
+                ],
+                [
+                    'mahoadon.required' => 'You have not entered bill\'s code',
+                    'id_loaihoadon.required' => 'You have not specified type of bill'
+                ]);
+
+            $errs = $validator->errors();
+            $err = $errs->all();
+            if ($validator->fails()) {
+                return response()->json([
+                    'title' => 'error',
+                    'content' => $err[0]
+                ]);
+            }
+        } else {
+            return response()->json([
+                "title"=>"error",
+                "content" => "You have to login first",
+            ]);
+        }
+
+
+        $bill = $this->getInforBill($request->mahoadon,$request->id_loaihoadon);
+        if ($bill == null) {
+            return response()->json([
+                "title" => "error",
+                "content" => "Invalid bill's code!",
+            ]);
+        }
+
+        return response()->json([
+            "title" => "success",
+            "content" => $bill,
+        ]);
+
+    }
+
 
     public function postPayBill(Request $request)
     {
@@ -50,9 +141,11 @@ class PayBillController
             $validator = Validator::make($request->all(),
                 [
                     'mahoadon' => 'required',
+                    'id_loaihoadon' => 'required',
                 ],
                 [
-                    'mahoadon.required' => 'Bạn chưa nhập mã hóa đơn ',
+                    'mahoadon.required' => 'You have not entered bill\'s code',
+                    'id_loaihoadon.required' => 'You have not specified type of bill'
                 ]);
 
             $errs = $validator->errors();
@@ -135,12 +228,6 @@ class PayBillController
                 "content" => "thanh toán hóa đơn  thành công"
             ]);
         }
-
-
-
-
-
-
     }
 
 }

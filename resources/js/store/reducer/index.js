@@ -11,6 +11,7 @@ const services_reducer_1 = require("./services.reducer");
 const notification_reducer_1 = require("./notification.reducer");
 const transaction_reducer_1 = require("./transaction.reducer");
 const mobile_reducer_1 = require("./mobile.reducer");
+const bill_reducer_1 = require("./bill.reducer");
 const rootReducer = redux_1.combineReducers({
     login: login_reducer_1.login,
     register: register_reducer_1.register,
@@ -22,5 +23,6 @@ const rootReducer = redux_1.combineReducers({
     notification: notification_reducer_1.notification,
     transaction: transaction_reducer_1.transaction,
     mobile: mobile_reducer_1.mobile,
+    bill: bill_reducer_1.bill,
 });
 exports.default = rootReducer;

@@ -106,7 +106,7 @@ class Transfer extends React.Component<{ dispatch, friend, location, transfer },
                 <div class="form-group">
                     <label class="control-label" htmlFor="receiver">Amount</label>
                     <div class="input-wrap">
-                        <input step={1000} ref={input => this.amount = input } type="number" name="amount" class="form-control" id="amount" 
+                        <input defaultValue={"10000"} min={10000} step={1000} ref={input => this.amount = input } type="number" name="amount" class="form-control" id="amount" 
                             placeholder="Enter amount of money"/>
                     </div>
                 </div>
@@ -117,15 +117,27 @@ class Transfer extends React.Component<{ dispatch, friend, location, transfer },
                             placeholder="Message"/>
                     </div>
                 </div>
+                {this.props.transfer.error ?
+                    <div class="form-group">
+                        <div class="form-message">
+                            <span className="error">{this.props.transfer.error}</span>
+                        </div>
+                    </div> 
+                    : this.props.transfer.transfering ?
+                        <div class="form-group">
+                            <div class="form-message">
+                                <span className="info">Transfering...</span>
+                            </div>
+                        </div> 
+                        : this.props.transfer.transfered ?
+                            <div class="form-group">
+                                <div class="form-message">
+                                    <span className="success">Transfer successfully</span>
+                                </div>
+                            </div> 
+                            : <span/>
+                }
                 <div class="form-group">
-                	<div class="form-message">
-                        {this.props.transfer.transfering ? 
-                            "Transfering..." :
-                            this.props.transfer.transfered ?
-                            "Transfer successfully!" : 
-                                this.props.transfer.error ?
-                                this.props.transfer.error : ""}
-                    </div>
                     <div class="input-wrap margin">
                         <button onClick={this.onSubmit.bind(this)} type="submit" class="btn btn-info btn-block btn-update">Transfer</button>
                     </div>

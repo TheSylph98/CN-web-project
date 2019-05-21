@@ -56,3 +56,21 @@ function payMobileCard(telecomId, amount) {
     });
 }
 exports.payMobileCard = payMobileCard;
+function payBill(code, type) {
+    let data = {
+        "id_loaihoadon": type,
+        "mahoadon": code,
+    };
+    return new Promise((resolve, reject) => {
+        _1.getData("post-pay-bill", data)
+            .then(result => {
+            if (result["title"] == "success") {
+                resolve();
+            }
+            else {
+                reject(result["content"]);
+            }
+        });
+    });
+}
+exports.payBill = payBill;

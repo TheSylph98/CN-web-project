@@ -66,6 +66,7 @@
     border-radius: 0;
     outline: 0;
     transition: .1s;
+    width: -webkit-fill-available;
 }
 
 .form-container button {

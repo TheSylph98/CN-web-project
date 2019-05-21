@@ -74,58 +74,6 @@ class AccountInfo extends React.Component<{dispatch, login, modify}, {openChange
                         </div>
                     </div>
                     
-                    <div class="form-group gender-select-wrap" id="register_name">
-                        <label class="control-label" htmlFor="pasword">Gender</label>
-                        <div class="input-wrap">
-                            <div class="row">
-                                <div class="col-xs-4">
-                                	<label>
-                                        <input type="radio" name="gender" defaultValue="on" id="gender_male" class="gender"/>
-                                        <span>
-                                            Male
-                                        </span>
-                                    </label>
-                                </div>
-                                <div class="col-xs-4">
-                                    <label>
-                                        <input type="radio" name="gender" defaultValue="off" id="gender_female" class="gender"/>
-                                        <span>
-                                            Female
-                                        </span>
-                                    </label>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="form-group ">
-                        <label class="control-label no-lh" htmlFor="birthdate">
-                            Date of birth
-                            <span>(Not required)</span>
-                        </label>
-
-                        <div class="input-wrap">
-                            <div id="birthday-picker" class="birthday-picker">
-                            	<fieldset class="birthday-picker">
-                            		<select class="birth-day form-control" name="birth[day]">
-                            			<option key="0" defaultValue="0">Day</option>
-                            			{Array.from(Array(31).keys()).map(number => 
-                                            <option key={(number+1).toString()} value={(number+1).toString()}>{number+1}</option>)}
-                            		</select>
-                            		<select class="birth-month form-control" name="birth[month]">
-                            			<option key="0" defaultValue="0">Month</option>
-                            			{Array.from(Array(12).keys()).map(number => 
-                                            <option key={(number+1).toString()} defaultValue={(number+1).toString()}>{number+1}</option>)}
-                            		</select>
-                            		<select class="birth-year form-control" name="birth[year]">
-                            			<option key="0" defaultValue="0">Year</option>
-                            			{Array.from(Array(120).keys()).map(number => 
-                                            <option key={(number+1).toString()} defaultValue={(number+1899).toString()}>{number+1899}</option>)}
-                            		</select>
-                            	</fieldset></div>
-                        </div>
-                    </div>
-
                     <div class="form-group">
                         <div class="input-wrap margin">
                             <label class="checkbox">

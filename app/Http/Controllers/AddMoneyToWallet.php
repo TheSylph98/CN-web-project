@@ -95,6 +95,8 @@ class AddMoneyToWallet
 
 
 //        thuc hiên nap tien
+        $user->sotien = $user->sotien + $request->sotien;
+        $user->save();
         $naptien = new naptien();
         $naptien->sotien = $request->sotien;
         $naptien->users_id = $user->id;

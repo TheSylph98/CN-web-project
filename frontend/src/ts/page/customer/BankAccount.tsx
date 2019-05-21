@@ -61,7 +61,7 @@ class BankAccount extends React.Component<{dispatch, bank, account}, {chosenBank
 									<span>{account.name}</span>
 									{toAccountNumberFormat(account.number)}
 								</div>
-								<Link to={{pathname: "/customer/services/deposit", account: account.id}}>
+								<Link to={{pathname: "/customer/services/deposit", account: account.number}}>
 									<button>Deposit</button>
 								</Link>
 							</div>

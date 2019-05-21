@@ -48,6 +48,16 @@ function load() {
                         });
                     });
                 }
+                else if (transaction.type == utils_1.TransactionType.PAY) {
+                    return new Promise(resolve => {
+                        backend.getBillById(transaction.bill)
+                            .then(bill => {
+                            transaction.bill = bill;
+                            transaction.amount = bill['amount'];
+                            resolve();
+                        });
+                    });
+                }
             })).then(() => {
                 dispatch(success(transactions));
             });

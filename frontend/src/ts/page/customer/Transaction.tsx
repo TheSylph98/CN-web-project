@@ -98,24 +98,6 @@ class Transaction extends React.Component<{dispatch, transaction, location}, {tr
 						</div>
 					</section>
 				</div>
-			case TransactionType.PAY:
-				return <div>
-					<div className="section-title">Other Infomation</div>
-					<section>
-						<div className="info">
-							<label>Service</label>
-							<span>{transaction.bill}</span>
-						</div>
-						<div className="info">
-							<label>Bill code</label>
-							<span>{transaction.bill}</span>
-						</div>
-						<div className="info">
-							<label>Description</label>
-							<span>{transaction.description}</span>
-						</div>
-					</section>
-				</div>
 			case TransactionType.MOBILE_PAY:
 				return <div>
 					<div className="section-title">Other Infomation</div>
@@ -125,12 +107,26 @@ class Transaction extends React.Component<{dispatch, transaction, location}, {tr
 							<span>{transaction.telecom.name}</span>
 						</div>
 						<div className="info">
-							<label>Bill code</label>
-							<span>{transaction.bill}</span>
-						</div>
-						<div className="info">
 							<label>Cost</label>
 							<span>{this.getAmount(transaction).slice(1)}</span>
+						</div>
+					</section>
+				</div>
+			case TransactionType.PAY:
+				return<div>
+					<div className="section-title">Other Infomation</div>
+					<section>
+						<div className="info">
+							<label>Service</label>
+							<span>{transaction.bill.type}</span>
+						</div>
+						<div className="info">
+							<label>Code</label>
+							<span>{transaction.bill.code}</span>
+						</div>
+						<div className="info">
+							<label>Provider</label>
+							<span>{transaction.bill.provider}</span>
 						</div>
 					</section>
 				</div>
@@ -157,7 +153,7 @@ class Transaction extends React.Component<{dispatch, transaction, location}, {tr
 			return "Add money to wallet from " + transaction.account.name;
 		}
 		if (transaction.type == TransactionType.PAY) {
-			return "PAY BILL";
+			return "Pay '" + transaction.bill.type + "' bill provided by " + transaction.bill.provider;
 		}
 		if (transaction.type == TransactionType.RECEIVE) {
 			return "Receive money from " + transaction.sender.username;

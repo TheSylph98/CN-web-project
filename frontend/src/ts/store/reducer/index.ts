@@ -9,6 +9,7 @@ import { services } from "./services.reducer";
 import { notification } from "./notification.reducer";
 import { transaction } from "./transaction.reducer";
 import { mobile } from "./mobile.reducer";
+import { bill } from "./bill.reducer";
 
 const rootReducer = combineReducers({
   login,
@@ -21,6 +22,7 @@ const rootReducer = combineReducers({
   notification,
   transaction,
   mobile,
+  bill,
 });
 
 export default rootReducer;
