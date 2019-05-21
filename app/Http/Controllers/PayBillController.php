@@ -73,10 +73,11 @@ class PayBillController
 
 
 //        get thong tin hoa don
-        $bill = $this->getInforBill($request->mahoadon);
+        $bill = $this->getInforBill($request->mahoadon,$request->id_loaihoadon);
+//        echo dd($bill);
 //        check bill null
         if ($bill == null) {
-            return reponse()->json([
+            return response()->json([
                 "title" => "error",
                 "content" => "Vui lòng kiểm tra lại mã hóa đơn",
 
@@ -84,7 +85,7 @@ class PayBillController
         } else {
 //            check xem hoá đơn đã thanh toán hay chưa
             if ($bill->datra ==1) {
-                return reponse()->json([
+                return response()->json([
                     "title" => "Đã thanh toán",
                     "content" => "Hóa đơn này đã đuợc thanh toán",
 
@@ -94,9 +95,9 @@ class PayBillController
 
             $user = Auth::user();
             if ($user->sotien < $bill->sotien) {
-                return reponse()->json([
+                return response()->json([
                     "title" => "error",
-                    "content" => "Tài khoản của bạn khong đủ tiền để thanh toán hóa đơn",
+                    "content" => "Tài khoản của bạn không đủ tiền để thanh toán hóa đơn",
                 ]);
             }
 
@@ -122,7 +123,7 @@ class PayBillController
             $thongbao = new thongbao();
             $thongbao->tieude = "Thông báo bạn đã thanh toán hóa đơn thành công";
             $thongbao->noidung = "Bạn vừa thanh toán  thành công  " ;
-            $thongbao->user_id = $user->id;
+            $thongbao->users_id = $user->id;
             $thongbao->daxem = 0;
             $thongbao->type = "thanhtoan_".$id_thanhtoan;
             $thongbao->save();
