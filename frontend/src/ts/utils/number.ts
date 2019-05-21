@@ -9,3 +9,8 @@ export function toMoneyFormat(money: number) {
 	}
 	return result
 } 
+
+export function toAccountNumberFormat(accountNumber: number) {
+	let result = accountNumber.toString();
+	return "*******" + result.slice(result.length - 3);
+}

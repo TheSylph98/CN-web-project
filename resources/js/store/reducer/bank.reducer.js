@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const constants_1 = require("../constants");
-function bank(state = { banks: [] }, action) {
+function bank(state = { notLoad: true, banks: [] }, action) {
     switch (action.type) {
         case constants_1.bankConstants.BANK_REQUEST:
             return {

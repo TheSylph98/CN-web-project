@@ -40,3 +40,5 @@ __export(require("./friend.api"));
 __export(require("./services.api"));
 __export(require("./notification.api"));
 __export(require("./transaction.api"));
+__export(require("./mobile.api"));
+__export(require("./bill.api"));

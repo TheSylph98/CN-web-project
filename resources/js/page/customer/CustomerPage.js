@@ -19,7 +19,7 @@ class CustomerPage extends React.Component {
             alert("You have to login first!");
             return React.createElement("div", null);
         }
-        return React.createElement("div", null,
+        return React.createElement("div", { class: "page" },
             React.createElement(TopPanel_1.default, null),
             React.createElement(Directory_1.default, { location: this.props.location.pathname }),
             React.createElement("div", { class: "customer-content", style: { paddingLeft: "40px", background: "#111" } },

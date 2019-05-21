@@ -4,12 +4,21 @@ const React = require("react");
 const action_1 = require("../../store/action");
 const react_redux_1 = require("react-redux");
 const react_router_dom_1 = require("react-router-dom");
+const utils_1 = require("../../utils");
 class BankAccount extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             chosenBankId: null,
         };
+    }
+    componentWillMount() {
+        if (this.props.bank.notLoad) {
+            this.props.dispatch(action_1.bankActions.getBank());
+        }
+        if (this.props.account.notLoad) {
+            this.props.dispatch(action_1.accountActions.getConnectedAccount());
+        }
     }
     chooseBank(id) {
         this.setState({
@@ -21,12 +30,6 @@ class BankAccount extends React.Component {
         this.props.dispatch(action_1.accountActions.connectAccount(this.account.value, this.state.chosenBankId));
     }
     render() {
-        if (!this.props.bank.loading && this.props.bank.banks.length == 0) {
-            this.props.dispatch(action_1.bankActions.getBank());
-        }
-        if (this.props.account.notLoad) {
-            this.props.dispatch(action_1.accountActions.getConnectedAccount());
-        }
         let banks = this.props.bank.banks;
         let accounts = this.props.account.accounts;
         return React.createElement("div", { class: "content-right" },
@@ -41,8 +44,8 @@ class BankAccount extends React.Component {
                                 React.createElement("img", { src: "resources/images/banks/" + account.name.toLowerCase() + ".png" })),
                             React.createElement("div", { className: "text" },
                                 React.createElement("span", null, account.name),
-                                "Free deposit"),
-                            React.createElement(react_router_dom_1.Link, { to: { pathname: "/customer/services/deposit", account: account.id } },
+                                utils_1.toAccountNumberFormat(account.number)),
+                            React.createElement(react_router_dom_1.Link, { to: { pathname: "/customer/services/deposit", account: account.number } },
                                 React.createElement("button", null, "Deposit"))))),
                 React.createElement("div", { className: "title" }, "Choose a bank account to connect"),
                 React.createElement("div", { className: "bank-list" }, banks.map(bank => React.createElement("div", { onClick: () => this.chooseBank(bank.id), id: bank.id, class: "bank" + (this.state.chosenBankId == bank.id ? " active" : "") },

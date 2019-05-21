@@ -19,7 +19,7 @@ class CustomerPage extends React.Component<{history, loggedIn: boolean, location
 			alert("You have to login first!");
 			return <div/>
 		}	
-		return <div>
+		return <div class="page">
 			<TopPanel/>
 			<Directory location={this.props.location.pathname}/>
 			<div class="customer-content" style={{paddingLeft: "40px", background: "#111"}}>

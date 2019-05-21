@@ -46,15 +46,15 @@ class PhoneBookController extends Controller
     public function PostAddPhoneBook(Request $request){
       $validator = Validator::make($request->all(),
       [
-        'sodt' =>'required'
+        'email' =>'required'
       ],
       [
-        'sodt.required' => 'Ban chua nhap sodt'
+        'email.required' => 'Ban chua nhap sodt'
       ]);
 
       $errs = $validator->errors();
       $err = $errs->all();
-      $phonenumber = $request->sodt;
+      $email = $request->email;
 
       if($validator->fails()){
           return response()->json([
@@ -65,14 +65,15 @@ class PhoneBookController extends Controller
 
       if(!Auth::check()){
         return response()->json([
-          'message'=>'ban chua dang nhap'
+          'link' => 'error',
+          'errors'=>'ban chua dang nhap'
         ]);
         exit();
       }
       $user = Auth::user();
-      $phone_friend = User::where('sodienthoai',$phonenumber)->get();
+      $phone_friend = User::where('email',$email)->get();
 
-      if($phonenumber == $user->sodienthoai){
+      if($email == $user->email){
         return response()->json(['message'=>'day la so dt cua ban']);
       }
       //kiemtra so do da co trong danh ba
@@ -80,7 +81,7 @@ class PhoneBookController extends Controller
       foreach ($danhba_user as $key ) {
         $friend_id =  $key->friend_id;
         $friend = User::where('id',$friend_id)->get();
-        if($phonenumber == $friend[0]->sodienthoai){
+        if($email == $friend[0]->email){
           return response()->json(['message'=>'so dien thoai nay da co trong danh ba vui long kiem tra danh ba']);
           exit();
         }
@@ -94,9 +95,9 @@ class PhoneBookController extends Controller
         $db->friend_id = $phone_friend[0]->id;
         $db->save();
         return response()->json([
-          'link_phone_number' =>'success',
+          'link' =>'success',
           'user' =>  $user,
-          'friend'=> $phonenumber
+          'friend'=> $email,
         ]);
       }
     }

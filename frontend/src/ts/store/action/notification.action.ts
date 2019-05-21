@@ -1,6 +1,6 @@
 import { notificationConstants } from "../constants";
 import backend = require("../backend-api");
-import { transactionActions } from "./";
+import { transactionActions, userActions } from "./";
 
 export const notificationActions = {
 	load,
@@ -20,6 +20,7 @@ function load() {
 					let newUnread = newNotis.filter(noti => !noti.read).length;
 					if (oldUnread != newUnread || oldNotis.length != newNotis.length) {
 						dispatch(success(notifications));
+						dispatch(userActions.update());
 						dispatch(transactionActions.load());
 					}
 				},

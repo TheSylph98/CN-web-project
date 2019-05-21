@@ -1,6 +1,6 @@
 import { bankConstants } from '../constants';
 
-export function bank(state = {banks: []}, action) {
+export function bank(state = {notLoad: true, banks: []}, action) {
   switch (action.type) {
     case bankConstants.BANK_REQUEST: 
       return {

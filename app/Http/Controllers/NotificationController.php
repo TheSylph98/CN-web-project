@@ -22,38 +22,19 @@ class NotificationController extends Controller
 {
     //
     public function PNotification(Request $request){
-      $validator = Validator::make($request->all(),
-      [
-        'tieude' => 'required',
-        'noidung'=> 'require'
-      ],
-      [
-        'tieude.required' => 'Empty !',
-        'noidung.require' => 'Empty !'
-      ]);
-      $errs = $validator->errors();
-      $err = $errs->all();
-      if($validator->fails()){
+      if (Auth::check()) {
+        $user = Auth::user();
+        $notification = thongbao::where('users_id', $user->id)->get();
         return response()->json([
-          'nofi' => 'error',
-          'errors' => $err
-        ]); }
-      else {
-        $notification = new thongbao;
-        $notification->tieude = $request->tieude;
-        $notification->noidung = $request->noidung;
-        $notification->save();
-        return response()->json([
-          'nofi' => 'success',
-          $notification
+            'noti' => 'success',
+            'thongbao' => $notification
         ]);
-       }
-
-      $notification = thongbao::where('user_id', $user->id)->get();
-      return response()->json([
-          'noti' => 'success',
-          'thongbao' => $notification
-      ]);
+      } else {
+        return response()->json([
+            'noti' => 'error',
+            'errors' => "You have not logged in yet",
+        ]);
+      }
     }
     //    cap nhat lai daxem trong thongbao
     public function updateNotification(Request $request)

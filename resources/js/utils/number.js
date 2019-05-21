@@ -12,3 +12,8 @@ function toMoneyFormat(money) {
     return result;
 }
 exports.toMoneyFormat = toMoneyFormat;
+function toAccountNumberFormat(accountNumber) {
+    let result = accountNumber.toString();
+    return "*******" + result.slice(result.length - 3);
+}
+exports.toAccountNumberFormat = toAccountNumberFormat;

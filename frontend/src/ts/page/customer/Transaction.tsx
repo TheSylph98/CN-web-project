@@ -1,9 +1,10 @@
 import React = require("react");
 import { connect } from "react-redux";
-import { transactionActions, accountActions } from "../../store/action";
+import { transactionActions } from "../../store/action";
 import { TransactionType, toMoneyFormat, compare } from "../../utils";
+import TransactionSummary from "./TransactionSummary";
 
-class Transaction extends React.Component<{dispatch, transaction, account, location}, {transaction}> {
+class Transaction extends React.Component<{dispatch, transaction, location}, {transaction}> {
 
 	constructor(props) {
 		super(props);
@@ -16,29 +17,43 @@ class Transaction extends React.Component<{dispatch, transaction, account, locat
 		if (this.props.transaction.notLoad) {
 			this.props.dispatch(transactionActions.load());
 		}
-		if (this.props.account.notLoad) {
-			this.props.dispatch(accountActions.getConnectedAccount());
-		}
+
+		let transactions = this.props.transaction.transactions;
 		if (this.props.location.details) {
 			let details = this.props.location.details
 			this.setState({
-				transaction: this.props.transaction.transactions.find(trans => {
+				transaction: transactions.find(trans => {
 					return compare(details.type, trans.type)
 						&& details.id == trans.id;
 				})
 			})
+		} else {
+			if (transactions.length > 0) {
+				this.setState({
+					transaction: transactions[0]
+				})
+			}
 		}
 	}
 
 	componentWillReceiveProps(nextProps) {
+
+		let transactions = nextProps.transaction.transactions;
+
 		if (nextProps.location.details) {
 			let details = nextProps.location.details
 			this.setState({
-				transaction: nextProps.transaction.transactions.find(trans => {
+				transaction: transactions.find(trans => {
 					return compare(details.type, trans.type)
 						&& details.id == trans.id;
 				})
 			})
+		} else {
+			if (transactions.length > 0) {
+				this.setState({
+					transaction: transactions[0]
+				})
+			}
 		}
 	}
 
@@ -51,10 +66,9 @@ class Transaction extends React.Component<{dispatch, transaction, account, locat
 	getSource(transaction) {
 		switch (transaction.type) {
 			case TransactionType.DEPOSIT:
-				let bank = this.props.account.accounts.find(account => account.id == transaction.account).name;
-				return bank;
+				return transaction.account.name;
 			case TransactionType.RECEIVE:
-				return transaction.sender;
+				return transaction.sender.username;
 			default:
 				return "e-wallet";
 		}
@@ -68,37 +82,19 @@ class Transaction extends React.Component<{dispatch, transaction, account, locat
 					<section>
 						<div className="info">
 							<label>Receiver</label>
-							<span>{transaction.receiver}</span>
+							<span>{transaction.receiver.username}</span>
 						</div>
 						<div className="info">
 							<label>Email</label>
-							<span>{transaction.receiver}</span>
+							<span>{transaction.receiver.email}</span>
 						</div>
 						<div className="info">
 							<label>Amount</label>
-							<span>{this.getAmount(transaction)}</span>
+							<span>{this.getAmount(transaction).slice(1)}</span>
 						</div>
 						<div className="info">
 							<label>Message</label>
 							<span>{transaction.message}</span>
-						</div>
-					</section>
-				</div>
-			case TransactionType.PAY:
-				return <div>
-					<div className="section-title">Other Infomation</div>
-					<section>
-						<div className="info">
-							<label>Service</label>
-							<span>{transaction.bill}</span>
-						</div>
-						<div className="info">
-							<label>Bill code</label>
-							<span>{transaction.bill}</span>
-						</div>
-						<div className="info">
-							<label>Description</label>
-							<span>{transaction.description}</span>
 						</div>
 					</section>
 				</div>
@@ -108,15 +104,29 @@ class Transaction extends React.Component<{dispatch, transaction, account, locat
 					<section>
 						<div className="info">
 							<label>Telecom Company</label>
-							<span>{transaction.telecom}</span>
-						</div>
-						<div className="info">
-							<label>Bill code</label>
-							<span>{transaction.bill}</span>
+							<span>{transaction.telecom.name}</span>
 						</div>
 						<div className="info">
 							<label>Cost</label>
-							<span>{transaction.amount}</span>
+							<span>{this.getAmount(transaction).slice(1)}</span>
+						</div>
+					</section>
+				</div>
+			case TransactionType.PAY:
+				return<div>
+					<div className="section-title">Other Infomation</div>
+					<section>
+						<div className="info">
+							<label>Service</label>
+							<span>{transaction.bill.type}</span>
+						</div>
+						<div className="info">
+							<label>Code</label>
+							<span>{transaction.bill.code}</span>
+						</div>
+						<div className="info">
+							<label>Provider</label>
+							<span>{transaction.bill.provider}</span>
 						</div>
 					</section>
 				</div>
@@ -137,19 +147,18 @@ class Transaction extends React.Component<{dispatch, transaction, account, locat
 
 	getContent(transaction) {
 		if (transaction.type == TransactionType.TRANSFER) {
-			return "Transfer to " + transaction.receiver;
+			return "Transfer to " + transaction.receiver.username;
 		}
 		if (transaction.type == TransactionType.DEPOSIT) {
-			let bank = this.props.account.accounts.find(account => account.id == transaction.account).name;
-			return "Add money to wallet from " + bank;
+			return "Add money to wallet from " + transaction.account.name;
 		}
 		if (transaction.type == TransactionType.PAY) {
-			return "PAY BILL";
+			return "Pay '" + transaction.bill.type + "' bill provided by " + transaction.bill.provider;
 		}
 		if (transaction.type == TransactionType.RECEIVE) {
-			return "Receive money from " + transaction.sender;
+			return "Receive money from " + transaction.sender.username;
 		}
-		return "Buy mobile card from " + transaction.telecom;
+		return "Buy mobile card from " + transaction.telecom.name;
 
 	}
 
@@ -159,6 +168,7 @@ class Transaction extends React.Component<{dispatch, transaction, account, locat
 
 		return <div className="content-right">
 			<h1 className="title">Transaction</h1>
+			<TransactionSummary transactions={transactions}/>
 			<div className="wrapper trans">
 				<div className="sub-wrapper">
 					<div className="title">May 2019</div>
@@ -169,15 +179,15 @@ class Transaction extends React.Component<{dispatch, transaction, account, locat
 								className={"trans" + (transaction == this.state.transaction ? " active" : "")}>
 								<div className="avatar">
 								{transaction.type == TransactionType.TRANSFER ?
-									<i className="fa fa-sign-out-alt" style={{color: "green"}}/>
+									<i className="fa fa-sign-out-alt" style={{color: "#0f7a0b"}}/>
 								: transaction.type == TransactionType.DEPOSIT ?
-									<i className="fa fa-sign-in-alt" style={{color: "blue"}}/>
+									<i className="fa fa-sign-in-alt" style={{color: "#365382"}}/>
 								: transaction.type == TransactionType.RECEIVE ?
-									<i className="fa fa-money-bill" style={{color: "red"}}/>
+									<i className="fa fa-money-bill" style={{color: "#e54837"}}/>
 								: transaction.type == TransactionType.PAY ?
-									<i className="fa fa-credit-card" style={{color: "yellow"}}/> 
+									<i className="fa fa-credit-card" style={{color: "#d1c217"}}/> 
 								: transaction.type == TransactionType.MOBILE_PAY ?
-									<i className="fa fa-mobile-alt" style={{color: "#fd961a"}}/>
+									<i className="fa fa-mobile-alt" style={{color: "#d1c217"}}/>
 								: <i/>
 								}
 								</div>
@@ -227,10 +237,9 @@ class Transaction extends React.Component<{dispatch, transaction, account, locat
 
 
 function mapStateToProps(state) {
-	const { transaction, account } = state;
+	const { transaction } = state;
 	return {
 		transaction,
-		account,
 	}
 }
 

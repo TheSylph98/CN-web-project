@@ -27,6 +27,7 @@ Route::post('dang-xuat','LoginController@Logout');
 
 Route::post('quan-li-thong-tin','UserController@ChinhSuaThongTin');
 Route::post('thong-tin-ca-nhan','UserController@ThongTinCaNhan');
+Route::post('thong-tin-user','UserController@GetUser');
 
 //chuyen tien
 Route::get("transfer", "TransferController@getViewTransfer");
@@ -42,6 +43,8 @@ Route::get('them-tai-khoan','UserController@GetLinkAccount');
 Route::post('them-tai-khoan','UserController@PostLinkAccount');
 
 //Get bank
+Route::post("get-bank","BankController@GetBankById");
+Route::post("get-account","BankController@GetAccountById");
 Route::post("bank","BankController@GetBank");
 Route::post("bank-user","BankController@GetBankUser");
 //Get Phone Book
@@ -53,8 +56,10 @@ Route::post("thong-bao","NotificationController@PNotification");
 Route::post("lich-su-giao-dich","TransactionHistoryController@TransactionHistory");
 
 //Nap The
-Route::get('nap-the','NapTheController@GNapThe');
+// Route::get('nap-the','NapTheController@GNapThe');
 Route::post('nap-the','NapTheController@PNapThe');
+Route::post('nha-mang','NapTheController@GetNhaMang');
+Route::post('get-nha-mang','NapTheController@GetNhaMangById');
 
 //Them danh ba
 Route::get('them-danh-ba','PhoneBookController@GetAddPhoneBook');

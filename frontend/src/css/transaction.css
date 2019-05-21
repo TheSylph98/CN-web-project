@@ -16,6 +16,8 @@
 	display: flex;
 	flex-direction: column;	
 	width: 100%;
+	overflow-y: scroll;
+    max-height: 400px;
 }
 
 .trans-list .trans {
@@ -155,3 +157,83 @@
 	float: right;
 }
 
+.content-right .wrapper.trans-summary {
+	padding: 0 20px!important;
+	flex-direction: column;
+}
+
+.trans-summary .summary .title {
+	width: 150px;
+	padding: 10px 0 5px;
+	margin: 0 30px;
+	text-align: center;
+	color: #aaa;
+	display: inline-block;
+	font-family: "Open Sans", sans-serif;
+}
+
+.trans-summary .summary .title:hover {
+	cursor: pointer
+}
+
+.trans-summary .summary .title.active {
+	border-bottom: 3px solid #fd961a;
+	color: #fff;
+}
+
+.trans-summary .summary .title h3 {
+	font-size: 13px;
+	margin: 0;
+}
+
+.trans-summary .summary .title span {
+	font-size: 20px;
+	font-weight: 600;
+}
+
+.trans-summary ul.details {
+	display: flex;
+	flex-direction: row;
+	padding: 10px 20px;
+	width: 100%;
+	color: #fff;
+	list-style: none;
+	border-top: 1px solid #2d2d2d;
+}
+
+.trans-summary ul.details li {
+	width: 150px;
+	padding: 10px;
+	margin: 0 5px;
+    border-radius: 3px;
+}
+
+.trans-summary ul.details h3 {
+	font-size: 13px;
+	margin: 0;
+}
+
+.trans-summary ul.details span {
+	font-size: 17px;
+	font-weight: 600;
+}
+
+.trans-summary ul.details li.transfer {
+	background: #0f7a0b;
+}
+
+.trans-summary ul.details li.receive {
+	background: #e54837;
+}
+
+.trans-summary ul.details li.deposit {
+	background: #365382;
+}
+
+.trans-summary ul.details li.pay {
+	background: #d1c217;
+}
+
+.trans-summary ul.details li.mobile-pay {
+	background: #fd961a;
+}

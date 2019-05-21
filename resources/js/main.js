@@ -50,8 +50,8 @@
 	const React = __webpack_require__(4);
 	const react_redux_1 = __webpack_require__(18);
 	const helper_1 = __webpack_require__(55);
-	const react_router_dom_1 = __webpack_require__(84);
-	const app_1 = __webpack_require__(97);
+	const react_router_dom_1 = __webpack_require__(88);
+	const app_1 = __webpack_require__(101);
 	ReactDOM.render(React.createElement(react_redux_1.Provider, { store: helper_1.store },
 	    React.createElement(react_router_dom_1.HashRouter, null,
 	        React.createElement(react_router_dom_1.Route, { path: "/", component: app_1.default }))), document.getElementById("app"));
@@ -29864,14 +29864,16 @@
 	Object.defineProperty(exports, "__esModule", { value: true });
 	const redux_1 = __webpack_require__(42);
 	const login_reducer_1 = __webpack_require__(67);
-	const register_reducer_1 = __webpack_require__(76);
-	const modify_reducer_1 = __webpack_require__(77);
-	const bank_reducer_1 = __webpack_require__(78);
-	const account_reducer_1 = __webpack_require__(79);
-	const friend_reducer_1 = __webpack_require__(80);
-	const services_reducer_1 = __webpack_require__(81);
-	const notification_reducer_1 = __webpack_require__(82);
-	const transaction_reducer_1 = __webpack_require__(83);
+	const register_reducer_1 = __webpack_require__(78);
+	const modify_reducer_1 = __webpack_require__(79);
+	const bank_reducer_1 = __webpack_require__(80);
+	const account_reducer_1 = __webpack_require__(81);
+	const friend_reducer_1 = __webpack_require__(82);
+	const services_reducer_1 = __webpack_require__(83);
+	const notification_reducer_1 = __webpack_require__(84);
+	const transaction_reducer_1 = __webpack_require__(85);
+	const mobile_reducer_1 = __webpack_require__(86);
+	const bill_reducer_1 = __webpack_require__(87);
 	const rootReducer = redux_1.combineReducers({
 	    login: login_reducer_1.login,
 	    register: register_reducer_1.register,
@@ -29882,6 +29884,8 @@
 	    services: services_reducer_1.services,
 	    notification: notification_reducer_1.notification,
 	    transaction: transaction_reducer_1.transaction,
+	    mobile: mobile_reducer_1.mobile,
+	    bill: bill_reducer_1.bill,
 	});
 	exports.default = rootReducer;
 
@@ -29948,6 +29952,8 @@
 	__export(__webpack_require__(73));
 	__export(__webpack_require__(74));
 	__export(__webpack_require__(75));
+	__export(__webpack_require__(76));
+	__export(__webpack_require__(77));
 
 
 /***/ }),
@@ -30016,6 +30022,9 @@
 	    FRIEND_SUCCESS: 'FRIEND_SUCCESS',
 	    FRIEND_FAILURE: 'FRIEND_ERROR',
 	    FRIEND_REQUEST: 'FRIEND_FAILURE',
+	    ADD_FRIEND_SUCCESS: 'ADD_FRIEND_SUCCESS',
+	    ADD_FRIEND_FAILURE: 'ADD_FRIEND_ERROR',
+	    ADD_FRIEND_REQUEST: 'ADD_FRIEND_FAILURE',
 	};
 
 
@@ -30029,9 +30038,15 @@
 	    TRANSFER_SUCCESS: 'TRANSFER_SUCCESS',
 	    TRANSFER_FAILURE: 'TRANSFER_ERROR',
 	    TRANSFER_REQUEST: 'TRANSFER_FAILURE',
-	    TRANSACT_SUCCESS: 'TRANSACT_SUCCESS',
-	    TRANSACT_FAILURE: 'TRANSACT_ERROR',
-	    TRANSACT_REQUEST: 'TRANSACT_FAILURE',
+	    MOBILE_SUCCESS: 'PAY_MOBILE_SUCCESS',
+	    MOBILE_FAILURE: 'PAY_MOBILE_ERROR',
+	    MOBILE_REQUEST: 'PAY_MOBILE_FAILURE',
+	    DEPOSIT_SUCCESS: 'DEPOSIT_SUCCESS',
+	    DEPOSIT_FAILURE: 'DEPOSIT_ERROR',
+	    DEPOSIT_REQUEST: 'DEPOSIT_FAILURE',
+	    PAY_SUCCESS: 'PAY_BILL_SUCCESS',
+	    PAY_FAILURE: 'PAY_BILL_ERROR',
+	    PAY_REQUEST: 'PAY_BILL_FAILURE',
 	};
 
 
@@ -30063,6 +30078,35 @@
 
 /***/ }),
 /* 76 */
+/***/ (function(module, exports) {
+
+	"use strict";
+	Object.defineProperty(exports, "__esModule", { value: true });
+	exports.mobileConstants = {
+	    MOBILE_REQUEST: "MOBILE_REQUEST",
+	    MOBILE_SUCCESS: "MOBILE_SUCCESS",
+	    MOBILE_FAILURE: "MOBILE_FAILURE",
+	};
+
+
+/***/ }),
+/* 77 */
+/***/ (function(module, exports) {
+
+	"use strict";
+	Object.defineProperty(exports, "__esModule", { value: true });
+	exports.billConstants = {
+	    BILL_SUCCESS: 'BILL_SUCCESS',
+	    BILL_FAILURE: 'BILL_ERROR',
+	    BILL_REQUEST: 'BILL_FAILURE',
+	    TYPE_SUCCESS: 'BILL_TYPE_SUCCESS',
+	    TYPE_FAILURE: 'BILL_TYPE_ERROR',
+	    TYPE_REQUEST: 'BILL_TYPE_FAILURE',
+	};
+
+
+/***/ }),
+/* 78 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -30084,7 +30128,7 @@
 
 
 /***/ }),
-/* 77 */
+/* 79 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -30112,13 +30156,13 @@
 
 
 /***/ }),
-/* 78 */
+/* 80 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
 	Object.defineProperty(exports, "__esModule", { value: true });
 	const constants_1 = __webpack_require__(68);
-	function bank(state = { banks: [] }, action) {
+	function bank(state = { notLoad: true, banks: [] }, action) {
 	    switch (action.type) {
 	        case constants_1.bankConstants.BANK_REQUEST:
 	            return {
@@ -30143,7 +30187,7 @@
 
 
 /***/ }),
-/* 79 */
+/* 81 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -30171,7 +30215,7 @@
 
 
 /***/ }),
-/* 80 */
+/* 82 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -30180,23 +30224,17 @@
 	function friend(state = { friends: [], notLoad: true }, action) {
 	    switch (action.type) {
 	        case constants_1.friendConstants.FRIEND_REQUEST:
-	            return {
-	                notLoad: false,
-	                loading: true,
-	                friends: [],
-	            };
+	            return Object.assign({}, state, { notLoad: false, loading: true, friends: [] });
 	        case constants_1.friendConstants.FRIEND_SUCCESS:
-	            return {
-	                notLoad: false,
-	                loaded: true,
-	                friends: action.friends,
-	            };
+	            return Object.assign({}, state, { notLoad: false, loaded: true, friends: action.friends });
 	        case constants_1.friendConstants.FRIEND_FAILURE:
-	            return {
-	                notLoad: true,
-	                error: action.error,
-	                friends: []
-	            };
+	            return Object.assign({}, state, { notLoad: true, error: action.error, friends: [] });
+	        case constants_1.friendConstants.ADD_FRIEND_REQUEST:
+	            return Object.assign({}, state, { adding: true });
+	        case constants_1.friendConstants.ADD_FRIEND_SUCCESS:
+	            return Object.assign({}, state, { adding: false, added: true });
+	        case constants_1.friendConstants.ADD_FRIEND_FAILURE:
+	            return Object.assign({}, state, { error: action.error });
 	        default:
 	            return state;
 	    }
@@ -30205,26 +30243,63 @@
 
 
 /***/ }),
-/* 81 */
+/* 83 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
 	Object.defineProperty(exports, "__esModule", { value: true });
 	const constants_1 = __webpack_require__(68);
-	function services(state = {}, action) {
+	function services(state = { transfer: {}, mobile: {}, deposit: {}, pay: {} }, action) {
 	    switch (action.type) {
 	        case constants_1.servicesConstants.TRANSFER_REQUEST:
-	            return {
-	                transfering: true,
-	            };
+	            return Object.assign({}, state, { transfer: {
+	                    transfering: true,
+	                } });
 	        case constants_1.servicesConstants.TRANSFER_SUCCESS:
-	            return {
-	                transfered: true,
-	            };
+	            return Object.assign({}, state, { transfer: {
+	                    transfered: true,
+	                } });
 	        case constants_1.servicesConstants.TRANSFER_FAILURE:
-	            return {
-	                transferError: action.error,
-	            };
+	            return Object.assign({}, state, { transfer: {
+	                    error: action.error,
+	                } });
+	        case constants_1.servicesConstants.MOBILE_REQUEST:
+	            return Object.assign({}, state, { mobile: {
+	                    paying: true,
+	                } });
+	        case constants_1.servicesConstants.MOBILE_SUCCESS:
+	            return Object.assign({}, state, { mobile: {
+	                    payed: true,
+	                    code: action.code,
+	                } });
+	        case constants_1.servicesConstants.MOBILE_FAILURE:
+	            return Object.assign({}, state, { mobile: {
+	                    error: action.error,
+	                } });
+	        case constants_1.servicesConstants.DEPOSIT_REQUEST:
+	            return Object.assign({}, state, { deposit: {
+	                    depositing: true,
+	                } });
+	        case constants_1.servicesConstants.DEPOSIT_SUCCESS:
+	            return Object.assign({}, state, { deposit: {
+	                    deposited: true,
+	                } });
+	        case constants_1.servicesConstants.TRANSFER_FAILURE:
+	            return Object.assign({}, state, { deposit: {
+	                    error: action.error,
+	                } });
+	        case constants_1.servicesConstants.PAY_REQUEST:
+	            return Object.assign({}, state, { pay: {
+	                    paying: true,
+	                } });
+	        case constants_1.servicesConstants.PAY_SUCCESS:
+	            return Object.assign({}, state, { pay: {
+	                    payed: true,
+	                } });
+	        case constants_1.servicesConstants.PAY_FAILURE:
+	            return Object.assign({}, state, { pay: {
+	                    error: action.error,
+	                } });
 	        default:
 	            return state;
 	    }
@@ -30233,7 +30308,7 @@
 
 
 /***/ }),
-/* 82 */
+/* 84 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -30275,7 +30350,7 @@
 
 
 /***/ }),
-/* 83 */
+/* 85 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -30317,49 +30392,127 @@
 
 
 /***/ }),
-/* 84 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	/* WEBPACK VAR INJECTION */(function(process) {"use strict";
-	
-	if (process.env.NODE_ENV === "production") {
-	  module.exports = __webpack_require__(85);
-	} else {
-	  module.exports = __webpack_require__(96);
-	}
-	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2)))
-
-/***/ }),
-/* 85 */
-/***/ (function(module, exports, __webpack_require__) {
-
-	"use strict";function _interopDefault(t){return t&&"object"==typeof t&&"default"in t?t.default:t}Object.defineProperty(exports,"__esModule",{value:!0});var React=_interopDefault(__webpack_require__(4)),reactRouter=__webpack_require__(86),history=__webpack_require__(57);__webpack_require__(24),__webpack_require__(61);var invariant=_interopDefault(__webpack_require__(62));function _extends(){return(_extends=Object.assign||function(t){for(var e=1;e<arguments.length;e++){var r=arguments[e];for(var o in r)Object.prototype.hasOwnProperty.call(r,o)&&(t[o]=r[o])}return t}).apply(this,arguments)}function _inheritsLoose(t,e){t.prototype=Object.create(e.prototype),(t.prototype.constructor=t).__proto__=e}function _objectWithoutPropertiesLoose(t,e){if(null==t)return{};var r,o,n={},i=Object.keys(t);for(o=0;o<i.length;o++)r=i[o],0<=e.indexOf(r)||(n[r]=t[r]);return n}var BrowserRouter=function(n){function t(){for(var t,e=arguments.length,r=new Array(e),o=0;o<e;o++)r[o]=arguments[o];return(t=n.call.apply(n,[this].concat(r))||this).history=history.createBrowserHistory(t.props),t}return _inheritsLoose(t,n),t.prototype.render=function(){return React.createElement(reactRouter.Router,{history:this.history,children:this.props.children})},t}(React.Component),HashRouter=function(n){function t(){for(var t,e=arguments.length,r=new Array(e),o=0;o<e;o++)r[o]=arguments[o];return(t=n.call.apply(n,[this].concat(r))||this).history=history.createHashHistory(t.props),t}return _inheritsLoose(t,n),t.prototype.render=function(){return React.createElement(reactRouter.Router,{history:this.history,children:this.props.children})},t}(React.Component);function isModifiedEvent(t){return!!(t.metaKey||t.altKey||t.ctrlKey||t.shiftKey)}var Link=function(t){function e(){return t.apply(this,arguments)||this}_inheritsLoose(e,t);var r=e.prototype;return r.handleClick=function(t,e){(this.props.onClick&&this.props.onClick(t),t.defaultPrevented||0!==t.button||this.props.target&&"_self"!==this.props.target||isModifiedEvent(t))||(t.preventDefault(),(this.props.replace?e.replace:e.push)(this.props.to))},r.render=function(){var o=this,t=this.props,n=t.innerRef,i=(t.replace,t.to),a=_objectWithoutPropertiesLoose(t,["innerRef","replace","to"]);return React.createElement(reactRouter.__RouterContext.Consumer,null,function(e){e||invariant(!1);var t="string"==typeof i?history.createLocation(i,null,null,e.location):i,r=t?e.history.createHref(t):"";return React.createElement("a",_extends({},a,{onClick:function(t){return o.handleClick(t,e.history)},href:r,ref:n}))})},e}(React.Component);function joinClassnames(){for(var t=arguments.length,e=new Array(t),r=0;r<t;r++)e[r]=arguments[r];return e.filter(function(t){return t}).join(" ")}function NavLink(t){var e=t["aria-current"],a=void 0===e?"page":e,r=t.activeClassName,s=void 0===r?"active":r,c=t.activeStyle,u=t.className,o=t.exact,l=t.isActive,n=t.location,i=t.strict,p=t.style,h=t.to,f=_objectWithoutPropertiesLoose(t,["aria-current","activeClassName","activeStyle","className","exact","isActive","location","strict","style","to"]),y="object"==typeof h?h.pathname:h,v=y&&y.replace(/([.+*?=^!:${}()[\]|/\\])/g,"\\$1");return React.createElement(reactRouter.Route,{path:v,exact:o,strict:i,location:n,children:function(t){var e=t.location,r=t.match,o=!!(l?l(r,e):r),n=o?joinClassnames(u,s):u,i=o?_extends({},p,c):p;return React.createElement(Link,_extends({"aria-current":o&&a||null,className:n,style:i,to:h},f))}})}Object.keys(reactRouter).forEach(function(t){exports[t]=reactRouter[t]}),exports.BrowserRouter=BrowserRouter,exports.HashRouter=HashRouter,exports.Link=Link,exports.NavLink=NavLink;
-
-
-/***/ }),
 /* 86 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	/* WEBPACK VAR INJECTION */(function(process) {"use strict";
-	
-	if (process.env.NODE_ENV === "production") {
-	  module.exports = __webpack_require__(87);
-	} else {
-	  module.exports = __webpack_require__(95);
+	"use strict";
+	Object.defineProperty(exports, "__esModule", { value: true });
+	const constants_1 = __webpack_require__(68);
+	function mobile(state = { notLoad: true, telecoms: [] }, action) {
+	    switch (action.type) {
+	        case constants_1.mobileConstants.MOBILE_REQUEST:
+	            return {
+	                notLoad: false,
+	                loading: true,
+	                telecoms: [],
+	            };
+	        case constants_1.mobileConstants.MOBILE_SUCCESS:
+	            return {
+	                notLoad: false,
+	                loaded: true,
+	                telecoms: action.telecoms,
+	            };
+	        case constants_1.mobileConstants.MOBILE_FAILURE:
+	            return {
+	                notLoad: true,
+	                error: action.error,
+	                telecoms: []
+	            };
+	        default:
+	            return state;
+	    }
 	}
-	
-	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2)))
+	exports.mobile = mobile;
+
 
 /***/ }),
 /* 87 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	"use strict";function _interopDefault(t){return t&&"object"==typeof t&&"default"in t?t.default:t}Object.defineProperty(exports,"__esModule",{value:!0});var createContext=_interopDefault(__webpack_require__(88)),React=_interopDefault(__webpack_require__(4));__webpack_require__(24),__webpack_require__(61);var history=__webpack_require__(57),invariant=_interopDefault(__webpack_require__(62)),pathToRegexp=_interopDefault(__webpack_require__(93));__webpack_require__(25);var hoistStatics=_interopDefault(__webpack_require__(37));function _extends(){return(_extends=Object.assign||function(t){for(var e=1;e<arguments.length;e++){var n=arguments[e];for(var o in n)Object.prototype.hasOwnProperty.call(n,o)&&(t[o]=n[o])}return t}).apply(this,arguments)}function _inheritsLoose(t,e){t.prototype=Object.create(e.prototype),(t.prototype.constructor=t).__proto__=e}function _objectWithoutPropertiesLoose(t,e){if(null==t)return{};var n,o,r={},a=Object.keys(t);for(o=0;o<a.length;o++)n=a[o],0<=e.indexOf(n)||(r[n]=t[n]);return r}var createNamedContext=function(t){var e=createContext();return e.Provider.displayName=t+".Provider",e.Consumer.displayName=t+".Consumer",e},context=createNamedContext("Router"),Router=function(n){function t(t){var e;return(e=n.call(this,t)||this).state={location:t.history.location},e._isMounted=!1,e._pendingLocation=null,t.staticContext||(e.unlisten=t.history.listen(function(t){e._isMounted?e.setState({location:t}):e._pendingLocation=t})),e}_inheritsLoose(t,n),t.computeRootMatch=function(t){return{path:"/",url:"/",params:{},isExact:"/"===t}};var e=t.prototype;return e.componentDidMount=function(){this._isMounted=!0,this._pendingLocation&&this.setState({location:this._pendingLocation})},e.componentWillUnmount=function(){this.unlisten&&this.unlisten()},e.render=function(){return React.createElement(context.Provider,{children:this.props.children||null,value:{history:this.props.history,location:this.state.location,match:t.computeRootMatch(this.state.location.pathname),staticContext:this.props.staticContext}})},t}(React.Component),MemoryRouter=function(r){function t(){for(var t,e=arguments.length,n=new Array(e),o=0;o<e;o++)n[o]=arguments[o];return(t=r.call.apply(r,[this].concat(n))||this).history=history.createMemoryHistory(t.props),t}return _inheritsLoose(t,r),t.prototype.render=function(){return React.createElement(Router,{history:this.history,children:this.props.children})},t}(React.Component),Lifecycle=function(t){function e(){return t.apply(this,arguments)||this}_inheritsLoose(e,t);var n=e.prototype;return n.componentDidMount=function(){this.props.onMount&&this.props.onMount.call(this,this)},n.componentDidUpdate=function(t){this.props.onUpdate&&this.props.onUpdate.call(this,this,t)},n.componentWillUnmount=function(){this.props.onUnmount&&this.props.onUnmount.call(this,this)},n.render=function(){return null},e}(React.Component);function Prompt(t){var o=t.message,e=t.when,r=void 0===e||e;return React.createElement(context.Consumer,null,function(t){if(t||invariant(!1),!r||t.staticContext)return null;var n=t.history.block;return React.createElement(Lifecycle,{onMount:function(t){t.release=n(o)},onUpdate:function(t,e){e.message!==o&&(t.release(),t.release=n(o))},onUnmount:function(t){t.release()},message:o})})}var cache={},cacheLimit=1e4,cacheCount=0;function compilePath(t){if(cache[t])return cache[t];var e=pathToRegexp.compile(t);return cacheCount<cacheLimit&&(cache[t]=e,cacheCount++),e}function generatePath(t,e){return void 0===t&&(t="/"),void 0===e&&(e={}),"/"===t?t:compilePath(t)(e,{pretty:!0})}function Redirect(t){var a=t.computedMatch,i=t.to,e=t.push,c=void 0!==e&&e;return React.createElement(context.Consumer,null,function(t){t||invariant(!1);var e=t.history,n=t.staticContext,o=c?e.push:e.replace,r=history.createLocation(a?"string"==typeof i?generatePath(i,a.params):_extends({},i,{pathname:generatePath(i.pathname,a.params)}):i);return n?(o(r),null):React.createElement(Lifecycle,{onMount:function(){o(r)},onUpdate:function(t,e){history.locationsAreEqual(e.to,r)||o(r)},to:i})})}var cache$1={},cacheLimit$1=1e4,cacheCount$1=0;function compilePath$1(t,e){var n=""+e.end+e.strict+e.sensitive,o=cache$1[n]||(cache$1[n]={});if(o[t])return o[t];var r=[],a={regexp:pathToRegexp(t,r,e),keys:r};return cacheCount$1<cacheLimit$1&&(o[t]=a,cacheCount$1++),a}function matchPath(u,t){void 0===t&&(t={}),"string"==typeof t&&(t={path:t});var e=t,n=e.path,o=e.exact,p=void 0!==o&&o,r=e.strict,h=void 0!==r&&r,a=e.sensitive,l=void 0!==a&&a;return[].concat(n).reduce(function(t,e){if(t)return t;var n=compilePath$1(e,{end:p,strict:h,sensitive:l}),o=n.regexp,r=n.keys,a=o.exec(u);if(!a)return null;var i=a[0],c=a.slice(1),s=u===i;return p&&!s?null:{path:e,url:"/"===e&&""===i?"/":i,isExact:s,params:r.reduce(function(t,e,n){return t[e.name]=c[n],t},{})}},null)}function isEmptyChildren(t){return 0===React.Children.count(t)}var Route=function(t){function e(){return t.apply(this,arguments)||this}return _inheritsLoose(e,t),e.prototype.render=function(){var c=this;return React.createElement(context.Consumer,null,function(t){t||invariant(!1);var e=c.props.location||t.location,n=_extends({},t,{location:e,match:c.props.computedMatch?c.props.computedMatch:c.props.path?matchPath(e.pathname,c.props):t.match}),o=c.props,r=o.children,a=o.component,i=o.render;return Array.isArray(r)&&0===r.length&&(r=null),"function"==typeof r&&void 0===(r=r(n))&&(r=null),React.createElement(context.Provider,{value:n},r&&!isEmptyChildren(r)?r:n.match?a?React.createElement(a,n):i?i(n):null:null)})},e}(React.Component);function addLeadingSlash(t){return"/"===t.charAt(0)?t:"/"+t}function addBasename(t,e){return t?_extends({},e,{pathname:addLeadingSlash(t)+e.pathname}):e}function stripBasename(t,e){if(!t)return e;var n=addLeadingSlash(t);return 0!==e.pathname.indexOf(n)?e:_extends({},e,{pathname:e.pathname.substr(n.length)})}function createURL(t){return"string"==typeof t?t:history.createPath(t)}function staticHandler(t){return function(){invariant(!1)}}function noop(){}var StaticRouter=function(r){function t(){for(var e,t=arguments.length,n=new Array(t),o=0;o<t;o++)n[o]=arguments[o];return(e=r.call.apply(r,[this].concat(n))||this).handlePush=function(t){return e.navigateTo(t,"PUSH")},e.handleReplace=function(t){return e.navigateTo(t,"REPLACE")},e.handleListen=function(){return noop},e.handleBlock=function(){return noop},e}_inheritsLoose(t,r);var e=t.prototype;return e.navigateTo=function(t,e){var n=this.props,o=n.basename,r=void 0===o?"":o,a=n.context;a.action=e,a.location=addBasename(r,history.createLocation(t)),a.url=createURL(a.location)},e.render=function(){var t=this.props,e=t.basename,n=void 0===e?"":e,o=t.context,r=void 0===o?{}:o,a=t.location,i=void 0===a?"/":a,c=_objectWithoutPropertiesLoose(t,["basename","context","location"]),s={createHref:function(t){return addLeadingSlash(n+createURL(t))},action:"POP",location:stripBasename(n,history.createLocation(i)),push:this.handlePush,replace:this.handleReplace,go:staticHandler("go"),goBack:staticHandler("goBack"),goForward:staticHandler("goForward"),listen:this.handleListen,block:this.handleBlock};return React.createElement(Router,_extends({},c,{history:s,staticContext:r}))},t}(React.Component),Switch=function(t){function e(){return t.apply(this,arguments)||this}return _inheritsLoose(e,t),e.prototype.render=function(){var t=this;return React.createElement(context.Consumer,null,function(n){n||invariant(!1);var o,r,a=t.props.location||n.location;return React.Children.forEach(t.props.children,function(t){if(null==r&&React.isValidElement(t)){var e=(o=t).props.path||t.props.from;r=e?matchPath(a.pathname,_extends({},t.props,{path:e})):n.match}}),r?React.cloneElement(o,{location:a,computedMatch:r}):null})},e}(React.Component);function withRouter(o){var t=function(t){var e=t.wrappedComponentRef,n=_objectWithoutPropertiesLoose(t,["wrappedComponentRef"]);return React.createElement(Route,{children:function(t){return React.createElement(o,_extends({},n,t,{ref:e}))}})};return t.displayName="withRouter("+(o.displayName||o.name)+")",t.WrappedComponent=o,hoistStatics(t,o)}exports.MemoryRouter=MemoryRouter,exports.Prompt=Prompt,exports.Redirect=Redirect,exports.Route=Route,exports.Router=Router,exports.StaticRouter=StaticRouter,exports.Switch=Switch,exports.generatePath=generatePath,exports.matchPath=matchPath,exports.withRouter=withRouter,exports.__RouterContext=context;
+	"use strict";
+	Object.defineProperty(exports, "__esModule", { value: true });
+	const constants_1 = __webpack_require__(68);
+	function bill(state = { type: { notLoad: true, types: [] }, bill: {} }, action) {
+	    switch (action.type) {
+	        case constants_1.billConstants.TYPE_REQUEST:
+	            return Object.assign({}, state, { type: {
+	                    loading: true,
+	                    types: [],
+	                } });
+	        case constants_1.billConstants.TYPE_SUCCESS:
+	            return Object.assign({}, state, { type: {
+	                    loaded: true,
+	                    types: action.types,
+	                } });
+	        case constants_1.billConstants.TYPE_FAILURE:
+	            return Object.assign({}, state, { type: {
+	                    error: action.error,
+	                    types: []
+	                } });
+	        case constants_1.billConstants.BILL_REQUEST:
+	            return Object.assign({}, state, { bill: {
+	                    loading: true,
+	                } });
+	        case constants_1.billConstants.BILL_SUCCESS:
+	            return Object.assign({}, state, { bill: {
+	                    loaded: true,
+	                    bill: action.bill,
+	                } });
+	        case constants_1.billConstants.BILL_FAILURE:
+	            return Object.assign({}, state, { bill: {
+	                    error: action.error,
+	                } });
+	        default:
+	            return state;
+	    }
+	}
+	exports.bill = bill;
 
 
 /***/ }),
 /* 88 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	/* WEBPACK VAR INJECTION */(function(process) {"use strict";
+	
+	if (process.env.NODE_ENV === "production") {
+	  module.exports = __webpack_require__(89);
+	} else {
+	  module.exports = __webpack_require__(100);
+	}
+	
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2)))
+
+/***/ }),
+/* 89 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	"use strict";function _interopDefault(t){return t&&"object"==typeof t&&"default"in t?t.default:t}Object.defineProperty(exports,"__esModule",{value:!0});var React=_interopDefault(__webpack_require__(4)),reactRouter=__webpack_require__(90),history=__webpack_require__(57);__webpack_require__(24),__webpack_require__(61);var invariant=_interopDefault(__webpack_require__(62));function _extends(){return(_extends=Object.assign||function(t){for(var e=1;e<arguments.length;e++){var r=arguments[e];for(var o in r)Object.prototype.hasOwnProperty.call(r,o)&&(t[o]=r[o])}return t}).apply(this,arguments)}function _inheritsLoose(t,e){t.prototype=Object.create(e.prototype),(t.prototype.constructor=t).__proto__=e}function _objectWithoutPropertiesLoose(t,e){if(null==t)return{};var r,o,n={},i=Object.keys(t);for(o=0;o<i.length;o++)r=i[o],0<=e.indexOf(r)||(n[r]=t[r]);return n}var BrowserRouter=function(n){function t(){for(var t,e=arguments.length,r=new Array(e),o=0;o<e;o++)r[o]=arguments[o];return(t=n.call.apply(n,[this].concat(r))||this).history=history.createBrowserHistory(t.props),t}return _inheritsLoose(t,n),t.prototype.render=function(){return React.createElement(reactRouter.Router,{history:this.history,children:this.props.children})},t}(React.Component),HashRouter=function(n){function t(){for(var t,e=arguments.length,r=new Array(e),o=0;o<e;o++)r[o]=arguments[o];return(t=n.call.apply(n,[this].concat(r))||this).history=history.createHashHistory(t.props),t}return _inheritsLoose(t,n),t.prototype.render=function(){return React.createElement(reactRouter.Router,{history:this.history,children:this.props.children})},t}(React.Component);function isModifiedEvent(t){return!!(t.metaKey||t.altKey||t.ctrlKey||t.shiftKey)}var Link=function(t){function e(){return t.apply(this,arguments)||this}_inheritsLoose(e,t);var r=e.prototype;return r.handleClick=function(t,e){(this.props.onClick&&this.props.onClick(t),t.defaultPrevented||0!==t.button||this.props.target&&"_self"!==this.props.target||isModifiedEvent(t))||(t.preventDefault(),(this.props.replace?e.replace:e.push)(this.props.to))},r.render=function(){var o=this,t=this.props,n=t.innerRef,i=(t.replace,t.to),a=_objectWithoutPropertiesLoose(t,["innerRef","replace","to"]);return React.createElement(reactRouter.__RouterContext.Consumer,null,function(e){e||invariant(!1);var t="string"==typeof i?history.createLocation(i,null,null,e.location):i,r=t?e.history.createHref(t):"";return React.createElement("a",_extends({},a,{onClick:function(t){return o.handleClick(t,e.history)},href:r,ref:n}))})},e}(React.Component);function joinClassnames(){for(var t=arguments.length,e=new Array(t),r=0;r<t;r++)e[r]=arguments[r];return e.filter(function(t){return t}).join(" ")}function NavLink(t){var e=t["aria-current"],a=void 0===e?"page":e,r=t.activeClassName,s=void 0===r?"active":r,c=t.activeStyle,u=t.className,o=t.exact,l=t.isActive,n=t.location,i=t.strict,p=t.style,h=t.to,f=_objectWithoutPropertiesLoose(t,["aria-current","activeClassName","activeStyle","className","exact","isActive","location","strict","style","to"]),y="object"==typeof h?h.pathname:h,v=y&&y.replace(/([.+*?=^!:${}()[\]|/\\])/g,"\\$1");return React.createElement(reactRouter.Route,{path:v,exact:o,strict:i,location:n,children:function(t){var e=t.location,r=t.match,o=!!(l?l(r,e):r),n=o?joinClassnames(u,s):u,i=o?_extends({},p,c):p;return React.createElement(Link,_extends({"aria-current":o&&a||null,className:n,style:i,to:h},f))}})}Object.keys(reactRouter).forEach(function(t){exports[t]=reactRouter[t]}),exports.BrowserRouter=BrowserRouter,exports.HashRouter=HashRouter,exports.Link=Link,exports.NavLink=NavLink;
+
+
+/***/ }),
+/* 90 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	/* WEBPACK VAR INJECTION */(function(process) {"use strict";
+	
+	if (process.env.NODE_ENV === "production") {
+	  module.exports = __webpack_require__(91);
+	} else {
+	  module.exports = __webpack_require__(99);
+	}
+	
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2)))
+
+/***/ }),
+/* 91 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	"use strict";function _interopDefault(t){return t&&"object"==typeof t&&"default"in t?t.default:t}Object.defineProperty(exports,"__esModule",{value:!0});var createContext=_interopDefault(__webpack_require__(92)),React=_interopDefault(__webpack_require__(4));__webpack_require__(24),__webpack_require__(61);var history=__webpack_require__(57),invariant=_interopDefault(__webpack_require__(62)),pathToRegexp=_interopDefault(__webpack_require__(97));__webpack_require__(25);var hoistStatics=_interopDefault(__webpack_require__(37));function _extends(){return(_extends=Object.assign||function(t){for(var e=1;e<arguments.length;e++){var n=arguments[e];for(var o in n)Object.prototype.hasOwnProperty.call(n,o)&&(t[o]=n[o])}return t}).apply(this,arguments)}function _inheritsLoose(t,e){t.prototype=Object.create(e.prototype),(t.prototype.constructor=t).__proto__=e}function _objectWithoutPropertiesLoose(t,e){if(null==t)return{};var n,o,r={},a=Object.keys(t);for(o=0;o<a.length;o++)n=a[o],0<=e.indexOf(n)||(r[n]=t[n]);return r}var createNamedContext=function(t){var e=createContext();return e.Provider.displayName=t+".Provider",e.Consumer.displayName=t+".Consumer",e},context=createNamedContext("Router"),Router=function(n){function t(t){var e;return(e=n.call(this,t)||this).state={location:t.history.location},e._isMounted=!1,e._pendingLocation=null,t.staticContext||(e.unlisten=t.history.listen(function(t){e._isMounted?e.setState({location:t}):e._pendingLocation=t})),e}_inheritsLoose(t,n),t.computeRootMatch=function(t){return{path:"/",url:"/",params:{},isExact:"/"===t}};var e=t.prototype;return e.componentDidMount=function(){this._isMounted=!0,this._pendingLocation&&this.setState({location:this._pendingLocation})},e.componentWillUnmount=function(){this.unlisten&&this.unlisten()},e.render=function(){return React.createElement(context.Provider,{children:this.props.children||null,value:{history:this.props.history,location:this.state.location,match:t.computeRootMatch(this.state.location.pathname),staticContext:this.props.staticContext}})},t}(React.Component),MemoryRouter=function(r){function t(){for(var t,e=arguments.length,n=new Array(e),o=0;o<e;o++)n[o]=arguments[o];return(t=r.call.apply(r,[this].concat(n))||this).history=history.createMemoryHistory(t.props),t}return _inheritsLoose(t,r),t.prototype.render=function(){return React.createElement(Router,{history:this.history,children:this.props.children})},t}(React.Component),Lifecycle=function(t){function e(){return t.apply(this,arguments)||this}_inheritsLoose(e,t);var n=e.prototype;return n.componentDidMount=function(){this.props.onMount&&this.props.onMount.call(this,this)},n.componentDidUpdate=function(t){this.props.onUpdate&&this.props.onUpdate.call(this,this,t)},n.componentWillUnmount=function(){this.props.onUnmount&&this.props.onUnmount.call(this,this)},n.render=function(){return null},e}(React.Component);function Prompt(t){var o=t.message,e=t.when,r=void 0===e||e;return React.createElement(context.Consumer,null,function(t){if(t||invariant(!1),!r||t.staticContext)return null;var n=t.history.block;return React.createElement(Lifecycle,{onMount:function(t){t.release=n(o)},onUpdate:function(t,e){e.message!==o&&(t.release(),t.release=n(o))},onUnmount:function(t){t.release()},message:o})})}var cache={},cacheLimit=1e4,cacheCount=0;function compilePath(t){if(cache[t])return cache[t];var e=pathToRegexp.compile(t);return cacheCount<cacheLimit&&(cache[t]=e,cacheCount++),e}function generatePath(t,e){return void 0===t&&(t="/"),void 0===e&&(e={}),"/"===t?t:compilePath(t)(e,{pretty:!0})}function Redirect(t){var a=t.computedMatch,i=t.to,e=t.push,c=void 0!==e&&e;return React.createElement(context.Consumer,null,function(t){t||invariant(!1);var e=t.history,n=t.staticContext,o=c?e.push:e.replace,r=history.createLocation(a?"string"==typeof i?generatePath(i,a.params):_extends({},i,{pathname:generatePath(i.pathname,a.params)}):i);return n?(o(r),null):React.createElement(Lifecycle,{onMount:function(){o(r)},onUpdate:function(t,e){history.locationsAreEqual(e.to,r)||o(r)},to:i})})}var cache$1={},cacheLimit$1=1e4,cacheCount$1=0;function compilePath$1(t,e){var n=""+e.end+e.strict+e.sensitive,o=cache$1[n]||(cache$1[n]={});if(o[t])return o[t];var r=[],a={regexp:pathToRegexp(t,r,e),keys:r};return cacheCount$1<cacheLimit$1&&(o[t]=a,cacheCount$1++),a}function matchPath(u,t){void 0===t&&(t={}),"string"==typeof t&&(t={path:t});var e=t,n=e.path,o=e.exact,p=void 0!==o&&o,r=e.strict,h=void 0!==r&&r,a=e.sensitive,l=void 0!==a&&a;return[].concat(n).reduce(function(t,e){if(t)return t;var n=compilePath$1(e,{end:p,strict:h,sensitive:l}),o=n.regexp,r=n.keys,a=o.exec(u);if(!a)return null;var i=a[0],c=a.slice(1),s=u===i;return p&&!s?null:{path:e,url:"/"===e&&""===i?"/":i,isExact:s,params:r.reduce(function(t,e,n){return t[e.name]=c[n],t},{})}},null)}function isEmptyChildren(t){return 0===React.Children.count(t)}var Route=function(t){function e(){return t.apply(this,arguments)||this}return _inheritsLoose(e,t),e.prototype.render=function(){var c=this;return React.createElement(context.Consumer,null,function(t){t||invariant(!1);var e=c.props.location||t.location,n=_extends({},t,{location:e,match:c.props.computedMatch?c.props.computedMatch:c.props.path?matchPath(e.pathname,c.props):t.match}),o=c.props,r=o.children,a=o.component,i=o.render;return Array.isArray(r)&&0===r.length&&(r=null),"function"==typeof r&&void 0===(r=r(n))&&(r=null),React.createElement(context.Provider,{value:n},r&&!isEmptyChildren(r)?r:n.match?a?React.createElement(a,n):i?i(n):null:null)})},e}(React.Component);function addLeadingSlash(t){return"/"===t.charAt(0)?t:"/"+t}function addBasename(t,e){return t?_extends({},e,{pathname:addLeadingSlash(t)+e.pathname}):e}function stripBasename(t,e){if(!t)return e;var n=addLeadingSlash(t);return 0!==e.pathname.indexOf(n)?e:_extends({},e,{pathname:e.pathname.substr(n.length)})}function createURL(t){return"string"==typeof t?t:history.createPath(t)}function staticHandler(t){return function(){invariant(!1)}}function noop(){}var StaticRouter=function(r){function t(){for(var e,t=arguments.length,n=new Array(t),o=0;o<t;o++)n[o]=arguments[o];return(e=r.call.apply(r,[this].concat(n))||this).handlePush=function(t){return e.navigateTo(t,"PUSH")},e.handleReplace=function(t){return e.navigateTo(t,"REPLACE")},e.handleListen=function(){return noop},e.handleBlock=function(){return noop},e}_inheritsLoose(t,r);var e=t.prototype;return e.navigateTo=function(t,e){var n=this.props,o=n.basename,r=void 0===o?"":o,a=n.context;a.action=e,a.location=addBasename(r,history.createLocation(t)),a.url=createURL(a.location)},e.render=function(){var t=this.props,e=t.basename,n=void 0===e?"":e,o=t.context,r=void 0===o?{}:o,a=t.location,i=void 0===a?"/":a,c=_objectWithoutPropertiesLoose(t,["basename","context","location"]),s={createHref:function(t){return addLeadingSlash(n+createURL(t))},action:"POP",location:stripBasename(n,history.createLocation(i)),push:this.handlePush,replace:this.handleReplace,go:staticHandler("go"),goBack:staticHandler("goBack"),goForward:staticHandler("goForward"),listen:this.handleListen,block:this.handleBlock};return React.createElement(Router,_extends({},c,{history:s,staticContext:r}))},t}(React.Component),Switch=function(t){function e(){return t.apply(this,arguments)||this}return _inheritsLoose(e,t),e.prototype.render=function(){var t=this;return React.createElement(context.Consumer,null,function(n){n||invariant(!1);var o,r,a=t.props.location||n.location;return React.Children.forEach(t.props.children,function(t){if(null==r&&React.isValidElement(t)){var e=(o=t).props.path||t.props.from;r=e?matchPath(a.pathname,_extends({},t.props,{path:e})):n.match}}),r?React.cloneElement(o,{location:a,computedMatch:r}):null})},e}(React.Component);function withRouter(o){var t=function(t){var e=t.wrappedComponentRef,n=_objectWithoutPropertiesLoose(t,["wrappedComponentRef"]);return React.createElement(Route,{children:function(t){return React.createElement(o,_extends({},n,t,{ref:e}))}})};return t.displayName="withRouter("+(o.displayName||o.name)+")",t.WrappedComponent=o,hoistStatics(t,o)}exports.MemoryRouter=MemoryRouter,exports.Prompt=Prompt,exports.Redirect=Redirect,exports.Route=Route,exports.Router=Router,exports.StaticRouter=StaticRouter,exports.Switch=Switch,exports.generatePath=generatePath,exports.matchPath=matchPath,exports.withRouter=withRouter,exports.__RouterContext=context;
+
+
+/***/ }),
+/* 92 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -30370,7 +30523,7 @@
 	
 	var _react2 = _interopRequireDefault(_react);
 	
-	var _implementation = __webpack_require__(89);
+	var _implementation = __webpack_require__(93);
 	
 	var _implementation2 = _interopRequireDefault(_implementation);
 	
@@ -30380,7 +30533,7 @@
 	module.exports = exports['default'];
 
 /***/ }),
-/* 89 */
+/* 93 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {'use strict';
@@ -30395,11 +30548,11 @@
 	
 	var _propTypes2 = _interopRequireDefault(_propTypes);
 	
-	var _gud = __webpack_require__(90);
+	var _gud = __webpack_require__(94);
 	
 	var _gud2 = _interopRequireDefault(_gud);
 	
-	var _warning = __webpack_require__(91);
+	var _warning = __webpack_require__(95);
 	
 	var _warning2 = _interopRequireDefault(_warning);
 	
@@ -30582,7 +30735,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2)))
 
 /***/ }),
-/* 90 */
+/* 94 */
 /***/ (function(module, exports) {
 
 	/* WEBPACK VAR INJECTION */(function(global) {// @flow
@@ -30597,7 +30750,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
 
 /***/ }),
-/* 91 */
+/* 95 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {/**
@@ -30610,7 +30763,7 @@
 	
 	'use strict';
 	
-	var emptyFunction = __webpack_require__(92);
+	var emptyFunction = __webpack_require__(96);
 	
 	/**
 	 * Similar to invariant but only logs a warning if the condition is not met.
@@ -30665,7 +30818,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2)))
 
 /***/ }),
-/* 92 */
+/* 96 */
 /***/ (function(module, exports) {
 
 	"use strict";
@@ -30706,10 +30859,10 @@
 	module.exports = emptyFunction;
 
 /***/ }),
-/* 93 */
+/* 97 */
 /***/ (function(module, exports, __webpack_require__) {
 
-	var isarray = __webpack_require__(94)
+	var isarray = __webpack_require__(98)
 	
 	/**
 	 * Expose `pathToRegexp`.
@@ -31138,7 +31291,7 @@
 
 
 /***/ }),
-/* 94 */
+/* 98 */
 /***/ (function(module, exports) {
 
 	module.exports = Array.isArray || function (arr) {
@@ -31147,7 +31300,7 @@
 
 
 /***/ }),
-/* 95 */
+/* 99 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -31156,13 +31309,13 @@
 	
 	function _interopDefault (ex) { return (ex && (typeof ex === 'object') && 'default' in ex) ? ex['default'] : ex; }
 	
-	var createContext = _interopDefault(__webpack_require__(88));
+	var createContext = _interopDefault(__webpack_require__(92));
 	var React = _interopDefault(__webpack_require__(4));
 	var PropTypes = _interopDefault(__webpack_require__(24));
 	var warning = _interopDefault(__webpack_require__(61));
 	var history = __webpack_require__(57);
 	var invariant = _interopDefault(__webpack_require__(62));
-	var pathToRegexp = _interopDefault(__webpack_require__(93));
+	var pathToRegexp = _interopDefault(__webpack_require__(97));
 	var reactIs = __webpack_require__(25);
 	var hoistStatics = _interopDefault(__webpack_require__(37));
 	
@@ -31925,7 +32078,7 @@
 
 
 /***/ }),
-/* 96 */
+/* 100 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -31935,7 +32088,7 @@
 	function _interopDefault (ex) { return (ex && (typeof ex === 'object') && 'default' in ex) ? ex['default'] : ex; }
 	
 	var React = _interopDefault(__webpack_require__(4));
-	var reactRouter = __webpack_require__(86);
+	var reactRouter = __webpack_require__(90);
 	var history = __webpack_require__(57);
 	var PropTypes = _interopDefault(__webpack_require__(24));
 	var warning = _interopDefault(__webpack_require__(61));
@@ -32223,19 +32376,19 @@
 
 
 /***/ }),
-/* 97 */
+/* 101 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
 	Object.defineProperty(exports, "__esModule", { value: true });
-	const homepage_1 = __webpack_require__(98);
-	const RegisterPage_1 = __webpack_require__(122);
-	const LoginPage_1 = __webpack_require__(123);
-	const CustomerPage_1 = __webpack_require__(124);
-	const react_router_dom_1 = __webpack_require__(84);
+	const homepage_1 = __webpack_require__(102);
+	const RegisterPage_1 = __webpack_require__(130);
+	const LoginPage_1 = __webpack_require__(131);
+	const CustomerPage_1 = __webpack_require__(132);
+	const react_router_dom_1 = __webpack_require__(88);
 	const React = __webpack_require__(4);
 	const react_redux_1 = __webpack_require__(18);
-	const action_1 = __webpack_require__(101);
+	const action_1 = __webpack_require__(105);
 	class App extends React.Component {
 	    componentWillMount() {
 	        window["routerHistory"] = this.props.history;
@@ -32259,17 +32412,17 @@
 
 
 /***/ }),
-/* 98 */
+/* 102 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
 	Object.defineProperty(exports, "__esModule", { value: true });
 	const React = __webpack_require__(4);
-	const TopPanel_1 = __webpack_require__(99);
-	const Slider_1 = __webpack_require__(119);
-	const Feature_1 = __webpack_require__(121);
+	const TopPanel_1 = __webpack_require__(103);
+	const Slider_1 = __webpack_require__(127);
+	const Feature_1 = __webpack_require__(129);
 	const react_redux_1 = __webpack_require__(18);
-	const react_router_dom_1 = __webpack_require__(84);
+	const react_router_dom_1 = __webpack_require__(88);
 	class HomePage extends React.Component {
 	    render() {
 	        return React.createElement("div", null,
@@ -32288,16 +32441,16 @@
 
 
 /***/ }),
-/* 99 */
+/* 103 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
 	Object.defineProperty(exports, "__esModule", { value: true });
 	const React = __webpack_require__(4);
-	const Menu_1 = __webpack_require__(100);
-	const react_router_dom_1 = __webpack_require__(84);
+	const Menu_1 = __webpack_require__(104);
+	const react_router_dom_1 = __webpack_require__(88);
 	const react_redux_1 = __webpack_require__(18);
-	const action_1 = __webpack_require__(101);
+	const action_1 = __webpack_require__(105);
 	class TopPanel extends React.Component {
 	    onSignOut() {
 	        this.props.dispatch(action_1.userActions.logout());
@@ -32348,13 +32501,13 @@
 
 
 /***/ }),
-/* 100 */
+/* 104 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
 	Object.defineProperty(exports, "__esModule", { value: true });
 	const React = __webpack_require__(4);
-	const react_router_dom_1 = __webpack_require__(84);
+	const react_router_dom_1 = __webpack_require__(88);
 	class Menu extends React.Component {
 	    constructor(props) {
 	        super(props);
@@ -32413,7 +32566,7 @@
 
 
 /***/ }),
-/* 101 */
+/* 105 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -32421,23 +32574,25 @@
 	    for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
 	}
 	Object.defineProperty(exports, "__esModule", { value: true });
-	__export(__webpack_require__(102));
-	__export(__webpack_require__(113));
-	__export(__webpack_require__(114));
-	__export(__webpack_require__(115));
-	__export(__webpack_require__(116));
-	__export(__webpack_require__(117));
-	__export(__webpack_require__(118));
+	__export(__webpack_require__(106));
+	__export(__webpack_require__(119));
+	__export(__webpack_require__(120));
+	__export(__webpack_require__(121));
+	__export(__webpack_require__(122));
+	__export(__webpack_require__(123));
+	__export(__webpack_require__(124));
+	__export(__webpack_require__(125));
+	__export(__webpack_require__(126));
 
 
 /***/ }),
-/* 102 */
+/* 106 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
 	Object.defineProperty(exports, "__esModule", { value: true });
 	const constants_1 = __webpack_require__(68);
-	const backend = __webpack_require__(103);
+	const backend = __webpack_require__(107);
 	exports.userActions = {
 	    login,
 	    logout,
@@ -32525,7 +32680,7 @@
 
 
 /***/ }),
-/* 103 */
+/* 107 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -32564,21 +32719,23 @@
 	    });
 	}
 	exports.getData = getData;
-	__export(__webpack_require__(104));
-	__export(__webpack_require__(105));
-	__export(__webpack_require__(106));
-	__export(__webpack_require__(107));
 	__export(__webpack_require__(108));
 	__export(__webpack_require__(109));
+	__export(__webpack_require__(110));
+	__export(__webpack_require__(111));
+	__export(__webpack_require__(112));
+	__export(__webpack_require__(113));
+	__export(__webpack_require__(117));
+	__export(__webpack_require__(118));
 
 
 /***/ }),
-/* 104 */
+/* 108 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
 	Object.defineProperty(exports, "__esModule", { value: true });
-	const index_1 = __webpack_require__(103);
+	const index_1 = __webpack_require__(107);
 	function loginAuth(name, password) {
 	    let data = {
 	        "email": name,
@@ -32680,15 +32837,38 @@
 	    });
 	}
 	exports.update = update;
+	function getInfo(id) {
+	    let data = {
+	        id
+	    };
+	    return new Promise((resolve, reject) => {
+	        index_1.getData("thong-tin-user", data)
+	            .then(result => {
+	            if (result["get"] == 'success') {
+	                let user = result['user'];
+	                resolve({
+	                    username: user['ten'],
+	                    email: user['email'],
+	                    address: user['diachi'],
+	                    phone: user['sodienthoai'],
+	                });
+	            }
+	            else {
+	                reject(result['errors']);
+	            }
+	        });
+	    });
+	}
+	exports.getInfo = getInfo;
 
 
 /***/ }),
-/* 105 */
+/* 109 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
 	Object.defineProperty(exports, "__esModule", { value: true });
-	const index_1 = __webpack_require__(103);
+	const index_1 = __webpack_require__(107);
 	function getBank() {
 	    return new Promise((resolve, reject) => {
 	        index_1.getData("bank")
@@ -32730,10 +32910,11 @@
 	    return new Promise((resolve, reject) => {
 	        index_1.getData("bank-user")
 	            .then(result => {
-	            if (result instanceof Array) {
-	                resolve(result.map(bank => ({
-	                    name: bank['ten_nganhang'],
-	                    id: bank['id'],
+	            if (result['account'] instanceof Array) {
+	                resolve(result['account'].map((account, index) => ({
+	                    number: account['sotaikhoan'],
+	                    name: result['bank'][index]['ten_nganhang'],
+	                    id: account['id'],
 	                })));
 	            }
 	            else {
@@ -32743,19 +32924,59 @@
 	    });
 	}
 	exports.getConnectedAccount = getConnectedAccount;
+	function getBankById(id) {
+	    let data = { id };
+	    return new Promise((resolve, reject) => {
+	        index_1.getData("get-bank", data)
+	            .then(result => {
+	            if (result['get'] == 'success') {
+	                let bank = result['nganhang'];
+	                resolve({
+	                    name: bank["ten_nganhang"],
+	                    id: bank["id"],
+	                });
+	            }
+	            else {
+	                reject(result['errors']);
+	            }
+	        });
+	    });
+	}
+	exports.getBankById = getBankById;
+	function getAccountById(id) {
+	    let data = { id };
+	    return new Promise((resolve, reject) => {
+	        index_1.getData("get-account", data)
+	            .then(result => {
+	            if (result['get'] == 'success') {
+	                let account = result['taikhoan'];
+	                resolve({
+	                    number: account['sotaikhoan'],
+	                    name: account["ten_nganhang"],
+	                    id: account["id"],
+	                });
+	            }
+	            else {
+	                reject(result['errors']);
+	            }
+	        });
+	    });
+	}
+	exports.getAccountById = getAccountById;
 
 
 /***/ }),
-/* 106 */
+/* 110 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
 	Object.defineProperty(exports, "__esModule", { value: true });
-	const index_1 = __webpack_require__(103);
+	const index_1 = __webpack_require__(107);
 	function getFriendList() {
 	    return new Promise((resolve, reject) => {
 	        index_1.getData("danh-ba")
 	            .then(friends => {
+	            friends = friends['danhba'];
 	            if (friends instanceof Array) {
 	                resolve(friends.map(friend => ({
 	                    username: friend["ten"],
@@ -32771,15 +32992,30 @@
 	    });
 	}
 	exports.getFriendList = getFriendList;
+	function addFriend(email) {
+	    let data = { email };
+	    return new Promise((resolve, reject) => {
+	        index_1.getData("them-danh-ba", data)
+	            .then(result => {
+	            if (result['link'] == 'success') {
+	                resolve();
+	            }
+	            else {
+	                reject(result['message']);
+	            }
+	        });
+	    });
+	}
+	exports.addFriend = addFriend;
 
 
 /***/ }),
-/* 107 */
+/* 111 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
 	Object.defineProperty(exports, "__esModule", { value: true });
-	const _1 = __webpack_require__(103);
+	const _1 = __webpack_require__(107);
 	function transfer({ amount, email, message }) {
 	    let data = {
 	        "sotien": amount,
@@ -32799,15 +33035,69 @@
 	    });
 	}
 	exports.transfer = transfer;
+	function deposit(account, amount) {
+	    let data = {
+	        "sotk": account,
+	        "sotien": amount,
+	    };
+	    return new Promise((resolve, reject) => {
+	        _1.getData("post-add-money", data)
+	            .then(result => {
+	            if (result["title"] == "error") {
+	                reject(result["content"]);
+	            }
+	            else {
+	                resolve();
+	            }
+	        });
+	    });
+	}
+	exports.deposit = deposit;
+	function payMobileCard(telecomId, amount) {
+	    let data = {
+	        "sotien": amount,
+	        "nhamang": telecomId,
+	    };
+	    return new Promise((resolve, reject) => {
+	        _1.getData("nap-the", data)
+	            .then(result => {
+	            if (result["napthe"] != "error") {
+	                resolve(result['code']);
+	            }
+	            else {
+	                reject(result["message"]);
+	            }
+	        });
+	    });
+	}
+	exports.payMobileCard = payMobileCard;
+	function payBill(code, type) {
+	    let data = {
+	        "id_loaihoadon": type,
+	        "mahoadon": code,
+	    };
+	    return new Promise((resolve, reject) => {
+	        _1.getData("post-pay-bill", data)
+	            .then(result => {
+	            if (result["title"] == "success") {
+	                resolve();
+	            }
+	            else {
+	                reject(result["content"]);
+	            }
+	        });
+	    });
+	}
+	exports.payBill = payBill;
 
 
 /***/ }),
-/* 108 */
+/* 112 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
 	Object.defineProperty(exports, "__esModule", { value: true });
-	const _1 = __webpack_require__(103);
+	const _1 = __webpack_require__(107);
 	function getNotification() {
 	    return new Promise((resolve, reject) => {
 	        _1.getData("thong-bao", {})
@@ -32842,13 +33132,13 @@
 
 
 /***/ }),
-/* 109 */
+/* 113 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
 	Object.defineProperty(exports, "__esModule", { value: true });
-	const _1 = __webpack_require__(103);
-	const utils_1 = __webpack_require__(110);
+	const _1 = __webpack_require__(107);
+	const utils_1 = __webpack_require__(114);
 	function getTransaction() {
 	    return new Promise((resolve, reject) => {
 	        _1.getData("lich-su-giao-dich", {})
@@ -32866,9 +33156,8 @@
 	                transactions = transactions.concat(result['naptien'].map(transaction => ({
 	                    type: utils_1.TransactionType.DEPOSIT,
 	                    id: transaction["id"],
-	                    account: transaction["account_id"],
-	                    message: transaction["noidung"],
-	                    time: new Date(transaction["time"]),
+	                    account: transaction["id_taikhoan"],
+	                    time: new Date(transaction["created_at"]),
 	                    amount: transaction["sotien"],
 	                })));
 	                transactions = transactions.concat(result['napthe'].map(transaction => ({
@@ -32878,14 +33167,20 @@
 	                    time: new Date(transaction["created_at"]),
 	                    amount: transaction["sotien"],
 	                })));
-	                // transactions = transactions.concat(result['nhantien'].map(transaction => ({
-	                // 	type: TransactionType.RECEIVE,
-	                // 	id: transaction["id"],
-	                // 	sender: transaction["id_gui"],
-	                // 	time: new Date(transaction["created_at"]),
-	                // 	message: transaction["noidung"],
-	                // 	amount: transaction["sotien"],
-	                // })));
+	                transactions = transactions.concat(result['nhantien'].map(transaction => ({
+	                    type: utils_1.TransactionType.RECEIVE,
+	                    id: transaction["id"],
+	                    sender: transaction["id_chuyen"],
+	                    time: new Date(transaction["time"]),
+	                    message: transaction["noidung"],
+	                    amount: transaction["sotien"],
+	                })));
+	                transactions = transactions.concat(result['thanhtoan'].map(transaction => ({
+	                    type: utils_1.TransactionType.PAY,
+	                    id: transaction["id"],
+	                    bill: transaction["hoadon_id"],
+	                    time: new Date(transaction["created_at"]),
+	                })));
 	                resolve(transactions);
 	            }
 	            else {
@@ -32898,7 +33193,7 @@
 
 
 /***/ }),
-/* 110 */
+/* 114 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -32906,12 +33201,12 @@
 	    for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
 	}
 	Object.defineProperty(exports, "__esModule", { value: true });
-	__export(__webpack_require__(111));
-	__export(__webpack_require__(112));
+	__export(__webpack_require__(115));
+	__export(__webpack_require__(116));
 
 
 /***/ }),
-/* 111 */
+/* 115 */
 /***/ (function(module, exports) {
 
 	"use strict";
@@ -32928,10 +33223,15 @@
 	    return result;
 	}
 	exports.toMoneyFormat = toMoneyFormat;
+	function toAccountNumberFormat(accountNumber) {
+	    let result = accountNumber.toString();
+	    return "*******" + result.slice(result.length - 3);
+	}
+	exports.toAccountNumberFormat = toAccountNumberFormat;
 
 
 /***/ }),
-/* 112 */
+/* 116 */
 /***/ (function(module, exports) {
 
 	"use strict";
@@ -32972,13 +33272,132 @@
 
 
 /***/ }),
-/* 113 */
+/* 117 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	"use strict";
+	Object.defineProperty(exports, "__esModule", { value: true });
+	const _1 = __webpack_require__(107);
+	function getTelecom() {
+	    return new Promise((resolve, reject) => {
+	        _1.getData("nha-mang", {})
+	            .then(result => {
+	            if (result instanceof Array) {
+	                resolve(result.map(telecom => ({
+	                    id: telecom["id"],
+	                    name: telecom["tennhamang"],
+	                })));
+	            }
+	            else {
+	                reject("Internet Connection Error!");
+	            }
+	        });
+	    });
+	}
+	exports.getTelecom = getTelecom;
+	function getTelecomById(id) {
+	    return new Promise((resolve, reject) => {
+	        _1.getData("get-nha-mang", { id })
+	            .then(result => {
+	            if (result['get'] == 'success') {
+	                let telecom = result['nhamang'];
+	                resolve({
+	                    id: telecom["id"],
+	                    name: telecom["tennhamang"],
+	                });
+	            }
+	            else {
+	                reject(result['errors']);
+	            }
+	        });
+	    });
+	}
+	exports.getTelecomById = getTelecomById;
+
+
+/***/ }),
+/* 118 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	"use strict";
+	Object.defineProperty(exports, "__esModule", { value: true });
+	const _1 = __webpack_require__(107);
+	function getBillType() {
+	    return new Promise((resolve, reject) => {
+	        _1.getData("bill-type")
+	            .then(result => {
+	            if (result instanceof Array) {
+	                resolve(result.map(type => ({
+	                    id: type["id"],
+	                    name: type["tenloai"],
+	                })));
+	            }
+	            else {
+	                reject("Internet Connection Error");
+	            }
+	        });
+	    });
+	}
+	exports.getBillType = getBillType;
+	function getBill(code, type) {
+	    let data = {
+	        "mahoadon": code,
+	        "id_loaihoadon": type
+	    };
+	    return new Promise((resolve, reject) => {
+	        _1.getData("get-bill", data)
+	            .then(result => {
+	            if (result['title'] == 'success') {
+	                let bill = result["content"];
+	                resolve({
+	                    id: bill['id'],
+	                    code: bill['mahoadon'],
+	                    amount: bill['sotien'],
+	                    provider: bill['ten_nhacungcap'],
+	                    type: bill['loaihoadon_id'],
+	                });
+	            }
+	            else {
+	                reject(result["content"]);
+	            }
+	        });
+	    });
+	}
+	exports.getBill = getBill;
+	function getBillById(id) {
+	    let data = {
+	        id
+	    };
+	    return new Promise((resolve, reject) => {
+	        _1.getData("get-bill-id", data)
+	            .then(result => {
+	            if (result['title'] == 'success') {
+	                let bill = result['content'];
+	                resolve({
+	                    id: bill['id'],
+	                    code: bill['mahoadon'],
+	                    amount: bill['sotien'],
+	                    provider: bill['ten_nhacungcap'],
+	                    type: result['type'],
+	                });
+	            }
+	            else {
+	                reject(result["content"]);
+	            }
+	        });
+	    });
+	}
+	exports.getBillById = getBillById;
+
+
+/***/ }),
+/* 119 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
 	Object.defineProperty(exports, "__esModule", { value: true });
 	const constants_1 = __webpack_require__(68);
-	const backend = __webpack_require__(103);
+	const backend = __webpack_require__(107);
 	exports.bankActions = {
 	    getBank,
 	};
@@ -33002,13 +33421,13 @@
 
 
 /***/ }),
-/* 114 */
+/* 120 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
 	Object.defineProperty(exports, "__esModule", { value: true });
 	const constants_1 = __webpack_require__(68);
-	const backend = __webpack_require__(103);
+	const backend = __webpack_require__(107);
 	exports.accountActions = {
 	    connectAccount,
 	    getConnectedAccount,
@@ -33051,15 +33470,16 @@
 
 
 /***/ }),
-/* 115 */
+/* 121 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
 	Object.defineProperty(exports, "__esModule", { value: true });
 	const constants_1 = __webpack_require__(68);
-	const backend = __webpack_require__(103);
+	const backend = __webpack_require__(107);
 	exports.friendActions = {
 	    getFriendList,
+	    addFriend,
 	};
 	function getFriendList() {
 	    return dispatch => {
@@ -33078,26 +33498,45 @@
 	    function failure(error) { return { type: constants_1.friendConstants.FRIEND_FAILURE, error }; }
 	    ;
 	}
+	function addFriend(email) {
+	    return dispatch => {
+	        dispatch(request());
+	        backend.addFriend(email)
+	            .then(() => {
+	            dispatch(success());
+	            dispatch(getFriendList());
+	        }, error => {
+	            dispatch(failure(error));
+	        });
+	    };
+	    function request() { return { type: constants_1.friendConstants.ADD_FRIEND_REQUEST }; }
+	    ;
+	    function success() { return { type: constants_1.friendConstants.ADD_FRIEND_SUCCESS }; }
+	    ;
+	    function failure(error) { return { type: constants_1.friendConstants.ADD_FRIEND_FAILURE, error }; }
+	    ;
+	}
 
 
 /***/ }),
-/* 116 */
+/* 122 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
 	Object.defineProperty(exports, "__esModule", { value: true });
 	const constants_1 = __webpack_require__(68);
-	const _1 = __webpack_require__(101);
-	const backend = __webpack_require__(103);
+	const backend = __webpack_require__(107);
 	exports.servicesActions = {
 	    transfer,
+	    payMobileCard,
+	    deposit,
+	    payBill,
 	};
 	function transfer({ amount, email, message }) {
 	    return dispatch => {
 	        dispatch(request());
 	        backend.transfer({ amount, email, message })
 	            .then(() => {
-	            dispatch(_1.userActions.update());
 	            dispatch(success());
 	        }, error => {
 	            dispatch(failure(error));
@@ -33110,17 +33549,68 @@
 	    function failure(error) { return { type: constants_1.servicesConstants.TRANSFER_FAILURE, error }; }
 	    ;
 	}
+	function payMobileCard(telecomId, amount) {
+	    return dispatch => {
+	        dispatch(request());
+	        backend.payMobileCard(telecomId, amount)
+	            .then(code => {
+	            dispatch(success(code));
+	        }, error => {
+	            dispatch(failure(error));
+	        });
+	    };
+	    function request() { return { type: constants_1.servicesConstants.MOBILE_REQUEST }; }
+	    ;
+	    function success(code) { return { type: constants_1.servicesConstants.MOBILE_SUCCESS, code }; }
+	    ;
+	    function failure(error) { return { type: constants_1.servicesConstants.MOBILE_FAILURE, error }; }
+	    ;
+	}
+	function deposit(account, amount) {
+	    return dispatch => {
+	        dispatch(request());
+	        backend.deposit(account, amount)
+	            .then(() => {
+	            dispatch(success());
+	        }, error => {
+	            dispatch(failure(error));
+	        });
+	    };
+	    function request() { return { type: constants_1.servicesConstants.DEPOSIT_REQUEST }; }
+	    ;
+	    function success() { return { type: constants_1.servicesConstants.DEPOSIT_SUCCESS }; }
+	    ;
+	    function failure(error) { return { type: constants_1.servicesConstants.DEPOSIT_FAILURE, error }; }
+	    ;
+	}
+	function payBill(code, type) {
+	    return dispatch => {
+	        dispatch(request());
+	        backend.payBill(code, type)
+	            .then(() => {
+	            dispatch(success());
+	        }, error => {
+	            dispatch(failure(error));
+	        });
+	    };
+	    function request() { return { type: constants_1.servicesConstants.PAY_REQUEST }; }
+	    ;
+	    function success() { return { type: constants_1.servicesConstants.PAY_SUCCESS }; }
+	    ;
+	    function failure(error) { return { type: constants_1.servicesConstants.PAY_FAILURE, error }; }
+	    ;
+	}
 
 
 /***/ }),
-/* 117 */
+/* 123 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
 	Object.defineProperty(exports, "__esModule", { value: true });
 	const constants_1 = __webpack_require__(68);
-	const backend = __webpack_require__(103);
-	const _1 = __webpack_require__(101);
+	const backend = __webpack_require__(107);
+	const _1 = __webpack_require__(105);
 	exports.notificationActions = {
 	    load,
 	    read,
@@ -33136,6 +33626,7 @@
 	            let newUnread = newNotis.filter(noti => !noti.read).length;
 	            if (oldUnread != newUnread || oldNotis.length != newNotis.length) {
 	                dispatch(success(notifications));
+	                dispatch(_1.userActions.update());
 	                dispatch(_1.transactionActions.load());
 	            }
 	        }, error => {
@@ -33160,13 +33651,14 @@
 
 
 /***/ }),
-/* 118 */
+/* 124 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
 	Object.defineProperty(exports, "__esModule", { value: true });
 	const constants_1 = __webpack_require__(68);
-	const backend = __webpack_require__(103);
+	const backend = __webpack_require__(107);
+	const utils_1 = __webpack_require__(114);
 	exports.transactionActions = {
 	    load,
 	};
@@ -33174,8 +33666,57 @@
 	    return (dispatch) => {
 	        dispatch(request());
 	        backend.getTransaction()
-	            .then(transactions => {
-	            dispatch(success(transactions));
+	            .then((transactions) => {
+	            Promise.all(transactions.map(transaction => {
+	                if (transaction.type == utils_1.TransactionType.TRANSFER) {
+	                    return new Promise(resolve => {
+	                        backend.getInfo(transaction.receiver)
+	                            .then(user => {
+	                            transaction.receiver = user;
+	                            resolve();
+	                        });
+	                    });
+	                }
+	                else if (transaction.type == utils_1.TransactionType.RECEIVE) {
+	                    return new Promise(resolve => {
+	                        backend.getInfo(transaction.sender)
+	                            .then(user => {
+	                            transaction.sender = user;
+	                            resolve();
+	                        });
+	                    });
+	                }
+	                else if (transaction.type == utils_1.TransactionType.MOBILE_PAY) {
+	                    return new Promise(resolve => {
+	                        backend.getTelecomById(transaction.telecom)
+	                            .then(telecom => {
+	                            transaction.telecom = telecom;
+	                            resolve();
+	                        });
+	                    });
+	                }
+	                else if (transaction.type == utils_1.TransactionType.DEPOSIT) {
+	                    return new Promise(resolve => {
+	                        backend.getAccountById(transaction.account)
+	                            .then(account => {
+	                            transaction.account = account;
+	                            resolve();
+	                        });
+	                    });
+	                }
+	                else if (transaction.type == utils_1.TransactionType.PAY) {
+	                    return new Promise(resolve => {
+	                        backend.getBillById(transaction.bill)
+	                            .then(bill => {
+	                            transaction.bill = bill;
+	                            transaction.amount = bill['amount'];
+	                            resolve();
+	                        });
+	                    });
+	                }
+	            })).then(() => {
+	                dispatch(success(transactions));
+	            });
 	        }, error => {
 	            dispatch(failure(error));
 	        });
@@ -33190,13 +33731,91 @@
 
 
 /***/ }),
-/* 119 */
+/* 125 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	"use strict";
+	Object.defineProperty(exports, "__esModule", { value: true });
+	const constants_1 = __webpack_require__(68);
+	const backend = __webpack_require__(107);
+	exports.mobileActions = {
+	    getTelecom,
+	};
+	function getTelecom() {
+	    return dispatch => {
+	        dispatch(request());
+	        backend.getTelecom()
+	            .then(telecoms => {
+	            dispatch(success(telecoms));
+	        }, error => {
+	            dispatch(failure(error));
+	        });
+	    };
+	    function request() { return { type: constants_1.mobileConstants.MOBILE_REQUEST }; }
+	    ;
+	    function success(telecoms) { return { type: constants_1.mobileConstants.MOBILE_SUCCESS, telecoms }; }
+	    ;
+	    function failure(error) { return { type: constants_1.mobileConstants.MOBILE_FAILURE, error }; }
+	    ;
+	}
+
+
+/***/ }),
+/* 126 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	"use strict";
+	Object.defineProperty(exports, "__esModule", { value: true });
+	const constants_1 = __webpack_require__(68);
+	const backend = __webpack_require__(107);
+	exports.billActions = {
+	    getBillType,
+	    getBill,
+	};
+	function getBillType() {
+	    return dispatch => {
+	        dispatch(request());
+	        backend.getBillType()
+	            .then(types => {
+	            dispatch(success(types));
+	        }, error => {
+	            dispatch(failure(error));
+	        });
+	    };
+	    function request() { return { type: constants_1.billConstants.TYPE_REQUEST }; }
+	    ;
+	    function success(types) { return { type: constants_1.billConstants.TYPE_SUCCESS, types }; }
+	    ;
+	    function failure(error) { return { type: constants_1.billConstants.TYPE_FAILURE, error }; }
+	    ;
+	}
+	function getBill(code, type) {
+	    return dispatch => {
+	        dispatch(request());
+	        backend.getBill(code, type)
+	            .then(bill => {
+	            dispatch(success(bill));
+	        }, error => {
+	            dispatch(failure(error));
+	        });
+	    };
+	    function request() { return { type: constants_1.billConstants.BILL_REQUEST }; }
+	    ;
+	    function success(bill) { return { type: constants_1.billConstants.BILL_SUCCESS, bill }; }
+	    ;
+	    function failure(error) { return { type: constants_1.billConstants.BILL_FAILURE, error }; }
+	    ;
+	}
+
+
+/***/ }),
+/* 127 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
 	Object.defineProperty(exports, "__esModule", { value: true });
 	const React = __webpack_require__(4);
-	const react_bootstrap_carousel_1 = __webpack_require__(120);
+	const react_bootstrap_carousel_1 = __webpack_require__(128);
 	class Slider extends React.Component {
 	    render() {
 	        let leftIcon = React.createElement("span", { className: "fa fa-angle-left" });
@@ -33236,7 +33855,7 @@
 
 
 /***/ }),
-/* 120 */
+/* 128 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	!function(e,t){ true?module.exports=t(__webpack_require__(4)):"function"==typeof define&&define.amd?define("ReactBootstrap_Carousel",["react"],t):"object"==typeof exports?exports.ReactBootstrap_Carousel=t(require("react")):e.ReactBootstrap_Carousel=t(e.react)}(window,function(e){return function(e){var t={};function n(r){if(t[r])return t[r].exports;var o=t[r]={i:r,l:!1,exports:{}};return e[r].call(o.exports,o,o.exports,n),o.l=!0,o.exports}return n.m=e,n.c=t,n.d=function(e,t,r){n.o(e,t)||Object.defineProperty(e,t,{enumerable:!0,get:r})},n.r=function(e){"undefined"!=typeof Symbol&&Symbol.toStringTag&&Object.defineProperty(e,Symbol.toStringTag,{value:"Module"}),Object.defineProperty(e,"__esModule",{value:!0})},n.t=function(e,t){if(1&t&&(e=n(e)),8&t)return e;if(4&t&&"object"==typeof e&&e&&e.__esModule)return e;var r=Object.create(null);if(n.r(r),Object.defineProperty(r,"default",{enumerable:!0,value:e}),2&t&&"string"!=typeof e)for(var o in e)n.d(r,o,function(t){return e[t]}.bind(null,o));return r},n.n=function(e){var t=e&&e.__esModule?function(){return e.default}:function(){return e};return n.d(t,"a",t),t},n.o=function(e,t){return Object.prototype.hasOwnProperty.call(e,t)},n.p="",n(n.s=7)}([function(t,n){t.exports=e},function(e,t,n){var r;
@@ -33253,7 +33872,7 @@
 	!function(){"use strict";var n={}.hasOwnProperty;function o(){for(var e=[],t=0;t<arguments.length;t++){var r=arguments[t];if(r){var i=typeof r;if("string"===i||"number"===i)e.push(r);else if(Array.isArray(r)&&r.length){var a=o.apply(null,r);a&&e.push(a)}else if("object"===i)for(var u in r)n.call(r,u)&&r[u]&&e.push(u)}}return e.join(" ")}e.exports?(o.default=o,e.exports=o):void 0===(r=function(){return o}.apply(t,[]))||(e.exports=r)}()},function(e,t,n){e.exports=n(3)()},function(e,t,n){"use strict";var r=n(4),o=n(5),i=n(6);e.exports=function(){function e(e,t,n,r,a,u){u!==i&&o(!1,"Calling PropTypes validators directly is not supported by the `prop-types` package. Use PropTypes.checkPropTypes() to call them. Read more at http://fb.me/use-check-prop-types")}function t(){return e}e.isRequired=e;var n={array:e,bool:e,func:e,number:e,object:e,string:e,symbol:e,any:e,arrayOf:t,element:e,instanceOf:t,node:e,objectOf:t,oneOf:t,oneOfType:t,shape:t,exact:t};return n.checkPropTypes=r,n.PropTypes=n,n}},function(e,t,n){"use strict";function r(e){return function(){return e}}var o=function(){};o.thatReturns=r,o.thatReturnsFalse=r(!1),o.thatReturnsTrue=r(!0),o.thatReturnsNull=r(null),o.thatReturnsThis=function(){return this},o.thatReturnsArgument=function(e){return e},e.exports=o},function(e,t,n){"use strict";var r=function(e){};e.exports=function(e,t,n,o,i,a,u,c){if(r(t),!e){var l;if(void 0===t)l=new Error("Minified exception occurred; use the non-minified dev environment for the full error message and additional helpful warnings.");else{var s=[n,o,i,a,u,c],f=0;(l=new Error(t.replace(/%s/g,function(){return s[f++]}))).name="Invariant Violation"}throw l.framesToPop=1,l}}},function(e,t,n){"use strict";e.exports="SECRET_DO_NOT_PASS_THIS_OR_YOU_WILL_BE_FIRED"},function(e,t,n){"use strict";n.r(t);var r=n(0),o=n.n(r),i=n(2),a=n.n(i);function u(e){return(u="function"==typeof Symbol&&"symbol"==typeof Symbol.iterator?function(e){return typeof e}:function(e){return e&&"function"==typeof Symbol&&e.constructor===Symbol&&e!==Symbol.prototype?"symbol":typeof e})(e)}function c(e,t){for(var n=0;n<t.length;n++){var r=t[n];r.enumerable=r.enumerable||!1,r.configurable=!0,"value"in r&&(r.writable=!0),Object.defineProperty(e,r.key,r)}}function l(e){return(l=Object.setPrototypeOf?Object.getPrototypeOf:function(e){return e.__proto__||Object.getPrototypeOf(e)})(e)}function s(e,t){return(s=Object.setPrototypeOf||function(e,t){return e.__proto__=t,e})(e,t)}function f(e){if(void 0===e)throw new ReferenceError("this hasn't been initialised - super() hasn't been called");return e}function p(e,t,n){return t in e?Object.defineProperty(e,t,{value:n,enumerable:!0,configurable:!0,writable:!0}):e[t]=n,e}var y=function(e){function t(e){var n;return function(e,t){if(!(e instanceof t))throw new TypeError("Cannot call a class as a function")}(this,t),p(f(f(n=function(e,t){return!t||"object"!==u(t)&&"function"!=typeof t?f(e):t}(this,l(t).call(this,e)))),"safeSetState",function(e){!n.isUnmount&&n.setState(e)}),n.isUnmounted=!1,n}return function(e,t){if("function"!=typeof t&&null!==t)throw new TypeError("Super expression must either be null or a function");e.prototype=Object.create(t&&t.prototype,{constructor:{value:e,writable:!0,configurable:!0}}),t&&s(e,t)}(t,o.a.PureComponent),function(e,t,n){t&&c(e.prototype,t),n&&c(e,n)}(t,[{key:"componentDidMount",value:function(){window.addEventListener("beforeunload",this.unmount),window.addEventListener("visibilitychange",this.visibilitychange),"function"==typeof this.init&&this.init()}},{key:"componentWillUnmount",value:function(){this.isUnmount=!0,"function"==typeof this.unmount&&this.unmount(),window.removeEventListener("beforeunload",this.unmount),window.removeEventListener("visibilitychange",this.visibilitychange)}},{key:"render",value:function(){return o.a.createElement("div",null,"The Base Component")}}]),t}();p(y,"propTypes",{init:a.a.func,unmount:a.a.func});var d=n(1),h=n.n(d);function b(e){return(b="function"==typeof Symbol&&"symbol"==typeof Symbol.iterator?function(e){return typeof e}:function(e){return e&&"function"==typeof Symbol&&e.constructor===Symbol&&e!==Symbol.prototype?"symbol":typeof e})(e)}function m(e,t){for(var n=0;n<t.length;n++){var r=t[n];r.enumerable=r.enumerable||!1,r.configurable=!0,"value"in r&&(r.writable=!0),Object.defineProperty(e,r.key,r)}}function v(e){return(v=Object.setPrototypeOf?Object.getPrototypeOf:function(e){return e.__proto__||Object.getPrototypeOf(e)})(e)}function _(e,t){return(_=Object.setPrototypeOf||function(e,t){return e.__proto__=t,e})(e,t)}function O(e){if(void 0===e)throw new ReferenceError("this hasn't been initialised - super() hasn't been called");return e}function g(e,t,n){return t in e?Object.defineProperty(e,t,{value:n,enumerable:!0,configurable:!0,writable:!0}):e[t]=n,e}var w=function(e){function t(e){var n;return function(e,t){if(!(e instanceof t))throw new TypeError("Cannot call a class as a function")}(this,t),g(O(O(n=function(e,t){return!t||"object"!==b(t)&&"function"!=typeof t?O(e):t}(this,v(t).call(this,e)))),"_onClick",function(e){var t=n.props.activeIndex<e?"next":"prev";n.props.indClick(e,t)}),n.state={css:"carousel-indicators"},n}return function(e,t){if("function"!=typeof t&&null!==t)throw new TypeError("Super expression must either be null or a function");e.prototype=Object.create(t&&t.prototype,{constructor:{value:e,writable:!0,configurable:!0}}),t&&_(e,t)}(t,o.a.PureComponent),function(e,t,n){t&&m(e.prototype,t),n&&m(e,n)}(t,[{key:"render",value:function(){var e=this,t=this.props,n=t.data,r=t.activeIndex;if(Array.isArray(n)){var i=n.map(function(t,n){var i=n==r?"active":"";return o.a.createElement("li",{key:n,onClick:e._onClick.bind(e,n),className:i,style:{marginLeft:10}})});return o.a.createElement("ol",{className:this.state.css},i)}return null}}]),t}();function P(e){return(P="function"==typeof Symbol&&"symbol"==typeof Symbol.iterator?function(e){return typeof e}:function(e){return e&&"function"==typeof Symbol&&e.constructor===Symbol&&e!==Symbol.prototype?"symbol":typeof e})(e)}function x(e,t){if(!(e instanceof t))throw new TypeError("Cannot call a class as a function")}function j(e,t){for(var n=0;n<t.length;n++){var r=t[n];r.enumerable=r.enumerable||!1,r.configurable=!0,"value"in r&&(r.writable=!0),Object.defineProperty(e,r.key,r)}}function S(e,t,n){return t&&j(e.prototype,t),n&&j(e,n),e}function k(e,t){return!t||"object"!==P(t)&&"function"!=typeof t?I(e):t}function E(e){return(E=Object.setPrototypeOf?Object.getPrototypeOf:function(e){return e.__proto__||Object.getPrototypeOf(e)})(e)}function C(e,t){if("function"!=typeof t&&null!==t)throw new TypeError("Super expression must either be null or a function");e.prototype=Object.create(t&&t.prototype,{constructor:{value:e,writable:!0,configurable:!0}}),t&&T(e,t)}function T(e,t){return(T=Object.setPrototypeOf||function(e,t){return e.__proto__=t,e})(e,t)}function I(e){if(void 0===e)throw new ReferenceError("this hasn't been initialised - super() hasn't been called");return e}function N(e,t,n){return t in e?Object.defineProperty(e,t,{value:n,enumerable:!0,configurable:!0,writable:!0}):e[t]=n,e}g(w,"defaultProps",{data:[],activeIndex:0,indClick:function(){}});var R=function(e){function t(e){var n;return x(this,t),N(I(I(n=k(this,E(t).call(this,e)))),"_onclick",function(e){n.props.controlsClick(e)}),n.state={},n}return C(t,o.a.PureComponent),S(t,[{key:"render",value:function(){var e=this.props,t=e.rightIcon,n=e.leftIcon,r=e.dataLength,i=e.version,a="",u="";if(r<2)return null;switch(i){case 4:a="left carousel-control-prev",u="right carousel-control-next",n=n||o.a.createElement("i",{className:"icon icon-chevron-left"}),t=t||o.a.createElement("i",{className:"icon icon-chevron-right"});break;default:a="left carousel-control",u="right carousel-control",n=n||o.a.createElement("i",{className:"glyphicon glyphicon-chevron-left"}),t=t||o.a.createElement("i",{className:"glyphicon glyphicon-chevron-right"})}return o.a.createElement("div",null,o.a.createElement("a",{className:a,onClick:this._onclick.bind(this,"prev")},o.a.createElement(A,{icon:n})),o.a.createElement("a",{className:u,onClick:this._onclick.bind(this,"next")},o.a.createElement(L,{icon:t})))}}]),t}();N(R,"defaultProps",{dataLength:0,controlsClick:function(){},version:3});var L=function(e){function t(e){return x(this,t),k(this,E(t).call(this,e))}return C(t,o.a.PureComponent),S(t,[{key:"render",value:function(){var e=this.props.icon;return o.a.createElement("span",{className:"rightControl"},e)}}]),t}(),A=function(e){function t(e){return x(this,t),k(this,E(t).call(this,e))}return C(t,o.a.PureComponent),S(t,[{key:"render",value:function(){var e=this.props.icon;return o.a.createElement("span",{className:"leftControl"},e)}}]),t}();function M(e){return(M="function"==typeof Symbol&&"symbol"==typeof Symbol.iterator?function(e){return typeof e}:function(e){return e&&"function"==typeof Symbol&&e.constructor===Symbol&&e!==Symbol.prototype?"symbol":typeof e})(e)}function U(e,t){for(var n=0;n<t.length;n++){var r=t[n];r.enumerable=r.enumerable||!1,r.configurable=!0,"value"in r&&(r.writable=!0),Object.defineProperty(e,r.key,r)}}function B(e,t){return!t||"object"!==M(t)&&"function"!=typeof t?function(e){if(void 0===e)throw new ReferenceError("this hasn't been initialised - super() hasn't been called");return e}(e):t}function D(e){return(D=Object.setPrototypeOf?Object.getPrototypeOf:function(e){return e.__proto__||Object.getPrototypeOf(e)})(e)}function F(e,t){return(F=Object.setPrototypeOf||function(e,t){return e.__proto__=t,e})(e,t)}var q=function(e){function t(e){return function(e,t){if(!(e instanceof t))throw new TypeError("Cannot call a class as a function")}(this,t),B(this,D(t).call(this,e))}return function(e,t){if("function"!=typeof t&&null!==t)throw new TypeError("Super expression must either be null or a function");e.prototype=Object.create(t&&t.prototype,{constructor:{value:e,writable:!0,configurable:!0}}),t&&F(e,t)}(t,o.a.PureComponent),function(e,t,n){t&&U(e.prototype,t),n&&U(e,n)}(t,[{key:"render",value:function(){var e=this.props,t=e.data,n=e.activeIndex,r=e.version,i=e.animation,a=4==r?"carousel-item":"item",u=[];return Array.isArray(t)?(u=t.map(function(e,t){var u,c;switch(!0){case!0===i&&t>n&&4==r:u="carousel-item-right",c="carousel-item-next";break;case!0===i&&t>n:u="right",c="next";break;case!0===i&&t<n&&4==r:u="carousel-item-left",c="carousel-item-prev";break;case!0===i&&t<n:u="left",c="prev"}var l=h()(a,c,u);return l=t===n?h()(a,"active"):l,o.a.createElement("div",{key:t,className:l},e)}),o.a.createElement("div",{className:"carousel-inner",role:"listbox"},u)):o.a.createElement("div",{key:0,className:h()(a,"active")},t)}}]),t}();function V(e){return(V="function"==typeof Symbol&&"symbol"==typeof Symbol.iterator?function(e){return typeof e}:function(e){return e&&"function"==typeof Symbol&&e.constructor===Symbol&&e!==Symbol.prototype?"symbol":typeof e})(e)}function W(e,t){for(var n=0;n<t.length;n++){var r=t[n];r.enumerable=r.enumerable||!1,r.configurable=!0,"value"in r&&(r.writable=!0),Object.defineProperty(e,r.key,r)}}function H(e){return(H=Object.setPrototypeOf?Object.getPrototypeOf:function(e){return e.__proto__||Object.getPrototypeOf(e)})(e)}function Y(e,t){return(Y=Object.setPrototypeOf||function(e,t){return e.__proto__=t,e})(e,t)}function z(e){if(void 0===e)throw new ReferenceError("this hasn't been initialised - super() hasn't been called");return e}function G(e,t,n){return t in e?Object.defineProperty(e,t,{value:n,enumerable:!0,configurable:!0,writable:!0}):e[t]=n,e}!function(e,t,n){t in e?Object.defineProperty(e,t,{value:n,enumerable:!0,configurable:!0,writable:!0}):e[t]=n}(q,"defaultProps",{data:[],activeIndex:0,direction:null,version:3});var J=function(e){function t(e){var n;return function(e,t){if(!(e instanceof t))throw new TypeError("Cannot call a class as a function")}(this,t),G(z(z(n=function(e,t){return!t||"object"!==V(t)&&"function"!=typeof t?z(e):t}(this,H(t).call(this,e)))),"visibilitychange",function(){(document.hidden||n.props.hidden)&&n.props.pauseOnVisibility?n._pause():n._autoPlay()}),G(z(z(n)),"_checkChildrenLength",function(){var e=n.props.children;Array.isArray(e)&&e.length>0&&n._autoPlay()}),G(z(z(n)),"_autoPlay",function(){n._pause(),n.props.autoplay&&n._play()}),G(z(z(n)),"slideNext",function(){var e=n.state.activeIndex,t=n.props.wrap,r=e+1;if(r>n.props.children.length-1){if(!t)return;r=0}n.safeSetState({activeIndex:r,direction:"next"})}),G(z(z(n)),"goToSlide",function(e){n.timeout&&clearTimeout(n.timeout),n.setState({activeIndex:e})}),G(z(z(n)),"slidePrev",function(){var e=n.state.activeIndex,t=n.props.wrap,r=e-1,o=n.props.children.length;if(r<0){if(!t)return;r=o-1}n.setState({activeIndex:r,direction:"prev"})}),G(z(z(n)),"_handleMouseOver",function(){n._pause()}),G(z(z(n)),"_handleMouseOut",function(){n.isPaused&&n.props.autoplay&&n._play()}),G(z(z(n)),"_pause",function(){n.isPaused=!0,n.timeout&&clearTimeout(n.timeout)}),G(z(z(n)),"_play",function(){n.isPaused=!1,n._waitForNext()}),G(z(z(n)),"_indClick",function(e,t){n.timeout&&clearTimeout(n.timeout),n.setState({activeIndex:e,direction:t}),n.isPaused=!1}),G(z(z(n)),"_controlsClick",function(e){n.timeout&&clearTimeout(n.timeout),n.isPaused=!1,"prev"==e?n.slidePrev():n.slideNext()}),G(z(z(n)),"render_ind",function(){var e=n.props,t=e.children,r=e.indicators,i=n.state.activeIndex;if(r)return o.a.createElement(w,{data:t,activeIndex:i,indClick:n._indClick})}),G(z(z(n)),"render_control",function(){var e=n.props,t=e.children,r=e.controls,i=e.leftIcon,a=e.rightIcon,u=e.version;if(r)return o.a.createElement(R,{dataLength:t.length,leftIcon:i,rightIcon:a,prev:n.slidePrev,next:n.slideNext,controlsClick:n._controlsClick,version:u})}),n.state={activeIndex:n.props.defaultActiveIndex,className:h()("carousel slide",n.props.className)},n}return function(e,t){if("function"!=typeof t&&null!==t)throw new TypeError("Super expression must either be null or a function");e.prototype=Object.create(t&&t.prototype,{constructor:{value:e,writable:!0,configurable:!0}}),t&&Y(e,t)}(t,y),function(e,t,n){t&&W(e.prototype,t),n&&W(e,n)}(t,[{key:"componentDidUpdate",value:function(e,t){if(this._checkChildrenLength(),this.props.autoplay!==e.autoplay&&this._autoPlay(),t.activeIndex!==this.state.activeIndex){var n=this.state,r=n.direction,o=n.activeIndex;this.props.onSelect(o,r)}}},{key:"init",value:function(){this._checkChildrenLength()}},{key:"unmount",value:function(){this.timeout&&clearTimeout(this.timeout)}},{key:"_waitForNext",value:function(){this.timeout=setTimeout(this.slideNext,this.props.slideshowSpeed)}},{key:"render",value:function(){var e=this.props,t=e.children,n=e.version,r=this.state,i=r.activeIndex,a=r.className,u=this.props.animation;return o.a.createElement("div",{className:h()(a),onMouseOver:this._handleMouseOver,onMouseOut:this._handleMouseOut},this.render_ind(),o.a.createElement(q,{animation:u,data:t,activeIndex:i,version:n}),this.render_control())}}]),t}();G(J,"defaultProps",{indicators:!0,controls:!0,slideshowSpeed:7e3,defaultActiveIndex:0,wrap:!0,autoplay:!0,children:[],animation:!0,className:"",version:3,pauseOnVisibility:!1,hidden:!1,onSelect:function(){}}),n.d(t,"React_Bootstrap_Carousel",function(){return J});t.default=J}])});
 
 /***/ }),
-/* 121 */
+/* 129 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -33288,15 +33907,15 @@
 
 
 /***/ }),
-/* 122 */
+/* 130 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
 	Object.defineProperty(exports, "__esModule", { value: true });
 	const React = __webpack_require__(4);
 	const react_redux_1 = __webpack_require__(18);
-	const react_router_dom_1 = __webpack_require__(84);
-	const action_1 = __webpack_require__(101);
+	const react_router_dom_1 = __webpack_require__(88);
+	const action_1 = __webpack_require__(105);
 	class RegisterPage extends React.Component {
 	    onSubmit(e) {
 	        e.preventDefault();
@@ -33345,15 +33964,15 @@
 
 
 /***/ }),
-/* 123 */
+/* 131 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
 	Object.defineProperty(exports, "__esModule", { value: true });
 	const React = __webpack_require__(4);
-	const react_router_dom_1 = __webpack_require__(84);
+	const react_router_dom_1 = __webpack_require__(88);
 	const react_redux_1 = __webpack_require__(18);
-	const action_1 = __webpack_require__(101);
+	const action_1 = __webpack_require__(105);
 	class LoginPage extends React.Component {
 	    constructor(props) {
 	        super(props);
@@ -33404,23 +34023,23 @@
 
 
 /***/ }),
-/* 124 */
+/* 132 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
 	Object.defineProperty(exports, "__esModule", { value: true });
 	const React = __webpack_require__(4);
-	const TopPanel_1 = __webpack_require__(99);
-	const Directory_1 = __webpack_require__(125);
-	const Navigator_1 = __webpack_require__(126);
-	const AccountInfo_1 = __webpack_require__(127);
-	const BankAccount_1 = __webpack_require__(128);
-	const Services_1 = __webpack_require__(129);
-	const Notification_1 = __webpack_require__(133);
-	const Transaction_1 = __webpack_require__(134);
-	const react_router_dom_1 = __webpack_require__(84);
+	const TopPanel_1 = __webpack_require__(103);
+	const Directory_1 = __webpack_require__(133);
+	const Navigator_1 = __webpack_require__(134);
+	const AccountInfo_1 = __webpack_require__(135);
+	const BankAccount_1 = __webpack_require__(136);
+	const Services_1 = __webpack_require__(137);
+	const Notification_1 = __webpack_require__(143);
+	const Transaction_1 = __webpack_require__(144);
+	const react_router_dom_1 = __webpack_require__(88);
 	const react_redux_1 = __webpack_require__(18);
-	const FavoriteList_1 = __webpack_require__(135);
+	const FavoriteList_1 = __webpack_require__(146);
 	class CustomerPage extends React.Component {
 	    render() {
 	        if (!this.props.loggedIn) {
@@ -33428,7 +34047,7 @@
 	            alert("You have to login first!");
 	            return React.createElement("div", null);
 	        }
-	        return React.createElement("div", null,
+	        return React.createElement("div", { class: "page" },
 	            React.createElement(TopPanel_1.default, null),
 	            React.createElement(Directory_1.default, { location: this.props.location.pathname }),
 	            React.createElement("div", { class: "customer-content", style: { paddingLeft: "40px", background: "#111" } },
@@ -33451,13 +34070,13 @@
 
 
 /***/ }),
-/* 125 */
+/* 133 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
 	Object.defineProperty(exports, "__esModule", { value: true });
 	const React = __webpack_require__(4);
-	const react_router_dom_1 = __webpack_require__(84);
+	const react_router_dom_1 = __webpack_require__(88);
 	class Directory extends React.Component {
 	    render() {
 	        let location = this.props.location.replace(/\/$/, '');
@@ -33473,7 +34092,7 @@
 	            "bank": "Bank Account",
 	            "transfer": "Transfer",
 	            "withdraw": "Withdraw",
-	            "pay": "Pay",
+	            "pay": "Pay Bill",
 	            "deposit": "Deposit",
 	            "favorite": "Favorite List",
 	        };
@@ -33492,13 +34111,13 @@
 
 
 /***/ }),
-/* 126 */
+/* 134 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
 	Object.defineProperty(exports, "__esModule", { value: true });
 	const React = __webpack_require__(4);
-	const react_router_dom_1 = __webpack_require__(84);
+	const react_router_dom_1 = __webpack_require__(88);
 	const react_redux_1 = __webpack_require__(18);
 	class Navigator extends React.Component {
 	    render() {
@@ -33563,15 +34182,15 @@
 
 
 /***/ }),
-/* 127 */
+/* 135 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
 	Object.defineProperty(exports, "__esModule", { value: true });
 	const React = __webpack_require__(4);
 	const react_redux_1 = __webpack_require__(18);
-	const action_1 = __webpack_require__(101);
-	const utils = __webpack_require__(110);
+	const action_1 = __webpack_require__(105);
+	const utils = __webpack_require__(114);
 	class AccountInfo extends React.Component {
 	    constructor(props) {
 	        super(props);
@@ -33617,34 +34236,6 @@
 	                        React.createElement("label", { class: "control-label", htmlFor: "email" }, "Email"),
 	                        React.createElement("div", { class: "input-wrap" },
 	                            React.createElement("input", { type: "email", disabled: true, defaultValue: user.email, class: "form-control", name: "email", id: "form_email", placeholder: "Email" }))),
-	                    React.createElement("div", { class: "form-group gender-select-wrap", id: "register_name" },
-	                        React.createElement("label", { class: "control-label", htmlFor: "pasword" }, "Gender"),
-	                        React.createElement("div", { class: "input-wrap" },
-	                            React.createElement("div", { class: "row" },
-	                                React.createElement("div", { class: "col-xs-4" },
-	                                    React.createElement("label", null,
-	                                        React.createElement("input", { type: "radio", name: "gender", defaultValue: "on", id: "gender_male", class: "gender" }),
-	                                        React.createElement("span", null, "Male"))),
-	                                React.createElement("div", { class: "col-xs-4" },
-	                                    React.createElement("label", null,
-	                                        React.createElement("input", { type: "radio", name: "gender", defaultValue: "off", id: "gender_female", class: "gender" }),
-	                                        React.createElement("span", null, "Female")))))),
-	                    React.createElement("div", { class: "form-group " },
-	                        React.createElement("label", { class: "control-label no-lh", htmlFor: "birthdate" },
-	                            "Date of birth",
-	                            React.createElement("span", null, "(Not required)")),
-	                        React.createElement("div", { class: "input-wrap" },
-	                            React.createElement("div", { id: "birthday-picker", class: "birthday-picker" },
-	                                React.createElement("fieldset", { class: "birthday-picker" },
-	                                    React.createElement("select", { class: "birth-day form-control", name: "birth[day]" },
-	                                        React.createElement("option", { key: "0", defaultValue: "0" }, "Day"),
-	                                        Array.from(Array(31).keys()).map(number => React.createElement("option", { key: (number + 1).toString(), value: (number + 1).toString() }, number + 1))),
-	                                    React.createElement("select", { class: "birth-month form-control", name: "birth[month]" },
-	                                        React.createElement("option", { key: "0", defaultValue: "0" }, "Month"),
-	                                        Array.from(Array(12).keys()).map(number => React.createElement("option", { key: (number + 1).toString(), defaultValue: (number + 1).toString() }, number + 1))),
-	                                    React.createElement("select", { class: "birth-year form-control", name: "birth[year]" },
-	                                        React.createElement("option", { key: "0", defaultValue: "0" }, "Year"),
-	                                        Array.from(Array(120).keys()).map(number => React.createElement("option", { key: (number + 1).toString(), defaultValue: (number + 1899).toString() }, number + 1899))))))),
 	                    React.createElement("div", { class: "form-group" },
 	                        React.createElement("div", { class: "input-wrap margin" },
 	                            React.createElement("label", { class: "checkbox" },
@@ -33686,21 +34277,30 @@
 
 
 /***/ }),
-/* 128 */
+/* 136 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
 	Object.defineProperty(exports, "__esModule", { value: true });
 	const React = __webpack_require__(4);
-	const action_1 = __webpack_require__(101);
+	const action_1 = __webpack_require__(105);
 	const react_redux_1 = __webpack_require__(18);
-	const react_router_dom_1 = __webpack_require__(84);
+	const react_router_dom_1 = __webpack_require__(88);
+	const utils_1 = __webpack_require__(114);
 	class BankAccount extends React.Component {
 	    constructor(props) {
 	        super(props);
 	        this.state = {
 	            chosenBankId: null,
 	        };
+	    }
+	    componentWillMount() {
+	        if (this.props.bank.notLoad) {
+	            this.props.dispatch(action_1.bankActions.getBank());
+	        }
+	        if (this.props.account.notLoad) {
+	            this.props.dispatch(action_1.accountActions.getConnectedAccount());
+	        }
 	    }
 	    chooseBank(id) {
 	        this.setState({
@@ -33712,12 +34312,6 @@
 	        this.props.dispatch(action_1.accountActions.connectAccount(this.account.value, this.state.chosenBankId));
 	    }
 	    render() {
-	        if (!this.props.bank.loading && this.props.bank.banks.length == 0) {
-	            this.props.dispatch(action_1.bankActions.getBank());
-	        }
-	        if (this.props.account.notLoad) {
-	            this.props.dispatch(action_1.accountActions.getConnectedAccount());
-	        }
 	        let banks = this.props.bank.banks;
 	        let accounts = this.props.account.accounts;
 	        return React.createElement("div", { class: "content-right" },
@@ -33732,8 +34326,8 @@
 	                                React.createElement("img", { src: "resources/images/banks/" + account.name.toLowerCase() + ".png" })),
 	                            React.createElement("div", { className: "text" },
 	                                React.createElement("span", null, account.name),
-	                                "Free deposit"),
-	                            React.createElement(react_router_dom_1.Link, { to: { pathname: "/customer/services/deposit", account: account.id } },
+	                                utils_1.toAccountNumberFormat(account.number)),
+	                            React.createElement(react_router_dom_1.Link, { to: { pathname: "/customer/services/deposit", account: account.number } },
 	                                React.createElement("button", null, "Deposit"))))),
 	                React.createElement("div", { className: "title" }, "Choose a bank account to connect"),
 	                React.createElement("div", { className: "bank-list" }, banks.map(bank => React.createElement("div", { onClick: () => this.chooseBank(bank.id), id: bank.id, class: "bank" + (this.state.chosenBankId == bank.id ? " active" : "") },
@@ -33765,36 +34359,40 @@
 
 
 /***/ }),
-/* 129 */
+/* 137 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
 	Object.defineProperty(exports, "__esModule", { value: true });
 	const React = __webpack_require__(4);
-	const ServiceTab_1 = __webpack_require__(130);
-	const Transfer_1 = __webpack_require__(131);
-	const Deposit_1 = __webpack_require__(132);
-	const react_router_dom_1 = __webpack_require__(84);
+	const ServiceTab_1 = __webpack_require__(138);
+	const Transfer_1 = __webpack_require__(139);
+	const Deposit_1 = __webpack_require__(140);
+	const MobilePay_1 = __webpack_require__(141);
+	const PayBill_1 = __webpack_require__(142);
+	const react_router_dom_1 = __webpack_require__(88);
 	class Services extends React.Component {
 	    render() {
 	        return React.createElement("div", { class: "content-right" },
 	            React.createElement("h1", { class: "title" }, "Services"),
 	            React.createElement(ServiceTab_1.default, { location: this.props.location.pathname }),
 	            React.createElement(react_router_dom_1.Route, { exact: true, path: "/customer/(services|services/transfer)", component: Transfer_1.default }),
-	            React.createElement(react_router_dom_1.Route, { exact: true, path: "/customer/services/deposit", component: Deposit_1.default }));
+	            React.createElement(react_router_dom_1.Route, { exact: true, path: "/customer/services/deposit", component: Deposit_1.default }),
+	            React.createElement(react_router_dom_1.Route, { exact: true, path: "/customer/services/mobile", component: MobilePay_1.default }),
+	            React.createElement(react_router_dom_1.Route, { exact: true, path: "/customer/services/pay", component: PayBill_1.default }));
 	    }
 	}
 	exports.default = Services;
 
 
 /***/ }),
-/* 130 */
+/* 138 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
 	Object.defineProperty(exports, "__esModule", { value: true });
 	const React = __webpack_require__(4);
-	const react_router_dom_1 = __webpack_require__(84);
+	const react_router_dom_1 = __webpack_require__(88);
 	class ServiceTab extends React.Component {
 	    render() {
 	        let location = this.props.location.split("/").filter(path => path != "");
@@ -33808,21 +34406,24 @@
 	                React.createElement("span", null, "Deposit")),
 	            React.createElement(react_router_dom_1.Link, { to: "/customer/services/pay", className: "tab" + (tab == "pay" ? " active" : "") },
 	                React.createElement("i", { className: "fa fa-credit-card" }),
-	                React.createElement("span", null, "Pay")));
+	                React.createElement("span", null, "Pay")),
+	            React.createElement(react_router_dom_1.Link, { to: "/customer/services/mobile", className: "tab" + (tab == "mobile" ? " active" : "") },
+	                React.createElement("i", { className: "fa fa-mobile-alt" }),
+	                React.createElement("span", null, "Mobile Pay")));
 	    }
 	}
 	exports.default = ServiceTab;
 
 
 /***/ }),
-/* 131 */
+/* 139 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
 	Object.defineProperty(exports, "__esModule", { value: true });
 	const React = __webpack_require__(4);
 	const react_redux_1 = __webpack_require__(18);
-	const action_1 = __webpack_require__(101);
+	const action_1 = __webpack_require__(105);
 	class Transfer extends React.Component {
 	    componentWillMount() {
 	        if (this.props.friend.notLoad) {
@@ -33893,50 +34494,59 @@
 	                React.createElement("div", { class: "form-group" },
 	                    React.createElement("label", { class: "control-label", htmlFor: "receiver" }, "Amount"),
 	                    React.createElement("div", { class: "input-wrap" },
-	                        React.createElement("input", { step: 1000, ref: input => this.amount = input, type: "number", name: "amount", class: "form-control", id: "amount", placeholder: "Enter amount of money" }))),
+	                        React.createElement("input", { defaultValue: "10000", min: 10000, step: 1000, ref: input => this.amount = input, type: "number", name: "amount", class: "form-control", id: "amount", placeholder: "Enter amount of money" }))),
 	                React.createElement("div", { class: "form-group" },
 	                    React.createElement("label", { class: "control-label", htmlFor: "message" }, "Message"),
 	                    React.createElement("div", { class: "input-wrap" },
 	                        React.createElement("input", { ref: input => this.message = input, type: "text", name: "amount", class: "form-control", id: "message", placeholder: "Message" }))),
+	                this.props.transfer.error ?
+	                    React.createElement("div", { class: "form-group" },
+	                        React.createElement("div", { class: "form-message" },
+	                            React.createElement("span", { className: "error" }, this.props.transfer.error)))
+	                    : this.props.transfer.transfering ?
+	                        React.createElement("div", { class: "form-group" },
+	                            React.createElement("div", { class: "form-message" },
+	                                React.createElement("span", { className: "info" }, "Transfering...")))
+	                        : this.props.transfer.transfered ?
+	                            React.createElement("div", { class: "form-group" },
+	                                React.createElement("div", { class: "form-message" },
+	                                    React.createElement("span", { className: "success" }, "Transfer successfully")))
+	                            : React.createElement("span", null),
 	                React.createElement("div", { class: "form-group" },
-	                    React.createElement("div", { class: "form-message" }, this.props.services.transfering ?
-	                        "Transfering..." :
-	                        this.props.services.transfered ?
-	                            "Transfer successfully!" :
-	                            this.props.services.transferError ?
-	                                this.props.services.transferError : ""),
 	                    React.createElement("div", { class: "input-wrap margin" },
 	                        React.createElement("button", { onClick: this.onSubmit.bind(this), type: "submit", class: "btn btn-info btn-block btn-update" }, "Transfer")))));
 	    }
 	}
 	function mapStateToProps(state) {
-	    const { friend, services } = state;
+	    const { friend } = state;
+	    const { transfer } = state.services;
 	    return {
 	        friend,
-	        services,
+	        transfer,
 	    };
 	}
 	exports.default = react_redux_1.connect(mapStateToProps)(Transfer);
 
 
 /***/ }),
-/* 132 */
+/* 140 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
 	Object.defineProperty(exports, "__esModule", { value: true });
 	const React = __webpack_require__(4);
 	const react_redux_1 = __webpack_require__(18);
-	const action_1 = __webpack_require__(101);
+	const action_1 = __webpack_require__(105);
 	class Deposit extends React.Component {
 	    constructor(props) {
 	        super(props);
 	        this.state = {
-	            chosenBankId: null,
+	            chosenAccount: null,
 	        };
 	    }
 	    onSubmit(e) {
 	        e.preventDefault();
+	        this.props.dispatch(action_1.servicesActions.deposit(this.state.chosenAccount, this.amount.value));
 	    }
 	    componentWillMount() {
 	        if (this.props.account.notLoad) {
@@ -33953,49 +34563,227 @@
 	    }
 	    chooseAccount(id) {
 	        this.setState({
-	            chosenBankId: id
+	            chosenAccount: id
 	        });
 	    }
 	    render() {
 	        let accounts = this.props.account.accounts;
 	        return React.createElement("div", { className: "wrapper" },
 	            React.createElement("div", { className: "title" }, "Choose a bank account to deposit"),
-	            React.createElement("div", { className: "bank-list" }, accounts.map(bank => React.createElement("div", { onClick: () => this.chooseAccount(bank.id), id: bank.id, class: "bank" + (this.state.chosenBankId == bank.id ? " active" : "") },
+	            React.createElement("div", { className: "bank-list" }, accounts.map(account => React.createElement("div", { onClick: () => this.chooseAccount(account.number), key: account.id, class: "bank" + (this.state.chosenAccount == account.number ? " active" : "") },
 	                React.createElement("div", { class: "avatar" },
-	                    React.createElement("img", { class: "bank-avatar", src: "resources/images/banks/" + bank.name.toLowerCase() + ".png" })),
-	                React.createElement("span", null, bank.name)))),
+	                    React.createElement("img", { class: "bank-avatar", src: "resources/images/banks/" + account.name.toLowerCase() + ".png" })),
+	                React.createElement("span", null, account.name)))),
 	            React.createElement("form", { class: "content" },
 	                React.createElement("div", { class: "form-group" },
 	                    React.createElement("label", { class: "control-label", htmlFor: "amount" }, "Amount"),
 	                    React.createElement("div", { class: "input-wrap" },
-	                        React.createElement("input", { step: 1000, ref: input => this.amount = input, type: "number", name: "amount", class: "form-control", placeholder: "Enter amount of money to deposit" }))),
+	                        React.createElement("input", { defaultValue: "10000", min: 10000, step: 1000, ref: input => this.amount = input, type: "number", name: "amount", class: "form-control", placeholder: "Enter amount of money to deposit" }))),
+	                this.props.deposit.error ?
+	                    React.createElement("div", { class: "form-group" },
+	                        React.createElement("div", { class: "form-message" },
+	                            React.createElement("span", { className: "error" }, this.props.deposit.error)))
+	                    : this.props.deposit.depositing ?
+	                        React.createElement("div", { class: "form-group" },
+	                            React.createElement("div", { class: "form-message" },
+	                                React.createElement("span", { className: "info" }, "Processing...")))
+	                        : this.props.deposit.deposited ?
+	                            React.createElement("div", { class: "form-group" },
+	                                React.createElement("div", { class: "form-message" },
+	                                    React.createElement("span", { className: "success" }, "Deposit successfully")))
+	                            : React.createElement("span", null),
 	                React.createElement("div", { class: "form-group" },
-	                    React.createElement("div", { class: "form-message" }),
 	                    React.createElement("div", { class: "input-wrap margin" },
 	                        React.createElement("button", { onClick: this.onSubmit.bind(this), type: "submit", class: "btn btn-info btn-block btn-update" }, "Deposit")))));
 	    }
 	}
 	function mapStateToProps(state) {
 	    const { account } = state;
+	    const { deposit } = state.services;
 	    return {
-	        account
+	        account,
+	        deposit,
 	    };
 	}
 	exports.default = react_redux_1.connect(mapStateToProps)(Deposit);
 
 
 /***/ }),
-/* 133 */
+/* 141 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	"use strict";
+	Object.defineProperty(exports, "__esModule", { value: true });
+	const React = __webpack_require__(4);
+	const action_1 = __webpack_require__(105);
+	const react_redux_1 = __webpack_require__(18);
+	const utils_1 = __webpack_require__(114);
+	class MobilePay extends React.Component {
+	    constructor(props) {
+	        super(props);
+	        this.state = {
+	            chosenTelecomId: null,
+	        };
+	    }
+	    componentWillMount() {
+	        if (this.props.mobile.notLoad) {
+	            this.props.dispatch(action_1.mobileActions.getTelecom());
+	        }
+	    }
+	    chooseTelecom(id) {
+	        this.setState({
+	            chosenTelecomId: id,
+	        });
+	    }
+	    pay(e) {
+	        e.preventDefault();
+	        this.props.dispatch(action_1.servicesActions.payMobileCard(this.state.chosenTelecomId, parseInt(this.denomination.value)));
+	    }
+	    render() {
+	        let telecoms = this.props.mobile.telecoms;
+	        let denominations = [10000, 20000, 30000, 50000, 100000, 200000, 300000, 500000, 1000000];
+	        return React.createElement("div", { class: "content-right" },
+	            React.createElement("div", { className: "wrapper mobile-pay" },
+	                React.createElement("div", { className: "title" }, "Choose a telecom company"),
+	                React.createElement("div", { className: "telecom-list" }, telecoms.map(telecom => React.createElement("div", { onClick: () => this.chooseTelecom(telecom.id), id: telecom.id, class: "telecom" + (this.state.chosenTelecomId == telecom.id ? " active" : "") },
+	                    React.createElement("div", { class: "avatar" },
+	                        React.createElement("img", { class: "telecom-avatar", src: "resources/images/telecoms/" + telecom.name.toLowerCase() + ".png" }))))),
+	                React.createElement("form", { class: "content" },
+	                    React.createElement("div", { class: "form-group" },
+	                        React.createElement("label", { class: "control-label no-lh", htmlFor: "denomination" }, "Denomination"),
+	                        React.createElement("div", { class: "input-wrap" },
+	                            React.createElement("div", { id: "denomination", class: "denomination" },
+	                                React.createElement("fieldset", null,
+	                                    React.createElement("select", { class: "form-control", ref: input => this.denomination = input },
+	                                        React.createElement("option", { key: "0", defaultValue: "0" }, "Value"),
+	                                        denominations.map(denomination => React.createElement("option", { key: denomination, value: denomination.toString() }, utils_1.toMoneyFormat(denomination) + "đ"))))))),
+	                    this.props.pay.error ?
+	                        React.createElement("div", { class: "form-group" },
+	                            React.createElement("div", { class: "form-message" },
+	                                React.createElement("span", { className: "error" }, this.props.pay.error)))
+	                        : this.props.pay.paying ?
+	                            React.createElement("div", { class: "form-group" },
+	                                React.createElement("div", { class: "form-message" },
+	                                    React.createElement("span", { className: "info" }, "Processing...")))
+	                            : this.props.pay.payed ?
+	                                React.createElement("div", { class: "form-group" },
+	                                    React.createElement("label", { class: "control-label" }, "Code"),
+	                                    React.createElement("div", { class: "input-wrap" },
+	                                        React.createElement("input", { disabled: true, defaultValue: this.props.pay.code, class: "form-control" })),
+	                                    React.createElement("div", { class: "form-message" },
+	                                        React.createElement("span", { className: "success" }, "Successfully")))
+	                                : React.createElement("span", null),
+	                    React.createElement("div", { class: "form-group" },
+	                        React.createElement("div", { class: "input-wrap margin" },
+	                            React.createElement("button", { onClick: this.pay.bind(this), type: "submit", class: "btn btn-info btn-block btn-update" }, "Pay"))))));
+	    }
+	}
+	function mapStateToProps(state) {
+	    const { mobile } = state;
+	    const pay = state.services.mobile;
+	    return {
+	        mobile,
+	        pay,
+	    };
+	}
+	exports.default = react_redux_1.connect(mapStateToProps)(MobilePay);
+
+
+/***/ }),
+/* 142 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	"use strict";
+	Object.defineProperty(exports, "__esModule", { value: true });
+	const React = __webpack_require__(4);
+	const action_1 = __webpack_require__(105);
+	const react_redux_1 = __webpack_require__(18);
+	const utils_1 = __webpack_require__(114);
+	class PayBill extends React.Component {
+	    constructor(props) {
+	        super(props);
+	    }
+	    componentWillMount() {
+	        if (this.props.bill.type.notLoad) {
+	            this.props.dispatch(action_1.billActions.getBillType());
+	        }
+	    }
+	    loadBill(e) {
+	        e.preventDefault();
+	        this.props.dispatch(action_1.billActions.getBill(this.code.value, this.type.value));
+	    }
+	    pay(e) {
+	        e.preventDefault();
+	        this.props.dispatch(action_1.servicesActions.payBill(this.code.value, this.type.value));
+	    }
+	    render() {
+	        let types = this.props.bill.type.types;
+	        let bill = this.props.bill.bill.bill;
+	        return React.createElement("div", { class: "content-right" },
+	            React.createElement("div", { className: "wrapper pay-bill" },
+	                React.createElement("form", { class: "content" },
+	                    React.createElement("div", { class: "form-group " },
+	                        React.createElement("label", { class: "control-label", htmlFor: "type" }, "Bill type "),
+	                        React.createElement("div", { class: "input-wrap" },
+	                            React.createElement("fieldset", { id: "type" },
+	                                React.createElement("select", { class: "birth-day form-control", ref: input => this.type = input },
+	                                    React.createElement("option", { key: "type", value: undefined }, "Select a type"),
+	                                    types.map(type => React.createElement("option", { key: type.id, value: type.id }, type.name)))))),
+	                    React.createElement("div", { class: "form-group" },
+	                        React.createElement("label", { class: "control-label", htmlFor: "code" }, "Bill code"),
+	                        React.createElement("div", { class: "input-wrap" },
+	                            React.createElement("input", { ref: input => this.code = input, type: "text", class: "form-control", id: "code", placeholder: "Enter bill code" }),
+	                            React.createElement("button", { onClick: this.loadBill.bind(this) }, "Load bill"))),
+	                    React.createElement("div", { class: "form-group" },
+	                        React.createElement("label", { class: "control-label", htmlFor: "provider" }, "Provider "),
+	                        React.createElement("div", { class: "input-wrap" },
+	                            React.createElement("input", { disabled: true, type: "text", class: "form-control", id: "provider", value: bill && bill.provider }))),
+	                    React.createElement("div", { class: "form-group" },
+	                        React.createElement("label", { class: "control-label", htmlFor: "cost" }, "Cost"),
+	                        React.createElement("div", { class: "input-wrap" },
+	                            React.createElement("input", { disabled: true, type: "text", class: "form-control", id: "cost", value: bill && utils_1.toMoneyFormat(bill.amount) + "đ" }))),
+	                    (this.props.bill.bill.error || this.props.pay.error) ?
+	                        React.createElement("div", { class: "form-group" },
+	                            React.createElement("div", { class: "form-message" },
+	                                React.createElement("span", { className: "error" }, this.props.bill.bill.error ? this.props.bill.bill.error :
+	                                    this.props.pay.error)))
+	                        : (this.props.bill.bill.loading || this.props.pay.paying) ?
+	                            React.createElement("div", { class: "form-group" },
+	                                React.createElement("div", { class: "form-message" },
+	                                    React.createElement("span", { className: "info" }, "Processing...")))
+	                            : this.props.pay.payed ?
+	                                React.createElement("div", { class: "form-group" },
+	                                    React.createElement("div", { class: "form-message" },
+	                                        React.createElement("span", { className: "success" }, "Pay bill successfully")))
+	                                : React.createElement("span", null),
+	                    React.createElement("div", { class: "form-group" },
+	                        React.createElement("div", { class: "input-wrap margin" },
+	                            React.createElement("button", { disabled: !bill, onClick: this.pay.bind(this), type: "submit", class: "btn btn-info btn-block btn-update" }, "Pay"))))));
+	    }
+	}
+	function mapStateToProps(state) {
+	    const { bill } = state;
+	    const { pay } = state.services;
+	    return {
+	        bill,
+	        pay,
+	    };
+	}
+	exports.default = react_redux_1.connect(mapStateToProps)(PayBill);
+
+
+/***/ }),
+/* 143 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
 	Object.defineProperty(exports, "__esModule", { value: true });
 	const React = __webpack_require__(4);
 	const react_redux_1 = __webpack_require__(18);
-	const action_1 = __webpack_require__(101);
-	const utils_1 = __webpack_require__(110);
+	const action_1 = __webpack_require__(105);
+	const utils_1 = __webpack_require__(114);
 	4;
-	const react_router_dom_1 = __webpack_require__(84);
+	const react_router_dom_1 = __webpack_require__(88);
 	class Notification extends React.Component {
 	    componentWillMount() {
 	        if (this.props.notification.notLoad) {
@@ -34017,7 +34805,7 @@
 	                :
 	                    React.createElement("div", null,
 	                        React.createElement("div", { className: "small-text" }, "You have " + numOfUnread + " unread notification(s)"),
-	                        React.createElement("div", { className: "noti-list" }, notifications.map(notification => React.createElement("div", { onClick: () => this.onRead(notification.id) },
+	                        React.createElement("div", { className: "noti-list" }, notifications.map(notification => React.createElement("div", { key: notification.id, onClick: () => this.onRead(notification.id) },
 	                            React.createElement(react_router_dom_1.Link, { to: { pathname: "/customer/transaction", details: { id: notification.transactionId, type: notification.type } }, className: "noti" + (notification.read ? " read" : "") },
 	                                React.createElement("div", { className: "avatar" }, notification.type == utils_1.NotificationType.TRANSFER ?
 	                                    React.createElement("i", { className: "fa fa-sign-out-alt", style: { color: "green" } })
@@ -34046,15 +34834,16 @@
 
 
 /***/ }),
-/* 134 */
+/* 144 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
 	Object.defineProperty(exports, "__esModule", { value: true });
 	const React = __webpack_require__(4);
 	const react_redux_1 = __webpack_require__(18);
-	const action_1 = __webpack_require__(101);
-	const utils_1 = __webpack_require__(110);
+	const action_1 = __webpack_require__(105);
+	const utils_1 = __webpack_require__(114);
+	const TransactionSummary_1 = __webpack_require__(145);
 	class Transaction extends React.Component {
 	    constructor(props) {
 	        super(props);
@@ -34066,28 +34855,41 @@
 	        if (this.props.transaction.notLoad) {
 	            this.props.dispatch(action_1.transactionActions.load());
 	        }
-	        if (this.props.account.notLoad) {
-	            this.props.dispatch(action_1.accountActions.getConnectedAccount());
-	        }
+	        let transactions = this.props.transaction.transactions;
 	        if (this.props.location.details) {
 	            let details = this.props.location.details;
 	            this.setState({
-	                transaction: this.props.transaction.transactions.find(trans => {
+	                transaction: transactions.find(trans => {
 	                    return utils_1.compare(details.type, trans.type)
 	                        && details.id == trans.id;
 	                })
 	            });
 	        }
+	        else {
+	            if (transactions.length > 0) {
+	                this.setState({
+	                    transaction: transactions[0]
+	                });
+	            }
+	        }
 	    }
 	    componentWillReceiveProps(nextProps) {
+	        let transactions = nextProps.transaction.transactions;
 	        if (nextProps.location.details) {
 	            let details = nextProps.location.details;
 	            this.setState({
-	                transaction: nextProps.transaction.transactions.find(trans => {
+	                transaction: transactions.find(trans => {
 	                    return utils_1.compare(details.type, trans.type)
 	                        && details.id == trans.id;
 	                })
 	            });
+	        }
+	        else {
+	            if (transactions.length > 0) {
+	                this.setState({
+	                    transaction: transactions[0]
+	                });
+	            }
 	        }
 	    }
 	    onRead(transaction) {
@@ -34098,10 +34900,9 @@
 	    getSource(transaction) {
 	        switch (transaction.type) {
 	            case utils_1.TransactionType.DEPOSIT:
-	                let bank = this.props.account.accounts.find(account => account.id == transaction.account).name;
-	                return bank;
+	                return transaction.account.name;
 	            case utils_1.TransactionType.RECEIVE:
-	                return transaction.sender;
+	                return transaction.sender.username;
 	            default:
 	                return "e-wallet";
 	        }
@@ -34114,42 +34915,39 @@
 	                    React.createElement("section", null,
 	                        React.createElement("div", { className: "info" },
 	                            React.createElement("label", null, "Receiver"),
-	                            React.createElement("span", null, transaction.receiver)),
+	                            React.createElement("span", null, transaction.receiver.username)),
 	                        React.createElement("div", { className: "info" },
 	                            React.createElement("label", null, "Email"),
-	                            React.createElement("span", null, transaction.receiver)),
+	                            React.createElement("span", null, transaction.receiver.email)),
 	                        React.createElement("div", { className: "info" },
 	                            React.createElement("label", null, "Amount"),
-	                            React.createElement("span", null, this.getAmount(transaction))),
+	                            React.createElement("span", null, this.getAmount(transaction).slice(1))),
 	                        React.createElement("div", { className: "info" },
 	                            React.createElement("label", null, "Message"),
 	                            React.createElement("span", null, transaction.message))));
-	            case utils_1.TransactionType.PAY:
-	                return React.createElement("div", null,
-	                    React.createElement("div", { className: "section-title" }, "Other Infomation"),
-	                    React.createElement("section", null,
-	                        React.createElement("div", { className: "info" },
-	                            React.createElement("label", null, "Service"),
-	                            React.createElement("span", null, transaction.bill)),
-	                        React.createElement("div", { className: "info" },
-	                            React.createElement("label", null, "Bill code"),
-	                            React.createElement("span", null, transaction.bill)),
-	                        React.createElement("div", { className: "info" },
-	                            React.createElement("label", null, "Description"),
-	                            React.createElement("span", null, transaction.description))));
 	            case utils_1.TransactionType.MOBILE_PAY:
 	                return React.createElement("div", null,
 	                    React.createElement("div", { className: "section-title" }, "Other Infomation"),
 	                    React.createElement("section", null,
 	                        React.createElement("div", { className: "info" },
 	                            React.createElement("label", null, "Telecom Company"),
-	                            React.createElement("span", null, transaction.telecom)),
-	                        React.createElement("div", { className: "info" },
-	                            React.createElement("label", null, "Bill code"),
-	                            React.createElement("span", null, transaction.bill)),
+	                            React.createElement("span", null, transaction.telecom.name)),
 	                        React.createElement("div", { className: "info" },
 	                            React.createElement("label", null, "Cost"),
-	                            React.createElement("span", null, transaction.amount))));
+	                            React.createElement("span", null, this.getAmount(transaction).slice(1)))));
+	            case utils_1.TransactionType.PAY:
+	                return React.createElement("div", null,
+	                    React.createElement("div", { className: "section-title" }, "Other Infomation"),
+	                    React.createElement("section", null,
+	                        React.createElement("div", { className: "info" },
+	                            React.createElement("label", null, "Service"),
+	                            React.createElement("span", null, transaction.bill.type)),
+	                        React.createElement("div", { className: "info" },
+	                            React.createElement("label", null, "Code"),
+	                            React.createElement("span", null, transaction.bill.code)),
+	                        React.createElement("div", { className: "info" },
+	                            React.createElement("label", null, "Provider"),
+	                            React.createElement("span", null, transaction.bill.provider))));
 	            default:
 	                return React.createElement("span", null);
 	        }
@@ -34164,39 +34962,39 @@
 	    }
 	    getContent(transaction) {
 	        if (transaction.type == utils_1.TransactionType.TRANSFER) {
-	            return "Transfer to " + transaction.receiver;
+	            return "Transfer to " + transaction.receiver.username;
 	        }
 	        if (transaction.type == utils_1.TransactionType.DEPOSIT) {
-	            let bank = this.props.account.accounts.find(account => account.id == transaction.account).name;
-	            return "Add money to wallet from " + bank;
+	            return "Add money to wallet from " + transaction.account.name;
 	        }
 	        if (transaction.type == utils_1.TransactionType.PAY) {
-	            return "PAY BILL";
+	            return "Pay '" + transaction.bill.type + "' bill provided by " + transaction.bill.provider;
 	        }
 	        if (transaction.type == utils_1.TransactionType.RECEIVE) {
-	            return "Receive money from " + transaction.sender;
+	            return "Receive money from " + transaction.sender.username;
 	        }
-	        return "Buy mobile card from " + transaction.telecom;
+	        return "Buy mobile card from " + transaction.telecom.name;
 	    }
 	    render() {
 	        let transactions = this.props.transaction.transactions;
 	        let transaction = this.state.transaction;
 	        return React.createElement("div", { className: "content-right" },
 	            React.createElement("h1", { className: "title" }, "Transaction"),
+	            React.createElement(TransactionSummary_1.default, { transactions: transactions }),
 	            React.createElement("div", { className: "wrapper trans" },
 	                React.createElement("div", { className: "sub-wrapper" },
 	                    React.createElement("div", { className: "title" }, "May 2019"),
 	                    React.createElement("div", { className: "trans-list" }, transactions.map((transaction, number) => React.createElement("div", { onClick: () => this.onRead(transaction), key: number, className: "trans" + (transaction == this.state.transaction ? " active" : "") },
 	                        React.createElement("div", { className: "avatar" }, transaction.type == utils_1.TransactionType.TRANSFER ?
-	                            React.createElement("i", { className: "fa fa-sign-out-alt", style: { color: "green" } })
+	                            React.createElement("i", { className: "fa fa-sign-out-alt", style: { color: "#0f7a0b" } })
 	                            : transaction.type == utils_1.TransactionType.DEPOSIT ?
-	                                React.createElement("i", { className: "fa fa-sign-in-alt", style: { color: "blue" } })
+	                                React.createElement("i", { className: "fa fa-sign-in-alt", style: { color: "#365382" } })
 	                                : transaction.type == utils_1.TransactionType.RECEIVE ?
-	                                    React.createElement("i", { className: "fa fa-money-bill", style: { color: "red" } })
+	                                    React.createElement("i", { className: "fa fa-money-bill", style: { color: "#e54837" } })
 	                                    : transaction.type == utils_1.TransactionType.PAY ?
-	                                        React.createElement("i", { className: "fa fa-credit-card", style: { color: "yellow" } })
+	                                        React.createElement("i", { className: "fa fa-credit-card", style: { color: "#d1c217" } })
 	                                        : transaction.type == utils_1.TransactionType.MOBILE_PAY ?
-	                                            React.createElement("i", { className: "fa fa-mobile-alt", style: { color: "#fd961a" } })
+	                                            React.createElement("i", { className: "fa fa-mobile-alt", style: { color: "#d1c217" } })
 	                                            : React.createElement("i", null)),
 	                        React.createElement("div", { className: "text" },
 	                            React.createElement("span", { className: "title" }, this.getContent(transaction)),
@@ -34227,35 +35025,147 @@
 	    }
 	}
 	function mapStateToProps(state) {
-	    const { transaction, account } = state;
+	    const { transaction } = state;
 	    return {
 	        transaction,
-	        account,
 	    };
 	}
 	exports.default = react_redux_1.connect(mapStateToProps)(Transaction);
 
 
 /***/ }),
-/* 135 */
+/* 145 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	"use strict";
+	Object.defineProperty(exports, "__esModule", { value: true });
+	const React = __webpack_require__(4);
+	const utils_1 = __webpack_require__(114);
+	class TransactionSummary extends React.Component {
+	    constructor(props) {
+	        super(props);
+	        this.state = {
+	            showIncome: false,
+	        };
+	    }
+	    show(income) {
+	        this.setState({
+	            showIncome: income,
+	        });
+	    }
+	    getTotalOfType(types) {
+	        let total = this.props.transactions.filter(transaction => {
+	            return types.includes(transaction.type);
+	        }).reduce((result, transaction) => result + transaction.amount, 0);
+	        return utils_1.toMoneyFormat(total) + "đ";
+	    }
+	    render() {
+	        return React.createElement("div", { className: "wrapper trans-summary" },
+	            React.createElement("div", { className: "summary" },
+	                React.createElement("div", { onClick: () => this.show(false), className: "title" + (this.state.showIncome ? "" : " active") },
+	                    React.createElement("h3", null, "Total Expenditures"),
+	                    React.createElement("span", null, this.getTotalOfType([
+	                        utils_1.TransactionType.PAY,
+	                        utils_1.TransactionType.MOBILE_PAY,
+	                        utils_1.TransactionType.TRANSFER,
+	                    ]))),
+	                React.createElement("div", { onClick: () => this.show(true), className: "title" + (this.state.showIncome ? " active" : "") },
+	                    React.createElement("h3", null, "Total Income"),
+	                    React.createElement("span", null, this.getTotalOfType([
+	                        utils_1.TransactionType.RECEIVE,
+	                        utils_1.TransactionType.DEPOSIT,
+	                    ])))),
+	            this.state.showIncome ?
+	                React.createElement("ul", { className: "details" },
+	                    React.createElement("li", { className: "receive" },
+	                        React.createElement("h3", null, "Receive"),
+	                        React.createElement("span", null, this.getTotalOfType([
+	                            utils_1.TransactionType.RECEIVE
+	                        ]))),
+	                    React.createElement("li", { className: "deposit" },
+	                        React.createElement("h3", null, "Deposit"),
+	                        React.createElement("span", null, this.getTotalOfType([
+	                            utils_1.TransactionType.DEPOSIT
+	                        ]))))
+	                :
+	                    React.createElement("ul", { className: "details" },
+	                        React.createElement("li", { className: "transfer" },
+	                            React.createElement("h3", null, "Transfer"),
+	                            React.createElement("span", null, this.getTotalOfType([
+	                                utils_1.TransactionType.TRANSFER
+	                            ]))),
+	                        React.createElement("li", { className: "mobile-pay" },
+	                            React.createElement("h3", null, "Mobile pay"),
+	                            React.createElement("span", null, this.getTotalOfType([
+	                                utils_1.TransactionType.MOBILE_PAY
+	                            ]))),
+	                        React.createElement("li", { className: "pay" },
+	                            React.createElement("h3", null, "Other pays"),
+	                            React.createElement("span", null, this.getTotalOfType([
+	                                utils_1.TransactionType.PAY
+	                            ])))));
+	    }
+	}
+	exports.default = TransactionSummary;
+
+
+/***/ }),
+/* 146 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	"use strict";
 	Object.defineProperty(exports, "__esModule", { value: true });
 	const React = __webpack_require__(4);
 	const react_redux_1 = __webpack_require__(18);
-	const action_1 = __webpack_require__(101);
-	const react_router_dom_1 = __webpack_require__(84);
+	const action_1 = __webpack_require__(105);
+	const react_router_dom_1 = __webpack_require__(88);
 	class FavoriteList extends React.Component {
+	    constructor(props) {
+	        super(props);
+	        this.state = {
+	            showInput: false,
+	        };
+	    }
 	    componentWillMount() {
 	        if (this.props.friend.notLoad) {
 	            this.props.dispatch(action_1.friendActions.getFriendList());
+	        }
+	    }
+	    onShowInput() {
+	        this.setState({
+	            showInput: !this.state.showInput,
+	        });
+	        if (!this.state.showInput) {
+	            this.email.focus();
+	        }
+	    }
+	    onChange(e) {
+	        if (e.charCode == 13) {
+	            this.props.dispatch(action_1.friendActions.addFriend(this.email.value));
 	        }
 	    }
 	    render() {
 	        let friends = this.props.friend.friends;
 	        return React.createElement("div", { class: "content-right" },
 	            React.createElement("h1", { class: "title" }, "Favorite List"),
+	            React.createElement("div", { className: "wrapper favorite" },
+	                React.createElement("div", { className: "form-group" },
+	                    React.createElement("button", { className: "add-user", onClick: this.onShowInput.bind(this) }, "Add new user"),
+	                    React.createElement("div", { class: "input-wrap" },
+	                        React.createElement("input", { ref: input => this.email = input, className: "form-control" + (this.state.showInput ? " display" : ""), onKeyPress: this.onChange.bind(this), type: "text", id: "email", placeholder: "Enter email of user" }))),
+	                this.props.friend.error ?
+	                    React.createElement("div", { class: "form-group" },
+	                        React.createElement("div", { class: "form-message" },
+	                            React.createElement("span", { className: "error" }, this.props.friend.error)))
+	                    : this.props.friend.adding ?
+	                        React.createElement("div", { class: "form-group" },
+	                            React.createElement("div", { class: "form-message" },
+	                                React.createElement("span", { className: "info" }, "Processing...")))
+	                        : this.props.friend.added ?
+	                            React.createElement("div", { class: "form-group" },
+	                                React.createElement("div", { class: "form-message" },
+	                                    React.createElement("span", { className: "success" }, "Successfully")))
+	                            : React.createElement("span", null)),
 	            React.createElement("div", { className: "wrapper bank-account" },
 	                React.createElement("div", { className: "friend-list" }, friends.map(friend => React.createElement("div", { className: "friend", key: friend.id },
 	                    React.createElement("div", { className: "avatar" },

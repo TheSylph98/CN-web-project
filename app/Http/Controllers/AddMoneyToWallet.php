@@ -35,28 +35,6 @@ class AddMoneyToWallet
         return view("viewtest.addMoney");
     }
 
-// public check ngan hang
-    public function checkBanksAsociateToUser($bank_name)
-    {
-        $user = Auth::user();
-        $bank =DB::table('nganhang')->where('ten_nganhang',$bank_name)->first();
-        if ($bank == null) {
-            return response()->json([
-                "title" => "error",
-                "content" => "Tên ngân hàng không có trong cơ sở dữ liêu",
-
-            ]);
-        }
-
-
-        $account = DB::table("taikhoan")->where("nganhang_id", $bank->id)->where("users_id", $user->id)->first();;
-//        print_r($account);
-        return $account;
-
-
-
-    }
-
     public function postAddMoney(Request $request)
     {
 //        check dang nhap
@@ -71,11 +49,11 @@ class AddMoneyToWallet
         $validator = Validator::make($request->all(),
             [
                 'sotien' => 'required',
-                'nganhang' => "required"
+                'sotk' => "required"
             ],
             [
-                'sotien.required' => 'Bạn chưa nhập số tiền ',
-                'nganhang.required' => 'Bạn phải chọn ngân hàng',
+                'sotien.required' => 'You have not entered amount of money',
+                'sotk.required' => 'You have not specified bank account',
 
             ]);
 
@@ -88,40 +66,45 @@ class AddMoneyToWallet
             ]);
         }
 
-
-//        check ngan hang
-        $account = $this->checkBanksAsociateToUser($request->nganhang);
+        $sotk = $request->sotk;
+        $user = Auth::user();
+        $account =DB::table('taikhoan')->where('sotaikhoan',$sotk)->first();
         if ($account == null) {
             return response()->json([
                 "title" => "error",
-                "content" => "Ngân hàng chưa liên kết với ví điện tử của bạn",
+                "content" => "Account does not exist!",
 
             ]);
         }
 
-
+        if ($account->users_id != $user->id) {
+            return response()->json([
+                "title" => "error",
+                "content" => "Account has not been connected to your wallet!",
+            ]);   
+        }
 
 //        check so tien trong tk so với tiên định nạp
         if ($account->sotien <= $request->sotien) {
             return response()->json([
                 "title" => "error",
-                "content" => "Số dư trong tài khoản ngân hàng của bạn không đủ để thực hiện giao dich",
+                "content" => "Your account balance is not enough to make transaction",
 
             ]);
         }
 
 
-
-        $user = Auth::user();
-
 //        thuc hiên nap tien
+        $user->sotien = $user->sotien + $request->sotien;
+        $user->save();
         $naptien = new naptien();
         $naptien->sotien = $request->sotien;
         $naptien->users_id = $user->id;
+        $naptien->id_taikhoan = $account->id;
         $naptien->save();
 
         //tru tien trong tk ngan hang
-        $account->sotien = $account->sotien-$request->sotien;
+        // $account->sotien = $account->sotien - $request->sotien;
         DB::table('taikhoan')
             ->where('users_id', $user->id)
             ->where('nganhang_id',$account->nganhang_id)
@@ -133,14 +116,12 @@ class AddMoneyToWallet
         $id_naptien = naptien::max("id");
 
         $thongbao = new thongbao();
-        $thongbao->tieude = "Thông báo nạp tiền thành công";
-        $thongbao->noidung = "Bạn vừa nạp thành công " . $request->sotien . "đ vào tài khoản " ;
-        $thongbao->user_id = $user->id;
+        $thongbao->tieude = "Deposit successfully";
+        $thongbao->noidung = "You deposited successfully " . $request->sotien . "đ from your bank account to your wallet";
+        $thongbao->users_id = $user->id;
         $thongbao->daxem = 0;
         $thongbao->type = "naptien_".$id_naptien;
         $thongbao->save();
-
-
 
 //      tra ve thong bao
         return response()->json([

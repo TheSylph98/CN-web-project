@@ -125,6 +125,7 @@ class TransferController
         $chuyen_tien->noidung = $request->noidung;
         $chuyen_tien->save();
 
+        $id_chuyentien = $chuyen_tien->id;
 
 //        cập nhật lai số tiên trong wallet
 
@@ -135,12 +136,12 @@ class TransferController
         $user_nhan->sotien = $user_nhan->sotien + $request->sotien;
         $user_nhan->save();
 
-        return view("viewtest.ok");
+        // return view("viewtest.ok");
 
         $thongbao = new thongbao();
         $thongbao->tieude = "Thông báo chuyển tiền thành công";
         $thongbao->noidung = "Bạn vừa chuyển thành công " . $request->sotien . "đ cho chủ tài khoàn có email " . $user_nhan->email;
-        $thongbao->user_id = $user->id;
+        $thongbao->users_id = $user->id;
         $thongbao->daxem = 0;
         $thongbao->type = "chuyentien_".$id_chuyentien;
 
@@ -149,7 +150,7 @@ class TransferController
         $thongbao_nhan = new thongbao();
         $thongbao_nhan->tieude = "Thông báo nhận tiền thành công";
         $thongbao_nhan->noidung = "Tài khoản của bạn  nhận thành công " . $request->sotien . "đ  từ chủ tài khoàn có email " . $user->email;
-        $thongbao_nhan->user_id = $user_nhan->id;
+        $thongbao_nhan->users_id = $user_nhan->id;
         $thongbao_nhan->daxem = 0;
         $thongbao_nhan->type = "nhantien_".$id_chuyentien;
         $thongbao_nhan->save();

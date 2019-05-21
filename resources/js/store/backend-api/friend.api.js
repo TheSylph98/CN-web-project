@@ -5,6 +5,7 @@ function getFriendList() {
     return new Promise((resolve, reject) => {
         index_1.getData("danh-ba")
             .then(friends => {
+            friends = friends['danhba'];
             if (friends instanceof Array) {
                 resolve(friends.map(friend => ({
                     username: friend["ten"],
@@ -20,3 +21,18 @@ function getFriendList() {
     });
 }
 exports.getFriendList = getFriendList;
+function addFriend(email) {
+    let data = { email };
+    return new Promise((resolve, reject) => {
+        index_1.getData("them-danh-ba", data)
+            .then(result => {
+            if (result['link'] == 'success') {
+                resolve();
+            }
+            else {
+                reject(result['message']);
+            }
+        });
+    });
+}
+exports.addFriend = addFriend;

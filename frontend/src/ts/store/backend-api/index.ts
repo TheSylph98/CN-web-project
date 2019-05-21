@@ -37,3 +37,5 @@ export * from "./friend.api";
 export * from "./services.api";
 export * from "./notification.api";
 export * from "./transaction.api";
+export * from "./mobile.api";
+export * from "./bill.api";

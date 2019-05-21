@@ -4,6 +4,7 @@ const React = require("react");
 const react_redux_1 = require("react-redux");
 const action_1 = require("../../store/action");
 const utils_1 = require("../../utils");
+const TransactionSummary_1 = require("./TransactionSummary");
 class Transaction extends React.Component {
     constructor(props) {
         super(props);
@@ -15,28 +16,41 @@ class Transaction extends React.Component {
         if (this.props.transaction.notLoad) {
             this.props.dispatch(action_1.transactionActions.load());
         }
-        if (this.props.account.notLoad) {
-            this.props.dispatch(action_1.accountActions.getConnectedAccount());
-        }
+        let transactions = this.props.transaction.transactions;
         if (this.props.location.details) {
             let details = this.props.location.details;
             this.setState({
-                transaction: this.props.transaction.transactions.find(trans => {
+                transaction: transactions.find(trans => {
                     return utils_1.compare(details.type, trans.type)
                         && details.id == trans.id;
                 })
             });
         }
+        else {
+            if (transactions.length > 0) {
+                this.setState({
+                    transaction: transactions[0]
+                });
+            }
+        }
     }
     componentWillReceiveProps(nextProps) {
+        let transactions = nextProps.transaction.transactions;
         if (nextProps.location.details) {
             let details = nextProps.location.details;
             this.setState({
-                transaction: nextProps.transaction.transactions.find(trans => {
+                transaction: transactions.find(trans => {
                     return utils_1.compare(details.type, trans.type)
                         && details.id == trans.id;
                 })
             });
+        }
+        else {
+            if (transactions.length > 0) {
+                this.setState({
+                    transaction: transactions[0]
+                });
+            }
         }
     }
     onRead(transaction) {
@@ -47,10 +61,9 @@ class Transaction extends React.Component {
     getSource(transaction) {
         switch (transaction.type) {
             case utils_1.TransactionType.DEPOSIT:
-                let bank = this.props.account.accounts.find(account => account.id == transaction.account).name;
-                return bank;
+                return transaction.account.name;
             case utils_1.TransactionType.RECEIVE:
-                return transaction.sender;
+                return transaction.sender.username;
             default:
                 return "e-wallet";
         }
@@ -63,42 +76,39 @@ class Transaction extends React.Component {
                     React.createElement("section", null,
                         React.createElement("div", { className: "info" },
                             React.createElement("label", null, "Receiver"),
-                            React.createElement("span", null, transaction.receiver)),
+                            React.createElement("span", null, transaction.receiver.username)),
                         React.createElement("div", { className: "info" },
                             React.createElement("label", null, "Email"),
-                            React.createElement("span", null, transaction.receiver)),
+                            React.createElement("span", null, transaction.receiver.email)),
                         React.createElement("div", { className: "info" },
                             React.createElement("label", null, "Amount"),
-                            React.createElement("span", null, this.getAmount(transaction))),
+                            React.createElement("span", null, this.getAmount(transaction).slice(1))),
                         React.createElement("div", { className: "info" },
                             React.createElement("label", null, "Message"),
                             React.createElement("span", null, transaction.message))));
-            case utils_1.TransactionType.PAY:
-                return React.createElement("div", null,
-                    React.createElement("div", { className: "section-title" }, "Other Infomation"),
-                    React.createElement("section", null,
-                        React.createElement("div", { className: "info" },
-                            React.createElement("label", null, "Service"),
-                            React.createElement("span", null, transaction.bill)),
-                        React.createElement("div", { className: "info" },
-                            React.createElement("label", null, "Bill code"),
-                            React.createElement("span", null, transaction.bill)),
-                        React.createElement("div", { className: "info" },
-                            React.createElement("label", null, "Description"),
-                            React.createElement("span", null, transaction.description))));
             case utils_1.TransactionType.MOBILE_PAY:
                 return React.createElement("div", null,
                     React.createElement("div", { className: "section-title" }, "Other Infomation"),
                     React.createElement("section", null,
                         React.createElement("div", { className: "info" },
                             React.createElement("label", null, "Telecom Company"),
-                            React.createElement("span", null, transaction.telecom)),
-                        React.createElement("div", { className: "info" },
-                            React.createElement("label", null, "Bill code"),
-                            React.createElement("span", null, transaction.bill)),
+                            React.createElement("span", null, transaction.telecom.name)),
                         React.createElement("div", { className: "info" },
                             React.createElement("label", null, "Cost"),
-                            React.createElement("span", null, transaction.amount))));
+                            React.createElement("span", null, this.getAmount(transaction).slice(1)))));
+            case utils_1.TransactionType.PAY:
+                return React.createElement("div", null,
+                    React.createElement("div", { className: "section-title" }, "Other Infomation"),
+                    React.createElement("section", null,
+                        React.createElement("div", { className: "info" },
+                            React.createElement("label", null, "Service"),
+                            React.createElement("span", null, transaction.bill.type)),
+                        React.createElement("div", { className: "info" },
+                            React.createElement("label", null, "Code"),
+                            React.createElement("span", null, transaction.bill.code)),
+                        React.createElement("div", { className: "info" },
+                            React.createElement("label", null, "Provider"),
+                            React.createElement("span", null, transaction.bill.provider))));
             default:
                 return React.createElement("span", null);
         }
@@ -113,39 +123,39 @@ class Transaction extends React.Component {
     }
     getContent(transaction) {
         if (transaction.type == utils_1.TransactionType.TRANSFER) {
-            return "Transfer to " + transaction.receiver;
+            return "Transfer to " + transaction.receiver.username;
         }
         if (transaction.type == utils_1.TransactionType.DEPOSIT) {
-            let bank = this.props.account.accounts.find(account => account.id == transaction.account).name;
-            return "Add money to wallet from " + bank;
+            return "Add money to wallet from " + transaction.account.name;
         }
         if (transaction.type == utils_1.TransactionType.PAY) {
-            return "PAY BILL";
+            return "Pay '" + transaction.bill.type + "' bill provided by " + transaction.bill.provider;
         }
         if (transaction.type == utils_1.TransactionType.RECEIVE) {
-            return "Receive money from " + transaction.sender;
+            return "Receive money from " + transaction.sender.username;
         }
-        return "Buy mobile card from " + transaction.telecom;
+        return "Buy mobile card from " + transaction.telecom.name;
     }
     render() {
         let transactions = this.props.transaction.transactions;
         let transaction = this.state.transaction;
         return React.createElement("div", { className: "content-right" },
             React.createElement("h1", { className: "title" }, "Transaction"),
+            React.createElement(TransactionSummary_1.default, { transactions: transactions }),
             React.createElement("div", { className: "wrapper trans" },
                 React.createElement("div", { className: "sub-wrapper" },
                     React.createElement("div", { className: "title" }, "May 2019"),
                     React.createElement("div", { className: "trans-list" }, transactions.map((transaction, number) => React.createElement("div", { onClick: () => this.onRead(transaction), key: number, className: "trans" + (transaction == this.state.transaction ? " active" : "") },
                         React.createElement("div", { className: "avatar" }, transaction.type == utils_1.TransactionType.TRANSFER ?
-                            React.createElement("i", { className: "fa fa-sign-out-alt", style: { color: "green" } })
+                            React.createElement("i", { className: "fa fa-sign-out-alt", style: { color: "#0f7a0b" } })
                             : transaction.type == utils_1.TransactionType.DEPOSIT ?
-                                React.createElement("i", { className: "fa fa-sign-in-alt", style: { color: "blue" } })
+                                React.createElement("i", { className: "fa fa-sign-in-alt", style: { color: "#365382" } })
                                 : transaction.type == utils_1.TransactionType.RECEIVE ?
-                                    React.createElement("i", { className: "fa fa-money-bill", style: { color: "red" } })
+                                    React.createElement("i", { className: "fa fa-money-bill", style: { color: "#e54837" } })
                                     : transaction.type == utils_1.TransactionType.PAY ?
-                                        React.createElement("i", { className: "fa fa-credit-card", style: { color: "yellow" } })
+                                        React.createElement("i", { className: "fa fa-credit-card", style: { color: "#d1c217" } })
                                         : transaction.type == utils_1.TransactionType.MOBILE_PAY ?
-                                            React.createElement("i", { className: "fa fa-mobile-alt", style: { color: "#fd961a" } })
+                                            React.createElement("i", { className: "fa fa-mobile-alt", style: { color: "#d1c217" } })
                                             : React.createElement("i", null)),
                         React.createElement("div", { className: "text" },
                             React.createElement("span", { className: "title" }, this.getContent(transaction)),
@@ -176,10 +186,9 @@ class Transaction extends React.Component {
     }
 }
 function mapStateToProps(state) {
-    const { transaction, account } = state;
+    const { transaction } = state;
     return {
         transaction,
-        account,
     };
 }
 exports.default = react_redux_1.connect(mapStateToProps)(Transaction);

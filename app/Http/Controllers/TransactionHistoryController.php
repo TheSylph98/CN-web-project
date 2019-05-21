@@ -36,13 +36,17 @@ class TransactionHistoryController extends Controller
             $ruttien = ruttien::where('users_id',$id)->get();
             //ls thanhtoan
             $thanhtoan = thanhtoan::where('users_id',$id)->get();
+            //ls nhantien
+            $nhantien = chuyentien::where('id_nhan',$id)->get();
+
             return response()->json([
                 'trans' => 'success',
                 'naptien' => $naptien,
                 'chuyentien' => $chuyentien,
                 'napthe' => $napthe,
                 'ruttien' => $ruttien,
-                'thanhtoan' => $thanhtoan
+                'thanhtoan' => $thanhtoan,
+                'nhantien' => $nhantien,
             ]);
         } else {
             return response()->json([

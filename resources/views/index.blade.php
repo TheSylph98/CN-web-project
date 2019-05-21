@@ -13,6 +13,7 @@
     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/owl-carousel/1.3.3/owl.carousel.css">
     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/owl-carousel/1.3.3/owl.theme.min.css">
 
+    <link rel="stylesheet" type="text/css" href="resources/css/page.css"/>
     <link rel="stylesheet" type="text/css" href="resources/css/toppanel.css"/>
     <link rel="stylesheet" type="text/css" href="resources/css/menu.css"/>
     <link rel="stylesheet" type="text/css" href="resources/css/react-bootstrap-carousel.css"/>
@@ -28,6 +29,7 @@
     <link rel="stylesheet" type="text/css" href="resources/css/favorite.css"/>
     <link rel="stylesheet" type="text/css" href="resources/css/notification.css"/>
     <link rel="stylesheet" type="text/css" href="resources/css/transaction.css"/>
+    <link rel="stylesheet" type="text/css" href="resources/css/mobile-pay.css"/>
 </head>
 
 <body>

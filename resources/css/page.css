@@ -1,0 +1,16 @@
+.page {
+	display: flex;
+	flex-direction: column;
+}
+
+.form-message .success {
+	color: green;
+}
+
+.form-message .info {
+	color: blue;
+}
+
+.form-message .error {
+	color: red;
+}

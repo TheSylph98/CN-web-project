@@ -98,3 +98,25 @@ export function update() {
             })
     })
 }
+
+export function getInfo(id) {
+    let data = {
+        id
+    }
+    return new Promise((resolve, reject) => {
+        getData("thong-tin-user", data)
+            .then(result => {
+                if (result["get"] == 'success') {
+                    let user = result['user'];
+                    resolve({
+                        username: user['ten'],
+                        email: user['email'],
+                        address: user['diachi'],
+                        phone: user['sodienthoai'],
+                    });
+                } else {
+                    reject(result['errors']);
+                }
+            })
+    })
+}

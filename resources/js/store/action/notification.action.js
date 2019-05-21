@@ -18,6 +18,7 @@ function load() {
             let newUnread = newNotis.filter(noti => !noti.read).length;
             if (oldUnread != newUnread || oldNotis.length != newNotis.length) {
                 dispatch(success(notifications));
+                dispatch(_1.userActions.update());
                 dispatch(_1.transactionActions.load());
             }
         }, error => {

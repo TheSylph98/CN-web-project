@@ -42,10 +42,11 @@ function getConnectedAccount() {
     return new Promise((resolve, reject) => {
         index_1.getData("bank-user")
             .then(result => {
-            if (result instanceof Array) {
-                resolve(result.map(bank => ({
-                    name: bank['ten_nganhang'],
-                    id: bank['id'],
+            if (result['account'] instanceof Array) {
+                resolve(result['account'].map((account, index) => ({
+                    number: account['sotaikhoan'],
+                    name: result['bank'][index]['ten_nganhang'],
+                    id: account['id'],
                 })));
             }
             else {
@@ -55,3 +56,42 @@ function getConnectedAccount() {
     });
 }
 exports.getConnectedAccount = getConnectedAccount;
+function getBankById(id) {
+    let data = { id };
+    return new Promise((resolve, reject) => {
+        index_1.getData("get-bank", data)
+            .then(result => {
+            if (result['get'] == 'success') {
+                let bank = result['nganhang'];
+                resolve({
+                    name: bank["ten_nganhang"],
+                    id: bank["id"],
+                });
+            }
+            else {
+                reject(result['errors']);
+            }
+        });
+    });
+}
+exports.getBankById = getBankById;
+function getAccountById(id) {
+    let data = { id };
+    return new Promise((resolve, reject) => {
+        index_1.getData("get-account", data)
+            .then(result => {
+            if (result['get'] == 'success') {
+                let account = result['taikhoan'];
+                resolve({
+                    number: account['sotaikhoan'],
+                    name: account["ten_nganhang"],
+                    id: account["id"],
+                });
+            }
+            else {
+                reject(result['errors']);
+            }
+        });
+    });
+}
+exports.getAccountById = getAccountById;

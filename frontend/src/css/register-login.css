@@ -66,6 +66,7 @@
     border-radius: 0;
     outline: 0;
     transition: .1s;
+    width: -webkit-fill-available;
 }
 
 .form-container button {
@@ -98,7 +99,6 @@
 
 .form-message {
     min-height: 20px;
-    margin-top: -15px;
     margin-bottom: 10px;
     color: red;
 }

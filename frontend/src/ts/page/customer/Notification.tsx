@@ -35,7 +35,8 @@ class Notification extends React.Component<{dispatch, notification}, {}> {
 						<div className="small-text">{"You have " + numOfUnread + " unread notification(s)"}</div>
 						<div className="noti-list">
 							{notifications.map(notification =>
-								<div onClick={() => this.onRead(notification.id)}>
+								<div key={notification.id}
+									onClick={() => this.onRead(notification.id)}>
 									<Link to={{pathname: "/customer/transaction", details: {id: notification.transactionId, type: notification.type }}}
 										className={"noti" + (notification.read ? " read" : "")}>
 										<div className="avatar">

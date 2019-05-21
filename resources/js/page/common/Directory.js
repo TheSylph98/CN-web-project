@@ -17,7 +17,7 @@ class Directory extends React.Component {
             "bank": "Bank Account",
             "transfer": "Transfer",
             "withdraw": "Withdraw",
-            "pay": "Pay",
+            "pay": "Pay Bill",
             "deposit": "Deposit",
             "favorite": "Favorite List",
         };

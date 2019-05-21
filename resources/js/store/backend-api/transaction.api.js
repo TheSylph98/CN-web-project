@@ -19,9 +19,8 @@ function getTransaction() {
                 transactions = transactions.concat(result['naptien'].map(transaction => ({
                     type: utils_1.TransactionType.DEPOSIT,
                     id: transaction["id"],
-                    account: transaction["account_id"],
-                    message: transaction["noidung"],
-                    time: new Date(transaction["time"]),
+                    account: transaction["id_taikhoan"],
+                    time: new Date(transaction["created_at"]),
                     amount: transaction["sotien"],
                 })));
                 transactions = transactions.concat(result['napthe'].map(transaction => ({
@@ -31,14 +30,20 @@ function getTransaction() {
                     time: new Date(transaction["created_at"]),
                     amount: transaction["sotien"],
                 })));
-                // transactions = transactions.concat(result['nhantien'].map(transaction => ({
-                // 	type: TransactionType.RECEIVE,
-                // 	id: transaction["id"],
-                // 	sender: transaction["id_gui"],
-                // 	time: new Date(transaction["created_at"]),
-                // 	message: transaction["noidung"],
-                // 	amount: transaction["sotien"],
-                // })));
+                transactions = transactions.concat(result['nhantien'].map(transaction => ({
+                    type: utils_1.TransactionType.RECEIVE,
+                    id: transaction["id"],
+                    sender: transaction["id_chuyen"],
+                    time: new Date(transaction["time"]),
+                    message: transaction["noidung"],
+                    amount: transaction["sotien"],
+                })));
+                transactions = transactions.concat(result['thanhtoan'].map(transaction => ({
+                    type: utils_1.TransactionType.PAY,
+                    id: transaction["id"],
+                    bill: transaction["hoadon_id"],
+                    time: new Date(transaction["created_at"]),
+                })));
                 resolve(transactions);
             }
             else {

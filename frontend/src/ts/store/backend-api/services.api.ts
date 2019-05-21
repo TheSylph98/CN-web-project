@@ -18,3 +18,55 @@ export function transfer({amount, email, message}) {
 			})
 	})
 }
+
+export function deposit(account, amount) {
+	let data = {
+		"sotk": account,
+		"sotien": amount,
+	}
+
+	return new Promise((resolve, reject) => {
+		getData("post-add-money", data)
+			.then(result => {
+				if (result["title"] == "error") {
+					reject(result["content"]);
+				} else {
+					resolve();
+				}
+			})
+	})
+}
+
+export function payMobileCard(telecomId, amount) {
+	let data = {
+		"sotien": amount,
+		"nhamang": telecomId,
+	}
+	return new Promise((resolve, reject) => {
+		getData("nap-the", data)
+			.then(result => {
+				if (result["napthe"] != "error") {
+					resolve(result['code']);	
+				} else {
+					reject(result["message"]);
+				}
+			})
+	});
+}
+
+export function payBill(code, type) {
+	let data = {
+		"id_loaihoadon": type,
+		"mahoadon": code,
+	}
+	return new Promise((resolve, reject) => {
+		getData("post-pay-bill", data)
+			.then(result => {
+				if (result["title"] == "success") {
+					resolve();	
+				} else {
+					reject(result["content"]);
+				}
+			})
+	});
+}
