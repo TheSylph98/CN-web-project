@@ -78,10 +78,12 @@ class TransferController
             [
                 'sotien' => 'required',
                 'email_nhan' => "required",
+                'noidung' => "required",
             ],
             [
                 'sotien.required' => 'Please specify the amount of money ',
                 'email_nhan.required' => 'Please enter receiver\'s email address',
+                'noidung.required' => 'Please enter a message for receiver',
             ]);
 
         $errs = $validator->errors();

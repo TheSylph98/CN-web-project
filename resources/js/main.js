@@ -30193,25 +30193,41 @@
 	"use strict";
 	Object.defineProperty(exports, "__esModule", { value: true });
 	const constants_1 = __webpack_require__(68);
-	function account(state = { notLoad: true, accounts: [] }, action) {
+	function account(state = { list: { notLoad: true, accounts: [] }, connect: {} }, action) {
 	    switch (action.type) {
 	        case constants_1.userConstants.LOGOUT_SUCCESS:
 	            return {
-	                notLoad: true,
-	                accounts: [],
+	                list: { notLoad: true, accounts: [] },
+	                connect: {}
 	            };
 	        case constants_1.accountConstants.CONNECT_REQUEST:
-	            return Object.assign({}, state, { accounts: state.accounts, connecting: true });
+	            return Object.assign({}, state, { connect: {
+	                    connecting: true,
+	                } });
 	        case constants_1.accountConstants.CONNECT_SUCCESS:
-	            return Object.assign({}, state, { connected: true, accounts: state.accounts });
+	            return Object.assign({}, state, { connect: {
+	                    connected: true,
+	                } });
 	        case constants_1.accountConstants.CONNECT_FAILURE:
-	            return Object.assign({}, state, { error: action.error, accounts: state.accounts });
+	            return Object.assign({}, state, { connect: {
+	                    error: action.error,
+	                } });
 	        case constants_1.accountConstants.ACCOUNT_REQUEST:
-	            return Object.assign({}, state, { notLoad: false, accounts: state.accounts, loading: true });
+	            return Object.assign({}, state, { list: {
+	                    notLoad: false,
+	                    accounts: state.list.accounts,
+	                } });
 	        case constants_1.accountConstants.ACCOUNT_SUCCESS:
-	            return Object.assign({}, state, { notLoad: false, loaded: true, accounts: action.accounts });
+	            return Object.assign({}, state, { list: {
+	                    notLoad: false,
+	                    loaded: true,
+	                    accounts: action.accounts,
+	                } });
 	        case constants_1.accountConstants.ACCOUNT_FAILURE:
-	            return Object.assign({}, state, { notLoad: true, error: action.error, accounts: state.accounts });
+	            return Object.assign({}, state, { list: {
+	                    notLoad: true,
+	                    error: action.error,
+	                } });
 	        default:
 	            return state;
 	    }
@@ -34659,7 +34675,7 @@
 	        if (this.props.bank.notLoad) {
 	            this.props.dispatch(action_1.bankActions.getBank());
 	        }
-	        if (this.props.account.notLoad) {
+	        if (this.props.list.notLoad) {
 	            this.props.dispatch(action_1.accountActions.getConnectedAccount());
 	        }
 	    }
@@ -34674,7 +34690,7 @@
 	    }
 	    render() {
 	        let banks = this.props.bank.banks;
-	        let accounts = this.props.account.accounts;
+	        let accounts = this.props.list.accounts;
 	        return React.createElement("div", null,
 	            React.createElement("h1", { class: "title" }, "Bank Account"),
 	            React.createElement("div", { className: "wrapper bank-account" },
@@ -34700,20 +34716,31 @@
 	                        React.createElement("label", { class: "control-label", htmlFor: "account" }, "Account Number "),
 	                        React.createElement("div", { class: "input-wrap" },
 	                            React.createElement("input", { ref: input => this.account = input, type: "text", name: "account", class: "form-control", id: "account", placeholder: "Account Number" }))),
+	                    this.props.connect.error ?
+	                        React.createElement("div", { class: "form-group" },
+	                            React.createElement("div", { class: "form-message" },
+	                                React.createElement("span", { className: "error" }, this.props.connect.error)))
+	                        : this.props.connect.connecting ?
+	                            React.createElement("div", { class: "form-group" },
+	                                React.createElement("div", { class: "form-message" },
+	                                    React.createElement("span", { className: "info" }, "Connecting...")))
+	                            : this.props.connect.connected ?
+	                                React.createElement("div", { class: "form-group" },
+	                                    React.createElement("div", { class: "form-message" },
+	                                        React.createElement("span", { className: "success" }, "Connect successfully")))
+	                                : React.createElement("span", null),
 	                    React.createElement("div", { class: "form-group" },
-	                        React.createElement("div", { class: "form-message" }, this.props.account.connected ?
-	                            "Account has been connected!" :
-	                            this.props.account.error ?
-	                                this.props.account.error : ""),
 	                        React.createElement("div", { class: "input-wrap margin" },
 	                            React.createElement("button", { onClick: this.connect.bind(this), type: "submit", class: "btn btn-info btn-block btn-update" }, "Connect"))))));
 	    }
 	}
 	function mapStateToProps(state) {
-	    const { bank, account } = state;
+	    const { bank } = state;
+	    const { connect, list } = state.account;
 	    return {
 	        bank,
-	        account,
+	        connect,
+	        list,
 	    };
 	}
 	exports.default = react_redux_1.connect(mapStateToProps)(BankAccount);
@@ -34910,7 +34937,7 @@
 	        this.props.dispatch(action_1.servicesActions.deposit(this.state.chosenAccount, this.amount.value));
 	    }
 	    componentWillMount() {
-	        if (this.props.account.notLoad) {
+	        if (this.props.list.notLoad) {
 	            this.props.dispatch(action_1.accountActions.getConnectedAccount());
 	        }
 	        if (this.props.location.account) {
@@ -34928,7 +34955,7 @@
 	        });
 	    }
 	    render() {
-	        let accounts = this.props.account.accounts;
+	        let accounts = this.props.list.accounts;
 	        return React.createElement("div", { className: "wrapper" },
 	            React.createElement("div", { className: "title" }, "Choose a bank account to deposit"),
 	            React.createElement("div", { className: "bank-list" }, accounts.map(account => React.createElement("div", { onClick: () => this.chooseAccount(account.number), key: account.id, class: "bank" + (this.state.chosenAccount == account.number ? " active" : "") },
@@ -34959,10 +34986,10 @@
 	    }
 	}
 	function mapStateToProps(state) {
-	    const { account } = state;
+	    const { list } = state.account;
 	    const { deposit } = state.services;
 	    return {
-	        account,
+	        list,
 	        deposit,
 	    };
 	}

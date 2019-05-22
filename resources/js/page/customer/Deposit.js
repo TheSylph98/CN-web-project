@@ -15,7 +15,7 @@ class Deposit extends React.Component {
         this.props.dispatch(action_1.servicesActions.deposit(this.state.chosenAccount, this.amount.value));
     }
     componentWillMount() {
-        if (this.props.account.notLoad) {
+        if (this.props.list.notLoad) {
             this.props.dispatch(action_1.accountActions.getConnectedAccount());
         }
         if (this.props.location.account) {
@@ -33,7 +33,7 @@ class Deposit extends React.Component {
         });
     }
     render() {
-        let accounts = this.props.account.accounts;
+        let accounts = this.props.list.accounts;
         return React.createElement("div", { className: "wrapper" },
             React.createElement("div", { className: "title" }, "Choose a bank account to deposit"),
             React.createElement("div", { className: "bank-list" }, accounts.map(account => React.createElement("div", { onClick: () => this.chooseAccount(account.number), key: account.id, class: "bank" + (this.state.chosenAccount == account.number ? " active" : "") },
@@ -64,10 +64,10 @@ class Deposit extends React.Component {
     }
 }
 function mapStateToProps(state) {
-    const { account } = state;
+    const { list } = state.account;
     const { deposit } = state.services;
     return {
-        account,
+        list,
         deposit,
     };
 }

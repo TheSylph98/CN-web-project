@@ -2,7 +2,7 @@ import React = require("react");
 import { connect } from "react-redux";
 import { accountActions, servicesActions } from "../../store/action";
 
-class Deposit extends React.Component<{account, dispatch, location, deposit},{chosenAccount}> {
+class Deposit extends React.Component<{list, dispatch, location, deposit},{chosenAccount}> {
 
     amount;
 
@@ -19,7 +19,7 @@ class Deposit extends React.Component<{account, dispatch, location, deposit},{ch
 	}
 
     componentWillMount() {
-        if (this.props.account.notLoad) {
+        if (this.props.list.notLoad) {
             this.props.dispatch(accountActions.getConnectedAccount());
         }
         if (this.props.location.account) {
@@ -41,7 +41,7 @@ class Deposit extends React.Component<{account, dispatch, location, deposit},{ch
 
 	render() {
 
-        let accounts = this.props.account.accounts;
+        let accounts = this.props.list.accounts;
 
 		return <div className="wrapper">
 			<div className="title">
@@ -96,10 +96,10 @@ class Deposit extends React.Component<{account, dispatch, location, deposit},{ch
 }
 
 function mapStateToProps(state) {
-    const { account } = state;
+    const { list } = state.account;
     const { deposit } = state.services;
 	return {
-		account,
+		list,
         deposit,
 	}
 }

@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import { toAccountNumberFormat } from "../../utils";
 
-class BankAccount extends React.Component<{dispatch, bank, account}, {chosenBankId}> {
+class BankAccount extends React.Component<{dispatch, bank, connect, list}, {chosenBankId}> {
 
 	account;
 
@@ -19,7 +19,7 @@ class BankAccount extends React.Component<{dispatch, bank, account}, {chosenBank
 		if (this.props.bank.notLoad) {
 			this.props.dispatch(bankActions.getBank());
 		}
-		if (this.props.account.notLoad) {
+		if (this.props.list.notLoad) {
 			this.props.dispatch(accountActions.getConnectedAccount());
 		}
 	}
@@ -38,7 +38,7 @@ class BankAccount extends React.Component<{dispatch, bank, account}, {chosenBank
 	render() {
 
 		let banks = this.props.bank.banks;
-		let accounts = this.props.account.accounts;
+		let accounts = this.props.list.accounts;
 
 		return <div>
             <h1 class="title">Bank Account</h1>
@@ -89,14 +89,27 @@ class BankAccount extends React.Component<{dispatch, bank, account}, {chosenBank
                                 placeholder="Account Number"/>
                         </div>
                     </div>
+                    {this.props.connect.error ?
                     <div class="form-group">
-                    	<div class="form-message">
-                            {this.props.account.connected ? 
-                                "Account has been connected!" :
-                                    this.props.account.error ?
-                                        this.props.account.error : ""
-                            }
+                        <div class="form-message">
+                            <span className="error">{this.props.connect.error}</span>
                         </div>
+                    </div> 
+                    : this.props.connect.connecting ?
+                        <div class="form-group">
+                            <div class="form-message">
+                                <span className="info">Connecting...</span>
+                            </div>
+                        </div> 
+                        : this.props.connect.connected ?
+                            <div class="form-group">
+                                <div class="form-message">
+                                    <span className="success">Connect successfully</span>
+                                </div>
+                            </div> 
+                            : <span/>
+                	}
+                    <div class="form-group">
                         <div class="input-wrap margin">
                             <button onClick={this.connect.bind(this)} type="submit" class="btn btn-info btn-block btn-update">Connect</button>
                         </div>
@@ -109,10 +122,12 @@ class BankAccount extends React.Component<{dispatch, bank, account}, {chosenBank
 }
 
 function mapStateToProps(state) {
-	const { bank, account } = state;
+	const { bank } = state;
+	const { connect, list} = state.account;
 	return {
 		bank,
-		account,
+		connect,
+		list,
 	}
 }
 

@@ -1,50 +1,57 @@
 import { accountConstants, userConstants } from '../constants';
 
-export function account(state = {notLoad: true, accounts: []}, action) {
+export function account(state = {list: {notLoad: true, accounts: []}, connect: {}}, action) {
   switch (action.type) {
     case userConstants.LOGOUT_SUCCESS: 
       return {
-        notLoad: true,
-        accounts: [],
+        list: {notLoad: true, accounts: []}, 
+        connect: {}
       }
     case accountConstants.CONNECT_REQUEST: 
       return {
         ...state,
-        accounts: state.accounts,
-        connecting: true,
+        connect: {
+          connecting: true,
+        }
       };
     case accountConstants.CONNECT_SUCCESS:
       return {
         ...state,
-        connected: true,
-        accounts: state.accounts,
+        connect: {
+          connected: true,
+        }
       };
     case accountConstants.CONNECT_FAILURE:
       return {
         ...state,
-        error: action.error,
-        accounts: state.accounts,
+        connect: {
+          error: action.error,
+        }
       };
     case accountConstants.ACCOUNT_REQUEST: 
       return {
         ...state,
-        notLoad: false,
-        accounts: state.accounts,
-        loading: true,
+        list: {
+          notLoad: false,
+          accounts: state.list.accounts,
+        }
       };
     case accountConstants.ACCOUNT_SUCCESS:
       return {
         ...state,
-        notLoad: false,
-        loaded: true,
-        accounts: action.accounts,
+        list: {
+          notLoad: false,
+          loaded: true,
+          accounts: action.accounts,  
+        }
       };
     case accountConstants.ACCOUNT_FAILURE:
       return {
         ...state,
-        notLoad: true,
-        error: action.error,
-        accounts: state.accounts,
+        list: {
+          notLoad: true,
+          error: action.error,
+        }
       };
     default:
       return state

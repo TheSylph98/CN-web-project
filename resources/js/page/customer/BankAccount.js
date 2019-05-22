@@ -16,7 +16,7 @@ class BankAccount extends React.Component {
         if (this.props.bank.notLoad) {
             this.props.dispatch(action_1.bankActions.getBank());
         }
-        if (this.props.account.notLoad) {
+        if (this.props.list.notLoad) {
             this.props.dispatch(action_1.accountActions.getConnectedAccount());
         }
     }
@@ -31,7 +31,7 @@ class BankAccount extends React.Component {
     }
     render() {
         let banks = this.props.bank.banks;
-        let accounts = this.props.account.accounts;
+        let accounts = this.props.list.accounts;
         return React.createElement("div", null,
             React.createElement("h1", { class: "title" }, "Bank Account"),
             React.createElement("div", { className: "wrapper bank-account" },
@@ -57,20 +57,31 @@ class BankAccount extends React.Component {
                         React.createElement("label", { class: "control-label", htmlFor: "account" }, "Account Number "),
                         React.createElement("div", { class: "input-wrap" },
                             React.createElement("input", { ref: input => this.account = input, type: "text", name: "account", class: "form-control", id: "account", placeholder: "Account Number" }))),
+                    this.props.connect.error ?
+                        React.createElement("div", { class: "form-group" },
+                            React.createElement("div", { class: "form-message" },
+                                React.createElement("span", { className: "error" }, this.props.connect.error)))
+                        : this.props.connect.connecting ?
+                            React.createElement("div", { class: "form-group" },
+                                React.createElement("div", { class: "form-message" },
+                                    React.createElement("span", { className: "info" }, "Connecting...")))
+                            : this.props.connect.connected ?
+                                React.createElement("div", { class: "form-group" },
+                                    React.createElement("div", { class: "form-message" },
+                                        React.createElement("span", { className: "success" }, "Connect successfully")))
+                                : React.createElement("span", null),
                     React.createElement("div", { class: "form-group" },
-                        React.createElement("div", { class: "form-message" }, this.props.account.connected ?
-                            "Account has been connected!" :
-                            this.props.account.error ?
-                                this.props.account.error : ""),
                         React.createElement("div", { class: "input-wrap margin" },
                             React.createElement("button", { onClick: this.connect.bind(this), type: "submit", class: "btn btn-info btn-block btn-update" }, "Connect"))))));
     }
 }
 function mapStateToProps(state) {
-    const { bank, account } = state;
+    const { bank } = state;
+    const { connect, list } = state.account;
     return {
         bank,
-        account,
+        connect,
+        list,
     };
 }
 exports.default = react_redux_1.connect(mapStateToProps)(BankAccount);
