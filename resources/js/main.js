@@ -33341,7 +33341,7 @@
 	                    id: transaction["id"],
 	                    receiver: transaction["id_nhan"],
 	                    message: transaction["noidung"],
-	                    time: new Date(transaction["time"]),
+	                    time: new Date(transaction["created_at"]),
 	                    amount: transaction["sotien"],
 	                })));
 	                transactions = transactions.concat(result['naptien'].map(transaction => ({
@@ -33362,7 +33362,7 @@
 	                    type: utils_1.TransactionType.RECEIVE,
 	                    id: transaction["id"],
 	                    sender: transaction["id_chuyen"],
-	                    time: new Date(transaction["time"]),
+	                    time: new Date(transaction["created_at"]),
 	                    message: transaction["noidung"],
 	                    amount: transaction["sotien"],
 	                })));
