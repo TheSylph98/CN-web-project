@@ -51,7 +51,7 @@ class TransactionHistoryController extends Controller
         } else {
             return response()->json([
                 'trans'=>'error',
-                'message'=>'ban chua dang nhap'
+                'message'=>'Please login first!'
             ]);
         }
     }

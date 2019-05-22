@@ -47,7 +47,7 @@ class NapTheController extends Controller
             if ($tiennapthe > $tien_user){
                 return response()->json([
                     'napthe'=>'error',
-                    'message'=>'khong du tien nap the'
+                    'message'=>'Not enough money!'
                 ]);
             }else {
                 $napthe = new napthe;
@@ -76,7 +76,7 @@ class NapTheController extends Controller
         }else
             return response()->json([
                 'bank'=>'error',
-                'message'=> 'ban chua dang nhap '
+                'message'=> 'Please login first!'
             ]);
     }
 

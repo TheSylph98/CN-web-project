@@ -40,7 +40,7 @@ class PhoneBookController extends Controller
       if(Auth::check()){
         return view('page.themdanhba',['user'=>Auth::user()]);
       }else
-        return response()->json(['message'=>'ban chua dang nhap']);
+        return response()->json(['message'=>'Please login first!']);
     }
 
     public function PostAddPhoneBook(Request $request){
@@ -49,7 +49,7 @@ class PhoneBookController extends Controller
         'email' =>'required'
       ],
       [
-        'email.required' => 'Ban chua nhap sodt'
+        'email.required' => 'Please enter email address!'
       ]);
 
       $errs = $validator->errors();
@@ -66,7 +66,7 @@ class PhoneBookController extends Controller
       if(!Auth::check()){
         return response()->json([
           'link' => 'error',
-          'errors'=>'ban chua dang nhap'
+          'errors'=>'Please login first!'
         ]);
         exit();
       }
@@ -74,7 +74,7 @@ class PhoneBookController extends Controller
       $phone_friend = User::where('email',$email)->get();
 
       if($email == $user->email){
-        return response()->json(['message'=>'day la so dt cua ban']);
+        return response()->json(['message'=>'This is your own email address!']);
       }
       //kiemtra so do da co trong danh ba
       $danhba_user = danhba::where('users_id',$user->id)->get();
@@ -82,13 +82,13 @@ class PhoneBookController extends Controller
         $friend_id =  $key->friend_id;
         $friend = User::where('id',$friend_id)->get();
         if($email == $friend[0]->email){
-          return response()->json(['message'=>'so dien thoai nay da co trong danh ba vui long kiem tra danh ba']);
-          exit();
+          return response()->json(['message'=>'This email address had been added to favorite list before!'
+          ]);
         }
       }
       //kiem tra co tai khoan nao co sdt tren ko
       if(count($phone_friend) == 0){
-        return response()->json(['message'=>'ko ton tai user co sdt nay']);
+        return response()->json(['message'=>'Email address does not exist in our system!']);
       }else{
         $db = new danhba;
         $db->users_id = $user->id;

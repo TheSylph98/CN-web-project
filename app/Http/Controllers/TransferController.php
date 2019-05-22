@@ -69,7 +69,7 @@ class TransferController
         if (!Auth::check()) {
             return response()->json([
                 "title" => "error",
-                "content" => "Bạn phải đăng nhập trước",
+                "content" => "Please login first!",
 
             ]);
         }
@@ -78,13 +78,10 @@ class TransferController
             [
                 'sotien' => 'required',
                 'email_nhan' => "required",
-                'noidung' => "required"
             ],
             [
-                'sotien.required' => 'Bạn chưa nhập số tiền ',
-                'noidung.required' => 'Bạn chưa nhập nội dung chuyển tiền',
-                'email_nhan.required' => 'Bạn chưa nhập email',
-
+                'sotien.required' => 'Please specify the amount of money ',
+                'email_nhan.required' => 'Please enter receiver\'s email address',
             ]);
 
         $errs = $validator->errors();
@@ -103,7 +100,7 @@ class TransferController
         if ($check == 0) {
             return response()->json(
                 ["title" => "error",
-                    "content" => "Tài khoản không đủ tiền"]);
+                    "content" => "Not enough money!"]);
         };
 
         //      check email nguoi nhan , neu ton tai lay id nguoi nhan
@@ -113,7 +110,7 @@ class TransferController
             return response()->json(
                 [
                     "title" => "error",
-                    "content" => "Tài khoản bạn nhập không tồn tại"
+                    "content" => "Receiver's email address does not exist",
                 ]
             );
         }

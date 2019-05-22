@@ -100,6 +100,6 @@ class BankController extends Controller
             ]);
         }
         else
-            return response()->json(['message'=>'ban chua dang nhap']);
+            return response()->json(['message'=>'Please login first']);
     }
 }

@@ -30,7 +30,7 @@ class UserController extends Controller
         else
             return response()->json([
                 'check'=>'false',
-                'message'=>'Bạn chưa Đăng Nhập!'
+                'message'=>'Please login first!'
             ]);
     }
 
@@ -63,9 +63,9 @@ class UserController extends Controller
                 'username' => 'required|min:3|max:50',
             ],
             [
-                'username.required' => 'Bạn chưa nhập Tên tài khoản!',
-                'username.min' => 'Tên tài khoản gồm tối thiểu 3 ký tự!',
-                'username.max' => 'Tên tài khoản không được vượt quá 50 ký tự!'
+                'username.required' => 'Please enter your username!',
+                'username.min' => 'Username must includes at least 3 characters!',
+                'username.max' => 'Username\'s length cannot exceed 50 characters!'
             ]);
         $errs = $validator->errors();
         $err = $errs->all();
@@ -83,7 +83,7 @@ class UserController extends Controller
             return response()->json([
                 'update_info'=> 'true',
                 'user_info' => $user,
-                'message' =>'Chinh sua thanh cong'
+                'message' =>'Modify successfully'
             ]);
 
         }

@@ -41,7 +41,7 @@ class AddMoneyToWallet
         if (!Auth::check()) {
             return response()->json([
                 "title"=>"error",
-                "content" => "Bạn phải đăng nhập trước",
+                "content" => "Please login first",
 
             ]);
         }
@@ -126,7 +126,7 @@ class AddMoneyToWallet
 //      tra ve thong bao
         return response()->json([
             "title" => "success",
-            "content" => "Nạp tiền thành công"
+            "content" => "Deposit successfully"
         ]);
 
 

@@ -33991,6 +33991,7 @@
 	Object.defineProperty(exports, "__esModule", { value: true });
 	const React = __webpack_require__(4);
 	const react_bootstrap_carousel_1 = __webpack_require__(129);
+	const react_router_dom_1 = __webpack_require__(88);
 	class Slider extends React.Component {
 	    render() {
 	        let leftIcon = React.createElement("span", { className: "fa fa-angle-left" });
@@ -34008,7 +34009,7 @@
 	                                    React.createElement("br", null),
 	                                    " To Trading Online"),
 	                                React.createElement("p", null,
-	                                    React.createElement("a", { href: "about.html", class: "slider btn btn-primary" }, "LEARN MORE"))))))),
+	                                    React.createElement(react_router_dom_1.Link, { to: "/register", class: "slider btn btn-primary" }, "REGISTER NOW"))))))),
 	            React.createElement("div", { class: "background item-2" },
 	                React.createElement("div", { class: "item bg-parallax" },
 	                    React.createElement("div", { class: "slider-content" },
@@ -34016,14 +34017,15 @@
 	                            React.createElement("div", { class: "container" },
 	                                React.createElement("div", { class: "slider-text text-center" },
 	                                    React.createElement("h3", { class: "slide-title" },
-	                                        React.createElement("span", null, "Bitcoin"),
-	                                        " Exchange ",
+	                                        React.createElement("span", null, "Enjoy"),
+	                                        " our services ",
 	                                        React.createElement("br", null),
-	                                        "You can ",
-	                                        React.createElement("span", null, "Trust"),
-	                                        " "),
+	                                        " ",
+	                                        React.createElement("span", null, "safely"),
+	                                        " and ",
+	                                        React.createElement("span", null, "easily")),
 	                                    React.createElement("p", null,
-	                                        React.createElement("a", { href: "pricing.html", class: "slider btn btn-primary" }, "OUR PRICES")))))))));
+	                                        React.createElement(react_router_dom_1.Link, { to: "/customer/services", class: "slider btn btn-primary" }, "OUR SERVICES")))))))));
 	    }
 	}
 	exports.default = Slider;

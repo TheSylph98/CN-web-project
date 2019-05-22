@@ -172,14 +172,14 @@ class PayBillController
         if ($bill == null) {
             return response()->json([
                 "title" => "error",
-                "content" => "Vui lòng kiểm tra lại mã hóa đơn",
+                "content" => "Invalid bill'code",
 
             ]);
         } else {
 //            check xem hoá đơn đã thanh toán hay chưa
             if ($bill->datra ==1) {
                 return response()->json([
-                    "title" => "Đã thanh toán",
+                    "title" => "error",
                     "content" => "This bill had been paid before!",
 
                 ]);
@@ -190,7 +190,7 @@ class PayBillController
             if ($user->sotien < $bill->sotien) {
                 return response()->json([
                     "title" => "error",
-                    "content" => "Tài khoản của bạn không đủ tiền để thanh toán hóa đơn",
+                    "content" => "Not enough money!",
                 ]);
             }
 
@@ -215,7 +215,7 @@ class PayBillController
 
             $thongbao = new thongbao();
             $thongbao->tieude = "Pay bill successfully";
-            $thongbao->noidung = "Bạn vừa thanh toán  thành công  " ;
+            $thongbao->noidung = "You've successfully paid a bill with code " . $bill->mahoadon . " from provider " . $bill->ten_nhacungcap ;
             $thongbao->users_id = $user->id;
             $thongbao->daxem = 0;
             $thongbao->type = "thanhtoan_".$id_thanhtoan;
@@ -225,7 +225,7 @@ class PayBillController
 //            thông báo thành công
             return response()->json([
                 "title" => "success",
-                "content" => "thanh toán hóa đơn  thành công"
+                "content" => "Pay bill successfully!"
             ]);
         }
     }

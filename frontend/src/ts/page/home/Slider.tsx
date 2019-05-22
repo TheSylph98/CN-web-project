@@ -1,5 +1,6 @@
 import React = require("react");
 import RBCarousel from "react-bootstrap-carousel";
+import { Link } from "react-router-dom";
 
 export default class Slider extends React.Component<{}, {}> {
 	render() {
@@ -20,7 +21,7 @@ export default class Slider extends React.Component<{}, {}> {
                           <div class="slider-text text-center">
                               <h3 class="slide-title"><span>Secure</span> and <span>Easy Way</span><br/> To Trading Online</h3>
                               <p>
-                                  <a href="about.html" class="slider btn btn-primary">LEARN MORE</a>
+                                  <Link to="/register" class="slider btn btn-primary">REGISTER NOW</Link>
                               </p>
                           </div>
                       </div>
@@ -34,9 +35,9 @@ export default class Slider extends React.Component<{}, {}> {
                       <div class="col-md-12">
                           <div class="container">
                               <div class="slider-text text-center">
-                                  <h3 class="slide-title"><span>Bitcoin</span> Exchange <br/>You can <span>Trust</span> </h3>
+                                  <h3 class="slide-title"><span>Enjoy</span> our services <br/> <span>safely</span> and <span>easily</span></h3>
                                   <p>
-                                      <a href="pricing.html" class="slider btn btn-primary">OUR PRICES</a>
+                                      <Link to="/customer/services" class="slider btn btn-primary">OUR SERVICES</Link>
                                   </p>
                               </div>
                           </div>
