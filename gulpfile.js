@@ -7,6 +7,7 @@ const webpack = require("webpack");
 const zip = require("gulp-zip");
 const merge = require("merge2");
 const browserSync = require("browser-sync");
+const path = require("path");
 
 var tsCode = ts.createProject("./frontend/tsconfig.json");
 

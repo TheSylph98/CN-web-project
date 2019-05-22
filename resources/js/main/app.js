@@ -20,7 +20,7 @@ class App extends React.Component {
     }
     render() {
         return React.createElement("div", null,
-            React.createElement(react_router_dom_1.Route, { path: "/", exact: true, component: homepage_1.default }),
+            React.createElement(react_router_dom_1.Route, { exact: true, path: "/", component: homepage_1.default }),
             React.createElement(react_router_dom_1.Route, { path: "/register/", component: RegisterPage_1.default }),
             React.createElement(react_router_dom_1.Route, { path: "/login/", component: LoginPage_1.default }),
             React.createElement(react_router_dom_1.Route, { path: "/customer", component: CustomerPage_1.default }));

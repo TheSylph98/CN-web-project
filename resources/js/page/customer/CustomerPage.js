@@ -3,6 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const React = require("react");
 const TopPanel_1 = require("../common/TopPanel");
 const Directory_1 = require("../common/Directory");
+const Footer_1 = require("../common/Footer");
 const Navigator_1 = require("./Navigator");
 const AccountInfo_1 = require("./AccountInfo");
 const BankAccount_1 = require("./BankAccount");
@@ -29,7 +30,8 @@ class CustomerPage extends React.Component {
                 React.createElement(react_router_dom_1.Route, { path: "/customer/services", component: Services_1.default }),
                 React.createElement(react_router_dom_1.Route, { path: "/customer/favorite", component: FavoriteList_1.default }),
                 React.createElement(react_router_dom_1.Route, { path: "/customer/notification", component: Notification_1.default }),
-                React.createElement(react_router_dom_1.Route, { path: "/customer/transaction", component: Transaction_1.default })));
+                React.createElement(react_router_dom_1.Route, { path: "/customer/transaction", component: Transaction_1.default })),
+            React.createElement(Footer_1.default, null));
     }
 }
 function mapStateToProps(state) {

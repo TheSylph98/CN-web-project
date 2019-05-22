@@ -1,6 +1,7 @@
 import React = require("react");
 import TopPanel from "../common/TopPanel";
 import Directory from "../common/Directory";
+import Footer from "../common/Footer";
 import Navigator from "./Navigator";
 import AccountInfo from "./AccountInfo";
 import BankAccount from "./BankAccount";
@@ -31,6 +32,7 @@ class CustomerPage extends React.Component<{history, loggedIn: boolean, location
 				<Route path="/customer/notification" component={Notification}/>
 				<Route path="/customer/transaction" component={Transaction}/>
 			</div>
+			<Footer/>
 		</div>
 	}
 }

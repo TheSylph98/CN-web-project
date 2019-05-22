@@ -22,12 +22,12 @@ section {
     float: left;
     display: inline-block;
     color: #fd961a;
-    font-size: 60px;
+    font-size: 40px;
 }
 
 .feature-box .feature-icon i {
     color: #fd961a;
-    font-size: 60px;
+    font-size: 40px;
 }
 
 .feature-box .feature-box-content h3 {

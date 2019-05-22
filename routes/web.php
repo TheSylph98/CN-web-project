@@ -11,7 +11,7 @@
 |
 */
 
-Route::any('/', function () {
+Route::get('/', function () {
     return view('index');
 });
 

@@ -21,7 +21,7 @@ export class App extends React.Component<{dispatch, history, location}, {}> {
 
 	render() {
 		return <div>
-			<Route path="/" exact component={HomePage} />
+			<Route exact path="/" component={HomePage} />
 		    <Route path="/register/" component={Register} />
 		    <Route path="/login/" component={Login} />
 		    <Route path="/customer" component={CustomerPage}/>

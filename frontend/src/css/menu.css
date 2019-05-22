@@ -56,11 +56,6 @@ ul.navbar-nav > li {
     display: inline-block;
 }
 
-ul.navbar-nav > li {
-    float: none;
-    display: inline-block;
-}
-
 ul.navbar-nav > li:not(.search):hover, ul.navbar-nav > li.active {
     color: #fff;
     position: relative;
@@ -81,6 +76,10 @@ ul.navbar-nav > li > a {
     position: relative;
     font-family: 'Open Sans', sans-serif;
     transition: .1s;
+}
+
+.navbar-collapse {
+    max-height: 158px;
 }
 
 .nav > li > a:hover {
@@ -142,4 +141,25 @@ ul.navbar-nav > li > a {
 .nav>li>a:focus, .nav>li>a:hover {
     text-decoration: none;
     background-color: transparent;
+}
+
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0,0,0,0);
+    border: 0;
+}
+
+.navbar-toggle .icon-bar {
+    background: #fff;
+}
+
+.navbar-toggle {
+    float: right;
+    border-radius: 0;
+    margin-right: 0;
 }

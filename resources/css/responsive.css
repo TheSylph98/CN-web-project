@@ -1,0 +1,198 @@
+@media (max-width: 1200px) {
+    .slider-text {
+        position: relative;
+        z-index: 1;
+    }
+    .guide-content {
+        flex-direction: column;
+    }
+}
+
+@media (max-width: 1200px) and (min-width: 992px) {
+    ul.user li.sign-up a {
+        padding: 12px 18px;
+    }
+
+    ul.user li.sign-in a {
+        padding: 11px 13px;
+    }
+
+    ul.user li.sign-in {
+        padding-right: 15px;
+    }
+
+    ul.bitcoin-stats li {
+        padding-right: 20px;
+    }
+
+    ul.user li a {
+        font-size: 12px;
+    }
+}
+
+@media (max-width: 992px) and (min-width: 768px) {
+    .main-logo {
+        display: flex;
+        float: none;
+        padding-bottom: 0;
+        justify-content: center;
+    }
+
+    ul.bitcoin-stats {
+        padding-top: 22px;
+    }
+
+    section.guide {
+        top: -382px;
+        padding-top: 382px;
+        margin-bottom: -382px;
+    }
+}
+
+
+@media (max-width: 992px) {
+    ul.user {
+        justify-content: center;
+        padding: 15px 0 22px;
+        display: flex;
+    }
+
+    .feature-box {
+        clear: both;
+        margin-bottom: 40px;
+    }
+
+    .features-row {
+        padding-bottom: 10px;
+    }
+
+    .slider-content {
+        margin-top: -115px;
+    }
+
+    .slider-content h3 {
+        font-size: 40px;
+        margin: 10px 0;
+        line-height: 50px;
+    }
+}
+
+@media (max-width: 767px) {
+
+    nav.site-navigation {
+        padding: 6px 0;
+        position: fixed;
+        top: 0;
+        background: #111;
+        width: 100%;
+        border-bottom: 1px solid #222;
+        z-index: 1111;
+    }
+
+    .header {
+        margin-top: 63px;
+    }
+
+    .container {
+        max-width: 540px;
+    }
+
+    div.site-nav-inner {
+        position: relative;
+    }
+
+    a.logo-mobile {
+        display: inline-block;
+        float: left;
+    }
+
+    .navbar-collapse {
+        width: 100%;
+        box-shadow: none;
+    }
+
+    ul.navbar-nav {
+        padding: 30px 0 50px;
+    }
+
+    ul.navbar-nav > li {
+        display: block;
+    }
+
+    .navbar-collapse {
+        max-height: 640px;
+        overflow: hidden;
+    }
+
+    ul.navbar-nav > li.search {
+        display: none;
+    }
+
+    .logo-mobile #logo {
+        height: 34px;
+        margin-top: 5px;
+    }
+
+    .feature-box {
+        text-align: center;
+    }
+
+    .features-row {
+        padding: 45px 0 0 0;
+    }
+
+    .feature-box .feature-icon {
+        margin-bottom: 0;
+        float: none;
+    }
+
+    .feature-box .feature-box-content h3 {
+        margin: 15px 0 10px;
+    }
+
+    .feature-box .feature-box-content {
+        margin-left: 0;
+        margin-bottom: 30px;
+    }
+
+    .slider-content h3.slide-title {
+        font-size: 26px;
+        margin: 30px 0;
+        line-height: 36px;
+    }
+
+    .slider-text {
+        z-index: 1;
+        position: relative;
+    }
+
+    .slider-content {
+        margin-top: -165px;
+    }
+
+    section.guide {
+        top: -504px;
+        padding-top: 504px;
+        margin-bottom: -504px;
+    }
+}
+
+@media (max-width: 570px) {
+    ul.user {
+        padding: 15px 0;
+    }
+
+    ul.user li a {
+        width: 100%;
+    }
+
+    ul.user li {
+        width: 50%;
+    }
+}
+
+@media (max-width: 480px) {
+    ul.bitcoin-stats {
+        display: none;
+    }
+}

@@ -1,15 +1,14 @@
 import React = require("react");
 import { Link } from "react-router-dom";
 
-export default class Menu extends React.Component<{},{expandSearch: boolean}> {
-	state;
-	setState;
+export default class Menu extends React.Component<{},{fixed, expandSearch, expandMenu}> {
 
 	constructor(props) {
 		super(props);
 		this.state = {
 			expandSearch: false,
 			fixed: false,
+			expandMenu: false
 		}
 		window.onscroll = this.fixAtTop.bind(this);
 	}
@@ -35,31 +34,40 @@ export default class Menu extends React.Component<{},{expandSearch: boolean}> {
 		})
 	}
 
+	collapse() {
+		this.setState({
+			...this.state,
+			expandMenu: !this.state.expandMenu,
+		})
+	}
+
 	render() {
 		return <nav class={"site-navigation navigation" + (this.state.fixed ? " fixed" : "")} id="site-navigation">
 	        <div class="container">
 	            <div class="site-nav-inner">
 	                
 	                <a class="logo-mobile" href="index.html">
-						<img id="logo-mobile" class="img-responsive" src="resources/images/logo-dark.png" alt=""/>
+						<div id="logo" class="img-responsive">
+                            <span>&euro;</span>
+                            Wallet
+                        </div>
 					</a>
 	                
-	                <button type="button" class="navbar-toggle" >
+	                <button type="button" class="navbar-toggle" onClick={this.collapse.bind(this)}>
 						<span class="sr-only">Toggle navigation</span>
 						<span class="icon-bar"></span>
 						<span class="icon-bar"></span>
 						<span class="icon-bar"></span>
 					</button>
-	                <div class="collapse navbar-collapse navbar-responsive-collapse" style={{maxHeight: "158px"}}>
+	                <div class={"collapse navbar-collapse navbar-responsive-collapse" + 
+	            		(this.state.expandMenu ? " in" : "")}>
 	                
 	                    <ul class="nav navbar-nav">
 	                        <li><Link to="/">Home</Link></li>
 	                        <li><Link to="/customer">Customer</Link></li>
 	                        <li><Link to="/customer/services">Services</Link></li>
-	                        <li><Link to="/guide">Guide</Link></li>
+	                        <li><Link to="/#guide">Guide</Link></li>
 	                        <li><Link to="/contact">Contact</Link></li>
-							
-							<li class="cart"><a href="shopping-cart.html"><i class="fa fa-shopping-cart"></i></a></li>
 							
 	                        <li class="search"><button class="fa fa-search" onClick={this.switchSearch.bind(this)}></button></li>
 	                       

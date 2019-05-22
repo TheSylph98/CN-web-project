@@ -17,16 +17,35 @@
 	padding-bottom: 25px;
 }
 
+#logo {
+    font-family: monospace;
+    font-size: 30px;
+    color: #fff;
+    font-weight: 600;
+    height: 42px;
+    line-height: 42px;
+}
+
+#logo span {
+    color: #fd961a;
+    font-size: 30px;
+    margin-right: 5px;
+}
+
 .top-panel .container {
 	padding-right: 15px;
     padding-left: 15px;
     margin-right: auto;
-    margin-left: 100px;
+    margin-left: auto;
 }
 
-div.user {
+ul.user {
+    flex-direction: row;
     text-align: right;
     padding-top: 26px;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
 }
 
 .guess {
@@ -35,13 +54,13 @@ div.user {
     padding: 0;
 }
 
-div.account {
+li.account {
     display: inline-block;
     margin-right: 20px;
     margin-left: 10px;
 }
 
-div.account div a {
+li.account div a {
     padding: 12px 30px;
     transition: .1s;
     color: #fd961a;
@@ -49,21 +68,22 @@ div.account div a {
     font-weight: 600;
 }
 
-div.account span {
+li.account span {
+    white-space: nowrap;
     text-transform: uppercase;
     margin-left: 10px;
 }
 
-div.account div.avatar {
+li.account div.avatar {
     width: 24px;
     position: relative;
     font-size: 24px;
 }
 
-div.account div.avatar i {
+li.account div.avatar i {
 }
 
-div.account div.avatar .notification {
+li.account div.avatar .notification {
     background: #fa3e3e;
     position: absolute;
     top: -5px;
@@ -81,7 +101,7 @@ div.account div.avatar .notification {
     margin: 0;
 }
 
-div.logged-in a {
+ul.logged-in a {
     color: #fd961a;
     font-size: 13px;
     display: inline-flex;
@@ -89,37 +109,39 @@ div.logged-in a {
     font-family: "Open Sans", sans-serif;
 }
 
-div.user div.sign-in, div.user div.sign-out {
+ul.user li.sign-in, ul.user li.sign-out {
     padding-right: 17px;
     margin-right: 0;
     display: inline-block; 
 }
 
-div.user div.sign-up {
+ul.user li.sign-up {
     margin-right: 0;
     display: inline-block; 
 }
 
-div.user div.sign-in a.btn, div.user div.sign-out a.btn {
+ul.user li.sign-in a.btn, ul.user li.sign-out a.btn {
 	border: 1px solid #fd961a;
     background: transparent;
     padding: 11px 17px;
     transition: .1s;
     color: #fd961a;
     border-radius: 0;
-    font-size: 13px;
     font-weight: 600;
+    display: flex;
+    justify-content: center;
+    line-height: 100%;
 }
 
-div.user div.sign-in a.btn:hover, div.user div.sign-out a.btn:hover {
+ul.user li.sign-in a.btn:hover, ul.user li.sign-out a.btn:hover {
 	background: #fd961a;
     color: white;
 }
 
-div.user div.sign-up a.btn {
+ul.user li.sign-up a.btn {
 	border: 1px solid #fd961a;
     background: #fd961a;
-    padding: 12px 30px;
+    padding: 9px 20px;
     transition: .1s;
     color: white;
     border-radius: 0;
@@ -143,7 +165,7 @@ ul.guess li {
 
 ul.bitcoin-stats li {
     display: inline-block;
-    padding-right: 25px;
+    padding-right: 24px;
 }
 
 ul.bitcoin-stats h6 {
@@ -151,7 +173,7 @@ ul.bitcoin-stats h6 {
     color: #eee;
     margin: 0;
     font-size: 13px;
-    text-align: left;
+    text-align: center;
     margin-bottom: -2px;
     line-height: 13px;
 }
