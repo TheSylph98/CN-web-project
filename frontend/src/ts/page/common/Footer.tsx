@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 export default class Footer extends React.Component<{},{}> {
 	render() {
-		return <footer class="footer">
+		return <footer class="footer" id="contact">
             <div class="top-footer">
                 <div class="container">
                     <div class="row">

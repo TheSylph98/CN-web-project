@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const React = require("react");
-const react_router_dom_1 = require("react-router-dom");
+const react_router_hash_link_1 = require("react-router-hash-link");
 class Menu extends React.Component {
     constructor(props) {
         super(props);
@@ -43,15 +43,15 @@ class Menu extends React.Component {
                             (this.state.expandMenu ? " in" : "") },
                         React.createElement("ul", { class: "nav navbar-nav" },
                             React.createElement("li", null,
-                                React.createElement(react_router_dom_1.Link, { to: "/" }, "Home")),
+                                React.createElement(react_router_hash_link_1.HashLink, { to: "/" }, "Home")),
                             React.createElement("li", null,
-                                React.createElement(react_router_dom_1.Link, { to: "/customer" }, "Customer")),
+                                React.createElement(react_router_hash_link_1.HashLink, { to: "/customer" }, "Customer")),
                             React.createElement("li", null,
-                                React.createElement(react_router_dom_1.Link, { to: "/customer/services" }, "Services")),
+                                React.createElement(react_router_hash_link_1.HashLink, { to: "/customer/services" }, "Services")),
                             React.createElement("li", null,
-                                React.createElement(react_router_dom_1.Link, { to: "/#guide" }, "Guide")),
+                                React.createElement(react_router_hash_link_1.HashLink, { to: "/#guide" }, "Guide")),
                             React.createElement("li", null,
-                                React.createElement(react_router_dom_1.Link, { to: "/contact" }, "Contact")),
+                                React.createElement(react_router_hash_link_1.HashLink, { to: "/#contact" }, "Contact")),
                             React.createElement("li", { class: "search" },
                                 React.createElement("button", { class: "fa fa-search", onClick: this.switchSearch.bind(this) })))))),
             React.createElement("div", { class: "site-search" },

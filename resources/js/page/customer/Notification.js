@@ -18,7 +18,7 @@ class Notification extends React.Component {
     render() {
         let notifications = this.props.notification.notifications;
         let numOfUnread = notifications.filter(noti => noti.read == false).length;
-        return React.createElement("div", { className: "content-right" },
+        return React.createElement("div", null,
             React.createElement("h1", { className: "title" }, "Notification"),
             React.createElement("div", { className: "wrapper" }, notifications.length == 0 ?
                 React.createElement("div", { className: "small-text" }, this.props.notification.loading ?

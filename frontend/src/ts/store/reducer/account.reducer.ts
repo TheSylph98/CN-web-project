@@ -1,7 +1,12 @@
-import { accountConstants } from '../constants';
+import { accountConstants, userConstants } from '../constants';
 
 export function account(state = {notLoad: true, accounts: []}, action) {
   switch (action.type) {
+    case userConstants.LOGOUT_SUCCESS: 
+      return {
+        notLoad: true,
+        accounts: [],
+      }
     case accountConstants.CONNECT_REQUEST: 
       return {
         ...state,

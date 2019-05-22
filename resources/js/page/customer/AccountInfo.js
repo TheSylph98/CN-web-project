@@ -26,7 +26,7 @@ class AccountInfo extends React.Component {
     }
     render() {
         let user = this.props.login.user;
-        return React.createElement("div", { class: "content-right" },
+        return React.createElement("div", null,
             React.createElement("h1", { class: "title" }, "Account Info"),
             React.createElement("div", { class: "wrapper" },
                 React.createElement("form", { class: "content", id: "edit-account" },

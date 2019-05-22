@@ -4,7 +4,7 @@ const React = require("react");
 const react_router_dom_1 = require("react-router-dom");
 class Footer extends React.Component {
     render() {
-        return React.createElement("footer", { class: "footer" },
+        return React.createElement("footer", { class: "footer", id: "contact" },
             React.createElement("div", { class: "top-footer" },
                 React.createElement("div", { class: "container" },
                     React.createElement("div", { class: "row" },

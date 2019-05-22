@@ -34,7 +34,7 @@ class AccountInfo extends React.Component<{dispatch, login, modify}, {openChange
 
 	render() {
         let user = this.props.login.user;
-		return <div class="content-right">
+		return <div>
             <h1 class="title">Account Info</h1>
             <div class="wrapper">
                 <form class="content" id="edit-account">

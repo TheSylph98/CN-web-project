@@ -23,14 +23,15 @@ class CustomerPage extends React.Component {
         return React.createElement("div", { class: "page" },
             React.createElement(TopPanel_1.default, null),
             React.createElement(Directory_1.default, { location: this.props.location.pathname }),
-            React.createElement("div", { class: "customer-content", style: { paddingLeft: "40px", background: "#111" } },
+            React.createElement("div", { class: "customer-content" },
                 React.createElement(Navigator_1.default, { location: this.props.location.pathname }),
-                React.createElement(react_router_dom_1.Route, { exact: true, path: "/(customer/account|customer)/", component: AccountInfo_1.default }),
-                React.createElement(react_router_dom_1.Route, { path: "/customer/bank", component: BankAccount_1.default }),
-                React.createElement(react_router_dom_1.Route, { path: "/customer/services", component: Services_1.default }),
-                React.createElement(react_router_dom_1.Route, { path: "/customer/favorite", component: FavoriteList_1.default }),
-                React.createElement(react_router_dom_1.Route, { path: "/customer/notification", component: Notification_1.default }),
-                React.createElement(react_router_dom_1.Route, { path: "/customer/transaction", component: Transaction_1.default })),
+                React.createElement("div", { className: "content-right col-lg-8 col-md-8" },
+                    React.createElement(react_router_dom_1.Route, { exact: true, path: "/(customer/account|customer)/", component: AccountInfo_1.default }),
+                    React.createElement(react_router_dom_1.Route, { path: "/customer/bank", component: BankAccount_1.default }),
+                    React.createElement(react_router_dom_1.Route, { path: "/customer/services", component: Services_1.default }),
+                    React.createElement(react_router_dom_1.Route, { path: "/customer/favorite", component: FavoriteList_1.default }),
+                    React.createElement(react_router_dom_1.Route, { path: "/customer/notification", component: Notification_1.default }),
+                    React.createElement(react_router_dom_1.Route, { path: "/customer/transaction", component: Transaction_1.default }))),
             React.createElement(Footer_1.default, null));
     }
 }

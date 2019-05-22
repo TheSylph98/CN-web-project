@@ -1,7 +1,12 @@
-import { transactionConstants } from '../constants';
+import { transactionConstants, userConstants } from '../constants';
 
 export function transaction(state = {notLoad: true, transactions: []}, action) {
   switch (action.type) {
+    case userConstants.LOGOUT_SUCCESS: 
+        return {
+            notLoad: true,
+            transactions: [],
+        }
     case transactionConstants.TRANSACTION_REQUEST: 
       return {
         notLoad: false,

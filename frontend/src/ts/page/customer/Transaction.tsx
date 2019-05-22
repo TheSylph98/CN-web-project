@@ -4,13 +4,31 @@ import { transactionActions } from "../../store/action";
 import { TransactionType, toMoneyFormat, compare } from "../../utils";
 import TransactionSummary from "./TransactionSummary";
 
-class Transaction extends React.Component<{dispatch, transaction, location}, {transaction}> {
+class Transaction extends React.Component<{dispatch, transaction, location}, {transaction, search}> {
+
+	search;
 
 	constructor(props) {
 		super(props);
 		this.state = {
 			transaction: null,
+			search: false,
 		}
+	}
+
+	showSearch() {
+		this.setState({
+			...this.state,
+			search: true
+		})
+	}
+
+	hideSearch() {
+		setTimeout(() => 
+		this.setState({
+			...this.state,
+			search: false,
+		}), 200);
 	}
 
 	componentWillMount() {
@@ -22,6 +40,7 @@ class Transaction extends React.Component<{dispatch, transaction, location}, {tr
 		if (this.props.location.details) {
 			let details = this.props.location.details
 			this.setState({
+				...this.state,
 				transaction: transactions.find(trans => {
 					return compare(details.type, trans.type)
 						&& details.id == trans.id;
@@ -30,6 +49,7 @@ class Transaction extends React.Component<{dispatch, transaction, location}, {tr
 		} else {
 			if (transactions.length > 0) {
 				this.setState({
+					...this.state,
 					transaction: transactions[0]
 				})
 			}
@@ -43,6 +63,7 @@ class Transaction extends React.Component<{dispatch, transaction, location}, {tr
 		if (nextProps.location.details) {
 			let details = nextProps.location.details
 			this.setState({
+				...this.state,
 				transaction: transactions.find(trans => {
 					return compare(details.type, trans.type)
 						&& details.id == trans.id;
@@ -51,6 +72,7 @@ class Transaction extends React.Component<{dispatch, transaction, location}, {tr
 		} else {
 			if (transactions.length > 0) {
 				this.setState({
+					...this.state,
 					transaction: transactions[0]
 				})
 			}
@@ -59,8 +81,9 @@ class Transaction extends React.Component<{dispatch, transaction, location}, {tr
 
 	onRead(transaction) {
 		this.setState({
+			search: false,
 			transaction: transaction
-		})
+		});
 	}
 
 	getSource(transaction) {
@@ -166,12 +189,52 @@ class Transaction extends React.Component<{dispatch, transaction, location}, {tr
 		let transactions = this.props.transaction.transactions;
 		let transaction = this.state.transaction;
 
-		return <div className="content-right">
+		return <div>
 			<h1 className="title">Transaction</h1>
 			<TransactionSummary transactions={transactions}/>
 			<div className="wrapper trans">
+				<div className="sub-wrapper responsive">
+					<div class="form-group">
+		                <div class="input-wrap">
+		                    <input 
+		                    	onBlur={this.hideSearch.bind(this)}
+		                    	onFocus={this.showSearch.bind(this)}
+		                    	editable={false}
+		                     	ref={input => this.search = input } 
+		                     	type="text" class="form-control" 
+		                        value={this.state.transaction && this.getContent(this.state.transaction)} 
+		                        placeholder="Transaction List"/>
+		                </div>
+		                <div className={"trans-list collapse" + (this.state.search ? " display" : "")}>
+						{transactions.map((transaction, number) =>
+							<div onClick={() => this.onRead(transaction)} 								key={number}
+								className={"trans" + (transaction == this.state.transaction ? " active" : "")}>
+								<div className="avatar">
+								{transaction.type == TransactionType.TRANSFER ?
+									<i className="fa fa-sign-out-alt" style={{color: "#0f7a0b"}}/>
+								: transaction.type == TransactionType.DEPOSIT ?
+									<i className="fa fa-sign-in-alt" style={{color: "#365382"}}/>
+								: transaction.type == TransactionType.RECEIVE ?
+									<i className="fa fa-money-bill" style={{color: "#e54837"}}/>
+								: transaction.type == TransactionType.PAY ?
+									<i className="fa fa-credit-card" style={{color: "#d1c217"}}/> 
+								: transaction.type == TransactionType.MOBILE_PAY ?
+									<i className="fa fa-mobile-alt" style={{color: "#d1c217"}}/>
+								: <i/>
+								}
+								</div>
+								<div className="text">
+									<span className="title">{this.getContent(transaction)}</span>
+									<span className="time">{transaction.time.toLocaleDateString()}</span>
+									<span className="status">Success</span>
+									<span className="amount">{this.getAmount(transaction)}</span>
+								</div>
+							</div>)}
+					</div>
+					</div>
+				</div>
 				<div className="sub-wrapper">
-					<div className="title">May 2019</div>
+					<div className="title">Transaction List</div>
 					<div className="trans-list">
 						{transactions.map((transaction, number) =>
 							<div onClick={() => this.onRead(transaction)} 

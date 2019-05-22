@@ -20,7 +20,7 @@ class Notification extends React.Component<{dispatch, notification}, {}> {
 		let notifications = this.props.notification.notifications;
 		let numOfUnread = notifications.filter(noti => noti.read == false).length;
 
-		return <div className="content-right">
+		return <div>
 			<h1 className="title">Notification</h1>
 			<div className="wrapper">
 				{notifications.length == 0 ? 

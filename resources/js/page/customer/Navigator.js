@@ -6,7 +6,7 @@ const react_redux_1 = require("react-redux");
 class Navigator extends React.Component {
     render() {
         let location = this.props.location.replace(/\/$/, "");
-        return React.createElement("div", { class: "navigator" },
+        return React.createElement("div", { class: "navigator col-lg-2 col-md-2" },
             React.createElement("div", { class: "profiles" },
                 React.createElement("p", { class: "image" },
                     React.createElement("img", { src: "https://salt.tikicdn.com/desktop/img/avatar.png?v=3", height: "45", width: "45", alt: "" })),

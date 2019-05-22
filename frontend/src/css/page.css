@@ -14,3 +14,8 @@
 .form-message .error {
 	color: red;
 }
+
+.customer-content {
+	padding-left: 40px;
+	background: #111;
+}

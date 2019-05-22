@@ -3,6 +3,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const constants_1 = require("../constants");
 function bill(state = { type: { notLoad: true, types: [] }, bill: {} }, action) {
     switch (action.type) {
+        case constants_1.userConstants.LOGOUT_SUCCESS:
+            return Object.assign({}, state, { bill: {} });
         case constants_1.billConstants.TYPE_REQUEST:
             return Object.assign({}, state, { type: {
                     loading: true,

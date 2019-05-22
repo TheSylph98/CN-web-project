@@ -10,7 +10,14 @@ class Transaction extends React.Component {
         super(props);
         this.state = {
             transaction: null,
+            search: false,
         };
+    }
+    showSearch() {
+        this.setState(Object.assign({}, this.state, { search: true }));
+    }
+    hideSearch() {
+        setTimeout(() => this.setState(Object.assign({}, this.state, { search: false })), 200);
     }
     componentWillMount() {
         if (this.props.transaction.notLoad) {
@@ -19,18 +26,14 @@ class Transaction extends React.Component {
         let transactions = this.props.transaction.transactions;
         if (this.props.location.details) {
             let details = this.props.location.details;
-            this.setState({
-                transaction: transactions.find(trans => {
+            this.setState(Object.assign({}, this.state, { transaction: transactions.find(trans => {
                     return utils_1.compare(details.type, trans.type)
                         && details.id == trans.id;
-                })
-            });
+                }) }));
         }
         else {
             if (transactions.length > 0) {
-                this.setState({
-                    transaction: transactions[0]
-                });
+                this.setState(Object.assign({}, this.state, { transaction: transactions[0] }));
             }
         }
     }
@@ -38,23 +41,20 @@ class Transaction extends React.Component {
         let transactions = nextProps.transaction.transactions;
         if (nextProps.location.details) {
             let details = nextProps.location.details;
-            this.setState({
-                transaction: transactions.find(trans => {
+            this.setState(Object.assign({}, this.state, { transaction: transactions.find(trans => {
                     return utils_1.compare(details.type, trans.type)
                         && details.id == trans.id;
-                })
-            });
+                }) }));
         }
         else {
             if (transactions.length > 0) {
-                this.setState({
-                    transaction: transactions[0]
-                });
+                this.setState(Object.assign({}, this.state, { transaction: transactions[0] }));
             }
         }
     }
     onRead(transaction) {
         this.setState({
+            search: false,
             transaction: transaction
         });
     }
@@ -139,12 +139,33 @@ class Transaction extends React.Component {
     render() {
         let transactions = this.props.transaction.transactions;
         let transaction = this.state.transaction;
-        return React.createElement("div", { className: "content-right" },
+        return React.createElement("div", null,
             React.createElement("h1", { className: "title" }, "Transaction"),
             React.createElement(TransactionSummary_1.default, { transactions: transactions }),
             React.createElement("div", { className: "wrapper trans" },
+                React.createElement("div", { className: "sub-wrapper responsive" },
+                    React.createElement("div", { class: "form-group" },
+                        React.createElement("div", { class: "input-wrap" },
+                            React.createElement("input", { onBlur: this.hideSearch.bind(this), onFocus: this.showSearch.bind(this), editable: false, ref: input => this.search = input, type: "text", class: "form-control", value: this.state.transaction && this.getContent(this.state.transaction), placeholder: "Transaction List" })),
+                        React.createElement("div", { className: "trans-list collapse" + (this.state.search ? " display" : "") }, transactions.map((transaction, number) => React.createElement("div", { onClick: () => this.onRead(transaction), key: number, className: "trans" + (transaction == this.state.transaction ? " active" : "") },
+                            React.createElement("div", { className: "avatar" }, transaction.type == utils_1.TransactionType.TRANSFER ?
+                                React.createElement("i", { className: "fa fa-sign-out-alt", style: { color: "#0f7a0b" } })
+                                : transaction.type == utils_1.TransactionType.DEPOSIT ?
+                                    React.createElement("i", { className: "fa fa-sign-in-alt", style: { color: "#365382" } })
+                                    : transaction.type == utils_1.TransactionType.RECEIVE ?
+                                        React.createElement("i", { className: "fa fa-money-bill", style: { color: "#e54837" } })
+                                        : transaction.type == utils_1.TransactionType.PAY ?
+                                            React.createElement("i", { className: "fa fa-credit-card", style: { color: "#d1c217" } })
+                                            : transaction.type == utils_1.TransactionType.MOBILE_PAY ?
+                                                React.createElement("i", { className: "fa fa-mobile-alt", style: { color: "#d1c217" } })
+                                                : React.createElement("i", null)),
+                            React.createElement("div", { className: "text" },
+                                React.createElement("span", { className: "title" }, this.getContent(transaction)),
+                                React.createElement("span", { className: "time" }, transaction.time.toLocaleDateString()),
+                                React.createElement("span", { className: "status" }, "Success"),
+                                React.createElement("span", { className: "amount" }, this.getAmount(transaction)))))))),
                 React.createElement("div", { className: "sub-wrapper" },
-                    React.createElement("div", { className: "title" }, "May 2019"),
+                    React.createElement("div", { className: "title" }, "Transaction List"),
                     React.createElement("div", { className: "trans-list" }, transactions.map((transaction, number) => React.createElement("div", { onClick: () => this.onRead(transaction), key: number, className: "trans" + (transaction == this.state.transaction ? " active" : "") },
                         React.createElement("div", { className: "avatar" }, transaction.type == utils_1.TransactionType.TRANSFER ?
                             React.createElement("i", { className: "fa fa-sign-out-alt", style: { color: "#0f7a0b" } })

@@ -102,3 +102,7 @@
     margin-bottom: 10px;
     color: red;
 }
+
+.form-container .form-group p {
+    font-size: 12px;
+}

@@ -24,7 +24,7 @@ class PayBill extends React.Component {
     render() {
         let types = this.props.bill.type.types;
         let bill = this.props.bill.bill.bill;
-        return React.createElement("div", { class: "content-right" },
+        return React.createElement("div", null,
             React.createElement("div", { className: "wrapper pay-bill" },
                 React.createElement("form", { class: "content" },
                     React.createElement("div", { class: "form-group " },

@@ -1,7 +1,12 @@
-import { notificationConstants } from '../constants';
+import { notificationConstants, userConstants } from '../constants';
 
 export function notification(state = {notLoad: true, notifications: []}, action) {
   switch (action.type) {
+    case userConstants.LOGOUT_SUCCESS: 
+      return {
+        notLoad: true,
+        notifications: [],
+      }
     case notificationConstants.NOTIFICATION_REQUEST: 
       return {
         notLoad: false,

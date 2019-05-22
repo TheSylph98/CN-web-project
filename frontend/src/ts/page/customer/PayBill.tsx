@@ -33,7 +33,7 @@ class PayBill extends React.Component<{dispatch, bill, pay }, {}> {
 		let types = this.props.bill.type.types;
 		let bill = this.props.bill.bill.bill;
 
-		return <div class="content-right">
+		return <div>
             <div className="wrapper pay-bill">
 				<form class="content">
 					<div class="form-group ">

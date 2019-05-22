@@ -3,6 +3,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const constants_1 = require("../constants");
 function friend(state = { friends: [], notLoad: true }, action) {
     switch (action.type) {
+        case constants_1.userConstants.LOGOUT_SUCCESS:
+            return {
+                notLoad: true,
+                friends: [],
+            };
         case constants_1.friendConstants.FRIEND_REQUEST:
             return Object.assign({}, state, { notLoad: false, loading: true, friends: [] });
         case constants_1.friendConstants.FRIEND_SUCCESS:

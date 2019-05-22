@@ -39,7 +39,7 @@ class FavoriteList extends React.Component<{dispatch, friend}, {showInput}> {
 
 		let friends = this.props.friend.friends;
 
-		return <div class="content-right">
+		return <div>
             <h1 class="title">Favorite List</h1>
             <div className="wrapper favorite">	
             	<div className="form-group">

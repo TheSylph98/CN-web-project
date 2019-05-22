@@ -28,6 +28,14 @@ export class LoginPage extends React.Component<{dispatch, error: string, history
 
 	render() {
 		return <div class="register col-xs-12">
+			<div class="main-logo visible-xs">
+                <Link to="/">
+                    <div id="logo" class="img-responsive">
+                        <span>&euro;</span>
+                        Wallet
+                    </div>
+                </Link>
+            </div>
 			<div class="form-container">
 				<div>
 					<div class="row text-center title">

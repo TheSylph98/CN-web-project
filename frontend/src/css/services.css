@@ -1,11 +1,12 @@
 .content-right .wrapper.service-tab {
-	height: 50px;
 	padding: 0px!important;
 	display: flex;
     flex-direction: row;
+    flex-wrap: wrap;
 }
 
 .service-tab .tab {
+    height: 50px;
 	width: 120px;
     display: flex;
     align-items: center;

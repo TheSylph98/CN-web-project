@@ -3,6 +3,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const constants_1 = require("../constants");
 function transaction(state = { notLoad: true, transactions: [] }, action) {
     switch (action.type) {
+        case constants_1.userConstants.LOGOUT_SUCCESS:
+            return {
+                notLoad: true,
+                transactions: [],
+            };
         case constants_1.transactionConstants.TRANSACTION_REQUEST:
             return {
                 notLoad: false,

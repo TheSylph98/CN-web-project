@@ -3,6 +3,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const constants_1 = require("../constants");
 function account(state = { notLoad: true, accounts: [] }, action) {
     switch (action.type) {
+        case constants_1.userConstants.LOGOUT_SUCCESS:
+            return {
+                notLoad: true,
+                accounts: [],
+            };
         case constants_1.accountConstants.CONNECT_REQUEST:
             return Object.assign({}, state, { accounts: state.accounts, connecting: true });
         case constants_1.accountConstants.CONNECT_SUCCESS:

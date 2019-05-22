@@ -1,7 +1,11 @@
-import { servicesConstants } from '../constants';
+import { servicesConstants, userConstants } from '../constants';
 
 export function services(state = {transfer: {}, mobile: {}, deposit: {}, pay: {}}, action) {
 	switch (action.type) {
+		case userConstants.LOGOUT_SUCCESS: 
+		    return {
+	    	    transfer: {}, mobile: {}, deposit: {}, pay: {}
+		    }
 		case servicesConstants.TRANSFER_REQUEST: 
 			return {
 				...state,

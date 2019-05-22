@@ -6,7 +6,7 @@ class Navigator extends React.Component<{location: string, numUnread, login}, {}
 	
 	render() {
 		let location = this.props.location.replace(/\/$/, "");
-		return <div class="navigator">
+		return <div class="navigator col-lg-2 col-md-2">
             <div class="profiles">
 			    <p class="image"><img src="https://salt.tikicdn.com/desktop/img/avatar.png?v=3" height="45" width="45" alt=""/></p>
 			    <p class="name">Your account</p>

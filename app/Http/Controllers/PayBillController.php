@@ -180,7 +180,7 @@ class PayBillController
             if ($bill->datra ==1) {
                 return response()->json([
                     "title" => "Đã thanh toán",
-                    "content" => "Hóa đơn này đã đuợc thanh toán",
+                    "content" => "This bill had been paid before!",
 
                 ]);
             }
@@ -214,7 +214,7 @@ class PayBillController
             $id_thanhtoan= thanhtoan::max("id");
 
             $thongbao = new thongbao();
-            $thongbao->tieude = "Thông báo bạn đã thanh toán hóa đơn thành công";
+            $thongbao->tieude = "Pay bill successfully";
             $thongbao->noidung = "Bạn vừa thanh toán  thành công  " ;
             $thongbao->users_id = $user->id;
             $thongbao->daxem = 0;

@@ -3,6 +3,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const constants_1 = require("../constants");
 function notification(state = { notLoad: true, notifications: [] }, action) {
     switch (action.type) {
+        case constants_1.userConstants.LOGOUT_SUCCESS:
+            return {
+                notLoad: true,
+                notifications: [],
+            };
         case constants_1.notificationConstants.NOTIFICATION_REQUEST:
             return {
                 notLoad: false,

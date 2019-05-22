@@ -3,6 +3,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const constants_1 = require("../constants");
 function services(state = { transfer: {}, mobile: {}, deposit: {}, pay: {} }, action) {
     switch (action.type) {
+        case constants_1.userConstants.LOGOUT_SUCCESS:
+            return {
+                transfer: {}, mobile: {}, deposit: {}, pay: {}
+            };
         case constants_1.servicesConstants.TRANSFER_REQUEST:
             return Object.assign({}, state, { transfer: {
                     transfering: true,

@@ -40,7 +40,7 @@ class BankAccount extends React.Component<{dispatch, bank, account}, {chosenBank
 		let banks = this.props.bank.banks;
 		let accounts = this.props.account.accounts;
 
-		return <div class="content-right">
+		return <div>
             <h1 class="title">Bank Account</h1>
             <div className="wrapper bank-account">
             	<div className="title">

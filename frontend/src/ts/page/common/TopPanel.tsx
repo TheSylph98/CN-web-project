@@ -65,7 +65,7 @@ class TopPanel extends React.Component<{login, dispatch, numUnread},{}> {
                             <li class="sign-out">
                                 <Link to="/" class="btn btn-primary" onClick={this.onSignOut.bind(this)}>
                                     <i class="fa fa-sign-out-alt"></i>
-                                    SIGN OUT
+                                    &nbsp;SIGN OUT
                                 </Link>
                             </li>
                         </ul>

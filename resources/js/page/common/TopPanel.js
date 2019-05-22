@@ -57,7 +57,7 @@ class TopPanel extends React.Component {
                             React.createElement("li", { class: "sign-out" },
                                 React.createElement(react_router_dom_1.Link, { to: "/", class: "btn btn-primary", onClick: this.onSignOut.bind(this) },
                                     React.createElement("i", { class: "fa fa-sign-out-alt" }),
-                                    "SIGN OUT"))))),
+                                    "\u00A0SIGN OUT"))))),
             React.createElement(Menu_1.default, null));
     }
 }

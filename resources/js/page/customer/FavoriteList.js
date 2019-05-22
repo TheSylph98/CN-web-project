@@ -31,7 +31,7 @@ class FavoriteList extends React.Component {
     }
     render() {
         let friends = this.props.friend.friends;
-        return React.createElement("div", { class: "content-right" },
+        return React.createElement("div", null,
             React.createElement("h1", { class: "title" }, "Favorite List"),
             React.createElement("div", { className: "wrapper favorite" },
                 React.createElement("div", { className: "form-group" },

@@ -1,7 +1,12 @@
-import { friendConstants } from '../constants';
+import { friendConstants, userConstants } from '../constants';
 
 export function friend(state = {friends: [], notLoad: true}, action) {
   switch (action.type) {
+    case userConstants.LOGOUT_SUCCESS: 
+      return {
+        notLoad: true,
+        friends: [],
+      }
     case friendConstants.FRIEND_REQUEST: 
       return {
         ...state,

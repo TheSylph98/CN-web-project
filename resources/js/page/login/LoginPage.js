@@ -22,6 +22,11 @@ class LoginPage extends React.Component {
     }
     render() {
         return React.createElement("div", { class: "register col-xs-12" },
+            React.createElement("div", { class: "main-logo visible-xs" },
+                React.createElement(react_router_dom_1.Link, { to: "/" },
+                    React.createElement("div", { id: "logo", class: "img-responsive" },
+                        React.createElement("span", null, "\u20AC"),
+                        "Wallet"))),
             React.createElement("div", { class: "form-container" },
                 React.createElement("div", null,
                     React.createElement("div", { class: "row text-center title" },

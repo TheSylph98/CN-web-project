@@ -32,7 +32,7 @@ class BankAccount extends React.Component {
     render() {
         let banks = this.props.bank.banks;
         let accounts = this.props.account.accounts;
-        return React.createElement("div", { class: "content-right" },
+        return React.createElement("div", null,
             React.createElement("h1", { class: "title" }, "Bank Account"),
             React.createElement("div", { className: "wrapper bank-account" },
                 React.createElement("div", { className: "title" }, "Connected bank account"),

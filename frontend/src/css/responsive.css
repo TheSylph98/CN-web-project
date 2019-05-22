@@ -6,6 +6,14 @@
     .guide-content {
         flex-direction: column;
     }
+
+    .trans-list .trans .text span.title {
+        font-size: 13px;
+    }
+
+    .customer-content {
+        padding-left: 10px;
+    }
 }
 
 @media (max-width: 1200px) and (min-width: 992px) {
@@ -31,6 +39,16 @@
 }
 
 @media (max-width: 992px) and (min-width: 768px) {
+
+    .content-right .wrapper.trans-summary {
+        padding: 0!important;
+    }
+
+    .service-tab .tab {
+        padding: 0;
+        width: 95px;
+    }
+
     .main-logo {
         display: flex;
         float: none;
@@ -51,6 +69,45 @@
 
 
 @media (max-width: 992px) {
+
+    .content-right .wrapper .form-group .input-wrap {
+        width: 340px;
+    }
+
+    .content-right .wrapper.trans-summary {
+        padding: 0!important;
+    }
+
+    .content-right .wrapper .sub-wrapper:nth-child(2) {
+        display: none;
+    }
+
+    .content-right .wrapper .sub-wrapper.responsive {
+        display: block;
+    }
+
+    .content-right .wrapper .sub-wrapper.responsive .form-group {
+        margin-bottom: 20px;
+    }
+
+    .content-right .wrapper .sub-wrapper.responsive .input-wrap{
+        width: 100%;
+        border-radius: 3px;
+    }
+
+    .sub-wrapper.responsive .input-wrap .form-control {
+        cursor: default;
+        color: #fd961a;
+    }
+
+    .content-right .wrapper.trans {
+        flex-direction: column;
+    }
+
+    .content-right .wrapper .sub-wrapper {
+        width: 90%;
+    }
+
     ul.user {
         justify-content: center;
         padding: 15px 0 22px;
@@ -78,6 +135,58 @@
 }
 
 @media (max-width: 767px) {
+
+    .service-tab .tab {
+        width: 95px;
+        padding: 0px;
+        margin: 0 10px;
+    }
+
+    .content-right .wrapper .form-group .control-label {
+        margin-bottom: 10px;
+    }
+
+    .customer-content {
+        padding-left: 0px;
+    }
+
+    .navigator {
+        width: 50px;
+        margin: 0;
+        background: #3d3d3d;
+    }
+
+    .navigator .menu ul li a {
+        padding: 20px 30px;
+    }
+
+    .trans-summary ul.details li {
+        width: 120px;
+    }
+
+    .navigator span, .navigator p, .navigator h6 {
+        display: none;
+    }
+
+    .directory {
+        background: #0c0c0c;
+    }
+
+    .form-container p.info-form {
+        margin: 8px 15px 30px 15px;
+    }
+
+    .main-logo.visible-xs {
+        padding-top: 50px;
+        padding-bottom: 0px;
+        text-align: center;
+    }
+
+    .form-container {
+        padding: 15px;
+        position: relative;
+        height: auto;
+    }
 
     nav.site-navigation {
         padding: 6px 0;
@@ -175,9 +284,30 @@
         padding-top: 504px;
         margin-bottom: -504px;
     }
+
+    .directory li+li {
+        padding-left: 50px;
+    }
+
+    .directory .title>li+li:before {
+        left: 15px;
+    }
 }
 
 @media (max-width: 570px) {
+
+    .content-right .wrapper .sub-wrapper {
+        margin-left: 10px;
+    }
+
+    .trans-summary .summary .title {
+        width: 110px;
+    }
+
+    .trans-summary ul.details li {
+        width: 90px;
+    }
+
     ul.user {
         padding: 15px 0;
     }
@@ -189,10 +319,30 @@
     ul.user li {
         width: 50%;
     }
+
+    .form-container form .form-group {
+        margin-bottom: 15px;
+    }
+
+    .directory {
+        padding-left: 20px;   
+    }
+
+    .account-list, .friend-list {
+        width: 100%;
+    }
 }
 
 @media (max-width: 480px) {
     ul.bitcoin-stats {
         display: none;
+    }
+
+    .directory {
+        display: none;
+    }
+
+    .content-right .wrapper .form-group .input-wrap {
+        width: -webkit-fill-available;
     }
 }

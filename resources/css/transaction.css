@@ -157,6 +157,18 @@
 	float: right;
 }
 
+.content-right .wrapper .sub-wrapper.responsive {
+	display: none;
+}
+
+.trans-list.collapse {
+	display: none;
+}
+
+.trans-list.collapse.display {
+	display: flex;
+}
+
 .content-right .wrapper.trans-summary {
 	padding: 0 20px!important;
 	flex-direction: column;

@@ -38,7 +38,7 @@ class MobilePay extends React.Component<{dispatch, mobile, pay }, {chosenTelecom
 		let telecoms = this.props.mobile.telecoms;
 		let denominations = [10000, 20000, 30000, 50000, 100000, 200000, 300000, 500000, 1000000];
 
-		return <div class="content-right">
+		return <div>
             <div className="wrapper mobile-pay">
 				<div className="title">
 					Choose a telecom company

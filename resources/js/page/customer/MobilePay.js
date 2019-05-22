@@ -28,7 +28,7 @@ class MobilePay extends React.Component {
     render() {
         let telecoms = this.props.mobile.telecoms;
         let denominations = [10000, 20000, 30000, 50000, 100000, 200000, 300000, 500000, 1000000];
-        return React.createElement("div", { class: "content-right" },
+        return React.createElement("div", null,
             React.createElement("div", { className: "wrapper mobile-pay" },
                 React.createElement("div", { className: "title" }, "Choose a telecom company"),
                 React.createElement("div", { className: "telecom-list" }, telecoms.map(telecom => React.createElement("div", { onClick: () => this.chooseTelecom(telecom.id), id: telecom.id, class: "telecom" + (this.state.chosenTelecomId == telecom.id ? " active" : "") },
